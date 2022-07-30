@@ -1,6 +1,6 @@
 ### General ###
 *.log
-.htaccess
+#.htaccess
 .DS_Store
 .tmp
 error_log
