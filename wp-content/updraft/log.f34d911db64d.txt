@@ -1,0 +1,709 @@
+0000.000 (0) Opened log file at time: Thu, 15 Jul 2021 09:11:03 +0000 on https://pethamper.co.uk
+0000.001 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 2.13.11.22 WP: 5.7.2 PHP: 7.3.29 (fpm-fcgi, Linux vps-60623c.stackvps.com 3.10.0-1160.el7.x86_64 #1 SMP Mon Oct 19 16:18:59 UTC 2020 x86_64) MySQL: 5.7.34 WPLANG: en_GB Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 768M (used: 115.5M | 9M) multisite: N openssl: OpenSSL 1.1.1k  25 Mar 2021 mcrypt: N LANG:  ZipArchive::addFile: N
+0000.071 (0) Free space on disk containing Updraft's temporary directory: 89805.3 MB
+0000.073 (0) Tasks: Backup files: 1 (schedule: manual) Backup DB: 1 (schedule: manual)
+0000.079 (0) Requesting semaphore lock (fd) (apparently not via scheduler)
+0000.080 (0) Set semaphore last lock (fd) time to 2021-07-15 09:11:03
+0000.081 (0) Semaphore lock (fd) complete
+0000.083 (0) Backup run: resumption=0, nonce=f34d911db64d, begun at=1626340263 (0s ago), job type=backup, label=Automatic backup before update
+0000.084 (0) Scheduling a resumption (1) after 300 seconds (1626340563) in case this run gets aborted
+0000.097 (0) Checking if we have a zip executable available
+0000.099 (0) Testing: /usr/bin/zip
+0000.116 (0) Output: zip warning: binziptest/test.zip not found or empty
+0000.118 (0) Output: adding: binziptest/subdir1/	(in=0) (out=0) (stored 0%)
+0000.119 (0) Output: adding: binziptest/subdir1/subdir2/	(in=0) (out=0) (stored 0%)
+0000.119 (0) Output: adding: binziptest/subdir1/subdir2/test.html	(in=131) (out=107) (deflated 18%)
+0000.120 (0) Output: total bytes=131, compressed=107 -> 18% savings
+0000.135 (0) Output: adding: binziptest/subdir1/subdir2/test2.html	(in=138) (out=113) (deflated 18%)
+0000.136 (0) Output: total bytes=269, compressed=220 -> 18% savings
+0000.147 (0) Working binary zip found: /usr/bin/zip
+0000.148 (0) Zip engine: found/will use a binary zip: /usr/bin/zip
+0000.149 (0) Creation of backups of directories: beginning
+0000.151 (0) PHP event: code E_WARNING: count(): Parameter must be an array or an object that implements Countable (line 1270, wp-content/plugins/updraftplus/backup.php)
+0000.152 (0) Beginning creation of dump of plugins (split every: 400 MB)
+0000.595 (0) Total entities for the zip file: 2483 directories, 13242 files (0 skipped as non-modified), 146.1 MB
+0000.599 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 100 files added (on-disk size: 0 KB)
+0000.601 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 200 files added (on-disk size: 0 KB)
+0000.604 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 300 files added (on-disk size: 0 KB)
+0000.606 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 400 files added (on-disk size: 0 KB)
+0000.608 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 500 files added (on-disk size: 0 KB)
+0000.608 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.6 MB, 13242 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0001.030 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 1.40 MB
+0001.035 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 600 files added (on-disk size: 1450.3 KB)
+0001.038 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 700 files added (on-disk size: 1450.3 KB)
+0001.040 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 800 files added (on-disk size: 1450.3 KB)
+0001.043 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 900 files added (on-disk size: 1450.3 KB)
+0001.046 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1000 files added (on-disk size: 1450.3 KB)
+0001.047 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.1 MB, 13242 files batched, 501 (1002) added so far); re-opening (prior size: 1450.3 KB)
+0001.370 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 2.10 MB
+0001.376 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1100 files added (on-disk size: 2186.1 KB)
+0001.378 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1200 files added (on-disk size: 2186.1 KB)
+0001.380 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1300 files added (on-disk size: 2186.1 KB)
+0001.383 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1400 files added (on-disk size: 2186.1 KB)
+0001.385 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1500 files added (on-disk size: 2186.1 KB)
+0001.385 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (10.3 MB, 13242 files batched, 501 (1503) added so far); re-opening (prior size: 2186.1 KB)
+0001.925 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 4.50 MB
+0001.931 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1600 files added (on-disk size: 4570.4 KB)
+0001.934 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1700 files added (on-disk size: 4570.4 KB)
+0001.936 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1800 files added (on-disk size: 4570.4 KB)
+0001.939 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 1900 files added (on-disk size: 4570.4 KB)
+0001.942 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2000 files added (on-disk size: 4570.4 KB)
+0001.943 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (7.9 MB, 13242 files batched, 501 (2004) added so far); re-opening (prior size: 4570.4 KB)
+0002.659 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 7.80 MB
+0002.665 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2100 files added (on-disk size: 8028.8 KB)
+0002.669 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2200 files added (on-disk size: 8028.8 KB)
+0002.672 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2300 files added (on-disk size: 8028.8 KB)
+0002.675 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2400 files added (on-disk size: 8028.8 KB)
+0002.678 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2500 files added (on-disk size: 8028.8 KB)
+0002.679 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.7 MB, 13242 files batched, 501 (2505) added so far); re-opening (prior size: 8028.8 KB)
+0003.073 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 9.70 MB
+0003.079 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2600 files added (on-disk size: 9898.8 KB)
+0003.082 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2700 files added (on-disk size: 9898.8 KB)
+0003.085 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2800 files added (on-disk size: 9898.8 KB)
+0003.088 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 2900 files added (on-disk size: 9898.8 KB)
+0003.091 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3000 files added (on-disk size: 9898.8 KB)
+0003.092 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1.9 MB, 13242 files batched, 501 (3006) added so far); re-opening (prior size: 9898.8 KB)
+0003.468 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3100 files added (on-disk size: 10640.7 KB)
+0003.472 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3200 files added (on-disk size: 10640.7 KB)
+0003.475 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3300 files added (on-disk size: 10640.7 KB)
+0003.478 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3400 files added (on-disk size: 10640.7 KB)
+0003.480 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3500 files added (on-disk size: 10640.7 KB)
+0003.481 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1.8 MB, 13242 files batched, 501 (3507) added so far); re-opening (prior size: 10640.7 KB)
+0003.879 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3600 files added (on-disk size: 11355.5 KB)
+0003.882 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3700 files added (on-disk size: 11355.5 KB)
+0003.886 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3800 files added (on-disk size: 11355.5 KB)
+0003.889 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 3900 files added (on-disk size: 11355.5 KB)
+0003.892 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4000 files added (on-disk size: 11355.5 KB)
+0003.896 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (18.4 MB, 13242 files batched, 501 (4008) added so far); re-opening (prior size: 11355.5 KB)
+0005.384 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: size is now: 18.80 MB
+0005.388 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4100 files added (on-disk size: 19200.9 KB)
+0005.390 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4200 files added (on-disk size: 19200.9 KB)
+0005.392 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4300 files added (on-disk size: 19200.9 KB)
+0005.394 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4400 files added (on-disk size: 19200.9 KB)
+0005.396 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4500 files added (on-disk size: 19200.9 KB)
+0005.397 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.8 MB, 13242 files batched, 501 (4509) added so far); re-opening (prior size: 19200.9 KB)
+0005.817 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4600 files added (on-disk size: 20199.1 KB)
+0005.820 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4700 files added (on-disk size: 20199.1 KB)
+0005.823 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4800 files added (on-disk size: 20199.1 KB)
+0005.825 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 4900 files added (on-disk size: 20199.1 KB)
+0005.827 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5000 files added (on-disk size: 20199.1 KB)
+0005.828 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (7.3 MB, 13242 files batched, 501 (5010) added so far); re-opening (prior size: 20199.1 KB)
+0006.492 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5100 files added (on-disk size: 22351.8 KB)
+0006.495 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5200 files added (on-disk size: 22351.8 KB)
+0006.498 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5300 files added (on-disk size: 22351.8 KB)
+0006.502 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5400 files added (on-disk size: 22351.8 KB)
+0006.505 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5500 files added (on-disk size: 22351.8 KB)
+0006.505 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (7.4 MB, 13242 files batched, 501 (5511) added so far); re-opening (prior size: 22351.8 KB)
+0006.951 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5600 files added (on-disk size: 24610.8 KB)
+0006.954 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5700 files added (on-disk size: 24610.8 KB)
+0006.957 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5800 files added (on-disk size: 24610.8 KB)
+0006.960 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 5900 files added (on-disk size: 24610.8 KB)
+0006.964 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6000 files added (on-disk size: 24610.8 KB)
+0006.965 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.4 MB, 13242 files batched, 501 (6012) added so far); re-opening (prior size: 24610.8 KB)
+0007.344 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6100 files added (on-disk size: 26064.3 KB)
+0007.348 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6200 files added (on-disk size: 26064.3 KB)
+0007.351 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6300 files added (on-disk size: 26064.3 KB)
+0007.354 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6400 files added (on-disk size: 26064.3 KB)
+0007.357 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6500 files added (on-disk size: 26064.3 KB)
+0007.358 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.3 MB, 13242 files batched, 501 (6513) added so far); re-opening (prior size: 26064.3 KB)
+0007.791 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6600 files added (on-disk size: 27843.1 KB)
+0007.794 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6700 files added (on-disk size: 27843.1 KB)
+0007.797 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6800 files added (on-disk size: 27843.1 KB)
+0007.800 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 6900 files added (on-disk size: 27843.1 KB)
+0007.803 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7000 files added (on-disk size: 27843.1 KB)
+0007.804 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1.6 MB, 13242 files batched, 501 (7014) added so far); re-opening (prior size: 27843.1 KB)
+0008.119 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7100 files added (on-disk size: 28701.6 KB)
+0008.123 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7200 files added (on-disk size: 28701.6 KB)
+0008.126 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7300 files added (on-disk size: 28701.6 KB)
+0008.129 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7400 files added (on-disk size: 28701.6 KB)
+0008.132 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7500 files added (on-disk size: 28701.6 KB)
+0008.134 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1 MB, 13242 files batched, 501 (7515) added so far); re-opening (prior size: 28701.6 KB)
+0008.370 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7600 files added (on-disk size: 29234.5 KB)
+0008.374 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7700 files added (on-disk size: 29234.5 KB)
+0008.376 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7800 files added (on-disk size: 29234.5 KB)
+0008.379 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 7900 files added (on-disk size: 29234.5 KB)
+0008.382 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8000 files added (on-disk size: 29234.5 KB)
+0008.383 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.5 MB, 13242 files batched, 501 (8016) added so far); re-opening (prior size: 29234.5 KB)
+0008.756 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8100 files added (on-disk size: 30845.8 KB)
+0008.759 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8200 files added (on-disk size: 30845.8 KB)
+0008.762 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8300 files added (on-disk size: 30845.8 KB)
+0008.765 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8400 files added (on-disk size: 30845.8 KB)
+0008.768 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8500 files added (on-disk size: 30845.8 KB)
+0008.769 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.8 MB, 13242 files batched, 501 (8517) added so far); re-opening (prior size: 30845.8 KB)
+0009.096 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8600 files added (on-disk size: 31812.1 KB)
+0009.100 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8700 files added (on-disk size: 31812.1 KB)
+0009.103 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8800 files added (on-disk size: 31812.1 KB)
+0009.106 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 8900 files added (on-disk size: 31812.1 KB)
+0009.109 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9000 files added (on-disk size: 31812.1 KB)
+0009.110 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.1 MB, 13242 files batched, 501 (9018) added so far); re-opening (prior size: 31812.1 KB)
+0009.472 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9100 files added (on-disk size: 33446.6 KB)
+0009.475 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9200 files added (on-disk size: 33446.6 KB)
+0009.479 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9300 files added (on-disk size: 33446.6 KB)
+0009.482 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9400 files added (on-disk size: 33446.6 KB)
+0009.485 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9500 files added (on-disk size: 33446.6 KB)
+0009.486 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (7.5 MB, 13242 files batched, 501 (9519) added so far); re-opening (prior size: 33446.6 KB)
+0010.002 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9600 files added (on-disk size: 35817.5 KB)
+0010.006 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9700 files added (on-disk size: 35817.5 KB)
+0010.009 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9800 files added (on-disk size: 35817.5 KB)
+0010.012 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 9900 files added (on-disk size: 35817.5 KB)
+0010.014 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10000 files added (on-disk size: 35817.5 KB)
+0010.015 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.9 MB, 13242 files batched, 501 (10020) added so far); re-opening (prior size: 35817.5 KB)
+0010.569 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10100 files added (on-disk size: 37692.8 KB)
+0010.572 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10200 files added (on-disk size: 37692.8 KB)
+0010.575 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10300 files added (on-disk size: 37692.8 KB)
+0010.578 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10400 files added (on-disk size: 37692.8 KB)
+0010.581 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10500 files added (on-disk size: 37692.8 KB)
+0010.582 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.1 MB, 13242 files batched, 501 (10521) added so far); re-opening (prior size: 37692.8 KB)
+0011.080 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10600 files added (on-disk size: 39232.3 KB)
+0011.083 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10700 files added (on-disk size: 39232.3 KB)
+0011.085 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10800 files added (on-disk size: 39232.3 KB)
+0011.087 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 10900 files added (on-disk size: 39232.3 KB)
+0011.089 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11000 files added (on-disk size: 39232.3 KB)
+0011.090 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (6.8 MB, 13242 files batched, 501 (11022) added so far); re-opening (prior size: 39232.3 KB)
+0011.663 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11100 files added (on-disk size: 41387 KB)
+0011.666 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11200 files added (on-disk size: 41387 KB)
+0011.670 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11300 files added (on-disk size: 41387 KB)
+0011.673 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11400 files added (on-disk size: 41387 KB)
+0011.676 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11500 files added (on-disk size: 41387 KB)
+0011.677 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (6 MB, 13242 files batched, 501 (11523) added so far); re-opening (prior size: 41387 KB)
+0012.382 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11600 files added (on-disk size: 44012.8 KB)
+0012.385 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11700 files added (on-disk size: 44012.8 KB)
+0012.388 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11800 files added (on-disk size: 44012.8 KB)
+0012.391 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 11900 files added (on-disk size: 44012.8 KB)
+0012.394 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12000 files added (on-disk size: 44012.8 KB)
+0012.395 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.4 MB, 13242 files batched, 501 (12024) added so far); re-opening (prior size: 44012.8 KB)
+0012.687 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12100 files added (on-disk size: 44747.8 KB)
+0012.690 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12200 files added (on-disk size: 44747.8 KB)
+0012.693 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12300 files added (on-disk size: 44747.8 KB)
+0012.695 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12400 files added (on-disk size: 44747.8 KB)
+0012.697 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12500 files added (on-disk size: 44747.8 KB)
+0012.699 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (12 MB, 13242 files batched, 501 (12525) added so far); re-opening (prior size: 44747.8 KB)
+0013.438 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12600 files added (on-disk size: 47743.5 KB)
+0013.442 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12700 files added (on-disk size: 47743.5 KB)
+0013.444 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12800 files added (on-disk size: 47743.5 KB)
+0013.446 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 12900 files added (on-disk size: 47743.5 KB)
+0013.449 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 13000 files added (on-disk size: 47743.5 KB)
+0013.450 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.2 MB, 13242 files batched, 501 (13026) added so far); re-opening (prior size: 47743.5 KB)
+0013.864 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 13100 files added (on-disk size: 48528.8 KB)
+0013.868 (0) Zip: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip.tmp: 13200 files added (on-disk size: 48528.8 KB)
+0014.943 (0) Created plugins zip (0) - 49127.1 KB in 14.7 s (3332.4 KB/s) (sha1: a296054a8edc2bc0acec3d5c069d63dc9564b199, sha256: 30be868e9465983af29d47d04f75fa044da5c759507ee75d64454f6a86ebb74b)
+0014.945 (0) No backup of themes: excluded by user's options
+0014.946 (0) No backup of uploads: excluded by user's options
+0014.946 (0) No backup of wpcore: excluded by user's options
+0014.947 (0) No backup of others: excluded by user's options
+0014.947 (0) No backup of more: excluded by user's options
+0014.950 (0) Saving backup status to database (elements: 2)
+0014.953 (0) Beginning creation of database dump (WordPress DB)
+0014.955 (0) Testing: /usr/bin/mysqldump
+0015.022 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+0015.026 (0) Binary mysqldump: error (code: 5)
+0015.027 (0) Testing: /bin/mysqldump
+0015.047 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+0015.051 (0) Binary mysqldump: error (code: 5)
+0015.065 (0) Table wp_options: Total expected rows (approximate): 6642
+0015.524 (0) Table wp_options: Total rows added: 6638 in 0.46 seconds
+0015.525 (0) Table wp_options: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_options.table.gz - 998.8 KB)
+0015.528 (0) Table wp_users: Total expected rows (approximate): 477
+0015.543 (0) Table wp_users: Total rows added: 477 in 0.01 seconds
+0015.544 (0) Table wp_users: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_users.table.gz - 30 KB)
+0015.547 (0) Table wp_usermeta: Total expected rows (approximate): 16552
+0015.752 (0) Table wp_usermeta: Total rows added: 16552 in 0.20 seconds
+0015.754 (0) Table wp_usermeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_usermeta.table.gz - 209.7 KB)
+0015.756 (0) Table wp_actionscheduler_actions: Total expected rows (approximate): 10313
+0016.385 (0) Table wp_actionscheduler_actions: Total rows added: 10313 in 0.63 seconds
+0016.386 (0) Table wp_actionscheduler_actions: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_actions.table.gz - 380.5 KB)
+0016.389 (0) Table wp_actionscheduler_claims: Total expected rows (approximate): 9
+0016.391 (0) Table wp_actionscheduler_claims: Total rows added: 9 in 0.00 seconds
+0016.391 (0) Table wp_actionscheduler_claims: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_claims.table.gz - 0.5 KB)
+0016.394 (0) Table wp_actionscheduler_groups: Total expected rows (approximate): 8
+0016.396 (0) Table wp_actionscheduler_groups: Total rows added: 8 in 0.00 seconds
+0016.397 (0) Table wp_actionscheduler_groups: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_groups.table.gz - 0.5 KB)
+0016.399 (0) Table wp_actionscheduler_logs: Total expected rows (approximate): 30923
+0017.039 (0) Table wp_actionscheduler_logs: Total rows added: 30923 in 0.64 seconds
+0017.040 (0) Table wp_actionscheduler_logs: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_logs.table.gz - 431.1 KB)
+0017.043 (0) Table wp_commentmeta: Total expected rows (approximate): 2735
+0017.065 (0) Table wp_commentmeta: Total rows added: 2735 in 0.02 seconds
+0017.066 (0) Table wp_commentmeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_commentmeta.table.gz - 18.8 KB)
+0017.069 (0) Table wp_comments: Total expected rows (approximate): 16506
+0017.503 (0) Table wp_comments: Total rows added: 16506 in 0.43 seconds
+0017.505 (0) Table wp_comments: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_comments.table.gz - 332.5 KB)
+0017.508 (0) Table wp_imagify_files: Total expected rows (approximate): 0
+0017.509 (0) Table wp_imagify_files: Total rows added: 0 in 0.00 seconds
+0017.510 (0) Table wp_imagify_files: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_imagify_files.table.gz - 0.5 KB)
+0017.512 (0) Table wp_imagify_folders: Total expected rows (approximate): 0
+0017.514 (0) Table wp_imagify_folders: Total rows added: 0 in 0.00 seconds
+0017.514 (0) Table wp_imagify_folders: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_imagify_folders.table.gz - 0.4 KB)
+0017.517 (0) Table wp_links: Total expected rows (approximate): 0
+0017.518 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0017.519 (0) Table wp_links: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_links.table.gz - 0.4 KB)
+0017.521 (0) Table wp_postmeta: Total expected rows (approximate): 320033
+0017.523 (0) [Warning] Table wp_postmeta has very many rows (320033) - we hope your web hosting company gives you enough resources to dump out that table in the backup If not, you will need to either remove data from this table, or contact your hosting company to request more resources.
+0032.391 (0) Table wp_postmeta: Total rows added: 320033 in 14.87 seconds
+0032.394 (0) Table wp_postmeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_postmeta.table.gz - 4383.2 KB)
+0032.396 (0) Table wp_posts: Total expected rows (approximate): 9286
+0032.871 (0) Table wp_posts: Total rows added: 9286 in 0.47 seconds
+0032.872 (0) Table wp_posts: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_posts.table.gz - 1070 KB)
+0032.875 (0) Table wp_term_relationships: Total expected rows (approximate): 9765
+0032.908 (0) Table wp_term_relationships: Total rows added: 9765 in 0.03 seconds
+0032.909 (0) Table wp_term_relationships: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_term_relationships.table.gz - 31.1 KB)
+0032.912 (0) Table wp_term_taxonomy: Total expected rows (approximate): 2011
+0032.927 (0) Table wp_term_taxonomy: Total rows added: 2011 in 0.01 seconds
+0032.928 (0) Table wp_term_taxonomy: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_term_taxonomy.table.gz - 16.2 KB)
+0032.931 (0) Table wp_termmeta: Total expected rows (approximate): 1975
+0032.942 (0) Table wp_termmeta: Total rows added: 1975 in 0.01 seconds
+0032.943 (0) Table wp_termmeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_termmeta.table.gz - 13.3 KB)
+0032.946 (0) Table wp_terms: Total expected rows (approximate): 2011
+0032.963 (0) Table wp_terms: Total rows added: 2011 in 0.02 seconds
+0032.964 (0) Table wp_terms: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_terms.table.gz - 24.6 KB)
+0032.966 (0) Table wp_wc_category_lookup: Total expected rows (approximate): 163
+0032.968 (0) Table wp_wc_category_lookup: Total rows added: 163 in 0.00 seconds
+0032.968 (0) Table wp_wc_category_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_category_lookup.table.gz - 0.9 KB)
+0032.970 (0) Table wp_wc_product_meta_lookup: Total expected rows (approximate): 982
+0032.980 (0) Table wp_wc_product_meta_lookup: Total rows added: 982 in 0.01 seconds
+0032.981 (0) Table wp_wc_product_meta_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_product_meta_lookup.table.gz - 8.5 KB)
+0032.983 (0) Table wp_wc_reserved_stock: Total expected rows (approximate): 12
+0032.985 (0) Table wp_wc_reserved_stock: Total rows added: 12 in 0.00 seconds
+0032.985 (0) Table wp_wc_reserved_stock: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_reserved_stock.table.gz - 0.6 KB)
+0032.988 (0) Table wp_wc_tax_rate_classes: Total expected rows (approximate): 2
+0032.989 (0) Table wp_wc_tax_rate_classes: Total rows added: 2 in 0.00 seconds
+0032.989 (0) Table wp_wc_tax_rate_classes: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_tax_rate_classes.table.gz - 0.4 KB)
+0032.991 (0) Table wp_woocommerce_order_itemmeta: Total expected rows (approximate): 148334
+0036.433 (0) Table wp_woocommerce_order_itemmeta: Total rows added: 148334 in 3.44 seconds
+0036.434 (0) Table wp_woocommerce_order_itemmeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_order_itemmeta.table.gz - 1273.6 KB)
+0036.438 (0) Table wp_woocommerce_payment_tokenmeta: Total expected rows (approximate): 212
+0036.441 (0) Table wp_woocommerce_payment_tokenmeta: Total rows added: 212 in 0.00 seconds
+0036.442 (0) Table wp_woocommerce_payment_tokenmeta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_payment_tokenmeta.table.gz - 1.8 KB)
+0036.445 (0) Table wp_grp_google_place: Total expected rows (approximate): 0
+0036.447 (0) Table wp_grp_google_place: Total rows added: 0 in 0.00 seconds
+0036.448 (0) Table wp_grp_google_place: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_grp_google_place.table.gz - 0.4 KB)
+0036.451 (0) Table wp_grp_google_review: Total expected rows (approximate): 0
+0036.452 (0) Table wp_grp_google_review: Total rows added: 0 in 0.00 seconds
+0036.453 (0) Table wp_grp_google_review: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_grp_google_review.table.gz - 0.4 KB)
+0036.456 (0) Table wp_mailchimp_carts: Total expected rows (approximate): 327
+0036.471 (0) Table wp_mailchimp_carts: Total rows added: 327 in 0.01 seconds
+0036.472 (0) Table wp_mailchimp_carts: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_mailchimp_carts.table.gz - 35 KB)
+0036.475 (0) Table wp_mailchimp_jobs: Total expected rows (approximate): 24
+0036.477 (0) Table wp_mailchimp_jobs: Total rows added: 24 in 0.00 seconds
+0036.477 (0) Table wp_mailchimp_jobs: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_mailchimp_jobs.table.gz - 1.5 KB)
+0036.480 (0) Table wp_newsletter: Total expected rows (approximate): 0
+0036.482 (0) Table wp_newsletter: Total rows added: 0 in 0.00 seconds
+0036.483 (0) Table wp_newsletter: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter.table.gz - 0.8 KB)
+0036.485 (0) Table wp_newsletter_emails: Total expected rows (approximate): 0
+0036.486 (0) Table wp_newsletter_emails: Total rows added: 0 in 0.00 seconds
+0036.487 (0) Table wp_newsletter_emails: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_emails.table.gz - 0.6 KB)
+0036.489 (0) Table wp_newsletter_sent: Total expected rows (approximate): 0
+0036.490 (0) Table wp_newsletter_sent: Total rows added: 0 in 0.00 seconds
+0036.491 (0) Table wp_newsletter_sent: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_sent.table.gz - 0.4 KB)
+0036.493 (0) Table wp_newsletter_stats: Total expected rows (approximate): 0
+0036.494 (0) Table wp_newsletter_stats: Total rows added: 0 in 0.00 seconds
+0036.495 (0) Table wp_newsletter_stats: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_stats.table.gz - 0.4 KB)
+0036.497 (0) Table wp_newsletter_user_logs: Total expected rows (approximate): 0
+0036.498 (0) Table wp_newsletter_user_logs: Total rows added: 0 in 0.00 seconds
+0036.499 (0) Table wp_newsletter_user_logs: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_user_logs.table.gz - 0.3 KB)
+0036.501 (0) Table wp_revslider_css: Total expected rows (approximate): 109
+0036.506 (0) Table wp_revslider_css: Total rows added: 109 in 0.00 seconds
+0036.507 (0) Table wp_revslider_css: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_css.table.gz - 4.9 KB)
+0036.510 (0) Table wp_revslider_layer_animations: Total expected rows (approximate): 0
+0036.511 (0) Table wp_revslider_layer_animations: Total rows added: 0 in 0.00 seconds
+0036.512 (0) Table wp_revslider_layer_animations: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_layer_animations.table.gz - 0.3 KB)
+0036.515 (0) Table wp_revslider_navigations: Total expected rows (approximate): 0
+0036.516 (0) Table wp_revslider_navigations: Total rows added: 0 in 0.00 seconds
+0036.517 (0) Table wp_revslider_navigations: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_navigations.table.gz - 0.3 KB)
+0036.520 (0) Table wp_revslider_sliders: Total expected rows (approximate): 1
+0036.522 (0) Table wp_revslider_sliders: Total rows added: 1 in 0.00 seconds
+0036.523 (0) Table wp_revslider_sliders: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_sliders.table.gz - 3.1 KB)
+0036.525 (0) Table wp_revslider_slides: Total expected rows (approximate): 4
+0036.528 (0) Table wp_revslider_slides: Total rows added: 4 in 0.00 seconds
+0036.529 (0) Table wp_revslider_slides: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_slides.table.gz - 2.1 KB)
+0036.532 (0) Table wp_revslider_static_slides: Total expected rows (approximate): 1
+0036.534 (0) Table wp_revslider_static_slides: Total rows added: 1 in 0.00 seconds
+0036.534 (0) Table wp_revslider_static_slides: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_static_slides.table.gz - 0.4 KB)
+0036.538 (0) Table wp_sbi_instagram_feed_locator: Total expected rows (approximate): 0
+0036.540 (0) Table wp_sbi_instagram_feed_locator: Total rows added: 1 in 0.00 seconds
+0036.541 (0) Table wp_sbi_instagram_feed_locator: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_feed_locator.table.gz - 0.5 KB)
+0036.544 (0) Table wp_sbi_instagram_feeds_posts: Total expected rows (approximate): 351
+0036.548 (0) Table wp_sbi_instagram_feeds_posts: Total rows added: 351 in 0.00 seconds
+0036.549 (0) Table wp_sbi_instagram_feeds_posts: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_feeds_posts.table.gz - 5.6 KB)
+0036.552 (0) Table wp_sbi_instagram_posts: Total expected rows (approximate): 351
+0036.579 (0) Table wp_sbi_instagram_posts: Total rows added: 351 in 0.03 seconds
+0036.581 (0) Table wp_sbi_instagram_posts: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_posts.table.gz - 111 KB)
+0036.584 (0) Table wp_smush_dir_images: Total expected rows (approximate): 0
+0036.585 (0) Table wp_smush_dir_images: Total rows added: 0 in 0.00 seconds
+0036.586 (0) Table wp_smush_dir_images: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_smush_dir_images.table.gz - 0.4 KB)
+0036.589 (0) Table wp_wc_admin_note_actions: Total expected rows (approximate): 52
+0036.592 (0) Table wp_wc_admin_note_actions: Total rows added: 52 in 0.00 seconds
+0036.592 (0) Table wp_wc_admin_note_actions: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_admin_note_actions.table.gz - 2.2 KB)
+0036.595 (0) Table wp_wc_admin_notes: Total expected rows (approximate): 51
+0036.598 (0) Table wp_wc_admin_notes: Total rows added: 51 in 0.00 seconds
+0036.599 (0) Table wp_wc_admin_notes: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_admin_notes.table.gz - 6.6 KB)
+0036.602 (0) Table wp_wc_customer_lookup: Total expected rows (approximate): 3751
+0036.688 (0) Table wp_wc_customer_lookup: Total rows added: 3751 in 0.09 seconds
+0036.691 (0) Table wp_wc_customer_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_customer_lookup.table.gz - 157.2 KB)
+0036.694 (0) Table wp_wc_download_log: Total expected rows (approximate): 0
+0036.696 (0) Table wp_wc_download_log: Total rows added: 0 in 0.00 seconds
+0036.697 (0) Table wp_wc_download_log: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_download_log.table.gz - 0.4 KB)
+0036.700 (0) Table wp_wc_order_coupon_lookup: Total expected rows (approximate): 2615
+0036.726 (0) Table wp_wc_order_coupon_lookup: Total rows added: 2615 in 0.03 seconds
+0036.728 (0) Table wp_wc_order_coupon_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_coupon_lookup.table.gz - 27.6 KB)
+0036.731 (0) Table wp_wc_order_product_lookup: Total expected rows (approximate): 11028
+0036.954 (0) Table wp_wc_order_product_lookup: Total rows added: 11028 in 0.22 seconds
+0036.955 (0) Table wp_wc_order_product_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_product_lookup.table.gz - 177.7 KB)
+0036.973 (0) Table wp_wc_order_stats: Total expected rows (approximate): 4220
+0037.070 (0) Table wp_wc_order_stats: Total rows added: 4220 in 0.10 seconds
+0037.071 (0) Table wp_wc_order_stats: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_stats.table.gz - 82.4 KB)
+0037.075 (0) Table wp_wc_order_tax_lookup: Total expected rows (approximate): 0
+0037.076 (0) Table wp_wc_order_tax_lookup: Total rows added: 0 in 0.00 seconds
+0037.077 (0) Table wp_wc_order_tax_lookup: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_tax_lookup.table.gz - 0.4 KB)
+0037.080 (0) Table wp_wc_webhooks: Total expected rows (approximate): 0
+0037.082 (0) Table wp_wc_webhooks: Total rows added: 0 in 0.00 seconds
+0037.082 (0) Table wp_wc_webhooks: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_webhooks.table.gz - 0.5 KB)
+0037.085 (0) Table wp_wcpdf_invoice_number: Total expected rows (approximate): 27
+0037.087 (0) Table wp_wcpdf_invoice_number: Total rows added: 27 in 0.00 seconds
+0037.088 (0) Table wp_wcpdf_invoice_number: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wcpdf_invoice_number.table.gz - 0.7 KB)
+0037.091 (0) Table wp_wdi_feeds: Total expected rows (approximate): 0
+0037.093 (0) Table wp_wdi_feeds: Total rows added: 0 in 0.00 seconds
+0037.094 (0) Table wp_wdi_feeds: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wdi_feeds.table.gz - 0.9 KB)
+0037.097 (0) Table wp_wdi_themes: Total expected rows (approximate): 2
+0037.105 (0) Table wp_wdi_themes: Total rows added: 2 in 0.01 seconds
+0037.106 (0) Table wp_wdi_themes: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wdi_themes.table.gz - 2.3 KB)
+0037.109 (0) Table wp_woocommerce_api_keys: Total expected rows (approximate): 2
+0037.111 (0) Table wp_woocommerce_api_keys: Total rows added: 2 in 0.00 seconds
+0037.111 (0) Table wp_woocommerce_api_keys: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_api_keys.table.gz - 0.8 KB)
+0037.114 (0) Table wp_woocommerce_attribute_taxonomies: Total expected rows (approximate): 15
+0037.116 (0) Table wp_woocommerce_attribute_taxonomies: Total rows added: 15 in 0.00 seconds
+0037.117 (0) Table wp_woocommerce_attribute_taxonomies: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_attribute_taxonomies.table.gz - 0.7 KB)
+0037.120 (0) Table wp_woocommerce_downloadable_product_permissions: Total expected rows (approximate): 0
+0037.122 (0) Table wp_woocommerce_downloadable_product_permissions: Total rows added: 0 in 0.00 seconds
+0037.122 (0) Table wp_woocommerce_downloadable_product_permissions: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_downloadable_product_permissions.table.gz - 0.5 KB)
+0037.125 (0) Table wp_woocommerce_exported_csv_items: Total expected rows (approximate): 255
+0037.143 (0) Table wp_woocommerce_exported_csv_items: Total rows added: 255 in 0.02 seconds
+0037.145 (0) Table wp_woocommerce_exported_csv_items: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_exported_csv_items.table.gz - 45.3 KB)
+0037.148 (0) Table wp_woocommerce_log: Total expected rows (approximate): 0
+0037.150 (0) Table wp_woocommerce_log: Total rows added: 0 in 0.00 seconds
+0037.150 (0) Table wp_woocommerce_log: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_log.table.gz - 0.4 KB)
+0037.153 (0) Table wp_woocommerce_order_items: Total expected rows (approximate): 17713
+0037.331 (0) Table wp_woocommerce_order_items: Total rows added: 17713 in 0.18 seconds
+0037.333 (0) Table wp_woocommerce_order_items: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_order_items.table.gz - 136.9 KB)
+0037.336 (0) Table wp_woocommerce_payment_tokens: Total expected rows (approximate): 53
+0037.338 (0) Table wp_woocommerce_payment_tokens: Total rows added: 53 in 0.00 seconds
+0037.339 (0) Table wp_woocommerce_payment_tokens: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_payment_tokens.table.gz - 1.4 KB)
+0037.341 (0) Table wp_woocommerce_sessions: Total expected rows (approximate): 2672
+0037.517 (0) Table wp_woocommerce_sessions: Total rows added: 2672 in 0.18 seconds
+0037.518 (0) Table wp_woocommerce_sessions: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_sessions.table.gz - 226.7 KB)
+0037.521 (0) Table wp_woocommerce_shipping_zone_locations: Total expected rows (approximate): 4
+0037.523 (0) Table wp_woocommerce_shipping_zone_locations: Total rows added: 4 in 0.00 seconds
+0037.523 (0) Table wp_woocommerce_shipping_zone_locations: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zone_locations.table.gz - 0.4 KB)
+0037.526 (0) Table wp_woocommerce_shipping_zone_methods: Total expected rows (approximate): 8
+0037.528 (0) Table wp_woocommerce_shipping_zone_methods: Total rows added: 8 in 0.00 seconds
+0037.528 (0) Table wp_woocommerce_shipping_zone_methods: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zone_methods.table.gz - 0.5 KB)
+0037.531 (0) Table wp_woocommerce_shipping_zones: Total expected rows (approximate): 4
+0037.532 (0) Table wp_woocommerce_shipping_zones: Total rows added: 4 in 0.00 seconds
+0037.533 (0) Table wp_woocommerce_shipping_zones: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zones.table.gz - 0.4 KB)
+0037.536 (0) Table wp_woocommerce_tax_rate_locations: Total expected rows (approximate): 0
+0037.537 (0) Table wp_woocommerce_tax_rate_locations: Total rows added: 0 in 0.00 seconds
+0037.538 (0) Table wp_woocommerce_tax_rate_locations: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_tax_rate_locations.table.gz - 0.4 KB)
+0037.541 (0) Table wp_woocommerce_tax_rates: Total expected rows (approximate): 0
+0037.542 (0) Table wp_woocommerce_tax_rates: Total rows added: 0 in 0.00 seconds
+0037.543 (0) Table wp_woocommerce_tax_rates: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_tax_rates.table.gz - 0.4 KB)
+0037.546 (0) Table wp_wooraffle_tickets_customer_to_tickets: Total expected rows (approximate): 106
+0037.548 (0) Table wp_wooraffle_tickets_customer_to_tickets: Total rows added: 106 in 0.00 seconds
+0037.549 (0) Table wp_wooraffle_tickets_customer_to_tickets: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wooraffle_tickets_customer_to_tickets.table.gz - 0.6 KB)
+0037.552 (0) Table wp_wpmailsmtp_tasks_meta: Total expected rows (approximate): 201
+0037.556 (0) Table wp_wpmailsmtp_tasks_meta: Total rows added: 201 in 0.00 seconds
+0037.556 (0) Table wp_wpmailsmtp_tasks_meta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wpmailsmtp_tasks_meta.table.gz - 2.4 KB)
+0037.559 (0) Table wp_yith_wcwl: Total expected rows (approximate): 5086
+0037.619 (0) Table wp_yith_wcwl: Total rows added: 5086 in 0.06 seconds
+0037.621 (0) Table wp_yith_wcwl: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yith_wcwl.table.gz - 54.8 KB)
+0037.624 (0) Table wp_yith_wcwl_lists: Total expected rows (approximate): 5051
+0037.711 (0) Table wp_yith_wcwl_lists: Total rows added: 5051 in 0.09 seconds
+0037.713 (0) Table wp_yith_wcwl_lists: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yith_wcwl_lists.table.gz - 214.5 KB)
+0037.717 (0) Table wp_yoast_indexable: Total expected rows (approximate): 8094
+0038.101 (0) Table wp_yoast_indexable: Total rows added: 8094 in 0.38 seconds
+0038.103 (0) Table wp_yoast_indexable: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_indexable.table.gz - 575.4 KB)
+0038.106 (0) Table wp_yoast_indexable_hierarchy: Total expected rows (approximate): 2785
+0038.119 (0) Table wp_yoast_indexable_hierarchy: Total rows added: 2785 in 0.01 seconds
+0038.120 (0) Table wp_yoast_indexable_hierarchy: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_indexable_hierarchy.table.gz - 8.9 KB)
+0038.123 (0) Table wp_yoast_migrations: Total expected rows (approximate): 22
+0038.125 (0) Table wp_yoast_migrations: Total rows added: 22 in 0.00 seconds
+0038.126 (0) Table wp_yoast_migrations: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_migrations.table.gz - 0.6 KB)
+0038.128 (0) Table wp_yoast_primary_term: Total expected rows (approximate): 876
+0038.143 (0) Table wp_yoast_primary_term: Total rows added: 876 in 0.01 seconds
+0038.144 (0) Table wp_yoast_primary_term: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_primary_term.table.gz - 12.4 KB)
+0038.147 (0) Table wp_yoast_prominent_words: Total expected rows (approximate): 2682
+0038.170 (0) Table wp_yoast_prominent_words: Total rows added: 2682 in 0.02 seconds
+0038.172 (0) Table wp_yoast_prominent_words: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_prominent_words.table.gz - 18.8 KB)
+0038.175 (0) Table wp_yoast_seo_links: Total expected rows (approximate): 549
+0038.182 (0) Table wp_yoast_seo_links: Total rows added: 549 in 0.01 seconds
+0038.183 (0) Table wp_yoast_seo_links: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_seo_links.table.gz - 11.6 KB)
+0038.186 (0) Table wp_yoast_seo_meta: Total expected rows (approximate): 14785
+0038.227 (0) Table wp_yoast_seo_meta: Total rows added: 14785 in 0.04 seconds
+0038.228 (0) Table wp_yoast_seo_meta: finishing file (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_seo_meta.table.gz - 37.7 KB)
+0038.240 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_options.table.gz (1/79): adding to final database dump
+0038.473 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_users.table.gz (2/79): adding to final database dump
+0038.481 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_usermeta.table.gz (3/79): adding to final database dump
+0038.557 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_actions.table.gz (4/79): adding to final database dump
+0038.697 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_claims.table.gz (5/79): adding to final database dump
+0038.698 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_groups.table.gz (6/79): adding to final database dump
+0038.699 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_actionscheduler_logs.table.gz (7/79): adding to final database dump
+0038.859 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_commentmeta.table.gz (8/79): adding to final database dump
+0038.865 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_comments.table.gz (9/79): adding to final database dump
+0038.966 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_imagify_files.table.gz (10/79): adding to final database dump
+0038.968 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_imagify_folders.table.gz (11/79): adding to final database dump
+0038.969 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_links.table.gz (12/79): adding to final database dump
+0038.969 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_postmeta.table.gz (13/79): adding to final database dump
+0040.393 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_posts.table.gz (14/79): adding to final database dump
+0040.664 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_term_relationships.table.gz (15/79): adding to final database dump
+0040.682 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_term_taxonomy.table.gz (16/79): adding to final database dump
+0040.689 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_termmeta.table.gz (17/79): adding to final database dump
+0040.697 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_terms.table.gz (18/79): adding to final database dump
+0040.707 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_category_lookup.table.gz (19/79): adding to final database dump
+0040.708 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_product_meta_lookup.table.gz (20/79): adding to final database dump
+0040.712 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_reserved_stock.table.gz (21/79): adding to final database dump
+0040.713 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_tax_rate_classes.table.gz (22/79): adding to final database dump
+0040.714 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_order_itemmeta.table.gz (23/79): adding to final database dump
+0041.215 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_payment_tokenmeta.table.gz (24/79): adding to final database dump
+0041.216 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_grp_google_place.table.gz (25/79): adding to final database dump
+0041.217 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_grp_google_review.table.gz (26/79): adding to final database dump
+0041.218 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_mailchimp_carts.table.gz (27/79): adding to final database dump
+0041.225 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_mailchimp_jobs.table.gz (28/79): adding to final database dump
+0041.226 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter.table.gz (29/79): adding to final database dump
+0041.227 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_emails.table.gz (30/79): adding to final database dump
+0041.227 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_sent.table.gz (31/79): adding to final database dump
+0041.228 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_stats.table.gz (32/79): adding to final database dump
+0041.228 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_newsletter_user_logs.table.gz (33/79): adding to final database dump
+0041.229 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_css.table.gz (34/79): adding to final database dump
+0041.231 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_layer_animations.table.gz (35/79): adding to final database dump
+0041.231 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_navigations.table.gz (36/79): adding to final database dump
+0041.232 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_sliders.table.gz (37/79): adding to final database dump
+0041.233 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_slides.table.gz (38/79): adding to final database dump
+0041.234 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_revslider_static_slides.table.gz (39/79): adding to final database dump
+0041.234 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_feed_locator.table.gz (40/79): adding to final database dump
+0041.235 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_feeds_posts.table.gz (41/79): adding to final database dump
+0041.236 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_sbi_instagram_posts.table.gz (42/79): adding to final database dump
+0041.254 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_smush_dir_images.table.gz (43/79): adding to final database dump
+0041.254 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_admin_note_actions.table.gz (44/79): adding to final database dump
+0041.255 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_admin_notes.table.gz (45/79): adding to final database dump
+0041.257 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_customer_lookup.table.gz (46/79): adding to final database dump
+0041.289 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_download_log.table.gz (47/79): adding to final database dump
+0041.290 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_coupon_lookup.table.gz (48/79): adding to final database dump
+0041.298 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_product_lookup.table.gz (49/79): adding to final database dump
+0041.376 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_stats.table.gz (50/79): adding to final database dump
+0041.409 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_order_tax_lookup.table.gz (51/79): adding to final database dump
+0041.410 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wc_webhooks.table.gz (52/79): adding to final database dump
+0041.410 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wcpdf_invoice_number.table.gz (53/79): adding to final database dump
+0041.411 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wdi_feeds.table.gz (54/79): adding to final database dump
+0041.412 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wdi_themes.table.gz (55/79): adding to final database dump
+0041.413 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_api_keys.table.gz (56/79): adding to final database dump
+0041.414 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_attribute_taxonomies.table.gz (57/79): adding to final database dump
+0041.414 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_downloadable_product_permissions.table.gz (58/79): adding to final database dump
+0041.415 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_exported_csv_items.table.gz (59/79): adding to final database dump
+0041.427 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_log.table.gz (60/79): adding to final database dump
+0041.428 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_order_items.table.gz (61/79): adding to final database dump
+0041.470 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_payment_tokens.table.gz (62/79): adding to final database dump
+0041.472 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_sessions.table.gz (63/79): adding to final database dump
+0041.540 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zone_locations.table.gz (64/79): adding to final database dump
+0041.541 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zone_methods.table.gz (65/79): adding to final database dump
+0041.542 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_shipping_zones.table.gz (66/79): adding to final database dump
+0041.542 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_tax_rate_locations.table.gz (67/79): adding to final database dump
+0041.543 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_woocommerce_tax_rates.table.gz (68/79): adding to final database dump
+0041.544 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wooraffle_tickets_customer_to_tickets.table.gz (69/79): adding to final database dump
+0041.544 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_wpmailsmtp_tasks_meta.table.gz (70/79): adding to final database dump
+0041.545 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yith_wcwl.table.gz (71/79): adding to final database dump
+0041.560 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yith_wcwl_lists.table.gz (72/79): adding to final database dump
+0041.595 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_indexable.table.gz (73/79): adding to final database dump
+0041.748 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_indexable_hierarchy.table.gz (74/79): adding to final database dump
+0041.753 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_migrations.table.gz (75/79): adding to final database dump
+0041.754 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_primary_term.table.gz (76/79): adding to final database dump
+0041.760 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_prominent_words.table.gz (77/79): adding to final database dump
+0041.768 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_seo_links.table.gz (78/79): adding to final database dump
+0041.773 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db-table-wp_yoast_seo_meta.table.gz (79/79): adding to final database dump
+0041.789 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz: finished writing out complete database file (11184 KB)
+0042.030 (0) Total database tables backed up: 79 (backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz, size: 11469408, sha256)
+0042.037 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip: plugins: This file has not yet been successfully uploaded: will queue
+0042.038 (0) backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz: db: This file has not yet been successfully uploaded: will queue
+0042.038 (0) Saving backup history. Total backup size: 58.9 MB
+0042.041 (0) Requesting upload of the files that have not yet been successfully uploaded (2)
+0042.043 (0) Cloud backup selection (1/1): ftp (last)
+0042.044 (0) Beginning dispatch of backup to remote (ftp)
+0042.133 (0) FTP upload attempt: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip -> ftp://pethamperco@45.8.225.13//public_html/wp-content/backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip
+0042.151 (0) Ftp chunked upload: 1.1 % uploaded
+0042.168 (0) Ftp chunked upload: 2.1 % uploaded
+0042.184 (0) Ftp chunked upload: 3.2 % uploaded
+0042.201 (0) Ftp chunked upload: 4.2 % uploaded
+0042.220 (0) Ftp chunked upload: 5.3 % uploaded
+0042.236 (0) Ftp chunked upload: 6.3 % uploaded
+0042.253 (0) Ftp chunked upload: 7.4 % uploaded
+0042.271 (0) Ftp chunked upload: 8.4 % uploaded
+0042.287 (0) Ftp chunked upload: 9.5 % uploaded
+0042.304 (0) Ftp chunked upload: 10.5 % uploaded
+0042.323 (0) Ftp chunked upload: 11.6 % uploaded
+0042.338 (0) Ftp chunked upload: 12.6 % uploaded
+0042.349 (0) Ftp chunked upload: 13.7 % uploaded
+0042.359 (0) Ftp chunked upload: 14.7 % uploaded
+0042.371 (0) Ftp chunked upload: 15.8 % uploaded
+0042.384 (0) Ftp chunked upload: 16.8 % uploaded
+0042.393 (0) Ftp chunked upload: 17.9 % uploaded
+0042.403 (0) Ftp chunked upload: 18.9 % uploaded
+0042.420 (0) Ftp chunked upload: 20 % uploaded
+0042.436 (0) Ftp chunked upload: 21 % uploaded
+0042.457 (0) Ftp chunked upload: 22.1 % uploaded
+0042.474 (0) Ftp chunked upload: 23.1 % uploaded
+0042.490 (0) Ftp chunked upload: 24.2 % uploaded
+0042.507 (0) Ftp chunked upload: 25.2 % uploaded
+0042.524 (0) Ftp chunked upload: 26.3 % uploaded
+0042.541 (0) Ftp chunked upload: 27.3 % uploaded
+0042.557 (0) Ftp chunked upload: 28.4 % uploaded
+0042.569 (0) Ftp chunked upload: 29.4 % uploaded
+0042.584 (0) Ftp chunked upload: 30.5 % uploaded
+0042.596 (0) Ftp chunked upload: 31.5 % uploaded
+0042.612 (0) Ftp chunked upload: 32.6 % uploaded
+0042.623 (0) Ftp chunked upload: 33.6 % uploaded
+0042.633 (0) Ftp chunked upload: 34.7 % uploaded
+0042.642 (0) Ftp chunked upload: 35.7 % uploaded
+0042.652 (0) Ftp chunked upload: 36.8 % uploaded
+0042.663 (0) Ftp chunked upload: 37.8 % uploaded
+0042.675 (0) Ftp chunked upload: 38.9 % uploaded
+0042.689 (0) Ftp chunked upload: 39.9 % uploaded
+0042.701 (0) Ftp chunked upload: 41 % uploaded
+0042.711 (0) Ftp chunked upload: 42 % uploaded
+0042.723 (0) Ftp chunked upload: 43.1 % uploaded
+0042.734 (0) Ftp chunked upload: 44.1 % uploaded
+0042.744 (0) Ftp chunked upload: 45.2 % uploaded
+0042.756 (0) Ftp chunked upload: 46.2 % uploaded
+0042.767 (0) Ftp chunked upload: 47.3 % uploaded
+0042.777 (0) Ftp chunked upload: 48.3 % uploaded
+0042.787 (0) Ftp chunked upload: 49.4 % uploaded
+0042.797 (0) Ftp chunked upload: 50.4 % uploaded
+0042.808 (0) Ftp chunked upload: 51.5 % uploaded
+0042.818 (0) Ftp chunked upload: 52.5 % uploaded
+0042.828 (0) Ftp chunked upload: 53.6 % uploaded
+0042.838 (0) Ftp chunked upload: 54.6 % uploaded
+0042.848 (0) Ftp chunked upload: 55.7 % uploaded
+0042.858 (0) Ftp chunked upload: 56.7 % uploaded
+0042.868 (0) Ftp chunked upload: 57.8 % uploaded
+0042.878 (0) Ftp chunked upload: 58.8 % uploaded
+0042.887 (0) Ftp chunked upload: 59.9 % uploaded
+0042.900 (0) Ftp chunked upload: 60.9 % uploaded
+0042.914 (0) Ftp chunked upload: 62 % uploaded
+0042.927 (0) Ftp chunked upload: 63 % uploaded
+0042.936 (0) Ftp chunked upload: 64.1 % uploaded
+0042.945 (0) Ftp chunked upload: 65.1 % uploaded
+0042.955 (0) Ftp chunked upload: 66.2 % uploaded
+0042.964 (0) Ftp chunked upload: 67.2 % uploaded
+0042.975 (0) Ftp chunked upload: 68.3 % uploaded
+0042.995 (0) Ftp chunked upload: 69.3 % uploaded
+0043.012 (0) Ftp chunked upload: 70.4 % uploaded
+0043.028 (0) Ftp chunked upload: 71.4 % uploaded
+0043.045 (0) Ftp chunked upload: 72.5 % uploaded
+0043.061 (0) Ftp chunked upload: 73.5 % uploaded
+0043.074 (0) Ftp chunked upload: 74.6 % uploaded
+0043.084 (0) Ftp chunked upload: 75.6 % uploaded
+0043.093 (0) Ftp chunked upload: 76.7 % uploaded
+0043.103 (0) Ftp chunked upload: 77.7 % uploaded
+0043.112 (0) Ftp chunked upload: 78.8 % uploaded
+0043.121 (0) Ftp chunked upload: 79.8 % uploaded
+0043.131 (0) Ftp chunked upload: 80.9 % uploaded
+0043.140 (0) Ftp chunked upload: 81.9 % uploaded
+0043.149 (0) Ftp chunked upload: 83 % uploaded
+0043.159 (0) Ftp chunked upload: 84 % uploaded
+0043.168 (0) Ftp chunked upload: 85.1 % uploaded
+0043.177 (0) Ftp chunked upload: 86.1 % uploaded
+0043.187 (0) Ftp chunked upload: 87.2 % uploaded
+0043.196 (0) Ftp chunked upload: 88.2 % uploaded
+0043.206 (0) Ftp chunked upload: 89.3 % uploaded
+0043.216 (0) Ftp chunked upload: 90.3 % uploaded
+0043.226 (0) Ftp chunked upload: 91.4 % uploaded
+0043.236 (0) Ftp chunked upload: 92.4 % uploaded
+0043.246 (0) Ftp chunked upload: 93.5 % uploaded
+0043.256 (0) Ftp chunked upload: 94.5 % uploaded
+0043.266 (0) Ftp chunked upload: 95.6 % uploaded
+0043.276 (0) Ftp chunked upload: 96.6 % uploaded
+0043.287 (0) Ftp chunked upload: 97.7 % uploaded
+0043.296 (0) Ftp chunked upload: 98.7 % uploaded
+0043.307 (0) Ftp chunked upload: 99.8 % uploaded
+0043.312 (0) FTP upload attempt successful (49127.1KB in 1.18s)
+0043.314 (0) Recording as successfully uploaded: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip (b6095190a5a9a1590ca9a3a9f9a3e5f8)
+0043.329 (0) Deleting local file: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-plugins.zip: OK
+0043.330 (0) FTP upload attempt: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz -> ftp://pethamperco@45.8.225.13//public_html/wp-content/backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz
+0043.354 (0) Ftp chunked upload: 4.6 % uploaded
+0043.365 (0) Ftp chunked upload: 9.2 % uploaded
+0043.375 (0) Ftp chunked upload: 13.8 % uploaded
+0043.385 (0) Ftp chunked upload: 18.4 % uploaded
+0043.395 (0) Ftp chunked upload: 23 % uploaded
+0043.406 (0) Ftp chunked upload: 27.6 % uploaded
+0043.416 (0) Ftp chunked upload: 32.2 % uploaded
+0043.426 (0) Ftp chunked upload: 36.8 % uploaded
+0043.436 (0) Ftp chunked upload: 41.5 % uploaded
+0043.446 (0) Ftp chunked upload: 46.1 % uploaded
+0043.456 (0) Ftp chunked upload: 50.7 % uploaded
+0043.466 (0) Ftp chunked upload: 55.3 % uploaded
+0043.476 (0) Ftp chunked upload: 59.9 % uploaded
+0043.486 (0) Ftp chunked upload: 64.5 % uploaded
+0043.495 (0) Ftp chunked upload: 69.1 % uploaded
+0043.505 (0) Ftp chunked upload: 73.7 % uploaded
+0043.515 (0) Ftp chunked upload: 78.3 % uploaded
+0043.525 (0) Ftp chunked upload: 82.9 % uploaded
+0043.535 (0) Ftp chunked upload: 87.5 % uploaded
+0043.544 (0) Ftp chunked upload: 92.1 % uploaded
+0043.557 (0) Ftp chunked upload: 96.7 % uploaded
+0043.564 (0) FTP upload attempt successful (11200.6KB in 0.23s)
+0043.565 (0) Recording as successfully uploaded: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz (d272ea5fc26375f88ae5771d964d7f3b)
+0043.571 (0) Deleting local file: backup_2021-07-15-1011_Pet_Hamper_f34d911db64d-db.gz: OK
+0043.573 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=2, retain_db=2
+0043.574 (0) Number of backup sets in history: 10; groups (db): 1
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=f34d911db64d, datestamp=1626340263 (Jul 15 2021 09:11:03)
+0043.575 (0) This backup set is the backup set just made, so will not be deleted.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=d2d0786f7258, datestamp=1615999913 (Mar 17 2021 16:51:53)
+0043.575 (0) This backup set (1615999913) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=587b13f5341b, datestamp=1615999809 (Mar 17 2021 16:50:09)
+0043.575 (0) This backup set (1615999809) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=6127566ff1ef, datestamp=1614011063 (Feb 22 2021 16:24:23)
+0043.575 (0) This backup set (1614011063) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=4f342385ddb2, datestamp=1613121968 (Feb 12 2021 09:26:08)
+0043.575 (0) This backup set (1613121968) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=021f72d7150b, datestamp=1613121869 (Feb 12 2021 09:24:29)
+0043.575 (0) This backup set (1613121869) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=88f42d0b9629, datestamp=1613121784 (Feb 12 2021 09:23:04)
+0043.575 (0) This backup set (1613121784) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=c271ad0ec7a3, datestamp=1613121700 (Feb 12 2021 09:21:40)
+0043.575 (0) This backup set (1613121700) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=285edef3e479, datestamp=1612412727 (Feb 04 2021 04:25:27)
+0043.575 (0) This backup set (1612412727) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.575 (0) Examining (for databases) backup set with group_id=0, nonce=cb08272a4333, datestamp=1611611978 (Jan 25 2021 21:59:38)
+0043.575 (0) Number of backup sets in history: 10; groups (files): 1
+0043.576 (0) Examining (for files) backup set with nonce=f34d911db64d, datestamp=1626340263 (Jul 15 2021 09:11:03)
+0043.576 (0) This backup set is the backup set just made, so will not be deleted.
+0043.576 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.577 (0) Examining (for files) backup set with nonce=d2d0786f7258, datestamp=1615999913 (Mar 17 2021 16:51:53)
+0043.577 (0) This backup set (1615999913) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.577 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.577 (0) Examining (for files) backup set with nonce=587b13f5341b, datestamp=1615999809 (Mar 17 2021 16:50:09)
+0043.577 (0) This backup set (1615999809) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.577 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.577 (0) Examining (for files) backup set with nonce=6127566ff1ef, datestamp=1614011063 (Feb 22 2021 16:24:23)
+0043.577 (0) This backup set (1614011063) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.577 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.577 (0) Examining (for files) backup set with nonce=4f342385ddb2, datestamp=1613121968 (Feb 12 2021 09:26:08)
+0043.577 (0) This backup set (1613121968) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.577 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.577 (0) Examining (for files) backup set with nonce=021f72d7150b, datestamp=1613121869 (Feb 12 2021 09:24:29)
+0043.577 (0) This backup set (1613121869) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.577 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.578 (0) Examining (for files) backup set with nonce=88f42d0b9629, datestamp=1613121784 (Feb 12 2021 09:23:04)
+0043.578 (0) This backup set (1613121784) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.578 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.578 (0) Examining (for files) backup set with nonce=c271ad0ec7a3, datestamp=1613121700 (Feb 12 2021 09:21:40)
+0043.578 (0) This backup set (1613121700) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.578 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.578 (0) Examining (for files) backup set with nonce=285edef3e479, datestamp=1612412727 (Feb 04 2021 04:25:27)
+0043.578 (0) This backup set (1612412727) was an automatic backup, and we have not yet reached any retain limits, so it will not be counted or pruned. Skipping.
+0043.578 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0043.578 (0) Examining (for files) backup set with nonce=cb08272a4333, datestamp=1611611978 (Jan 25 2021 21:59:38)
+0043.578 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0043.579 (0) Retain: saving new backup history (sets now: 10) and finishing retain operation
+0043.581 (0) Resume backup (f34d911db64d, 0): finish run
+0043.583 (0) Decremented the semaphore (fd) by 1
+0043.583 (0) Semaphore (fd) unlocked
+0043.584 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0043.586 (0) No email will/can be sent - the user has not configured an email address.
+0043.587 (0) The backup apparently succeeded and is now complete

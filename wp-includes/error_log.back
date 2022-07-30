@@ -1,0 +1,36 @@
+[20-Sep-2021 05:47:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[21-Sep-2021 09:03:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[22-Sep-2021 18:44:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[23-Sep-2021 07:41:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[24-Sep-2021 09:18:43 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[24-Sep-2021 12:36:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[24-Sep-2021 14:52:05 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[24-Sep-2021 17:47:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12
+[30-Sep-2021 23:29:14 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_the_block_template_html() in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/virtual/vps-6a4a8c/1/18eb202c5d/public_html/wp-includes/template-canvas.php on line 12

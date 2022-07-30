@@ -1,0 +1,174 @@
+# Translation of Plugins - Google Ads &amp; Marketing by Kliken - Stable (latest release) in English (UK)
+# This file is distributed under the same license as the Plugins - Google Ads &amp; Marketing by Kliken - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2022-04-01 11:27:17+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: en_GB\n"
+"Project-Id-Version: Plugins - Google Ads &amp; Marketing by Kliken - Stable (latest release)\n"
+
+#. translators: %s: Version number of WooCommerce required to run plugin. Do
+#. not translate.
+#: classes/class-plugin.php:279
+msgid "Google Ads & Marketing by Kliken requires WooCommerce version %s or greater"
+msgstr "Google Ads & Marketing by Kliken requires WooCommerce version %s or greater"
+
+#: classes/class-plugin.php:273
+msgid "Google Ads & Marketing by Kliken requires WooCommerce to be activated"
+msgstr "Google Ads & Marketing by Kliken requires WooCommerce to be activated"
+
+#: classes/class-plugin.php:55
+msgid "Google Ads & Marketing by Kliken plugin can only be called once"
+msgstr "Google Ads & Marketing by Kliken plugin can only be called once"
+
+#. Plugin Name of the plugin
+#: classes/class-wc-integration.php:25 pages/dashboard.php:13
+#: pages/getstarted.php:28
+msgid "Google Ads & Marketing by Kliken"
+msgstr "Google Ads & Marketing by Kliken"
+
+#: pages/getstarted.php:51
+msgid "Get Started"
+msgstr "Get Started"
+
+#: pages/getstarted.php:48
+msgid "Create perfect shopping campaigns in minutes"
+msgstr "Create perfect shopping campaigns in minutes"
+
+#: pages/getstarted.php:47
+msgid "Keep your marketing and store in sync"
+msgstr "Keep your marketing and store in sync"
+
+#: pages/getstarted.php:46
+msgid "Automate bidding to maximize sales for your marketing budget"
+msgstr "Automate bidding to maximise sales for your marketing budget"
+
+#: pages/getstarted.php:45
+msgid "Find more customers on Google"
+msgstr "Find more customers on Google"
+
+#: pages/getstarted.php:43
+msgid "Use this WooCommerce and Google Ads integration to:"
+msgstr "Use this WooCommerce and Google Ads integration to:"
+
+#: pages/getstarted.php:41
+msgid "Increase sales and revenue with Google Shopping Ads"
+msgstr "Increase sales and revenue with Google Shopping Ads"
+
+#: pages/getstarted.php:30
+msgid "Launch Google Shopping Ads and get your products found online easily."
+msgstr "Launch Google Shopping Ads and get your products found online easily."
+
+#: pages/dashboard.php:75
+msgid "Authorize API Access"
+msgstr "Authorise API Access"
+
+#: pages/dashboard.php:70
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: pages/dashboard.php:69
+msgid "Enable Edit"
+msgstr "Enable Edit"
+
+#: pages/dashboard.php:56
+msgid "Advanced Options"
+msgstr "Advanced Options"
+
+#: pages/dashboard.php:50
+msgid "Make changes to your active campaigns, purchase one you built, or reinstate your cancelled campaigns."
+msgstr "Make changes to your active campaigns, purchase one you built, or reinstate your cancelled campaigns."
+
+#: pages/dashboard.php:48
+msgid "Manage Campaigns"
+msgstr "Manage Campaigns"
+
+#: pages/dashboard.php:43
+msgid "Build a campaign in a few minutes, and sell to customers as they search for your products on Google."
+msgstr "Build a campaign in a few minutes, and sell to customers as they search for your products on Google."
+
+#: pages/dashboard.php:41
+msgid "Create a New Google Shopping Campaign"
+msgstr "Create a New Google Shopping Campaign"
+
+#: pages/dashboard.php:36
+msgid "Open your dashboard to review your campaign's performance"
+msgstr "Open your dashboard to review your campaign's performance"
+
+#: pages/dashboard.php:34
+msgid "Campaign Dashboard"
+msgstr "Campaign Dashboard"
+
+#: pages/dashboard.php:28
+msgid "Your WooCommerce store is connected to your Kliken account."
+msgstr "Your WooCommerce store is connected to your Kliken account."
+
+#: pages/dashboard.php:26
+msgid "Your store is connected."
+msgstr "Your store is connected."
+
+#: pages/dashboard.php:15
+msgid "Launch Google Shopping ads and get your products found online easily."
+msgstr "Launch Google Shopping ads and get your products found online easily."
+
+#: classes/class-rest-misc-controller.php:128
+msgid "Sorry, you cannot list resources."
+msgstr "Sorry, you cannot list resources."
+
+#: classes/class-rest-misc-controller.php:63
+#: classes/class-rest-misc-controller.php:91
+msgid "Invalid Data"
+msgstr "Invalid Data"
+
+#: classes/class-wc-integration.php:63
+msgid "What are these options?"
+msgstr "What are these options?"
+
+#: classes/class-wc-integration.php:57
+msgid "Google Verification Token"
+msgstr "Google Verification Token"
+
+#: classes/class-wc-integration.php:52
+msgid "Application Token"
+msgstr "Application Token"
+
+#: classes/class-wc-integration.php:47
+msgid "Account Id"
+msgstr "Account ID"
+
+#: classes/class-plugin.php:208
+msgid "This will dismiss the message permanently. Are you sure?"
+msgstr "This will dismiss the message permanently. Are you sure?"
+
+#: classes/class-plugin.php:125
+msgid "Support"
+msgstr "Support"
+
+#: classes/class-plugin.php:122
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. translators: %s: A hyperlink
+#: classes/class-helper.php:465
+msgid "<strong>Google Ads & Marketing by Kliken plugin is almost ready.</strong> <a href=\"%s\">Click here</a> to get started."
+msgstr "<strong>Google Ads & Marketing by Kliken plugin is almost ready.</strong> <a href=\"%s\">Click here</a> to get started."
+
+#. Author URI of the plugin
+msgid "http://kliken.com/"
+msgstr "http://kliken.com/"
+
+#. Author of the plugin
+msgid "Kliken"
+msgstr "Kliken"
+
+#. Description of the plugin
+msgid "The automated Google Shopping solution to get your products found on Google, and grow your WooCommerce Store!"
+msgstr "The automated Google Shopping solution to get your products found on Google, and grow your WooCommerce Store!"
+
+#. Plugin URI of the plugin
+msgid "https://woo.kliken.com/"
+msgstr "https://woo.kliken.com/"

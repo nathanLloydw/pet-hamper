@@ -1,0 +1,1718 @@
+=== Product Feed Manager - WooCommerce to Google Shopping, Idealo, Social Catalogs, Vivino & More ===
+Contributors: rextheme, coderexco
+Donate link: https://rextheme.com/best-WooCommerce-product-feed/
+Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay MIP,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc,idealo,idealo.de, idealo feed,facebook ads,facebook feed, facebook catalog, facebook
+Requires at least: 4.7
+Tested up to:  6.0
+Requires PHP: 7.0
+Stable tag:  7.2.14
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
+
+== Description ==
+Generating your WooCommerce Product Feed was never this easy!
+
+Any marketplace you want to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
+
+Use pre-defined merchant templates to generate flawless feed for over 180+ merchants, including Google Shopping feed, Facebook Catalog feed, Yandex Market (YML), eBay MIP, Instagram, PriceRunner, Rakuten,  Vivino, BestPrice, Skroutz & many more (<a href="https://rextheme.com/best-woocommerce-product-feed" target="_blank">full list</a>).
+
+Create your preferred feed in seconds with 3 simple steps:
+
+(1) Select Merchant >> (2) Configure Product Data >> (3) Generate Feed Easily
+
+-- That's it. Your feed is ready and you can start selling in your desired marketplace.
+
+Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimized feed for greater results.
+
+[youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
+
+== Best Plugin To Generate WooCommerce Google Product Feed ==
+
+Currently, this plugin is considered the easiest and the most effective plugin to generate WooCommerce Google Shopping Feed.
+
+You will get everything you need that is required by Google merchant feed (Google Shopping Feed) including:
+
+- Custom Fields for Unique Identifiers
+- Advanced Category Mapping
+- Variable Product Support
+- Accurate Structured Data Format
+- Auto-sync With Google Merchant Center Feed
+
+And many more.
+
+Most of the features are pre-configured so that you can generate a feed with the least effort possible, and start promoting on Google Shopping immediately.
+
+== Why Use Product Feed Manager for WooCommerce? ==
+With an easy user interface, you can get exclusive features:
+
+**Auto-sync with Google Shopping**
+You can auto-sync your store products with Google Merchant Shop (Google Shopping). You can set it up so that your generated product feed will automatically be updated and sent to your Google Merchant Shop as per your schedule. You do not need to download and upload the feed for Google Shopping Center manually.
+
+**Category Mapping**
+Google requires you to set your products under their fixed Category Lists. But changing your own store's categories is not necessary. You can use the category mapping feature to map your store categories according to Google's. So your store's categories will still be the same while your products will be placed under the relevant Google category on the product feed. You can use it to map categories for other sites as well (i.e., it is not limited to Google).
+
+> *Not only does it supports 1-to-1 category mapping but you can also map subsets of products on a merchant-category based on product names.*
+
+**Extensive Filter Options**
+You can use the smooth filter options to include or exclude the required products of your store to the product feed. You can filter by categories, tags, or apply custom filters using other attributes.
+
+**Schedule Auto Update Of the Product Feed**
+Any changes you make to product data, you can set a schedule for your product feed to be updated automatically. You do not need to manually update the product feed every time you make changes to your products.
+
+**Advanced Custom Fields**
+WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Gender, etc. Many merchant shops require these data. Hence, Product Feed Manager for WooCommerce creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
+
+You will have many more features to help you generate product feed at ease.
+
+You should use this plugin because it will save you time and create clean quality product feed to promote through other merchant shopping channels.
+
+**Google Analytics Support**
+You can add and configure Google Analytics UTM tracking-codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
+
+**Track Products With Facebook Pixel**
+You can now add Facebook pixel code to your store and track the performance for every product you upload on Facebook dynamic shop using this plugin.
+
+With Facebook Pixel, you can track:
+- Simple product pages
+- Variable product and variations pages
+- Category pages
+- Search result pages
+- Cart page
+- Add to cart button
+- Thank you page
+
+
+>  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
+
+== MOST POPULAR MARKETPLACES YOU CAN GENERATE FEED FOR ==
+
+== GOOGLE SHOPPING & OTHER GOOGLE DESTINATIONS ==
+
+As you already know, Product Feed Manager for WooCommerce is best known for generating Google Shopping feed.
+
+However, there’s more. You can also generate product feed in the right format for most other Google Destinations as well.
+
+The plugin comes with feed generation templates for almost all destinations that you will find on Surfaces Across Google to promote your WooCommerce products.
+
+– Google Shopping feed
+– Google Custom Search Ads feed
+– Google AdWords feed
+– Google Local Products feed
+– Google Local Products Inventory feed
+– Google Merchant Promotion Feed
+– Google Dynamic Search Ads feed
+– Google Shopping Actions feed
+– Google Manufacturer Center feed
+– Google Local Inventory Ads feed
+– Google Remarketing (DRM) feed
+– Google Review feed
+
+So, you can literally use just one single plugin to generate feed for all Google Shopping services and start making the most out of Google’s services to increase sales.
+
+== Facebook Catalog & Instagram Shopping Feed ==
+
+Facebook Dynamic Ads or Facebook Shop is currently among the top priorities for any online shop to promote and sell products, simply due to the targetted audience that Facebook can bring in.
+
+With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that will come with all the required attributes to successfully generate a WooCommerce Facebook Feed.
+
+All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the product attributes, and publish the feed. It’s as simple as that.
+
+Just like Facebook, Instagram marketing is another big medium you can rely on when trying to increase your online sales.
+
+This plugin will let you generate an Instagram Shopping Feed accurately, real quick.
+
+== Bing Shopping feed ==
+
+Next to Google, Bing is probably a prime SERP that people prefer. And recently, the Bing Shopping marketplace is on the rise.
+
+With PFM, you will be able to generate Microsoft Advertising Feed, Bing Shopping Feed, and Bing Image Feed, which are all great Bing feed services you can leverage to increase WooCommerce sales.
+
+>Bing Image Feed is a new trend that WooCommerce shop owners are embracing to increase their sales.
+
+The pre-built feed templates in the plugin ensure you can list your products as Bing Ads real quick.
+
+== Pinterest Product Feed & Snapchat Feed ==
+
+Pinterest and Snapchat are two large social platforms and their dynamic advertisement options made them prime marketplaces to promote WooCommerce products on.
+
+You can easily generate Pinterest Product Feed (XML, CSV or TSV) and Snapchat Ads feed in the right format using Product Feed Manager for WooCommerce.
+
+== Yandex YML Feed (Yandex Market) ==
+
+One of the latest marketplaces that the plugin supports is the Yandex market.
+
+You can easily generate a Yandex feed using PFM to upload your WooCommerce products on the Yandex Market.
+
+Along with the Yandex YML feed, you will also be able to generate feed for
+
+– Yandex Turbo-pages (Yandex Turbo)
+– Yandex Delivery
+
+The Yandex Market Language (YML) format is a complex feed format that is difficult to create manually. PFM ensures you will be able to get the Yandex Market feed in the accurate YML format without any complex manual effort.
+
+>Product Feed Manager for WooCommerce is one of the few plugins that provide the YML format, hence you can easily rely on it to sell WooCommerce products on the Yandex Market.
+
+== Skroutz (Skroutz.gr) ==
+
+Skroutz is one of the popular marketplaces in Greece. And with Product Feed Manager for WooCommerce, you can easily generate a Skroutz XML feed to list your products to this vast marketplace.
+
+== BestPrice (BestPrice.gr) ==
+
+BestPrice GR is another Greek marketplace that you would probably want to promote your products on if you are looking for quick local traction.
+
+And PFM is currently the best plugin in WordPress to help you generate a BestPrice XML feed.
+
+== Ceneo Product Feed ==
+
+Speaking of local marketplaces, if you run a WooCommerce shop in Poland, then Ceneo.pl is the best marketplace you can list your products on.
+
+Ceneo has a complex feed format and there are almost no other plugins that can successfully generate a proper Ceneo XML feed.
+
+Product Feed Manager for WooCommerce is currently the best option you have to successfully generate a Ceneo product feed.
+
+== Vivino XML Feed ==
+
+Another specialty of Product Feed Manager For WooCommerce is the Vivino marketplace feed generation.
+
+If you sell wine online, then Vivino is among the top online wine marketplaces out there, and with PFM, you can easily generate a Vivino XML feed in just a few clicks.
+
+== Rakuten Marketplace Feed ==
+
+Rakuten is a pioneer brand that we all know of.
+
+They too have an advertising option that lets you reach all Rakuten service users through Ads across Rakuten platforms such as Viber or the Rakuten eCommerce sites in Asia or Europe.
+
+You can easily generate a Rakuten advertising feed using PFM and promote your WooCommerce products through Rakuten to boost your sales.
+
+== Product Feed For Major Marketplaces In Czechia ==
+
+You will be able to generate product feeds for large marketplaces in Czechia which include Heureka XML feed, Glami XML feed, and Favi Compari feed (to sell furniture online).
+
+== Product Feed For Major European & US Marketplaces ==
+
+Anywhere you sell around Europe or the USA, you will find feed templates for major marketplaces there.
+
+– eBay Seller Center & eBay MIP Feed
+– Bonanza product feed
+– Fruugo marketplace feed
+– Pricerunner DK product feed
+– Kelkoo XML feed
+– Pricespy (or Prisjakt) feed
+– Spartoo marketplace feed
+– Feed prodotto Trovaprezzi
+– Zalando JSON Feed
+– Vergelijk feed
+
+And tons of other marketplaces where you can easily upload your WooCommerce products and maximize your online sales.
+
+== Other Advantages ==
+
+The plugin is compatible with any themes and can handle any number of products. It uses batch processing, which ensures all your products will be included in the feed without slowing down your site in a matter of seconds.
+
+Generate feed in supported file formats by the merchants such as XML, CSV, or Text.
+
+Also, add your own dynamic attributes or custom taxonomy where required.
+
+>   <a href="http://openvoyce.com/products/bwf" target="_blank">Have a suggestion or feature request? Let us know!</a>
+
+Product Feed Manager for WooCommerce is completely compatible with WPML. You can choose to save products in different languages and then generate feed for each language using this plugin.
+
+
+== Features ==
+
+* Generate Product Feed in a few clicks
+* 172 pre-built templates of Merchant Shop feed
+* Generate feed in XML, CSV or Text file format
+* Compatible with both http and https sites
+* Auto-sync with Google Shopping Center
+* Auto feed update schedule options: weekly, daily & hourly
+* Category Mapping for Google Shopping feed, Facebook Catalog feed and others
+* Extensive Filter Options (filter by category, product, tag or custom)
+* Dynamic Attributes
+* Add Static attributes if needed
+* Add Prefix, and Suffix
+* Use Shipping Class As Attribute
+* Custom Taxonomy
+* Include/Exclude parent product of grouped products
+* Include/Exclude variable products
+* Include/Exclude hidden products
+* Exclude “out of stock” products
+* Custom Batch configuration
+* Add UTM tracking-codes to product URL
+* WPML support
+* Supports YITH brand attributes
+* Yoast: SEO title, Meta description & Primary category support
+* Supports the official “WooCommerce Composite Products” plugin
+* Supports the official “WooCommerce Product Bundles” plugin
+* Supports "Aelia Currency Switcher for WooCommerce" Plugin
+* Supports "WPC Composite Products for WooCommerce" plugin
+* Supports "Discount Rules For WooCommerce" plugin
+* Supports "Brands for WooCommerce" plugin
+* Supports "Perfect Brands for WooCommerce" plugin
+* Supports the official "WooCommerce Brands" plugin
+
+
+**Supported Merchants:**
+
+- WooCommerce to [Google Shopping](https://www.google.com/retail/merchant-center/)
+- WooCommerce to [Google Adwords](https://www.google.com/adwords/)
+- WooCommerce to [Google Dynamic Search Ads](https://support.google.com/google-ads/answer/2471185?hl=en)
+- WooCommerce to [Google Local Products](https://support.google.com/merchants/answer/3061198?hl=en#:~:targetText=Local%20products%20feed%20specification,successful%20ads%20for%20your%20products)
+- WooCommerce to [Google Local Products Inventory](https://support.google.com/merchants/answer/3061342?hl=en)
+- WooCommerce to [Google Merchant Promotions](https://support.google.com/merchants/answer/2906014?hl=en)
+- WooCommerce to [Google shopping action](https://support.google.com/merchants/answer/7679273?hl=en)
+- RSS Feed
+- WooCommerce to [Google Manufacturer Center](https://www.google.com/retail/solutions/manufacturer-center/)
+- WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
+- WooCommerce to [Pinterest](https://www.pinterest.com/)
+- WooCommerce to [Instagram](https://www.instagram.com/)
+- WooCommerce to [Walmart](https://www.walmart.com/)
+- WooCommerce to [SnapChat](https://www.snapchat.com/)
+- WooCommerce to [Yahoo/Verizon Dynamic Product Ads](https://developer.verizonmedia.com/native/guide/dynamic-product-ads/operations-dpa/)
+- WooCommerce to [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
+- WooCommerce to [Target](https://www.target.com/)
+- WooCommerce to [Pepperjam](https://www.pepperjam.com/)
+- WooCommerce to [AdRoll.com](https://www.adroll.com/)
+- WooCommerce to [Nextag](http://www.nextag.com/)
+- WooCommerce to [Pricegrabber](http://www.pricegrabber.com/)
+- WooCommerce to [Kelkoo](https://www.kelkoo.com/)
+- WooCommerce to [Kelkoo Group Network](https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/shopping-guides/product-data-feed/)
+- WooCommerce to [Kelkoo.nl](https://www.kelkoo.nl/)
+- WooCommerce to [Become](http://www.become.com/)
+- WooCommerce to [Shopzilla](http://www.shopzilla.com/)
+- WooCommerce to [Shopping](http://www.shopping.com/)
+- WooCommerce to [Pricerunner](https://www.pricerunner.com/)
+- WooCommerce to [Billiger.de](https://www.billiger.de/)
+- WooCommerce to [Vergelijk.nl](https://www.vergelijk.nl/)
+- WooCommerce to [Twenga.nl](https://www.twenga.nl/)
+- WooCommerce to [Marktplaats](https://www.marktplaats.nl/)
+- WooCommerce to [Beslist](https://www.beslist.nl/)
+- WooCommerce to [Daisycon](https://www.daisycon.com/)
+- WooCommerce to [Yandex Market YML](https://yandex.com/)
+- WooCommerce to [Tweakers](https://tweakers.net/)
+- WooCommerce to [Spartoo](https://www.spartoo.nl/)
+- WooCommerce to [Kieskeurig](https://www.kieskeurig.nl/)
+- WooCommerce to [Sooqr](https://www.sooqr.com/)
+- WooCommerce to [Heureka](https://www.heureka.cz/)
+- WooCommerce to [Koopkeus](https://www.koopkeus.nl/)
+- WooCommerce to [Scoupz](https://www.scoupz.nl/)
+- WooCommerce to [CDiscount](https://www.cdiscount.com/)
+- WooCommerce to [Uvinum/DrinsksAndCo](https://www.drinksandco.co.uk/)
+- WooCommerce to [Rakuten](https://www.rakuten.com/)
+- WooCommerce to [Idealo](https://www.idealo.de/)
+- WooCommerce to [Pricemasher](https://www.pricemasher.co.uk/)
+- WooCommerce to [Pricesearcher](https://www.pricesearcher.com/gb/home/)
+- WooCommerce to [Fashionchick](https://www.fashionchick.nl/)
+- WooCommerce to [Ceneo](https://www.ceneo.pl/)
+- WooCommerce to [Choozen](https://www.choozen.co.uk/)
+- WooCommerce to [Ciao](https://www.ciao.fr/)
+- WooCommerce to [Pricespy](https://pricespy.co.uk/)
+- WooCommerce to [Prisjakt](https://www.prisjakt.nu/kategori.php?k=328)
+- WooCommerce to [Crowdfox](https://www.crowdfox.com/)
+- WooCommerce to [Powerreviews](https://www.powerreviews.com/)
+- WooCommerce to [Trovaprezzi](https://www.trovaprezzi.it/)
+- WooCommerce to [Zbozi](https://www.zbozi.cz/)
+- WooCommerce to [Liveintent](https://www.liveintent.com/)
+- WooCommerce to [Skroutz](https://www.skroutz.gr/)
+- WooCommerce to [Otto](https://www.otto.de/)
+- WooCommerce to [Sears](https://www.sears.com/)
+- WooCommerce to [Ammoseek](https://ammoseek.com/)
+- WooCommerce to [Fnac](https://www.fnac.com/)
+- WooCommerce to [Zalando](https://www.zalando.nl/)
+- WooCommerce to [Pixmania](https://www.pixmania.nl/)
+- WooCommerce to [Coolblue](https://www.coolblue.nl/)
+- WooCommerce to [Shopmania](https://partner.shopmania.com/)
+- WooCommerce to [Kleding](https://www.kleding.nl/)
+- WooCommerce to [Ladenzeile](https://www.ladenzeile.de/)
+- WooCommerce to [Preis](https://www.preis.de/)
+- WooCommerce to [Winesearcher](https://www.wine-searcher.com/)
+- WooCommerce to [CJ Affiliate](https://www.cj.com/)
+- WooCommerce to [Guenstiger](https://www.guenstiger.de/)
+- WooCommerce to [Hood](https://www.hood.de/)
+- WooCommerce to [Livingo](https://www.livingo.de/)
+- WooCommerce to [Jet](https://jet.com/)
+- WooCommerce to [Bonanza](https://www.bonanza.com/)
+- WooCommerce to [Medizinfuchs.de](https://www.medizinfuchs.de/)
+- WooCommerce to [Adcell](https://www.adcell.de/)
+- WooCommerce to [Adform](https://site.adform.com/)
+- WooCommerce to [Stylefruits.fr](https://www.desired.de/fashion/styling-tipps/)
+- WooCommerce to [Moebel](https://www.moebel.de/)
+- WooCommerce to [Restposten](https://www.restposten.de/)
+- WooCommerce to [Sparmedo](https://www.sparmedo.de/)
+- WooCommerce to [Whiskymarketplace](https://www.whiskymarketplace.com/)
+- WooCommerce to [NewEgg](https://www.newegg.com/)
+- WooCommerce to [Bike Exchange](https://www.bikeexchange.com.au/)
+- WooCommerce to [Cenowarka](https://cenowarka.pl/)
+- WooCommerce to [Cezigue](https://www.cezigue.fr/)
+- WooCommerce to [Check24](https://www.check24.de/)
+- WooCommerce to [Clang](https://www.e-village.nl/clang/)
+- WooCommerce to [Cherchons](https://www.cherchons.com/)
+- WooCommerce to Boetiek B.V
+- WooCommerce to [Comparer](https://www.comparer.be/)
+- WooCommerce to [Converto](https://www.converto.com/en/converto/)
+- WooCommerce to [Coolshop](https://www.coolshop.com/)
+- WooCommerce to [Commerce Connector](https://www.commerce-connector.com/web/)
+- WooCommerce to [Everysize](https://www.everysize.com/)
+- WooCommerce to [Encuentraprecios](https://www.encuentraprecios.es/)
+- WooCommerce to [Geizhals](https://geizhals.de/)
+- WooCommerce to [Geizkragen](https://www.geizkragen.de/)
+- WooCommerce to [Giftboxx](https://giftboxx.me/)
+- WooCommerce to [Go-Banana](https://www.go-banana.com/)
+- WooCommerce to [Goed-Geplaatst](https://www.goedgeplaatst.nl/)
+- WooCommerce to [Grosshandel](https://www.grosshandel.eu/)
+- WooCommerce to [Hardware.info](https://nl.hardware.info/)
+- WooCommerce to [Hatch](https://www.gethatch.com/en/)
+- WooCommerce to [Hintaopas](https://hintaopas.fi/)
+- WooCommerce to [Fyndiq](https://fyndiq.se/)
+- WooCommerce to [Fasha](https://www.fasha.nl/)
+- WooCommerce to [Real.de](https://www.real.de/)
+- WooCommerce to [Hintaseuranta](https://hintaseuranta.fi/)
+- WooCommerce to [Family Blend](https://familyblend.nl/)
+- WooCommerce to [Hitmeister](https://www.crunchbase.com/organization/hitmeister)
+- WooCommerce to [Lazada](https://www.lazada.com.my/)
+- WooCommerce to [GetPrice.com.au](https://www.getprice.com.au/)
+- WooCommerce to [HomeTiger](https://www.hometiger.com/)
+- WooCommerce to [Jurkjes.nl](https://www.jurkjes.nl/)
+- WooCommerce to [Kiesproduct](https://www.kiesproduct.nl/)
+- WooCommerce to [Kiyoh](https://www.kiyoh.com/)
+- WooCommerce to [Kompario](https://kompario.pl/)
+- WooCommerce to [Kwanko](https://www.kwanko.com/)
+- WooCommerce to [Le Dénicheur](https://ledenicheur.fr/)
+- WooCommerce to [Les Bonnes Bouilles](https://www.lesbonnesbouilles.fr/)
+- WooCommerce to [Lions Home](https://www.lionshome.co.uk/)
+- WooCommerce to [Locamo](https://www.locamo.de/)
+- WooCommerce to [Logicsale](https://www.logicsale.cn/)
+- WooCommerce to [Pronto](https://www.pronto.com/)
+- WooCommerce to [Awin](https://www.awin.com/gb)
+- WooCommerce to [Incurvy](https://www.incurvy.de/)
+- WooCommerce to [Indeed](https://www.indeed.com/)
+- WooCommerce to [Jobbrid](https://www.jobbird.com/nl)
+- WooCommerce to [Joblift](https://joblift.com/)
+- WooCommerce to [Jobboard](https://www.jobboard.io/)
+- WooCommerce to [Adcrowd](https://www.adcrowd.com/nl)
+- WooCommerce to [KuantoKusta](https://www.kuantokusta.pt/)
+- WooCommerce to [Kauftipp](https://www.kauftipp.ch/)
+- WooCommerce to [Vivino](https://www.vivino.com/)
+- WooCommerce to [Rakuten marketing](https://rakutenadvertising.com/)
+- WooCommerce to [Pricefalls](http://www.pricefalls.com/)
+- WooCommerce to [123i](https://123i.uol.com.br/)
+- WooCommerce to [Clubic](https://www.clubic.com/)
+- WooCommerce to [Criteo](https://www.criteo.com/)
+- WooCommerce to [Shopalike](https://www.shopalike.it/)
+- WooCommerce to [Compartner](https://compartner.nl/)
+- WooCommerce to [Adtraction](https://adtraction.com/)
+- WooCommerce to [Admitad](https://www.admitad.com/)
+- WooCommerce to [Bloomville](https://bloomville.nl/)
+- WooCommerce to [Datatrics](https://www.datatrics.com/)
+- WooCommerce to [Delta Projects](https://deltaprojects.com/)
+- WooCommerce to [Drezzy](https://www.drezzy.it/)
+- WooCommerce to [Domodi](https://domodi.pl/)
+- WooCommerce to [Doofinder](https://www.doofinder.com/en/)
+- WooCommerce to [Homebook.pl](https://www.homebook.pl/)
+- WooCommerce to [Home Deco](https://homedeco.co.uk/)
+- WooCommerce to [Glami](https://www.glami.ro/)
+- WooCommerce to [Fashiola](https://www.fashiola.com/)
+- WooCommerce to [Emarts](https://www.emarts.nl/)
+- WooCommerce to [Epoq](https://www.epoq.de/en/)
+- WooCommerce to [Grupo Zap](https://www.grupozap.com/)
+- WooCommerce to [Emag](https://www.grupozap.com/)
+- WooCommerce to [Lyst](https://www.lyst.com/)
+- WooCommerce to [Listupp](http://listupp.it/)
+- WooCommerce to [Hertie](https://www.hertie.de/)
+- WooCommerce to [Webgains](https://www.webgains.com/public/en/)
+- WooCommerce to [MyDeal](https://www.mydeal.com.au/)
+- WooCommerce to [Deals4U.gr](https://deals4u.gr/)
+- WooCommerce to [ibud](https://ibud.ua/)
+- WooCommerce to [BestPrice.gr](https://www.bestprice.gr/)
+- WooCommerce to [Spartoo.fr](https://www.spartoo.com/)
+- WooCommerce to [Mirakl](https://www.mirakl.com/)
+
+
+== Pro Features: ==
+
+* All Free features
+* Unlimited Product Feed Generated (Free version limited to 200 products)
+* Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)
+* Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)
+* Ability To Exclude Tax From Structured Data Prices
+* Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
+* 6 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
+* Auto-suggestion Product Filter
+
+**Supported Merchants In Pro Version**
+- All merchants feed templates in free version
+- WooCommerce to [eBay MIP](https://developer.ebay.com/products/mip)
+- WooCommerce to [ebay Seller Center](https://pages.ebay.com/seller-center/index.html)
+- WooCommerce to [ebay Seller Center Tickets](https://pages.ebay.com/seller-center/index.html)
+- WooCommerce to [Bol.Com](https://www.bol.com/nl/)
+- WooCommerce to [Wish.Com](https://www.wish.com/)
+- WooCommerce to [Fruugo](https://www.fruugo.com/)
+- WooCommerce to [LeGuide.com](https://www.leguide.com/information/fr/process)
+- WooCommerce to [Connexity](https://connexity.com/)
+- WooCommerce to [Google Remarketing (DRM)](https://onlinesales.ai/blog/dynamic-remarketing-must-e-commerce/)
+- WooCommerce to [Google Product Review](https://developers.google.com/product-review-feeds)
+- WooCommerce to [Etsy](https://www.etsy.com/)
+
+>  If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)
+
+## Privacy Policy
+Product Feed Manager for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
+
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+
+Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
+
+We use below mentioned third party services to improve user experience and enhance the plugin features -
+* [Google Content API](https://developers.google.com/shopping-content/guides/quickstart)
+
+== Installation ==
+1. Upload the Product Feed Manager for WooCommerce to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Now a new menu 'Product Feeds' will appear in the admin screen from where you can create and manage product feeds.
+
+== Frequently Asked Questions ==
+= Why should I choose the Product Feed Manager for WooCommerce? =
+Product Feed Manager for WooCommerce is dedicated to user satisfaction. You will get the best interface with simplicity and quality.
+Everything you need to generate an effective product feed is included at Product Feed Manager for WooCommerce.
+This plugin was customized so that you can generate product feeds for all major merchant shops, including Google Merchant shop, Facebook Dynamic Ads, etc.
+Plus, you will get a support team that is always ready to help you out.
+You may test out our free version. If you see that Product Feed Manager for WooCommerce is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
+= Which merchant shops are supported? =
+Currently, we support 168 major merchant shops:
+- Google Shopping
+- Google Adwords
+- Google Dynamic Search Ads
+- Google Local Products
+- Google Local Products Inventory
+- Google Merchant Promotions
+- Google Manufacturer Center
+- Google shopping actions
+- RSS Feed
+- Facebook Catalog Feed
+- Instagram
+- Pinterest
+- Walmart
+- SnapChat
+- Yahoo/Verizon Dynamic Product Ads
+- Bing Ads
+- Target
+- Pepperjam
+- AdRoll.com
+- Nextag
+- Pricegrabber
+- Kelkoo
+- Kelkoo Group Network
+- Shopzilla
+- Shopping
+- Become
+- Pricerunner
+- Billiger
+- Vergelijk
+- Twenga.nl
+- Marktplaats
+- Beslist
+- Daisycon
+- Yandex Market
+- Tweakers
+- Spartoo
+- Kieskeurig
+- Sooqr
+- Scoupz
+- Koopkeus
+- Heureka
+- CDiscount
+- Kelkoo.nl
+- Uvinum / DrinsksAndCo
+- Rakuten
+- Idealo
+- Pricemasher
+- Pricesearcher
+- Fashionchick
+- Ceneo
+- Choozen
+- Ciao
+- Pricespy
+- Prisjakt
+- Crowdfox
+- Powerreviews
+- Trovaprezzi
+- Zbozi
+- Liveintent
+- Skroutz
+- Otto
+- Sears
+- Ammoseek
+- Fnac
+- Zalando
+- Pixmania
+- Coolblue
+- Shopmania
+- Kleding
+- Ladenzeile
+- Preis
+- Winesearcher
+- CJ Affiliate
+- Guenstiger
+- Hood
+- Livingo
+- Jet.com
+- Bonanza
+- Medizinfuchs.de
+- Adcell
+- Adform
+- Stylefruits.fr
+- Moebel
+- Restposten
+- Sparmedo
+- Whiskymarketplace
+- NewEgg
+- Bike Exchange
+- Cenowarka
+- Cezigue
+- Check24
+- Clang
+- Cherchons
+- Boetiek B.V
+- Comparer
+- Converto
+- Coolshop
+- Commerce Connector
+- Everysize
+- Encuentraprecios
+- Geizhals
+- Geizkragen
+- Giftboxx
+- Go Banana
+- Goed Geplaatst
+- Grosshandel
+- Hardware
+- Hatch
+- Hintaopas
+- Fyndiq
+- Fasha
+- Realde
+- Hintaseuranta
+- Family Blend
+- Hitmeister
+- Lazada
+- GetPrice.com.au
+- HomeTiger
+- Jurkjes.nl
+- Kiesproduct
+- Kiyoh
+- Kompario
+- Kwanko
+- Le Dénicheur
+- Les Bonnes Bouilles
+- Lions Home
+- Locamo
+- Logicsale
+- Pronto
+- Awin
+- Incurvy
+- Indeed
+- Jobbrid
+- Joblift
+- Jobboard
+- Adcrowd
+- KuantoKusta
+- Kauftipp
+- Vivino
+- Rakuten marketing
+- Pricefalls
+- 123i
+- Clubic
+- Criteo
+- Shopalike
+- Compartner
+- Adtraction
+- Admitad
+- Bloomville
+- Datatrics
+- Delta Projects
+- Drezzy
+- Domodi
+- Doofinder
+- Homebook.pl
+- Home Deco
+- Glami
+- Fashiola
+- Emarts
+- Epoq
+- Grupo Zap
+- Emag
+- Lyst
+- Listupp
+- Hertie
+- Etsy
+- Webgains
+- MyDeal
+- Deals4u.gr
+- Ibud
+- Spartoo.fr
+- Mirakl
+- BestPrice.gr
+- Bing Image Feed
+
+
+= Is there a product limit? =
+There is no limit to the number of products when generating feed. You can decide on the products you want to generate feed for, and no matter how many, the feed will be generated. However, this limitless product feed is only available for pro-users.
+In the free version, you can generate product feed for up to 50 products per feed. If you are satisfied with the result, you can upgrade to the pro version and use it to the full extent.
+= What file formats does this plugin generate? =
+This plugin generates product feeds in the following file formats:
+- TXT
+- XML
+- CSV
+- TSV
+- JSON
+**For creating Google product feed, you must use XML format.
+= What is the feed auto-update feature? =
+For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
+= Can I add attributes of my own choice? =
+Yes, with the dynamic attribute feature, you can include dynamic attributes to your product feed to be generated, without altering any details on your store.
+= Does it support product variation? =
+Yes, Product Feed Manager for WooCommerce generates feed with variations as well, if you select it.
+= Can I select one single variation? =
+No, Product Feed Manager for WooCommerce supports either all the variations or no variations at all. Currently, there is no option to select one single variation.
+= Will the feed, I generated for any other merchant shop, work on Google Merchant Shop? =
+We have set up the important fields and saved the feed format compatible with each merchant shop. We advise you that you generate different feeds for different Merchant shops.
+In the case of Google, they will not approve feeds unless it is mapped according to their required format.
+We have a feed format specifically organized for the Google Merchant shop. You simply need to map your product categories with the Google Merchant shop.
+=  Can I send product feed to my Merchant Shop directly from Product Feed Manager for WooCommerce? =
+Product Feed Manager for WooCommerce lets you auto-sync the product feed to be automatically sent and updated on Google Merchant Shop.
+You can easily set this up by following the steps in this <a href="https://www.youtube.com/watch?v=CVMqRunbW5g" target="_blank">tutorial</a>
+This feature is only there for Google Merchant Shops and no other merchant shops for now.
+For other shops such as eBay, you will have to download the generated feed and upload it on your Merchant shop’s feed import section manually.
+=  How do I upgrade to pro? =
+You may use the Product Feed Manager for WooCommerce to generate feed for up to 50 items in total in the free version. You may remove this limit and get feed for unlimited products by upgrading to PRO.
+To upgrade to PRO, you may purchase a license key from:
+WP Dashboard > Product Feed > Upgrade.
+
+
+== Screenshots ==
+1. Product Feed Settings
+2. Generating New Feed
+3. Product Feed Controls Settings
+4. Supported Merchants List
+5. Refresh Interval Schedule
+6. Custom Filter
+7. Product Filter Options
+8. Add New and Custom Attributes
+9. Category Mapping
+10. Configure Google Merchant
+
+== Changelog ==
+
+= 7.2.14 (2022-07-22) =
+* Fixed: sale_price attribute is including 0.00 if the Sale Price is empty issue fixed
+
+= 7.2.13 (2022-07-22) =
+* Added: Multiple output filter
+* Added: Replace the decimal point to a comma output filter
+* Fixed: Custom Taxonomy issue fixed
+* Fixed: UPI fields value saving issue when the option is disabled
+
+= 7.2.12 (2022-07-14) =
+* Add: WooCommerce Brands Pro plugin support added
+* Add: Popup added to the feed preview feature 
+* Fix: WooCommerce Multilingual & Multicurrency plugin currency switch issue fixed
+
+= 7.2.11 (2022-07-07) =
+* Added: Insert a feed name automatically if the feed has no name
+* Added: Export and Import feed feature added
+* Added: Include multiple shipping values option added
+* Fixed: Category mapping scrolling issue fixed
+* Fixed: Regular Price filter doesn't work with the Category/ Tag filter
+* Fixed: Simple attribute values are printing variation values issue fixed
+* FIxed: Google Merchant authentication error message removed for the new users
+
+= 7.2.10 (2022-07-04) =
+* Added: Identifier Exists attribute added by default on the new feeds
+* Added: First-word uppercase only output filter option added
+* Added: PFM plugin tour confirmation dialog box added
+* Added: All admin notice is now hidden on the Add New Feed page
+* Added: Filter by Total Sales option added on the Custom Filter section
+* Added: Tax attributes support added
+* Fixed: PFM product settings section label click switcher triggering issue fixed
+* Fixed: Two decimal points issue fixed
+* Fixed: XML warning issue fixed (Google Shopping, Marktplaats, Fruugo)
+* Fixed: Google Merchant authentication error message removed for the new users
+
+= 7.2.9 (2022-06-23) =
+* Added: Shipping Attributes Values Support
+* Added: Temporary XML to Reduce XML Feed Error
+* Improved: PFM design issues (System Status, Bottom Publish Button Loader, Button URL, Tour Button)
+
+= 7.2.8 (2022-06-17) =
+* Added: Feed generation guided tour feature added
+* Improved: PFM design issues
+
+= 7.2.7 (2022-06-09) =
+* Improved: PFM design (Settings page, Product Settings page)
+* Added: Feed preview feature added
+
+= 7.2.6 (2022-06-06) =
+* Improved: PFM design (Added new buttons and fixed some design issues)
+
+
+= 7.2.5 (2022-05-26) =
+* Improved: Custom Filter Restructured
+* Improved: Setup Wizard Front-End
+
+
+= 7.2.4 (2022-05-23) =
+* Added: Setup Wizard
+* Fixed: Google and Guzzle library issue
+* Fixed: Google XML Feed generation issue
+* Fixed: PHP Warning (asort php function)
+* Fixed: Appsero options mandatory to optional
+* Removed: New UI Message
+
+= 7.2.3 (2022-05-19) =
+* Improvements: UI improvements
+
+= 7.2.2 (2022-05-12) =
+* Added: Rollback option not working issue fixed
+* Added: Remove all PFM plugin data option added
+* Added: Hotline merchant template added
+* Added: Rozetka merchant template added
+* Fixed: Remove jQuery Cookie CDN issue fixed
+* Fixed: Bing Text File Delimiter White Space issue fixed
+* Fixed: Product attribute and variation attribute issue fixed
+* Fixed: Google Reviews wrong timestamp format issue fixed
+* Fixed: Old feed settings overlay issue fixed
+
+= 7.2.1 (2022-04-28) =
+* Fixed: HTML markup fixed
+* Fixed: Google Shopping required attributes wrong warning issue fixed
+
+= 7.2.0 (2022-04-21) =
+* Added: Rollback option added for the Free version
+* Added: Include variation images in the feed attribute value added
+* Added: Five more Mirakl custom attributes added to the Mirakl merchant template
+* Fixed: Facebook shipping attributes bug fixed
+* Fixed: Bing Text File Delimiter White Space issue fixed
+* Fixed: Product attribute and variation attribute issue fixed
+* Fixed: Parent products are included in the Idealo feed when the option is set as no issue fixed
+* Fixed: Product Filter is not working when the same condition is used twice issue fixed
+* Fixed: Schedule fetch missing ID issue fixed
+* Fixed: Static Shipping price showing empty result in XML, array for CSV issue fixed
+* Fixed: Facebook item_group_id still showing default value when the attribute value is changed issue fixed
+* Fixed: Product Feed Manager parameter issue fixed
+* Fixed: Library function conflict with rankmath, Google placetopay, updraftplus issue fixed
+* Fixed: WooCommerce multicurrency plugin compatibility issue fixed
+
+
+= 7.1.1 (2022-02-23) =
+* Added: Custom feed schedule option to  auto-generate feed
+
+
+= 7.1.0 (2022-02-11) =
+* Added: WPFM Custom fields on the frontend feature added
+* Fixed: Idealo feed template updated
+* Fixed: Google search feed template updated
+* Fixed: TXT feed space issue updated
+* Fixed: Ceneo feed template updated
+* Fixed: UPI activation issue
+
+
+= 7.0.9 (2022-02-07) =
+* Fixed: UPI info missing for the product variations issue fix
+
+
+= 7.0.8 (2022-01-31) =
+* Fixed: Multiple variations included with custom filter issue fixed
+
+
+= 7.0.7 (2022-01-27) =
+* Added: How to guide and Troubleshoot section added
+* Added: Skip products with empty values feature added
+* Added: Custom Taxonomy support added
+* Fixed: Additional image conflict with WoodMart Theme issue fixed
+* Fixed: Merchant search bar focus issue fixed
+* Fixed: Custom Filter variations are not added in the feed issue fixed
+* Fixed: Idealo.de merchant template updated
+* Fixed: File URL changed to File Path
+* Fixed: WPML Cron issue fixed
+* Fixed: TSV header repeating issue fixed
+* Fixed: Duplicate feed categories are not checked issue fixed
+* Fixed: Feed file is removed once the feed feed is removed from the trash issue fixed
+* Fixed: Cron issue on attribute skipping with empty values issue fixed
+
+
+= 7.0.6 (2022-01-06) =
+* Fixed: Troubleshoot button wrong URL issue fixed
+* Fixed: Cron event including the out of stock products issue fixed
+
+= 7.0.5 (2022-01-04) =
+* Added: New value option for Availability attribute (0/1)
+* Added: Category Mapping made easy
+* Added: WooCommerce multicurrency plugin support added
+* Added: Dynamic Pricing multiple calculations added
+* Fixed: Zalando Stock Update CSV Feed updated
+* Fixed: XML error message if no product found issue fixed
+* Fixed: Show lowest item price for the grouped product
+* Fixed: WPML Cron issue for the non-English languages issue fixed
+
+= 7.0.4 (2021-12-16) =
+* Fixed - Patched security vulnerability
+
+= 7.0.3 (2021-12-15) =
+* Fixed - Patched security vulnerability
+
+= 7.0.2 (2021-12-09) =
+* Fixed: Yandex Feed Yml Format
+* Fixed: Optimize attribute value section
+* Fixed: Category filter issue fix
+* Fixed: Google Shopping shipping issue fix
+
+= 7.0.1 (2021-11-25) =
+* Added: Missing attribute suggestion alert feature added
+* Added: Multiple shipping attributes added to Google Shopping
+* Fixed: Sale price start and End date showing wrong value issue fixed
+* Fixed: Grouped product price value is changed from the total price to the lowest price
+* Fixed: Conflict with WPRocket issue fixed
+* Fixed: Settings top menu conflict with Czech and Dutch language issue fixed.
+
+= 7.0.0 (2021-11-08) =
+* Added: New user interface
+* Added: Exclude out of stock products option added
+* Added: WPFM custom fields are added for the grouped and the affiliate products
+* Fixed: eBay feed fix
+* Fixed: Guloggratis.dk feed template updated
+* Fixed: WooComposite plugin not working issue fixed
+
+
+= 6.7.5 (2021-10-21) =
+* Added: GulogGratis.dk template
+* Fixed: Dropship Mantel plugin error fixed
+* Fixed: WPML PHP error fixed
+
+
+= 6.7.4 (2021-10-04) =
+* Fixed: UTF-8 CSV issue updated
+* Fixed: Fatal Error (Conflict with Google) fixed
+* Fixed: Move some merchants from Pro to free
+* Fixed: Pinterest feed template updated
+* Added: Trovino.it feed template added
+* Added: Cercavino feed template added
+* Added: Dropship Mantle plugin support added
+
+
+= 6.7.3 (2021-09-23) =
+* Fixed: Unique Product Identifiers not working bug fixed
+
+= 6.7.2 (2021-09-15) =
+* Fixed: Filter by Manufacturer isn't working for Product Attributes issue fixed
+* Fixed: Filter by Manufacturer isn't working for Perfect Brands issue fixed
+* Fixed: Product Filter not working for hourly update issue fixed
+* Fixed: Rank Math Primary Category value changed from Category ID to Category Name
+* Fixed: Yandex Feed Merchant Template Updated
+* Fixed: Button alignment issue after activating license
+* Added: Support for WooCommerce Brand added
+* Added: Skip row if no value found feature added
+
+
+= 6.7.1 (2021-08-27) =
+* Added: Shopee feed template added
+* Fixed: Marktplaats feed template updated
+* Fixed: Aelia Currency Switcher - PFM currency changing caching issue fixed
+
+
+= 6.7.0 (2021-08-24) =
+* Added: Trigger based review request
+* Added: Aelia Currency Converter for WooCommerce support added
+* Fixed: Bonanza feed template updated
+
+
+= 6.6.10 (2021-08-18) =
+* Fixed: Custom Filter Availability issue fixed
+* Fixed: Lesitedumif feed template updated
+* Fixed: Favi feed template updated
+* Fixed: Vivino feed template updated
+* Added: Bing Image feed template added
+* Compatibility Checked : WooCommerce 5.6.0
+
+
+= 6.6.9 (2021-08-11) =
+* Changelog: Fixed: PHP warning for empty attributes
+* Fixed: Glami feed template updated
+* Fixed: Custom CSV feed structure issue
+* Fixed: Zalando Stock Update CSV Issue
+* Fixed: Purge cache button responsive issue
+* Added: Parent description value for the variable Products
+* Added: Generate only featured products
+
+= 6.6.8 (2021-07-15) =
+* Compatibility Checked : WooCommerce 5.5.1
+
+= 6.6.7 (2021-07-08) =
+* Fixed: Duplicate product category on feed
+
+= 6.6.6 (2021-07-06) =
+* Fixed: Few merchants conflict issue with the PRO version - issue fixed
+* Fixed: Google Local Products XML structure change - issue fixed
+* Added: Rank Math Primary Category support added
+* Added: Discount Rules For WooCommerce Support added
+* Added: WPC Composite Products for WooCommerce support added
+* Added: Support for the new merchant – Zalando Stock Update
+* Added: New feed template added – Zalando CSV
+* Added: New feed template added – Zalando CSV (Semi-colon separator)
+
+= 6.6.5 (2021-06-18) =
+* Fixed: Dynamic attribute issue fixed
+
+= 6.6.4 (2021-06-17) =
+* Fixed: Last update showing 00:00 01.01.1970 - issue fixed
+* Fixed: Empty field showing %20 - issue fixed
+* Fixed: TSV feed multiple spaces - issue fixed
+* Fixed: Hyphen is replaced with a special character (Variable Product) - issue fixed
+* Fixed: Product Categories Path showing blank result if the parent category is unavailable - issue fixed
+* Fixed: Pinterest template structure fixed
+* Added: Duplicate Feed feature added
+* Added: Semicolon (;) separator for CSV feature added
+* Added: New feed template added – Spartoo.fr
+
+= 6.6.3 (2021-06-03) =
+* Fixed: Fix admin notice dismissal issue
+
+= 6.6.2 (2021-05-31) =
+* Fixed: CSV feed generation issue
+
+= 6.6.1 (2021-05-26) =
+* Fixed: Plugin conflict with SweepWidget fixed
+* Fixed: Ceneo merchant feed structure fixed
+* Added: New Sanitization Filter 'Remove ShortCodes and Strip Tags' added
+* Added: New Template - BestPrice.gr
+* Added: New Template - Mirakl
+* Added: Brands For WooCommerce plugin support added
+
+
+= 6.6.0 (2021-05-07) =
+* Added: New Sanitization Filter - Replace Space With Hyphen (-)
+* Added: Add Purge Cache button on the feed generation page
+* Added: Perfect Brands For WooCommerce Support
+* Added: New feed template added – Deals4U.gr
+* Fixed: Price Filter not working - issue fixed
+* Fixed: Heureka Delivery Attribute structure fixed
+* Fixed: Feed not fetching correct info from Advanced Custom Fields (ACF) fixed
+* Fixed: Vivino template structure fixed
+* Fixed: Warning if product attributes are empty
+
+= 6.5.2 (2021-05-05) =
+* Fixed: Warning on feed generation for Google and Facebook
+* Compatibility Checked : WooCommerce 5.2.2
+
+= 6.5.1 (2021-04-28) =
+* Fixed: Warning on feed generation
+
+= 6.5.0 (2021-04-21) =
+* Fixed: Feed formatting issue for some merchants
+* Fixed: Item Group ID not showing Parent SKU for variable products
+* Fixed: Heureka Feed Param attribute
+* Fixed: Favi - Compari & Árukereső feed Attribute tags
+* Fixed: Internal server error when the custom field is named "Custom" (Facebook)
+* Fixed: Rakuten Feed structure updated
+* Added: User can filter by Manufacturer - Custom Filter
+* Added: Remove before and after spaces from CDATA and remove CDATA
+* Added: New Template - Google Local Inventory Ads
+* Added: New Template - Ibud
+* Added: WPC Product Bundles For WooCommerce Support
+* Added: Composite products support
+
+= 6.4.5 (2021-04-07) =
+* Fixed: Feed formatting issue for some merchants
+
+= 6.4.4 (2021-04-02) =
+* Fixed: Zbozi feed format
+
+= 6.4.3 (2021-03-24) =
+* Fixed: Meta fields file warnings
+
+= 6.4.2 (2021-03-24) =
+* Fixed: File missing warning
+* Added: WooCommerce Product Bundle support
+* Fixed: Some PHP Warnings
+
+= 6.4.1 (2021-03-23) =
+* Update: Plugin name
+
+= 6.4.0 (2021-03-11) =
+* Fixed: Bing feed type set to text by default
+* Fixed: Cron issue while updating Bing feed
+* Compatibility Checked : WooCommerce 5.1.0 & WP 5.7
+
+= 6.3.3 (2021-03-03) =
+* Added: WoodMart Theme Gallery Image Compatibility
+* Fixed: Remove extra space at the end when Strip tags used
+* Fixed: Favi Price Tag And Product URL issue
+* Fixed: PHP notices resolved
+* Compatibility Checked : WooCommerce 5.0.0 & WP 5.6.2
+
+= 6.3.2 (2021-02-18) =
+* Fixed: Glami Feed Structure Flaws
+* Fixed: UTM parameters would vanish after refresh intervals
+* Fixed: Google Promotions Feed template
+* Added: Favi - Compari & Árukereső feed template
+
+
+= 6.3.1 (2021-02-04) =
+* Fixed: Facebook CSV Feed Template Error
+* Fixed: Issue Category Mapping Empty Result if Primary Category Not Mapped Issue
+* Added: Availability of OnBackorder results on_backorder
+* Added: Availability of OnBackorder results in_stock
+
+
+= 6.3.0 (2021-01-28) =
+* Fixed: Idealo template
+* Fixed: Facebook CSV template
+* Fixed: Idealo template
+* Fixed: Google Local Products template
+* Fixed: Google Local Product Inventory template
+* Fixed: Google shipping attributes format
+* Fixed: Variation name attribute issue – previously it was fetching slug rather than name
+* Fixed: Conflict With Visual Composer
+* Fixed: Support button link fixed
+* Added: Idealo.de template
+* Added: Sanitization - Remove Hipen
+* Added: Sanitization - Replace Hipen With Space
+* Compatibility Checked : WooCommerce 4.9.2
+
+= 6.2.1 (2020-12-31) =
+* Fixed: Pricespy template
+
+= 6.2.0 (2020-12-28) =
+* Added: Google Custom Search Ads template
+* Added: All Amazon templates formats - CSV, TXT and TSV
+
+= 6.1.7 (2020-12-17) =
+* Fixed: Shopmania template
+* Compatibility Checked : WooCommerce 4.8.0
+
+= 6.1.6 (2020-12-09) =
+* Fixed: Minimum price will be fetched if default variation is not set
+* Fixed: Shopping.com Template
+* Compatibility Checked : WordPress 5.6
+
+= 6.1.5 (2020-12-02) =
+* Fixed: Feed template fixed for Google Adwords, Google Dynamic Search Ads, Google Local Products, Google Local Products Inventory
+* Enhanced: Minimum variation price will be returned if no default variation is set for price and regular price attribute
+
+= 6.1.4 (2020-11-27) =
+* Fixed: Ceneo Template
+* Compatibility Checked : WooCommerce 4.7.1
+
+= 6.1.3 (2020-11-26) =
+* Fixed: Vivino Template
+* Fixed: Ceneo Template
+* Fixed: Yoast Category Path Fixed
+* Fixed: Conflict with widget option plugin
+
+= 6.1.2 (2020-11-21) =
+* Fixed: Compatible with PHP < 7.3
+
+= 6.1.1 (2020-11-19) =
+* Fixed: WCML conflict
+
+= 6.1.0 (2020-11-19) =
+* Fixed: Custom category mapping
+* Fixed: Google Shopping Action feed structure
+* Fixed: Fixed CDATA issue on XML feed
+* Fixed: Restore missing icons
+* Enhanced: Improve feed generation query
+
+= 6.0.2 (2020-11-10) =
+* Fixed: missing description attribute value
+
+= 6.0.1 (2020-11-06) =
+* Fixed: Fix Guzzle compatibility
+* Compatibility Checked : WooCommerce 4.6.2
+
+= 6.0.0 (2020-11-06) =
+* Added: TSV file format for Amazon Bed&Amp
+* Added: Yoast category path with comma separator
+* Enhanced: Improve Google Auto-sync destination issue
+* Fixed: Switch feed type on merchant switch
+* Compatibility Checked : WordPress 5.5.3
+
+= 5.42 (2020-10-22) =
+* Added: External product support
+* Fixed: Variation name attribute issue - previously it was fetching slug rather than name
+* Fixed: Missing image issue on Settings page
+* Fixed: Missing value for Category mapping
+* Compatibility Checked : WooCommerce 4.6.1
+
+= 5.41 (2020-10-08) =
+* Fixed: Facebook availability attribute
+* Fixed: Category without parents was not fetched while creating feed
+* Fixed: Variable parent product got removed on cron update before
+* Fixed: Products in backorder will show out of stock on feed
+* Updated: Polish translation
+
+
+= 5.40 (2020-09-21) =
+* Added: Support for private products
+* Added: Cache frequent queries
+* Added: Option to purge cache for WPFM
+* Added: Custom attribute added to fetch prices (regular price & sale price) from db - without the help of WC functions
+* Updated: Pinterest required fields
+* Fixed: Facebook availability attribute mapping
+* Fixed: Custom filter bug. Previously no custom filter can be added if all filter rules are deleted
+* Compatibility Checked : WooCommerce 4.5.2
+
+
+= 5.39 (2020-09-01) =
+* Fixed: Category order
+* Added: Shopee template
+* Compatibility Checked : WooCommerce 4.4.1
+
+= 5.38 (2020-08-12) =
+* Fixed: Glami items wrapper changed to SHOP
+* Compatibility Checked : WordPress 5.5
+
+= 5.37 (2020-08-11) =
+* Fixed: Glami attributes
+* Fixed: JS issue for adding new attributes
+* Added: All images & parent product image attribute
+* Compatibility Checked : WooCommerce 4.3.2
+
+= 5.36 (2020-07-16) =
+* Added: Option to add Regular price excl. tax, Price excl. tax, Sales price excl. tax value
+* Added: Decode url sanitization for value
+* Fixed: Marktplaats template attributes
+* Fixed: Facebook CSV - added comma if value is empty
+* Compatibility Checked : WooCommerce 4.3.0
+
+= 5.35 (2020-07-01) =
+* Feature: Weekly interval
+* Added: MyDeal template
+* Added: Category path
+* Added: Add ajax on fetching category/tags
+* Updated: Google client library
+
+
+= 5.34 (2020-06-10) =
+* Fixed: Duplicate product issue on custom filter
+* Feature: Default variation support
+* Added: Webgains template
+* Updated: Trovaprezzi attribute fields
+* Updated: Translation
+
+
+= 5.33 (2020-06-03) =
+* Updated: Vivino attribute fields
+* Compatibility Checked : WooCommerce 4.2.0
+
+= 5.32 (2020-06-01) =
+* Fixed: Added extra fields for Amazon seller
+* Fixed: Feed update date
+* Updated: Category mapping dropdown UI
+* Updated: Feed creation capability for shop_manager
+* Updated: Kelkoo template
+* Updated: Vivino template
+* Added: Lyst template
+* Added: Listupp template
+* Added: Hertie template
+* Added: Etsy template
+
+
+= 5.31 (2020-05-21) =
+* Fixed: Updated attribute list for Amazon Seller
+* Fixed: Yoast seo title and description for variation product
+* Added: Option to include/exclude hidden products
+* Added: Glami template
+* Added: Fashiola template
+* Added: Emarts template
+* Added: Epoq template
+* Added: Grupo Zap template
+* Added: Emag template
+* Compatibility Checked : WooCommerce 4.1.1
+
+
+= 5.30 (2020-05-15) =
+* Fixed: Remove underscore from custom attributes for CSV
+
+= 5.29 (2020-05-14) =
+* Fixed: Fixed some warning while creating feed
+* Fixed: Zalando template
+* Added: Datatrics template
+* Added: Delta Projects template
+* Added: Drezzy template
+* Added: Domodi template
+* Added: Doofinder template
+* Added: Homebook.pl template
+* Added: Home Deco template
+* Compatibility Checked : WooCommerce 4.1.0
+
+
+= 5.28 (2020-05-06) =
+* Fixed: Yoast seo title and description
+* Fixed: Duplicate product on feed
+* Fixed: Bug on add new attribute event
+* Added: 123i template
+* Added: Clubic template
+* Added: Criteo template
+* Added: Shopalike template
+* Added: Compartner template
+* Added: Adtraction template
+* Added: Admitad template
+* Added: Bloomville template
+
+
+= 5.27 (2020-04-24) =
+* Fixed: CDATA Sanitization
+* Fixed: Custom field mapping
+* Fixed: empty sale_price
+* Added: Rakuten marketing template
+* Added: Pricefalls template
+* Added: Google shopping actions template
+
+= 5.26 (2020-04-20) =
+* Fixed: Category filter issue for scheduled feed
+
+= 5.25 (2020-04-15) =
+* Fixed: Zalando template issue
+
+= 5.24 (2020-04-14) =
+* Fixed: Category mapping bug while adding new category
+* Fixed: Pinterest CSV feed generation
+* Feature: WooCommerce Composite product support
+* Feature: WooCommerce Bundle product support
+* Feature: Custom category mapping
+* Feature: Yoast - SEO title, Meta description & Primary category support
+* Added: Incurvy template
+* Added: Adcrowd template
+* Added: Indeed template
+* Added: Jobbrid template
+* Added: Joblift template
+* Added: Jobboard template
+* Added: Vivino template
+* Added: Kauftipp template
+* Added: KuantoKusta template
+
+
+= 5.23 (2020-04-03) =
+* Feature: Facebook pixel support
+* Updated: Google Manufacturer Center attributes
+* Updated: Instagram feed attributes
+* Updated: Pinterest feed attributes
+* Added: Logicsale template
+* Added: Google Dynamic Display Ads template
+* Added: Pronto template
+* Added: Awin template
+
+
+= 5.22 (2020-03-26) =
+* Feature: UTM parameter support
+* Feature: g:shipping attribute support for Google
+* Feature: g:tax attribute support for Google
+* Added: Kwanko template
+* Added: Le Dénicheur template
+* Added: Les Bonnes Bouilles template
+* Added: Lions Home template
+* Added: Locamo template
+
+
+= 5.21 (2020-03-20) =
+* Bug fixed: Missing g:id on Google merchant
+
+
+= 5.20 (2020-03-19) =
+* Added: HomeTiger template
+* Added: Jurkjes.nl template
+* Added: Kiesproduct template
+* Added: Kiyoh template
+* Added: Kompario template
+* Bug fixed: Category filter issue
+* Bug fixed: Google merchant authentication issue
+* Improved: Feed processing query
+
+
+= 5.19 (2020-03-13) =
+* Added: Family Blend template
+* Added: Hitmeister template
+* Added: Lazada template
+* Added: GetPrice.com.au template
+* Compatibility Checked : WooCommerce 4.0.0
+
+
+= 5.18 (2020-03-09) =
+* Added: Fyndiq template
+* Added: Fasha template
+* Added: Real.de template
+* Added: Hintaseuranta template
+
+
+= 5.17 (2020-02-27) =
+* Bug Fix: Update category path
+* Added: Hardware template
+* Added: Hatch template
+* Added: Hintaopas template
+
+= 5.16 (2020-02-06) =
+* Added: Geizhals template
+* Added: Geizkragen template
+* Added: Giftboxx template
+* Added: Go Banana template
+* Added: Goed Geplaatst template
+* Added: Grosshandel template
+
+
+= 5.15.1 (2020-01-31) =
+* Added: Translation support added for Greek
+* Updated: Other translation updated
+
+
+= 5.15 (2020-01-30) =
+* Added: Cherchons template
+* Added: Boetiek B.V template
+* Added: Comparer template
+* Added: Converto template
+* Added: Coolshop template
+* Added: Commerce Connector template
+* Added: Everysize template
+* Added: Encuentraprecios template
+
+
+= 5.14 (2020-01-23) =
+* Added: NewEgg template
+* Added: Bike Exchange template
+* Added: Cenowarka template
+* Added: Cezigue template
+* Added: Check24 template
+* Added: Clang template
+* Compatibility Checked : WooCommerce 3.9.0
+
+= 5.13 (2020-01-16) =
+* Added: Moebel template
+* Added: Restposten template
+* Added: Sparmedo template
+* Added: Whiskymarketplace template
+
+
+= 5.12 (2020-01-09) =
+* Added: Jet.com template
+* Added: Bonanza template
+* Added: Medizinfuchs.de template
+* Added: Adcell template
+* Added: Adform template
+* Added: Stylefruits.fr template
+
+
+= 5.11 (2020-01-02) =
+* Added: CJ Affiliate template
+* Added: Guenstiger template
+* Added: Hood template
+* Added: Livingo template
+
+= 5.10 (2019-12-26) =
+* Added: SnapChat template
+* Added: Yahoo/Verizon Dynamic Product Ads template
+* Added: Kelkoo Group Network template
+* Added: Target template
+* Added: Pepperjam template
+
+= 5.9 (2019-12-19) =
+* Added: Google Merchant Promotions template
+* Added: Walmart template
+
+= 5.8 (2019-12-12) =
+* Added: Kleding template
+* Added: Ladenzeile template
+* Added: Preis template
+* Added: Winesearcher template
+
+= 5.7 (2019-12-06) =
+* Bug Fix: Category filter issue
+
+= 5.6 (2019-12-05) =
+* Bug Fix: Adding custom field mapping if mapping is empty
+* Added: Otto template
+* Added: Sears template
+* Added: Ammoseek template
+* Added: Fnac template
+* Added: Zalando template
+* Added: Pixmania template
+* Added: Coolblue template
+* Added: Shopmania template
+
+
+= 5.5 (2019-11-28) =
+* Bug Fix: Feed format TXT (unexpected string)
+* Feature: Add dynamic custom attribute field
+* Added: Google Local Products Inventory template
+* Added: Pricespy/Prisjkat template
+* Added: Crowdfox template
+* Added: Powerreviews template
+* Added: Trovaprezzi template
+* Added: Zbozi template
+* Added: Liveintent template
+* Added: Skroutz template
+* Compatibility Checked : WooCommerce 3.8.1
+
+
+= 5.4 (2019-11-26) =
+* Bug Fix: Product count issue
+* Bug Fix: Custom filter for variable product
+
+
+= 5.3 (2019-11-20) =
+* Bug Fix: Google Merchant authorization issue
+* Bug Fix: Exclude variable products if selected
+* Bug Fix: Meta field style issues
+* Added: Google Local Products template
+* Added: RSS template
+* Added: Ciao template
+* Feature: Product count
+* Feature: Add option to stop batch processing if stuck
+
+= 5.2 (2019-11-14) =
+* Added: Google Dynamic Search Ads template
+* Added: Pinterest template
+* Added: Instagram template
+* Added: Fashionchick template
+* Added: Ceneo template
+* Added: Choozen template
+* Feature: Product feed log
+
+
+= 5.1 (2019-11-12) =
+* Bug Fix: Greater than and less than filter for custom filter
+
+= 5.0 (2019-11-07) =
+* Upgrade custom filter rules
+* Added: Rakuteen template added
+* Added: Idealo template added
+* Added: Pricemasher template added
+* Added: Pricesearcher template added
+* Bug Fix: WPML Compatibility with taxonomy filter
+* Compatibility Checked : WooCommerce 3.8.0
+
+
+= 4.6 (2019-10-31) =
+* Added: OR filter
+* Increase feed creation page load speed
+* Update google_product_category list
+
+
+= 4.5 (2019-10-24) =
+* Added: Kelkoo.nl template added
+* Added: Uvinum template added
+* Added language support for Czech, Dutch, Polish, Danish, Finnish & Portuguese (Portugal)
+* Compatibility Added : Conditional Discounts for WooCommerce by Orion
+* Compatibility Checked : WordPress 5.3
+
+
+= 4.4 (2019-10-17) =
+* Added: New feed attribute (product_cats_path) Product Categories with separator (>)
+* Added: Heureka template added
+* Added: Koopkeus template added
+* Added: Scoupz template added
+* Added: CDiscount template added
+* Compatibility Checked : WordPress 5.2.4
+
+= 4.3 (2019-10-11) =
+* Added: Sooqr template added
+* Compatibility Checked : WooCommerce 3.7.1
+
+= 4.2 (2019-10-03) =
+* Added: Yandex template added
+* Added: Tweakers template added
+* Added: Spartoo.nl template added
+* Added: Kieskeurig template added
+
+= 4.1 (2019-09-26) =
+* Added: Custom batch size
+* Added: Twenga.nl template added
+* Added: Marktplaats template added
+* Added: Beslist template added
+* Added: Daisycon template added
+* Fixed: Duplicate products on schedule update
+
+= 4.0 (2019-09-19) =
+* Enhancement: Fix UI
+* Added: pricerunner.com template added
+* Added: billiger.de template added
+* Added: vergelijk.nl template added
+* Fixed: FaceBook CSV format
+
+= 3.6 (2019-09-06) =
+* Added: Add timer when feed is creating
+* Bug Fix: sale_price empty value
+* Compatibility Checked : WordPress 5.2.3
+
+= 3.5 (2019-08-29) =
+* Design Fix: Show hierarchical category mapping
+* Bug Fix: Optin message
+* Compatibility Checked : WooCommerce 3.7.0
+
+= 3.4 (2019-08-08) =
+* Added new filter rules for products with no featured image
+
+= 3.3 (2019-08-02) =
+* Bug Fix: Review notices
+
+= 3.2 (2019-07-04) =
+* Add option to add product variation name on title if more than two variation
+* Compatibility Checked : WooCommerce 3.6.5
+
+= 3.1 (2019-05-27) =
+* Updated Google & Facebook attributes
+* Fixed: PHP warnings on feed creation
+* Fixed: Custom filtering
+* Compatibility Checked : WordPress 5.2.2
+
+= 3.0 (2019-06-20) =
+* Removed Freemious SDK
+* Added shipping_class support
+* Improved category mapping
+
+= 2.2.7 (2019-05-30) =
+* Fixed: Custom attribute mapping for Facebook
+* Bug Fix: Some notices and warnings on feed generation
+* Compatibility Checked: WordPress 5.2.1
+* Compatibility Checked: WooCommerce 3.6.4
+
+
+= 2.2.6 (2019-05-16) =
+* Fixed: UI loading conflict with themify builder
+* Added: Missing google categories
+* Added: CSV format for Facebook
+
+
+= 2.2.5 (2019-05-02) =
+* Bug Fix: Fix feed schedule update for variation product settings
+* Added CSV format
+
+= 2.2.4 (2019-04-18) =
+* Improve category mapping UI
+* Added CSV format
+
+= 2.2.3.3 (2019-04-12) =
+* Bug Fix: Compatible with latest materialize css update
+* Bug Fix: Compatible with loco translate
+
+= 2.2.3.2 (2019-03-26) =
+* Bug Fix: Fix custom attribute mapping for Google merchant
+
+= 2.2.3.1 (2019-02-28) =
+* Security patch for freemius
+
+= 2.2.3 (2019-02-21) =
+* Added WPML support
+
+= 2.2.2 (2019-02-19) =
+* Added language support for Arabic, French, Deutsch, Russian
+
+= 2.2.1 (2018-12-18) =
+* Bug Fix: Solve g:price value for Google Merchant
+
+= 2.2.0 (2018-11-29) =
+* Send feed to google merchant
+
+= 2.1.0 (2018-11-15) =
+* Added feature to exclude parent from group product
+
+= 2.0.3 (2018-11-08) =
+* Added feature to exclude parent from product
+
+= 2.0.2 (2018-09-28) =
+* Bug Fix: Solve g:price value for Google Merchant
+
+= 2.0.1 (2018-09-27) =
+* Added option to include/exclude variable products
+
+= 2.0.0 (2018-09-20) =
+* Added schedule update
+
+= 1.3.2 (2018-08-25) =
+* Bug fix: Solve merchant category mapping for variable products
+
+= 1.3.1 (2018-07-20) =
+* Bug fix: Solve problem with product variations
+
+= 1.3.0 (2018-07-13) =
+* Added batch processing
+
+= 1.2.7 (2018-07-06) =
+* Fixed UI issues
+* Fixed custom attributes mapping to feed
+
+= 1.2.6 (2018-07-03) =
+* Bug Fixes
+
+= 1.2.5 (2018-06-29) =
+* Added new merchant (AdRoll.com)
+* Added user on-boarding page
+* Added dynamic identifier_exists value for Google feed
+
+= 1.2.4 (2018-06-11) =
+* Added new merchant (Google Adwords)
+* Wordpress Multilanguage support: Spanish (Spain), Afrikaans, Chinese (China), Portuguese (Brazil)
+
+= 1.2.3 (2018-06-09) =
+* Added new merchant (Shopping)
+
+= 1.2.2 (2018-05-19) =
+* Added new merchant (Shopzilla)
+* Added google category auto suggestion
+
+= 1.2.1 (2018-05-12) =
+* Added product filter option
+
+= 1.2.0 (2018-05-06) =
+* google_product_category added to Facebook
+
+= 1.1.10 (2018-05-07) =
+* Fixed: Sale Price will not be visible if empty(For Google Merchant)
+
+= 1.1.9 (2018-04-23) =
+* Added Support for WooCommerce custom field
+* Added new merchant - Facebook
+
+= 1.1.8 (2017-12-27) =
+* Added Category Mapping Feature
+
+= 1.1.7 (2017-12-04) =
+* New merchant - Become
+* yith brand attribute support
+* custom template
+
+= 1.1.6 (2017-10-29) =
+* Compatible with php7
+* Category Mapping
+
+= 1.1.5 (2017-09-15) =
+* Added the difference between premium and free version
+
+= 1.1.4 (2017-08-29) =
+* Added new merchants (bing, eBay, kelkoo, nextag, pricegrabber)
+* Provide support for both xml and text feed
+
+= 1.1.3 (2017-07-03) =
+* Product description issue for variable products
+* Update dropdown type for merchants
+
+= 1.1.2 (2017-05-25) =
+* Normalize windows path for ajax
+
+= 1.1.1 (2017-04-04) =
+* Fixed issue on other pages causing by scripts
+
+= 1.1.0 (2017-03-31) =
+* New feature: Feed customization with custom attributes and values.
+* Improves UI
+* Bug fixes
+
+= 1.0.2 (2017-03-30) =
+* Fix issue with feed attributes values.
+
+= 1.0.1 (2017-02-10) =
+* Optimize to deal with large numbers of products.
+
+= 1.0.0 (2017-02-07) =
+* Initial version with support for Google Merchant

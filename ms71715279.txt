@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "pethamper.co.uk",
+  "Id": "70fd0aa2-073d-4a14-9b4f-09a7ba6450d6"
+}

@@ -1,0 +1,26 @@
+span.abp_add_cat_discount {
+    background: #00881d;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+span.abp_remove_cat_discount {
+    width: 30px;
+    height: 30px;
+    background: #d00;
+    color: #fff;
+    line-height: 30px;
+    cursor: pointer;
+}
+.abp_categories_discounts table.form-table {
+    margin: 15px;
+}
+p.abp_submit_subscription_msg {
+    display: none;
+    color: #d00;
+}
+.abp_spinner {
+    display: none;
+}

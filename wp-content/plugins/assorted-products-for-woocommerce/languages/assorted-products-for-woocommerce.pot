@@ -1,0 +1,436 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-18 11:43+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: assorted-products-for-woocommerce.php:67
+msgid ""
+"WooCommerce Assorted Products needs WooCommerce to be installed and active."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:18
+#: includes/class-abp-admin-settings.php:23
+msgid "Assorted Product"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:29
+msgid "Extra Product Options"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:45
+msgid "Pricing Type"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:46
+msgid "Select Pricing Type"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:49
+msgid "Fixed Regular Price"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:50
+msgid "Per item price"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:51
+msgid "Per product + bundle price"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:60
+msgid "Product Layout"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:61
+msgid "Select layout of product items display."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:64
+msgid "Left Side Items Listings"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:65
+msgid "Right Side Items Listings"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:74
+msgid "Bundle Minimum Products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:78
+msgid "Enter minimum number of product to be added for a bundle."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:90
+msgid "Bundle Maximum Products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:94
+msgid "Enter maximum number of product to be added for a bundle."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:102
+msgid "Bundle Layout Columns"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:105
+msgid "Select bundle products columns"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:128
+msgid "Choose Categories"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:133
+#: includes/class-abp-admin-settings.php:158
+msgid ""
+"Choose product categories for a bundle product to allow product items in the "
+"search."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:154
+msgid "Choose Products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:163
+msgid "Search for products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:173
+msgid "All Products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:174
+msgid ""
+"Allow customers to create the bundle from all products available in the shop."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:182
+msgid "Allow Tax Calculation?"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:183
+msgid "Enable tax calculation for box products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:191
+msgid "Per Item Shipping?"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:192
+msgid "Enable per item shipping for box products"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:199
+msgid "Filter Type"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:202
+msgid "Select the filter type."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:204
+msgid "Select Dropdown Field"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:205
+msgid "Radio Button Fields"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:206
+msgid "Checkbox Button Fields"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:216
+msgid "Enable Message Field"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:217
+msgid "Enable a text field to collect necessary information."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:224
+msgid "Field Label"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:226
+#: includes/class-abp-frontend-cart.php:34
+#: includes/class-abp-frontend-cart.php:46 includes/class-abp-frontend.php:221
+msgid "Message"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:228
+msgid "Enter field Label"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:234
+msgid "Field Type"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:236
+msgid "Select field type."
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:239
+msgid "Text Field"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:240
+msgid "Textarea Field"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:248
+msgid "Field requried?"
+msgstr ""
+
+#: includes/class-abp-admin-settings.php:249
+msgid "Enable a text field to be required."
+msgstr ""
+
+#: includes/class-abp-controller.php:16 includes/class-abp-controller.php:216
+msgid "Something is wrong please try again."
+msgstr ""
+
+#: includes/class-abp-controller.php:155 includes/class-abp-settings.php:95
+msgid "Add to bundle"
+msgstr ""
+
+#: includes/class-abp-controller.php:182
+#: includes/class-abp-product-type.php:22
+#: includes/class-abp-product-type.php:23 includes/class-abp-settings.php:75
+msgid "Read More"
+msgstr ""
+
+#: includes/class-abp-controller.php:194 includes/class-abp-settings.php:85
+msgid "Load More"
+msgstr ""
+
+#: includes/class-abp-controller.php:206
+msgid "No results found please try again!"
+msgstr ""
+
+#: includes/class-abp-controller.php:220
+msgid "Product can not be found!"
+msgstr ""
+
+#: includes/class-abp-frontend.php:81 includes/class-abp-frontend.php:95
+msgid "All categories"
+msgstr ""
+
+#: includes/class-abp-frontend.php:110 includes/class-abp-settings.php:115
+msgid "Search"
+msgstr ""
+
+#: includes/class-abp-frontend.php:112 includes/class-abp-settings.php:125
+msgid "Reset Filters"
+msgstr ""
+
+#: includes/class-abp-frontend.php:114 includes/class-abp-settings.php:105
+msgid "Order Details"
+msgstr ""
+
+#: includes/class-abp-frontend.php:120
+msgid "Search here"
+msgstr ""
+
+#: includes/class-abp-frontend.php:195 includes/class-abp-product-type.php:32
+#: includes/class-abp-settings.php:65
+msgid "Add to cart"
+msgstr ""
+
+#: includes/class-abp-frontend.php:266 includes/class-abp-settings.php:135
+msgid "Product has been added to bundle."
+msgstr ""
+
+#: includes/class-abp-frontend.php:268 includes/class-abp-settings.php:145
+msgid "You can not add more products."
+msgstr ""
+
+#: includes/class-abp-product-type.php:28
+#, php-format
+msgid "View Products &ldquo;%s&rdquo; and add to your cart"
+msgstr ""
+
+#: includes/class-abp-product-type.php:28
+#, php-format
+msgid "Read more about &ldquo;%s&rdquo;"
+msgstr ""
+
+#: includes/class-abp-settings.php:12
+msgid "Assorted Products"
+msgstr ""
+
+#: includes/class-abp-settings.php:34
+msgid "Assorted Products - Settings"
+msgstr ""
+
+#: includes/class-abp-settings.php:42
+msgid "Per Page Items"
+msgstr ""
+
+#: includes/class-abp-settings.php:47
+msgid "The number of product items per page."
+msgstr ""
+
+#: includes/class-abp-settings.php:52
+msgid "Hide Search Filters"
+msgstr ""
+
+#: includes/class-abp-settings.php:57
+msgid "Enable this option to hide filters on product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:62
+msgid "Add To Cart Button Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:67
+msgid ""
+"The Add to cart button text for assorted products on single product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:72
+msgid "Read More Button Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:77
+msgid ""
+"The Add to cart button text for assorted products on shop & archive pages."
+msgstr ""
+
+#: includes/class-abp-settings.php:82
+msgid "Load More Button Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:87
+msgid "The load more button text for assorted products."
+msgstr ""
+
+#: includes/class-abp-settings.php:92
+msgid "Add To Bundle Button Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:97
+msgid "The Add to bundle text for product items on single product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:102
+msgid "Order Details Heading Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:107
+msgid ""
+"The Order Details heading text for product items on single product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:112
+msgid "Search Filters Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:117
+msgid "The Search filters button text on single product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:122
+msgid "Reset Filters Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:127
+msgid "The Reset filters button text on single product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:132
+msgid "Product Added To Bundle Text"
+msgstr ""
+
+#: includes/class-abp-settings.php:137
+msgid "The text when an item is added to bundle."
+msgstr ""
+
+#: includes/class-abp-settings.php:142
+msgid "Max Items Added Error"
+msgstr ""
+
+#: includes/class-abp-settings.php:147
+msgid "The error text when maximum items added to bundle."
+msgstr ""
+
+#: includes/class-abp-settings.php:152
+msgid "Assorted Products Short Description"
+msgstr ""
+
+#: includes/class-abp-settings.php:157
+msgid "Show assorted products short description on product page."
+msgstr ""
+
+#: includes/class-abp-settings.php:162
+msgid "Short Description Position"
+msgstr ""
+
+#: includes/class-abp-settings.php:167
+msgid "After Price"
+msgstr ""
+
+#: includes/class-abp-settings.php:169
+msgid "Before Price"
+msgstr ""
+
+#: includes/class-abp-settings.php:171
+msgid "After Product Title"
+msgstr ""
+
+#: includes/class-abp-settings.php:173
+msgid "Before Product Title"
+msgstr ""
+
+#: includes/class-abp-settings.php:175
+msgid "After Product Items"
+msgstr ""
+
+#: includes/class-abp-settings.php:177
+msgid "After Order Details"
+msgstr ""
+
+#: includes/class-abp-settings.php:182
+msgid "On Click Bundle Items Title & Image Link"
+msgstr ""
+
+#: includes/class-abp-settings.php:185
+msgid ""
+"Redirect to product item's single product page on click of product item's "
+"title & image link."
+msgstr ""
+
+#: includes/class-abp-settings.php:188
+msgid "Open quick view popup on click of product item's title & image link."
+msgstr ""
+
+#: includes/class-abp-settings.php:191
+msgid "Add item to bundle on click of product item's title & image link."
+msgstr ""
+
+#: includes/class-abp-settings.php:194
+msgid "Disable any action on click of product item's title & image link."
+msgstr ""
+
+#: includes/class-abp-settings.php:200
+msgid "Remove Add To Cart Button"
+msgstr ""
+
+#: includes/class-abp-settings.php:205
+msgid "Remove add to cart button in quick view for the assorted product items."
+msgstr ""

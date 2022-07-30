@@ -1,0 +1,4 @@
+0000.000 (1) Opened log file at time: Mon, 25 Jan 2021 22:46:36 +0000 on http://pethamper.co.uk
+0000.001 (1) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 2.13.11.22 WP: 5.6 PHP: 7.3.26 (fpm-fcgi, Linux vps-60623c.stackvps.com 3.10.0-1160.el7.x86_64 #1 SMP Mon Oct 19 16:18:59 UTC 2020 x86_64) MySQL: 5.7.33 WPLANG: en_GB Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 768M (used: 193.6M | 227M) multisite: N openssl: OpenSSL 1.1.1i  8 Dec 2020 mcrypt: N LANG:  ZipArchive::addFile: N
+0000.073 (1) Free space on disk containing Updraft's temporary directory: 71438.2 MB
+0000.075 (1) This backup task (cb08272a4333) is either complete or began over 2 days ago: ending (1611614796.9642, ) (existing jobdata keys: )
