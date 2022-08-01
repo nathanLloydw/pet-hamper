@@ -1231,7 +1231,6 @@ if ( ! function_exists( 'woocommerce_template_loop_category_link_close' ) ) {
 }
 
 if ( ! function_exists( 'woocommerce_taxonomy_archive_description' ) ) {
-
 	/**
 	 * Show an archive description on taxonomy archives.
 	 */
@@ -1239,12 +1238,25 @@ if ( ! function_exists( 'woocommerce_taxonomy_archive_description' ) ) {
 		if ( is_product_taxonomy() && 0 === absint( get_query_var( 'paged' ) ) ) {
 			$term = get_queried_object();
 
-			if ( $term && ! empty( $term->description ) ) {
-				echo '<div class="term-description">' . wc_format_content( wp_kses_post( $term->description ) ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			if ( $term ) {
+				/**
+				 * Filters the archive's raw description on taxonomy archives.
+				 *
+				 * @since 6.7.0
+				 *
+				 * @param string  $term_description Raw description text.
+				 * @param WP_Term $term             Term object for this taxonomy archive.
+				 */
+				$term_description = apply_filters( 'woocommerce_taxonomy_archive_description_raw', $term->description, $term );
+
+				if ( ! empty( $term_description ) ) {
+					echo '<div class="term-description">' . wc_format_content( wp_kses_post( $term_description ) ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
 			}
 		}
 	}
 }
+
 if ( ! function_exists( 'woocommerce_product_archive_description' ) ) {
 
 	/**
@@ -1579,7 +1591,7 @@ function wc_get_gallery_image_html( $attachment_id, $main_image = false ) {
 				'data-large_image'        => esc_url( $full_src[0] ),
 				'data-large_image_width'  => esc_attr( $full_src[1] ),
 				'data-large_image_height' => esc_attr( $full_src[2] ),
-				'class'                   => esc_attr( $main_image ? 'wp-post-image' : 'wp-secondary-image' ),
+				'class'                   => esc_attr( $main_image ? 'wp-post-image' : '' ),
 			),
 			$attachment_id,
 			$image_size,
@@ -1587,7 +1599,7 @@ function wc_get_gallery_image_html( $attachment_id, $main_image = false ) {
 		)
 	);
 
-	return '<div data-thumb="' . esc_url( $thumbnail_src[0] ) . '" data-thumb-alt="' . esc_attr( $alt_text ) . '" class="woocommerce-product-gallery__image">' . $image . '</div>';
+	return '<div data-thumb="' . esc_url( $thumbnail_src[0] ) . '" data-thumb-alt="' . esc_attr( $alt_text ) . '" class="woocommerce-product-gallery__image"><a href="' . esc_url( $full_src[0] ) . '">' . $image . '</a></div>';
 }
 
 if ( ! function_exists( 'woocommerce_output_product_data_tabs' ) ) {
@@ -2747,6 +2759,10 @@ if ( ! function_exists( 'woocommerce_form_field' ) ) {
 
 		$args = wp_parse_args( $args, $defaults );
 		$args = apply_filters( 'woocommerce_form_field_args', $args, $key, $value );
+
+		if ( is_string( $args['class'] ) ) {
+			$args['class'] = array( $args['class'] );
+		}
 
 		if ( $args['required'] ) {
 			$args['class'][] = 'validate-required';

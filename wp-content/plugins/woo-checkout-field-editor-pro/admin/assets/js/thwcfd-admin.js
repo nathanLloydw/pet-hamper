@@ -1052,17 +1052,6 @@ var thwcfd_settings = (function($, window, document) {
 	  	});	
 	}
 
-	$( document ).on( 'click', '.thpladmin-notice .notice-dismiss', function() {
-		var wrapper = $(this).closest('div.thpladmin-notice');
-		var nonce = wrapper.data("nonce");
-		var data = {
-			thwcfd_review_nonce: nonce,
-			action: 'hide_thwcfd_admin_notice',
-		};
-		$.post( ajaxurl, data, function() {
-
-		});
-	});   				
 	return {
 		selectAllFields : select_all_fields,
 		removeSelectedFields : remove_selected_fields,
