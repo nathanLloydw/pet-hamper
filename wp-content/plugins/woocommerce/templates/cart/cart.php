@@ -44,40 +44,32 @@ do_action( 'woocommerce_before_cart' ); ?>
             if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
                 $product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
                 ?>
-                <tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); echo $cart_item['abp_assorted_product_parent_id'] ? ' bundled_table_item' : ''; ?>">
+                <tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
                     <td class="product-remove">
                         <?php
-                        if ($cart_item['bundled_by'] || $cart_item['abp_assorted_product_parent_id'])
-                        {
-                            echo '<i class="fa-solid fa-angle-right"></i>';
-                        }
-                        else
-                        {
-                            echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                                'woocommerce_cart_item_remove_link',
-                                sprintf(
-                                    '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
-                                    esc_url(wc_get_cart_remove_url($cart_item_key)),
-                                    esc_html__('Remove this item', 'woocommerce'),
-                                    esc_attr($product_id),
-                                    esc_attr($_product->get_sku())
-                                ),
-                                $cart_item_key
-                            );
-                        }
-
+                        echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            'woocommerce_cart_item_remove_link',
+                            sprintf(
+                                '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
+                                esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
+                                esc_html__( 'Remove this item', 'woocommerce' ),
+                                esc_attr( $product_id ),
+                                esc_attr( $_product->get_sku() )
+                            ),
+                            $cart_item_key
+                        );
                         ?>
                     </td>
 
                     <td class="product-thumbnail">
                         <?php
-                        $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
+                        $thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 
-                        if (!$product_permalink) {
+                        if ( ! $product_permalink ) {
                             echo $thumbnail; // PHPCS: XSS ok.
                         } else {
-                            printf('<a href="%s">%s</a>', esc_url($product_permalink), $thumbnail); // PHPCS: XSS ok.
+                            printf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $thumbnail ); // PHPCS: XSS ok.
                         }
                         ?>
                     </td>
@@ -102,18 +94,11 @@ do_action( 'woocommerce_before_cart' ); ?>
                         ?>
                     </td>
 
-                    <?php
-                    if ($cart_item['bundled_by'] || $cart_item['abp_assorted_product_parent_id'])
-                    {
-                        echo '<td class="mob_hidden"></td>';
-                    }
-                    else
-                    {
-                        echo '<td class="product-price" data-title="Price">';
-                        echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // PHPCS: XSS ok.
-                        echo '</td>';
-                    }
-                    ?>
+                    <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'woocommerce' ); ?>">
+                        <?php
+                        echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); // PHPCS: XSS ok.
+                        ?>
+                    </td>
 
                     <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
                         <?php
@@ -136,18 +121,12 @@ do_action( 'woocommerce_before_cart' ); ?>
                         echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); // PHPCS: XSS ok.
                         ?>
                     </td>
-                    <?php
-                    if ($cart_item['bundled_by'] || $cart_item['abp_assorted_product_parent_id'])
-                    {
-                        echo '<td class="mob_hidden"></td>';
-                    }
-                    else
-                    {
-                        echo '<td class="product-subtotal" data-title="Subtotal">';
-                        echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // PHPCS: XSS ok.
-                        echo '</td>';
-                    }
-                    ?>
+
+                    <td class="product-subtotal" data-title="<?php esc_attr_e( 'Subtotal', 'woocommerce' ); ?>">
+                        <?php
+                        echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); // PHPCS: XSS ok.
+                        ?>
+                    </td>
                 </tr>
                 <?php
             }
@@ -161,11 +140,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
                 <?php if ( wc_coupons_enabled() ) { ?>
                     <div class="coupon">
-                        <label for="coupon_code">
-                            <?php esc_html_e( 'Coupon:', 'woocommerce' ); ?>
-                        </label>
-                        <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" />
-                        <button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?></button>
+                        <label for="coupon_code"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" /> <button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?></button>
                         <?php do_action( 'woocommerce_cart_coupon' ); ?>
                     </div>
                 <?php } ?>
