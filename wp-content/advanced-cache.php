@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'WP_ROCKET_ADVANCED_CACHE', true );
 
-$rocket_path        = '/home/ploi/pethamper.co.uk/wp-content/plugins/wp-rocket/';
-$rocket_config_path = '/home/ploi/pethamper.co.uk/wp-content/wp-rocket-config/';
-$rocket_cache_path  = '/home/ploi/pethamper.co.uk/wp-content/cache/wp-rocket/';
+$rocket_path        = '/Users/n.williams/Projects/pet-hamper/wp-content/plugins/wp-rocket/';
+$rocket_config_path = '/Users/n.williams/Projects/pet-hamper/wp-content/wp-rocket-config/';
+$rocket_cache_path  = '/Users/n.williams/Projects/pet-hamper/wp-content/cache/wp-rocket/';
 
 if (
 	version_compare( phpversion(), '7.1', '<' )
