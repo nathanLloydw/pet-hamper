@@ -34,7 +34,7 @@ class THWCFD_Admin {
 			$suffix = $debug_mode ? '' : '.min';
 			
 			$this->enqueue_styles($suffix);
-			$this->enqueue_scripts($suffix);
+			$this->enqueue_scripts($suffix);		
 		}
 	}
 	
@@ -139,9 +139,9 @@ class THWCFD_Admin {
 		}
 
 		$current_screen = get_current_screen();
-		if($current_screen->id !== 'woocommerce_page_checkout_form_designer'){
-			return;
-		}
+		// if($current_screen->id !== 'woocommerce_page_checkout_form_designer'){
+		// 	return;
+		// }
 
 		$thwcfd_reviewed = get_user_meta( get_current_user_id(), 'thwcfd_reviewed', true );
 		if($thwcfd_reviewed){
@@ -149,8 +149,8 @@ class THWCFD_Admin {
 		}
 
 		$now = time();
-		$dismiss_life  = apply_filters('thwcfd_dismissed_review_request_notice_lifespan', 3 * MONTH_IN_SECONDS);
-		$reminder_life = apply_filters('thwcfd_skip_review_request_notice_lifespan', 1 * DAY_IN_SECONDS);
+		$dismiss_life  = apply_filters('thwcfd_dismissed_review_request_notice_lifespan', 6 * MONTH_IN_SECONDS);
+		$reminder_life = apply_filters('thwcfd_skip_review_request_notice_lifespan', 7 * DAY_IN_SECONDS);
 		
 		$is_dismissed   = get_user_meta( get_current_user_id(), 'thwcfd_review_dismissed', true );
 		$dismisal_time  = get_user_meta( get_current_user_id(), 'thwcfd_review_dismissed_time', true );
@@ -176,7 +176,95 @@ class THWCFD_Admin {
 			update_option('thwcfd_since', $now, 'no' );
 		}
 
-		$this->render_review_request_notice();
+		$render_time = apply_filters('thwcfd_show_review_banner_render_time' , 7 * DAY_IN_SECONDS);
+		$render_time = $thwcfd_since + $render_time;
+		if($now > $render_time ){
+			$this->render_review_request_notice();
+		}
+		
+	}
+
+	public function review_banner_custom_css(){
+
+		?>
+        <style>
+            .thwcfd-review-wrapper {
+			    padding: 15px 28px 26px 10px !important;
+			    margin-top: 35px;
+			}
+			.thwcfd-review-image {
+			    float: left;
+			}
+			.thwcfd-review-content {
+			    padding-right: 180px;
+			}
+			.thwcfd-review-content p {
+			    padding-bottom: 14px;
+			}
+			.thwcfd-notice-action{ 
+			    padding: 8px 18px 8px 18px;
+			    background: #fff;
+			    color: var(--primary-bg-color);
+			    border-radius: 5px;
+			    border: 1px solid  var(--primary-bg-color);
+			}
+			.thwcfd-notice-action.thwcfd-yes {
+			    background-color: #2271b1;
+			    color: #fff;
+			}
+			.thwcfd-notice-action:hover:not(.thwcfd-yes) {
+			    background-color: #f2f5f6;
+			}
+			.thwcfd-notice-action.thwcfd-yes:hover {
+			    opacity: .9;
+			}
+			.thwcfd-notice-action .dashicons{
+			    display: none;
+			}
+			.thwcfd-themehigh-logo {
+			    position: absolute;
+			    right: 20px;
+			    top: calc(50% - 13px);
+			}
+			.thwcfd-notice-action {
+			    background-repeat: no-repeat;
+			    padding-left: 40px;
+			    background-position: 18px 8px;
+			}
+			.thwcfd-yes{
+			    background-image: url(<?php echo THWCFD_URL; ?>admin/assets/css/tick.svg);
+			}
+			.thwcfd-remind{
+			    background-image: url(<?php echo THWCFD_URL; ?>admin/assets/css/reminder.svg);
+			}
+			.thwcfd-dismiss{
+			    background-image: url(<?php echo THWCFD_URL; ?>admin/assets/css/close.svg);
+			}
+			.thwcfd-done{
+			    background-image: url(<?php echo THWCFD_URL; ?>admin/assets/css/done.svg);
+			}
+        </style>
+    <?php    
+	}
+
+	public function review_banner_custom_js(){
+		?>
+		<script type="text/javascript">
+        	(function($, window, document) { 
+        		$( document ).on( 'click', '.thpladmin-notice .notice-dismiss', function() {
+        			var wrapper = $(this).closest('div.thpladmin-notice');
+					var nonce = wrapper.data("nonce");
+					var data = {
+						thwcfd_review_nonce: nonce,
+						action: 'hide_thwcfd_admin_notice',
+					};
+					$.post( ajaxurl, data, function() {
+
+					});
+				});
+			}(window.jQuery, window, document));
+        </script>
+        <?php
 	}
 
 	private function render_review_request_notice(){

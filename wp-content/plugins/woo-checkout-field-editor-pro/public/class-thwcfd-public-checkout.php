@@ -58,6 +58,7 @@ class THWCFD_Public_Checkout {
 		add_action('woocommerce_order_details_after_order_table', array($this, 'order_details_after_customer_details'), 20, 1);
 
 		add_filter('woocommerce_form_field_checkboxgroup', array($this, 'woo_form_field'), 10, 4);
+		add_filter('woocommerce_form_field_checkbox', array($this, 'woo_form_field'), 10, 4);
 		add_filter('woocommerce_form_field_datetime_local', array($this, 'woo_form_field'), 10, 4);
 		add_filter('woocommerce_form_field_date', array($this, 'woo_form_field'), 10, 4);
 		add_filter('woocommerce_form_field_time', array($this, 'woo_form_field'), 10, 4);
@@ -433,10 +434,16 @@ class THWCFD_Public_Checkout {
 						if(!empty($submitted_options)){
 							$value  = implode(",", $submitted_options);
 						}
-					}else{
+					}else if($type == 'checkbox'){
 						$value =  isset($posted[$name]) ? sanitize_text_field($posted[$name]) : '';
+						if($value){
+							$value = !empty($field['default']) ? $field['default'] : $value;
+						}else{
+							$value = apply_filters('thwcfd_checkbox_field_off_value', $value , $name);
+						}
+					}else{
+						$value =  isset($posted[$name]) ? sanitize_text_field($posted[$name]) : '';						
 					}
-
 					if($value){
 						$result = update_post_meta($order_id, $name, $value);
 					}
@@ -555,7 +562,6 @@ class THWCFD_Public_Checkout {
 
 
 	public function woo_form_field($field, $key, $args, $value = null){
-
 		$field = '';
 
 		if ( $args['required'] ) {
@@ -626,6 +632,20 @@ class THWCFD_Public_Checkout {
 					$field .= ' </select>';
 				}
 
+			break;
+
+			case 'checkbox' :
+
+				$field = '';
+				if($args['checked']){
+					$value = 1;
+				}else{
+					$value = 0;
+				}
+				$default_value = !empty($args['default']) ? esc_attr($args['default']) : 1; 
+
+				$field .= '<label class="checkbox ' . implode( ' ', $args['label_class'] ) . '" ' . implode( ' ', $custom_attributes ) . '>
+						<input type="' . esc_attr( $args['type'] ) . '" class="input-checkbox ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" value="'.$default_value.'" ' . checked( $value, 1, false ) . ' /> ' . $args['label'] . $required . '</label>';
 			break;
 
 			case 'checkboxgroup':

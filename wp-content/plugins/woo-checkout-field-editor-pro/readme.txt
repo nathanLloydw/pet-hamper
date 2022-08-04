@@ -5,7 +5,7 @@ Tags: checkout field editor, woocommerce checkout field editor, checkout manager
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,9 +69,6 @@ Showcase or hide the custom checkout fields in the Order Details Page or in your
 
 = ☞ Validate the Checkout Fields =
 Validate the custom checkout fields (including the default ones), and never miss any valuable information from the user. 
-
-= ☞ Add fields and sections into multistep layouts =
-Add the fields and sections into any steps you created using the multistep checkout for WooCommerce plugin. [Multistep Checkout for WooCommerce](https://wordpress.org/plugins/woo-multistep-checkout/) plugin lets you split the checkout process into multiple steps so that the user is guided through the checkout until the payment is made.
 
 = ☞ Override Address Fields =
 By default, WooCommerce will change the address format based on the countries. Using this plugin, you can prevent the override address field properties and use the values set using the Checkout Manager plugin.
@@ -275,6 +272,11 @@ Yes. There is a button 'reset to default fields' to go back to the WooCommerce d
 9. Locale override settings
 
 == Changelog ==
+= 1.7.0 =
+* Added WooCommerce 6.7 compatibility
+* Added default value property for checkbox field.
+* Added an option to backup plugin settings.
+
 = 1.6.1 =
 * Added Wordpress 6.0 compatability.
 * Added WooCommerce 6.5 compatability.
