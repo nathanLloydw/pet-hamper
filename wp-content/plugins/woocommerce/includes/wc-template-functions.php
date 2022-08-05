@@ -1591,7 +1591,7 @@ function wc_get_gallery_image_html( $attachment_id, $main_image = false ) {
 				'data-large_image'        => esc_url( $full_src[0] ),
 				'data-large_image_width'  => esc_attr( $full_src[1] ),
 				'data-large_image_height' => esc_attr( $full_src[2] ),
-				'class'                   => esc_attr( $main_image ? 'wp-post-image' : '' ),
+				'class'                   => esc_attr( $main_image ? 'wp-post-image' : 'wp-secondary-image' ),
 			),
 			$attachment_id,
 			$image_size,
@@ -1599,7 +1599,7 @@ function wc_get_gallery_image_html( $attachment_id, $main_image = false ) {
 		)
 	);
 
-	return '<div data-thumb="' . esc_url( $thumbnail_src[0] ) . '" data-thumb-alt="' . esc_attr( $alt_text ) . '" class="woocommerce-product-gallery__image"><a href="' . esc_url( $full_src[0] ) . '">' . $image . '</a></div>';
+	return '<div data-thumb="' . esc_url( $thumbnail_src[0] ) . '" data-thumb-alt="' . esc_attr( $alt_text ) . '" class="woocommerce-product-gallery__image">' . $image . '</div>';
 }
 
 if ( ! function_exists( 'woocommerce_output_product_data_tabs' ) ) {

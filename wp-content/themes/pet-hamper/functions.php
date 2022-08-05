@@ -250,7 +250,7 @@ remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_p
 
 function woocommerce_template_product_description() {
     if (get_the_content()) {
-        woocommerce_get_template( 'single-product/tabs/description.php' );
+        wc_get_template( 'single-product/tabs/description.php' );
     }
 }
 add_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_product_description', 10 );

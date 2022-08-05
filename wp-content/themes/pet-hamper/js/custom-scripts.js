@@ -119,11 +119,12 @@ function image_zoom_feature()
 function set_secondary_image_switch_to_main_image()
 {
     var secondary_images = document.querySelectorAll('picture.wp-secondary-image img');
+
     if(secondary_images.length == 0)
     {
         secondary_images = document.querySelectorAll('.wp-secondary-image');
     }
-    var primary_image = document.querySelectorAll('.wp-post-image source')[0];
+    var primary_image = document.querySelectorAll('.woocommerce-product-gallery__wrapper .woocommerce-product-gallery__image .wp-post-image source')[0];
     if(!primary_image)
     {
         primary_image = document.querySelectorAll('.wp-post-image')[0];
