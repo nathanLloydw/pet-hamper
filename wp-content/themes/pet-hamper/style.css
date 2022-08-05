@@ -84,6 +84,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 .pointer-events-none { pointer-events: none; }
 
+.variations { table-layout: fixed;width: 100%; }
+
 .woocommerce-product-gallery__image:not(:first-child) { padding: 10px 15px; }
 .woocommerce-product-gallery__image:not(:first-child) img { border:1px solid #e2e2e2;cursor:pointer; }
 .product-type-bundle .product_meta { display:none; }
