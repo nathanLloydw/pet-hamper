@@ -86,9 +86,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 
 ?></div>
-
-<div class="bundle_border">
-    <hr>
-    <p>What's in the hamper?</p>
-    <hr>
-</div>
