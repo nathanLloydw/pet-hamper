@@ -10,7 +10,7 @@ get_header();
 
 	<main id="primary">
 
-		<div class="hp_banner splide">
+		<div class="hp_banner remove_this_text_splide">
 
 			<div class="splide__track">
 
@@ -19,9 +19,11 @@ get_header();
 			    <ul class="splide__list">
 			    <?php while( have_rows('slides') ): the_row(); 
 			        ?>
-			        <li class="splide__slide">
-			            <div class="image mobile-hide" style="background-image: url('<?php echo get_sub_field('image') ?>');"></div>
-			            <div class="image mobile-show" style="background-image: url('<?php echo get_sub_field('mobile_image') ?>');"></div>
+			        <li class="remove_this_text_splide__slide" style="position: relative;max-height: 800px;overflow: hidden;">
+			        	<div class="image mobile-hide"><img class="skip-lazy" src="<?php echo get_sub_field('image') ?>"></div>
+			        	<div class="image mobile-show"><img class="skip-lazy" src="<?php echo get_sub_field('mobile_image') ?>"></div>
+			           <!--  <div class="image mobile-hide" style="background-image: url('<?php echo get_sub_field('image') ?>');"></div>
+			            <div class="image mobile-show" style="background-image: url('<?php echo get_sub_field('mobile_image') ?>');"></div> -->
 			            <div class="content">
 			            	<p class="title"><?php the_sub_field('title'); ?></p>
 			            	<?php 

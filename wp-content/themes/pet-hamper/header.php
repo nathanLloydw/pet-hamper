@@ -18,8 +18,8 @@
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <link rel="preload" href="/wp-content/themes/pet-hamper/fonts/silverscript.woff2" as="font" type="font/woff2" crossorigin>
 
-    <link rel="stylesheet" href="/wp-content/themes/pet-hamper/css/splide-core.min.css">
-    <script src="/wp-content/themes/pet-hamper/js/splide.min.js"></script>
+ <!--    <link rel="stylesheet" href="/wp-content/themes/pet-hamper/css/splide-core.min.css">
+    <script src="/wp-content/themes/pet-hamper/js/splide.min.js"></script> -->
 
     <script src="https://kit.fontawesome.com/6fbd7ca2dd.js" ></script>
     <script src="https://kit.fontawesome.com/713e0a7437.js" crossorigin="anonymous"></script>
@@ -29,10 +29,12 @@
     <script defer src="/wp-content/themes/pet-hamper/js/navigation.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 
+
     <?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
+
 <?php wp_body_open(); ?>
 <div id="page" class="site">
     <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'pet-hamper' ); ?></a>

@@ -1025,7 +1025,10 @@ ul.collections-grid li {
 }
 
 
-
+ul.splide__list {
+	padding: 0;
+	margin: 0;
+}
 
 
 ul.collections-grid .content,
@@ -1269,6 +1272,11 @@ ul.productgrid.four a {
 	font-weight: 500;
 	font-family: 'Montserrat', sans-serif;
 	margin-bottom: 1rem;
+}
+
+
+.hp_banner img {
+	width: 100%;
 }
 
 	.corporate-logos li {

@@ -35,41 +35,41 @@ function set_auto_scroll_to_hamper_onclicks()
     }
 }
 
-function mount_splide_banners()
-{
-    var hp_banner = document.getElementsByClassName('hp_banner');
+// function mount_splide_banners()
+// {
+//     var hp_banner = document.getElementsByClassName('hp_banner');
 
-    if (hp_banner.length > 0)
-    {
-        var splide1 = new Splide( '.hp_banner', {
-            arrows: false,
-            pagination: false,
-        } );
+//     if (hp_banner.length > 0)
+//     {
+//         var splide1 = new Splide( '.hp_banner', {
+//             arrows: false,
+//             pagination: false,
+//         } );
 
-        splide1.mount();
-    }
+//         splide1.mount();
+//     }
 
-    var collection_slider = document.getElementsByClassName('collection-slider');
+//     var collection_slider = document.getElementsByClassName('collection-slider');
 
-    if (collection_slider.length > 0)
-    {
-        var splide2 = new Splide( '.collection-slider', {
-            pagination: false,
-            classes: {
-                prev  : 'splide__arrow--prev arrow-prev',
-                next  : 'splide__arrow--next arrow-next',
-            },
-            perPage: 3,
-            breakpoints: {
-                768: {
-                    perPage: 1,
-                },
-            }
-        } );
+//     if (collection_slider.length > 0)
+//     {
+//         var splide2 = new Splide( '.collection-slider', {
+//             pagination: false,
+//             classes: {
+//                 prev  : 'splide__arrow--prev arrow-prev',
+//                 next  : 'splide__arrow--next arrow-next',
+//             },
+//             perPage: 3,
+//             breakpoints: {
+//                 768: {
+//                     perPage: 1,
+//                 },
+//             }
+//         } );
 
-        splide2.mount();
-    }
-}
+//         splide2.mount();
+//     }
+// }
 
 function image_zoom_feature()
 {
@@ -183,7 +183,7 @@ function redirect_to_complete_cart()
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
-    mount_splide_banners();
+    // mount_splide_banners();
     image_zoom_feature();
     set_secondary_image_switch_to_main_image();
     scroll_to_product_content();
