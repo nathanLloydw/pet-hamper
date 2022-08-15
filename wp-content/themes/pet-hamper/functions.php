@@ -548,6 +548,15 @@ add_action( 'init', 'product_brand');
 
 
 
+/**
+ * Remove related products output
+ */
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
+
+
+
+
+
 // Responsive Image Helper Function
 function awesome_acf_responsive_image($image_id,$image_size,$max_width){
 

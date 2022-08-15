@@ -109,6 +109,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .bundle_search i {margin:auto;padding:15px;background:#b2a598;color:white;border-radius: 0 5px 5px 0;cursor:pointer;}
 .pointer { cursor: pointer; }
 
+.wc-points-rewards-product-message { text-align:left; }
+
 @media only screen and (max-width: 900px)
 {
 	.mob-hidden { display:none !important; }
@@ -1025,7 +1027,10 @@ ul.collections-grid li {
 }
 
 
-
+ul.splide__list {
+	padding: 0;
+	margin: 0;
+}
 
 
 ul.collections-grid .content,
@@ -1271,6 +1276,11 @@ ul.productgrid.four a {
 	margin-bottom: 1rem;
 }
 
+
+.hp_banner img {
+	width: 100%;
+}
+
 	.corporate-logos li {
 		flex-basis: 33.3%;
 	}
@@ -1406,6 +1416,12 @@ ul.collections-grid {
 
 	ul.productgrid.four li {
 		flex-basis: 25%;
+	}
+
+	.woocommerce div.product {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
 	}
 
 	#content, .content-area {
@@ -1906,7 +1922,10 @@ ul.collections-grid {
 	background: #d0c5a5;
     position: relative;
     margin-top: 200px;
+    clear: both;
 }
+
+
 
 #mainfooter {
 	color: #fff;
@@ -2372,6 +2391,8 @@ a.added_to_cart.wc-forward {
 		position: fixed;
 		width: 100%;
 	}
+
+
 
 	#masthead {
 		position: sticky;
