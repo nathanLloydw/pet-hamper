@@ -1418,6 +1418,11 @@ ul.collections-grid {
 		flex-basis: 25%;
 	}
 
+	.woocommerce div.product {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 	#content, .content-area {
 		padding-top: 1rem;
 	}
@@ -1916,7 +1921,10 @@ ul.collections-grid {
 	background: #d0c5a5;
     position: relative;
     margin-top: 200px;
+    clear: both;
 }
+
+
 
 #mainfooter {
 	color: #fff;
@@ -2382,6 +2390,8 @@ a.added_to_cart.wc-forward {
 		position: fixed;
 		width: 100%;
 	}
+
+
 
 	#masthead {
 		position: sticky;
