@@ -163,7 +163,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             // the order
             $order = wc_get_order($order_id);
             $voucher = '';
-            $coupons = $order->get_used_coupons();
+            $coupons = $order->get_coupon_codes();
 
             if (count($coupons) > 0) {
                 $voucher = $coupons[0];

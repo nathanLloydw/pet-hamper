@@ -163,7 +163,7 @@ if ( ! class_exists( 'WooCommerce_PDF_IPS_Templates_Main' ) ) {
 								$discount['label'] = "{$discount['label']} ({$discount_percentage}%)";
 							}
 
-							$used_coupons = implode(', ', $document->order->get_used_coupons() );
+							$used_coupons = implode(', ', $document->order->get_coupon_codes() );
 							if (isset($show_codes) && !empty($used_coupons)) {
 								$discount['label'] = "{$discount['label']} ({$used_coupons})";
 							}
@@ -1187,7 +1187,7 @@ if ( ! class_exists( 'WooCommerce_PDF_IPS_Templates_Main' ) ) {
 							}
 							break;
 						case 'used_coupons':
-							$custom = implode(', ', $$data_source->get_used_coupons() );
+							$custom = implode(', ', $$data_source->get_coupon_codes() );
 							$text = str_replace($placeholder, $custom, $text);
 							continue 3; // do not fallback to parent order
 							break;
