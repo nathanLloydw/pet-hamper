@@ -58,7 +58,15 @@ if ( post_password_required() ) {
 		 * @hooked WC_Structured_Data::generate_product_data() - 60
 		 */
 		do_action( 'woocommerce_single_product_summary' );
+
 		?>
+
+        <form method="post" enctype="multipart/form-data" class="cart cart_group custom_bundle_form bundle_form"><?php
+
+            do_action( 'woocommerce_bundles_add_to_cart_wrap', $product );
+
+            ?>
+        </form>
 	</div>
 
 	<?php

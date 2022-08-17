@@ -123,6 +123,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	#mobile_view_hamper_button { display: block; }
 	.show_all_hamper_products { display: block;}
 	.bundle_search {max-width: 100%;padding-right:0;}
+	.custom_bundle { width:100%;margin-top:12rem; }
 }
 
 @media only screen and (min-width: 900px)

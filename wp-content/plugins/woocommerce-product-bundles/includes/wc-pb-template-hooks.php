@@ -18,7 +18,7 @@ add_action( 'woocommerce_bundle_add_to_cart', 'wc_pb_template_add_to_cart' );
 add_action( 'woocommerce_after_single_product_summary', 'wc_pb_template_add_to_cart_after_summary', -1000 );
 
 // Single product add-to-cart buttons area template for Product Bundles.
-add_action( 'woocommerce_bundles_add_to_cart_wrap', 'wc_pb_template_add_to_cart_wrap' );
+add_action( 'woocommerce_bundles_add_to_cart_wrap', 'wc_pb_template_add_to_cart_wrap');
 
 // Single product add-to-cart button template for Product Bundles.
 add_action( 'woocommerce_bundles_add_to_cart_button', 'wc_pb_template_add_to_cart_button' );

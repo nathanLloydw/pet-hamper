@@ -35,52 +35,18 @@ function set_auto_scroll_to_hamper_onclicks()
     }
 }
 
-// function mount_splide_banners()
-// {
-//     var hp_banner = document.getElementsByClassName('hp_banner');
-
-//     if (hp_banner.length > 0)
-//     {
-//         var splide1 = new Splide( '.hp_banner', {
-//             arrows: false,
-//             pagination: false,
-//         } );
-
-//         splide1.mount();
-//     }
-
-//     var collection_slider = document.getElementsByClassName('collection-slider');
-
-//     if (collection_slider.length > 0)
-//     {
-//         var splide2 = new Splide( '.collection-slider', {
-//             pagination: false,
-//             classes: {
-//                 prev  : 'splide__arrow--prev arrow-prev',
-//                 next  : 'splide__arrow--next arrow-next',
-//             },
-//             perPage: 3,
-//             breakpoints: {
-//                 768: {
-//                     perPage: 1,
-//                 },
-//             }
-//         } );
-
-//         splide2.mount();
-//     }
-// }
-
 function image_zoom_feature()
 {
     var custom_image_holder = document.querySelectorAll('.woocommerce-product-gallery__image')[0];
-
-    var custom_image = document.querySelectorAll('.woocommerce-product-gallery__image picture.wp-post-image img')[0];
+    var custom_image = document.querySelectorAll('.woocommerce-product-gallery__image img')[0];
 
     if(!custom_image)
     {
-        var custom_image = document.querySelectorAll('.woocommerce-product-gallery__image .wp-post-image')[0];
+        custom_image = document.querySelectorAll('.woocommerce-product-gallery__image .wp-post-image')[0];
     }
+
+    console.log(custom_image_holder);
+    console.log(custom_image);
 
     if(custom_image_holder && custom_image)
     {
