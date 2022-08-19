@@ -45,9 +45,6 @@ function image_zoom_feature()
         custom_image = document.querySelectorAll('.woocommerce-product-gallery__image .wp-post-image')[0];
     }
 
-    console.log(custom_image_holder);
-    console.log(custom_image);
-
     if(custom_image_holder && custom_image)
     {
         custom_image_holder.addEventListener("mouseover", function(event)
@@ -121,27 +118,30 @@ function scroll_to_product_content()
 
 function redirect_to_complete_cart()
 {
-    var disbaled_button = document.querySelectorAll('.bundle_add_to_cart_button.disabled')[0];
+    var disbaled_button = document.querySelectorAll('.bundle_add_to_cart_button')[0];
 
     if(disbaled_button)
     {
-        disbaled_button.addEventListener("click",function ()
+        disbaled_button.addEventListener("click",function (e)
         {
-            var remaining_products = document.querySelectorAll('.bundled_product select');
-            var remaining_unselected_products = [];
+            let remaining_products = document.querySelectorAll('.bundled_product select');
+            let remaining_unselected_products = [];
 
             remaining_products.forEach(function (prod)
             {
-                if(prod.value == '')
+                if(prod.value === '')
                 {
                     remaining_unselected_products.push(prod);
                 }
             });
 
-            remaining_products = remaining_products[0];
-
-            remaining_products = remaining_products.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-            remaining_products.scrollIntoView({behavior: "smooth"});
+            if(remaining_unselected_products.length > 0)
+            {
+                e.preventDefault();
+                remaining_products = remaining_unselected_products[0];
+                remaining_products = remaining_products.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                remaining_products.scrollIntoView({behavior: "smooth"});
+            }
         });
     }
 }
@@ -149,7 +149,6 @@ function redirect_to_complete_cart()
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
-    // mount_splide_banners();
     image_zoom_feature();
     set_secondary_image_switch_to_main_image();
     scroll_to_product_content();
