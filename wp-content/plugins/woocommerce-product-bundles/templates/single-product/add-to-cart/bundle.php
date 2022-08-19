@@ -20,6 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_before_add_to_cart_form' );
 ?>
 
+<form method="post" enctype="multipart/form-data" class="cart cart_group custom_bundle_form">
+    <div class="custom_form_data">
+        <?php
+
+        do_action( 'woocommerce_bundles_add_to_cart_wrap', $product );
+
+        ?>
+    </div>
+
 <div class="bundle_form <?php echo esc_attr( $classes ); ?>">
 
     <div class="bundle_border">
@@ -65,4 +74,5 @@ do_action( 'woocommerce_after_bundled_items', $product );
 
 do_action( 'woocommerce_after_add_to_cart_form' );
 ?>
+</form>
 </div>

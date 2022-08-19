@@ -59,20 +59,7 @@ if ( post_password_required() ) {
 		 */
 		do_action( 'woocommerce_single_product_summary' );
 
-        if($product->get_type() == 'bundle')
-        {
-            ?>
-
-            <form method="post" enctype="multipart/form-data" class="cart cart_group custom_bundle_form bundle_form"><?php
-
-                do_action( 'woocommerce_bundles_add_to_cart_wrap', $product );
-
-            ?>
-            </form>
-            <?php
-        }
 		?>
-
 
 	</div>
 

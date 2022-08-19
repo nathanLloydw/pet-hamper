@@ -10,6 +10,8 @@ wp-config.php
 wp-content/cache/
 #wp-content/upgrade/
 wp-content/uploads/
+wp-content/advanced-cache.php
+wp-content/wflogs/
 #wp-content/plugins/wordfence/tmp/configCache.php
 
 ### PHP Storm ###
