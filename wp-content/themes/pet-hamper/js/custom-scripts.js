@@ -146,6 +146,21 @@ function redirect_to_complete_cart()
     }
 }
 
+function remove_line_clamp_on_click() {
+    let line_clamps = document.querySelectorAll('.line-clamp');
+
+    if(line_clamps)
+    {
+        line_clamps.forEach(function(line_clamp)
+        {
+            line_clamp.addEventListener("click",function ()
+            {
+                this.classList.remove('line-clamp');
+            });
+        });
+    }
+}
+
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
@@ -153,6 +168,7 @@ document.addEventListener( 'DOMContentLoaded', function()
     set_secondary_image_switch_to_main_image();
     scroll_to_product_content();
     redirect_to_complete_cart();
+    remove_line_clamp_on_click();
 });
 
 jQuery(".abp_assorted_row").bind("DOMSubtreeModified", function()
