@@ -20,6 +20,6 @@ if ( ! $description ) {
 	return;
 }
 
-?><div class="bundled_product_excerpt product_excerpt"><?php
+?><div class="bundled_product_excerpt product_excerpt line-clamp"><?php
 		echo $description;
 ?></div>

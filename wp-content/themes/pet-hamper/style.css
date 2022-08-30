@@ -66,7 +66,21 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .bundle_wrap { width:100%; }
 .bundle_data { width:100%; }
 .wc-points-rewards-product-message { text-align:center; }
-.bundled_product_excerpt { display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;margin-bottom: 10px; }
+
+.line-clamp:after {
+	background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	bottom: 0;
+	content: "...";
+	font-weight: bold;
+	padding: 0 20px 1px 45px;
+	position: absolute;
+	right: 0;}
+
+.line-clamp {
+	cursor:pointer;
+	height: 5.3em;
+	overflow: hidden;
+	position: relative;}
 
 .custom_bundle_form { justify-content: flex-end; }
 .custom_form_data { width:48%;float:right;justify-content: end; position: relative; top: -160px;}
