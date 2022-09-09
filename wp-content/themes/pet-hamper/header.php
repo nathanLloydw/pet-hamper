@@ -120,14 +120,17 @@
     </div>
 
 
-<!-- 
+    <?php if( get_field('announcement_bar_text', 'option') ): ?>
+
     <div id="offerbar">
 
         <div class="wrap dflex">
 
-            <div class="col">10% off your first order!</div>
+            <div class="col"><?php the_field('announcement_bar_text', 'option'); ?></div>
 
         </div>
 
-    </div> -->
+    </div>
+
+    <?php endif; ?>
 

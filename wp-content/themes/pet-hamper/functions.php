@@ -556,6 +556,19 @@ remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_r
 
 
 
+if( function_exists('acf_add_options_page') ) {
+    
+    acf_add_options_page(array(
+        'page_title'    => 'Announcement Bar',
+        'menu_title'    => 'Announcement Bar',
+        'menu_slug'     => 'announcement-bar',
+        'capability'    => 'edit_posts',
+        'redirect'      => false
+    ));
+    
+}
+
+
 
 // Responsive Image Helper Function
 function awesome_acf_responsive_image($image_id,$image_size,$max_width){

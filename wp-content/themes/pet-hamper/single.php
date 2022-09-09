@@ -10,10 +10,15 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+	<main id="primary" class="site-main wrap">
+
+		<header class="page-header">
+			<?php
+			the_title( '<h1 class="entry-title">', '</h1>' );
+			?>
+		</header><!-- .page-header -->
 
 		
-
 		<?php
 		while ( have_posts() ) :
 			the_post();
@@ -38,5 +43,5 @@ get_header();
 	</main><!-- #main -->
 
 <?php
-get_sidebar();
+
 get_footer();
