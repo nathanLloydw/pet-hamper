@@ -125,6 +125,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 .wc-points-rewards-product-message { text-align:left; }
 
+.product p { width:100%; }
+
 @media only screen and (max-width: 900px)
 {
 	.mob-hidden { display:none !important; }
@@ -138,6 +140,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.show_all_hamper_products { display: block;}
 	.bundle_search {max-width: 100%;padding-right:0;}
 	.custom_form_data { width:100%;top: 0; }
+	.bundled_product_title_inner { font-size: 12px; }
 }
 
 /** Nathan Custom Styles - End **/
