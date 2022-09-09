@@ -125,7 +125,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 .wc-points-rewards-product-message { text-align:left; }
 
-.product p, product h1 ,product h2 ,product h3 { width:100%; }
+.product p, .product h1 , .product h2 , .product h3 { width:100%; }
 
 @media only screen and (max-width: 900px)
 {
