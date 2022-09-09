@@ -27,11 +27,9 @@ function wc_pb_template_add_to_cart_after_summary() {
 	global $product;
 
 	if ( wc_pb_is_product_bundle() ) {
-		if ( 'after_summary' === $product->get_add_to_cart_form_location() ) {
-			$classes = implode( ' ', apply_filters( 'woocommerce_bundle_form_wrapper_classes', array( 'summary-add-to-cart-form', 'summary-add-to-cart-form-bundle' ), $product ) );
-			?><div class="<?php echo esc_attr( $classes );?>"><?php
-				do_action( 'woocommerce_bundle_add_to_cart' );
-			?></div><?php
+		if ( 'after_summary' === $product->get_add_to_cart_form_location() )
+        {
+            do_action( 'woocommerce_bundle_add_to_cart' );
 		}
 	}
 }
