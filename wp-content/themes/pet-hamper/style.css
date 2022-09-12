@@ -83,13 +83,13 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	position: relative;}
 
 .custom_bundle_form { justify-content: flex-end;position:relative;width:48%; }
-.custom_form_data { min-height:551px; }
+.custom_form_data { min-height:551px;padding-bottom:120px; }
 
 .bundled_product_title_inner { font-weight: 700;}
 .bundled_product_excerpt { font-size: 14px;}
 .attribute_options select { width: 100%; }
 
-.bundle_border { width:100%;display:flex;padding-top:120px;padding-bottom:40px;align-items: center;text-align:center; }
+.bundle_border { width:100%;display:flex;padding-bottom:40px;align-items: center;text-align:center; }
 .bundle_border p { font-family: 'Silver Script', cursive;color: #b2a497;width:max-content;margin:0;padding-left: 25px;padding-right:25px;flex-shrink: 0;font-size:50px; }
 .bundle_border hr { color: #b2a497;width:100%;padding-bottom:1px; }
 
@@ -133,7 +133,6 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 @media only screen and (max-width: 900px)
 {
 	.mob-hidden { display:none !important; }
-	.bundle_border { padding-top: 60px; }
 	.bundle_border p { font-size:40px !important; }
 	.bundled_product_title { font-size: 18px !important; }
 	.bundled_product_excerpt { font-size: 12px !important; }
@@ -143,7 +142,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	#mobile_view_hamper_button { display: block; }
 	.show_all_hamper_products { display: block;}
 	.bundle_search {max-width: 100%;padding-right:0;}
-	.custom_form_data { width:100%;top: 0; }
+	.custom_form_data { width:100%;top: 0;padding-bottom:60px; }
 	.bundled_product_title_inner { font-size: 12px; }
 	.custom_bundle_form { width:100%; }
 }
