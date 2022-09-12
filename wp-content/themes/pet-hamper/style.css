@@ -83,7 +83,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	position: relative;}
 
 .custom_bundle_form { justify-content: flex-end;position:relative;width:48%; }
-.custom_form_data { min-height:551px;padding-bottom:120px; }
+.custom_form_data { min-height:676px;padding-bottom:120px; }
 
 .bundled_product_title_inner { font-weight: 700;}
 .bundled_product_excerpt { font-size: 14px;}
