@@ -44,7 +44,7 @@ do_action( 'woocommerce_before_cart' ); ?>
                 if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
                     $product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
                     ?>
-                    <tr class="<?php ?> woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
+                    <tr class="<?php ?> woocommerce-cart-form__cart-item <?php echo str_replace('bundled_table_item', '',esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) )); ?>">
 
                         <?php
                         if(!isset($cart_item['abp_assorted_product_parent_id']))
@@ -105,7 +105,7 @@ do_action( 'woocommerce_before_cart' ); ?>
                         </td>
 
                         <?php
-                        if(!isset($cart_item['abp_assorted_product_parent_id']))
+                        if(!isset($cart_item['abp_assorted_product_parent_id']) && !isset($cart_item['bundled_by']))
                         {
                             ?>
                             <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'woocommerce' ); ?>">
@@ -115,7 +115,8 @@ do_action( 'woocommerce_before_cart' ); ?>
                             </td>
                             <?php
                         }
-                        else{
+                        else
+                        {
                             echo '<td class="mob-hidden"></td>';
                         }
                         ?>
@@ -144,7 +145,7 @@ do_action( 'woocommerce_before_cart' ); ?>
                         </td>
 
                         <?php
-                        if(!isset($cart_item['abp_assorted_product_parent_id']))
+                        if(!isset($cart_item['abp_assorted_product_parent_id']) && !isset($cart_item['bundled_by']))
                         {
                             ?>
 

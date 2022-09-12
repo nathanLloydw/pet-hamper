@@ -88,7 +88,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .bundled_product_excerpt { font-size: 14px;}
 .attribute_options select { width: 100%; }
 
-.bundle_border { width:100%;display:flex;padding-top:80px;padding-bottom:40px;align-items: center;text-align:center; }
+.bundle_border { width:100%;display:flex;padding-top:120px;padding-bottom:40px;align-items: center;text-align:center; }
 .bundle_border p { font-family: 'Silver Script', cursive;color: #b2a497;width:max-content;margin:0;padding-left: 25px;padding-right:25px;flex-shrink: 0;font-size:50px; }
 .bundle_border hr { color: #b2a497;width:100%;padding-bottom:1px; }
 
@@ -103,7 +103,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .woocommerce-product-gallery__image:not(:first-child) img { border:1px solid #e2e2e2;cursor:pointer; }
 .product-type-bundle .product_meta { display:none; }
 .bundle_form table.variations .required { color:black !important; }
-.bundle_form { width: calc(100vw - 40px);min-width: calc(100vw - 40px); }
+.bundle_form { width: 1200px;min-width: 1200px; padding-left: 40px; }
 .product-quantity { text-align: center; }
 .fa-angle-right { display: block;text-align: left;color:#d0c5a5;padding: 5px 0px; }
 .fa-angle-right:before { border-radius: 55px;padding: 4px 8px;background: #f5f1e5; }
@@ -144,6 +144,11 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.custom_form_data { width:100%;top: 0; }
 	.bundled_product_title_inner { font-size: 12px; }
 	.custom_bundle_form { width:100%; }
+}
+
+@media only screen and (max-width: 1200px)
+{
+	.bundle_form { width: calc(100vw - 40px);min-width: calc(100vw - 40px);padding:0; }
 }
 
 /** Nathan Custom Styles - End **/
