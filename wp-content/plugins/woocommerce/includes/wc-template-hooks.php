@@ -235,7 +235,7 @@ add_action( 'woocommerce_widget_shopping_cart_total', 'woocommerce_widget_shoppi
  * @see woocommerce_button_proceed_to_checkout()
  * @see wc_empty_cart_message()
  */
-add_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
+//add_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
 add_action( 'woocommerce_cart_collaterals', 'woocommerce_cart_totals', 10 );
 add_action( 'woocommerce_proceed_to_checkout', 'wc_get_pay_buttons', 10 );
 add_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
