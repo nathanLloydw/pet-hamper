@@ -125,7 +125,7 @@ do_action( 'woocommerce_before_main_content' );
 
 		<h2 class="linetitle">Hamper Collections</h2>
 
-		<?php elseif ( is_product_category( 'collections' ) || term_is_ancestor_of( 2208, get_queried_object_id(), 'product_cat' ) ) : ?>
+		<?php elseif ( is_product_category( 'collections' ) || is_product_category( 'seasonal' ) || term_is_ancestor_of( 2208, get_queried_object_id(), 'product_cat' ) ) : ?>
 
 		<!-- <h2 class="linetitle"><?php woocommerce_page_title(); ?> Picks</h2> -->
 
@@ -161,7 +161,7 @@ do_action( 'woocommerce_before_main_content' );
 	    </ul>
 	<?php endif; ?>
 
-<?php if ( is_product_category( 'collections' ) || term_is_ancestor_of( 2208, get_queried_object_id(), 'product_cat' ) ) : ?>
+<?php if ( is_product_category( 'collections' ) || is_product_category( 'seasonal' ) || term_is_ancestor_of( 2208, get_queried_object_id(), 'product_cat' ) ) : ?>
 
 
 	<?php if( have_rows('products_loop', $parent_term) ):  ?>
@@ -205,7 +205,7 @@ do_action( 'woocommerce_before_main_content' );
 
 <?php endif; ?>
 
-<?php if ( !is_product_category(array( 'collections' )) ) : ?>
+<?php if ( !is_product_category(array( 'collections', 'seasonal' )) ) : ?>
 
 
 

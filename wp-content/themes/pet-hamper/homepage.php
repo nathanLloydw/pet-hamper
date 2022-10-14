@@ -88,6 +88,59 @@ get_header();
 		    </ul>
 		<?php endif; ?> -->
 
+
+
+			<?php if( have_rows('seasonal') ): ?>
+
+			<p class="linetitle">Seasonal</p>
+
+		    <div class="catgrid half seasonal">
+		    <?php while( have_rows('seasonal') ): the_row(); 
+
+		    	$link = get_sub_field('link');
+
+		    	?>
+
+				<div class="griditem">
+
+					<div class="inner">
+
+						<?php if( $link ): 
+					    $link_url = $link['url'];
+					    $link_title = $link['title'];
+					    $link_target = $link['target'] ? $link['target'] : '_self';
+					    ?>
+
+						<a href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
+					    	<div class="image mobile-hide"><img class="bannerimg" <?php awesome_acf_responsive_image(get_sub_field( 'image' ),'full','1200px'); ?>  alt="" /></div>
+					    	<div class="image mobile-show"><img class="bannerimg" <?php awesome_acf_responsive_image(get_sub_field( 'mobile_image' ),'thumb-640','768px'); ?>  alt="" /></div>
+					    	 <div class="content">
+				            	<p class="title"><?php echo $link_title; ?></p>
+				        	</div>
+					    </a>
+			            
+			          <!--   <div class="content">
+			            	<p class="title"><?php the_sub_field('title'); ?></p>
+			            	<p><?php the_sub_field('paragraph'); ?></p>
+			            	
+							<a class="button ib" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo $link_title; ?></a>
+							
+			        	</div>
+ -->
+
+
+
+			        	<?php endif; ?>
+
+			        </div>
+					
+				</div>
+				
+			<?php endwhile; ?>
+			</div>
+			<?php endif; ?>
+
+
 			<h1 class="linetitle"><?php the_title(); ?></h1>
 
 
@@ -99,7 +152,7 @@ get_header();
 
 		    	?>
 
-				<div class="griditem">
+				<div class="griditem fw">
 
 					<div class="inner">
 

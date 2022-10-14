@@ -1342,21 +1342,28 @@ ul.productgrid.four a {
 }
 
 #primary-menu > li.menu-item-39731 > ul,
-#primary-menu > li.menu-item-39730 > ul {
+#primary-menu > li.menu-item-39730 > ul,
+#primary-menu > li.menu-item-41506 > ul {
 	width: auto;
 	left: auto;
 	flex-direction: column;
 }
 
+#primary-menu > li.menu-item-41349 > ul {
+right: 0;
+}
+
 #primary-menu > li.menu-item-39731 > ul > li,
-#primary-menu > li.menu-item-39730 > ul > li {
+#primary-menu > li.menu-item-39730 > ul > li,
+#primary-menu > li.menu-item-41506 > ul > li {
 	padding: 0.5rem 1rem;
 	line-height: 1;
 }
 
 
 #primary-menu > li.menu-item-39731 > ul > li > a,
-#primary-menu > li.menu-item-39730 > ul > li > a {
+#primary-menu > li.menu-item-39730 > ul > li > a,
+#primary-menu > li.menu-item-41506 > ul > li > a {
 	    font-family: 'Montserrat', sans-serif;
 	    text-transform: uppercase;
 	    font-size: 1rem;
@@ -1592,7 +1599,8 @@ ul.collections-grid {
 		flex-basis: 25%;
 	}
 
-	.term-2208 .collections-grid li {
+	.term-2208 .collections-grid li,
+	.term-2467 .collections-grid li{
 		flex-basis: 33.3%;
 	}
 
@@ -1646,7 +1654,7 @@ ul.collections-grid {
 		min-height: 600px;
 	}
 
-	.home .catgrid .griditem:first-child {
+	.home .catgrid .griditem.fw:first-child {
 		flex-basis: 100%;
 	}
 
@@ -2735,8 +2743,13 @@ a.added_to_cart.wc-forward {
 		padding: 15px;
 	}
 
+	.catgrid.seasonal {
+		display: flex;
+	}
 
-	.collections-grid li {
+
+	.collections-grid li,
+	.catgrid.seasonal .griditem {
 		flex-basis: 50%;
 	}
 
