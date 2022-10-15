@@ -659,11 +659,18 @@ function woocommerce_gateway_stripe() {
 			 * @return array WooCommerce checkout fields.
 			 */
 			public function checkout_update_email_field_priority( $fields ) {
-				$is_link_enabled = in_array(
-					WC_Stripe_UPE_Payment_Method_Link::STRIPE_ID,
-					$this->stripe_gateway->get_upe_enabled_payment_method_ids(),
-					true
-				);
+
+                if ( ! is_null( $this->stripe_gateway ) ) {
+                    $is_link_enabled = in_array(
+                        WC_Stripe_UPE_Payment_Method_Link::STRIPE_ID,
+                        $this->stripe_gateway->get_upe_enabled_payment_method_ids(),
+                        true
+                    );
+                }
+                else
+                {
+                    $is_link_enabled = true;
+                }
 
 				if ( $is_link_enabled ) {
 					// Update the field priority.

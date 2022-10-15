@@ -66,6 +66,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .bundle_wrap { width:100%; }
 .bundle_data { width:100%; }
 .wc-points-rewards-product-message { text-align:center; }
+.wc-shipping-multiple-addresses td select { max-width:100%;}
 
 .line-clamp:after {
 	background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
