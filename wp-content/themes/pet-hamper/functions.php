@@ -580,7 +580,7 @@ if( function_exists('acf_add_options_page') ) {
      dataLayer = [{
      'transactionTotal': '".$order->get_total()."',
      'transactionCurrency': '".$order->get_currency()."',
-     'transactionID': '".wc_get_order( $order_id )."',
+     'transactionID': '".$order_id."',
      'transactionPromoCode': '".implode(",",$order->get_coupon_codes())."',
      'event': 'awin.dl.ready'
      }];
