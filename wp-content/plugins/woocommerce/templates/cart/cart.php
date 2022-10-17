@@ -190,7 +190,7 @@ do_action( 'woocommerce_before_cart' ); ?>
             </tbody>
         </table>
         <?php do_action( 'woocommerce_after_cart_table' ); ?>
-        <?php echo do_shortcode("[woocommerce_select_multiple_addresses]"); ?>
+<!--        --><?php //echo do_shortcode("[woocommerce_select_multiple_addresses]"); ?>
     </form>
 
 <?php do_action( 'woocommerce_before_cart_collaterals' ); ?>
