@@ -63,6 +63,25 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	 ========================================================================== */
 
 /** Nathan Custom Styles - Start **/
+#multi-address-form div:nth-of-type(1):not(.address-container),
+#multi-address-form div:nth-of-type(2):not(.address-container),
+#multi-address-form div:nth-of-type(3):not(.address-container) { display:inline-block }
+#multi-address-form div:nth-of-type(1) a,
+#multi-address-form div:nth-of-type(2) a,
+#multi-address-form div:nth-of-type(3) a{ font-size: 16px;padding:12px 28px; }
+#multi-address-form .h2-link:hover { background-color: #ccbcad; }
+#close-add-multi-address-form a { text-decoration:none; }
+.update-shipping-addresses { padding-right:4px; }
+.address-block { width: 300px !important; }
+
+@media only screen and (max-width: 900px)
+{
+	#show-multi-address-form, #close-multi-address-form { width:100%;margin-bottom:4px; }
+	#multi-address-form div:has(> a.h2-link),
+	#multi-address-form div .h2-link { width:100% }
+}
+.hidden { display:none; }
+
 .bundle_wrap { width:100%; }
 .bundle_data { width:100%; }
 .wc-points-rewards-product-message { text-align:center; }
@@ -138,7 +157,6 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.bundled_product_title { font-size: 18px !important; }
 	.bundled_product_excerpt { font-size: 12px !important; }
 	.coupon { display:flex; }
-	.mob_hidden { display:none !important; }
 	.product-remove { text-align: left !important; }
 	#mobile_view_hamper_button { display: block; }
 	.show_all_hamper_products { display: block;}

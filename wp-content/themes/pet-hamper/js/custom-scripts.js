@@ -161,6 +161,30 @@ function remove_line_clamp_on_click() {
     }
 }
 
+function set_multi_address_form_triggers()
+{
+    let open_form = document.querySelectorAll('#show-multi-address-form');
+    let close_form = document.querySelectorAll('#close-multi-address-form');
+    let form = document.querySelectorAll('#multi-address-form');
+
+    if(open_form && close_form && form)
+    {
+        open_form[0].addEventListener("click",function (e)
+        {
+            e.preventDefault();
+            open_form[0].classList.add('hidden');
+            form[0].classList.remove('hidden');
+        });
+
+        close_form[0].addEventListener("click",function (e)
+        {
+            e.preventDefault();
+            open_form[0].classList.remove('hidden');
+            form[0].classList.add('hidden');
+        });
+    }
+}
+
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
@@ -169,6 +193,7 @@ document.addEventListener( 'DOMContentLoaded', function()
     scroll_to_product_content();
     redirect_to_complete_cart();
     remove_line_clamp_on_click();
+    set_multi_address_form_triggers();
 });
 
 jQuery(".abp_assorted_row").bind("DOMSubtreeModified", function()
