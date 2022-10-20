@@ -74,8 +74,12 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .update-shipping-addresses { padding-right:4px; }
 .address-block { width: 300px !important; }
 
+.datepicker-form input { max-width:100% }
+.ship_address { margin:5px !important; }
+
 @media only screen and (max-width: 900px)
 {
+	.ship_address { width:100% !important;}
 	#show-multi-address-form, #close-multi-address-form { width:100%;margin-bottom:4px; }
 	#multi-address-form div:has(> a.h2-link),
 	#multi-address-form div .h2-link { width:100% }

@@ -601,8 +601,31 @@ if ( ! class_exists( 'WC_Ship_Multiple' ) ) :
 
 			?>
 			<tr class="multi_shipping">
-				<td style="vertical-align: top;" colspan="<?php if ( version_compare( WOOCOMMERCE_VERSION, '2.0', '<' ) ) echo '2'; else echo '1'; ?>">
-					<?php _e( 'Shipping Methods', 'wc_shipping_multiple_address' ); ?>
+				<td style="vertical-align: top;" colspan="2">
+                    <div style="display:flex;justify-content: space-between;">
+                        <div><?php _e( 'Shipping Methods', 'wc_shipping_multiple_address' ); ?></div>
+                        <div>
+                            <?php
+                            $shipping_total = WC()->cart->shipping_total;
+                            $shipping_tax   = WC()->cart->shipping_tax_total;
+                            $inc_or_exc_tax = '';
+
+                            if ( $shipping_total > 0 && wc_tax_enabled() ) {
+
+                                // Append price to label using the correct tax settings
+                                if ( ! WC()->cart->display_totals_ex_tax ) {
+                                    $shipping_total += $shipping_tax;
+
+                                    if ( 0 < $shipping_tax ) {
+                                        $inc_or_exc_tax = WC()->countries->inc_tax_or_vat();
+                                    }
+                                }
+                            }
+
+                            echo wc_price( $shipping_total ) . ' ' . $inc_or_exc_tax;
+                            ?>
+                        </div>
+                    </div>
 
 					<div id="shipping_addresses">
 						<?php
@@ -894,27 +917,7 @@ if ( ! class_exists( 'WC_Ship_Multiple' ) ) :
 					</div>
 
 				</td>
-				<td style="vertical-align: top;">
-					<?php
-					$shipping_total = WC()->cart->shipping_total;
-					$shipping_tax   = WC()->cart->shipping_tax_total;
-					$inc_or_exc_tax = '';
 
-					if ( $shipping_total > 0 && wc_tax_enabled() ) {
-
-						// Append price to label using the correct tax settings
-						if ( ! WC()->cart->display_totals_ex_tax ) {
-							$shipping_total += $shipping_tax;
-
-							if ( 0 < $shipping_tax ) {
-								$inc_or_exc_tax = WC()->countries->inc_tax_or_vat();
-							}
-						}
-					}
-
-					echo wc_price( $shipping_total ) . ' ' . $inc_or_exc_tax;
-					?>
-				</td>
 				<script type="text/javascript">
 					jQuery(document).ready(function() {
 						jQuery("tr.shipping").remove();
