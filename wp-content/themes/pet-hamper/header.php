@@ -28,7 +28,7 @@
     <script defer src="/wp-content/themes/pet-hamper/js/hc-offcanvas-nav.min.js"></script>
     <script defer src="/wp-content/themes/pet-hamper/js/navigation.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-
+    <meta name="google-site-verification" content="3x-9FYFFkK_1jqpY8RDE-r2kzJWF_26c0GEAj6WMV8s" />
 
     <?php wp_head(); ?>
 </head>
