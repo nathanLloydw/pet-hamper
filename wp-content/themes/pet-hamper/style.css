@@ -941,8 +941,13 @@ textarea {
 	padding: 0.5rem;
 }
 
+#offerbar .wrap {
+	padding: 0;
+}
+
 #offerbar p {
 	margin: 0;
+	font-size: 0.8rem;
 }
 
 .blog .site-main {

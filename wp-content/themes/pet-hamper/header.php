@@ -43,7 +43,7 @@
 
         <div class="wrap dflex">
 
-            <div class="col">Free Delivery over £50</div>
+            <div class="col"><?php the_field('top_bar', 'option'); ?></div>
 
         </div>
 
