@@ -64,11 +64,11 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 /** Nathan Custom Styles - Start **/
 
-.menu-item-42403 a:first-child,
-.menu-item-42404 a:first-child,
-.menu-item-42405 a:first-child,
-.menu-item-42406 a:first-child,
-.menu-item-42407 a:first-child
+.menu-item-42403 > a,
+.menu-item-42404 > a,
+.menu-item-42405 > a,
+.menu-item-42406 > a,
+.menu-item-42407 > a
 { color: #C30F16 !important; }
 
 #multi-address-form div:nth-of-type(1):not(.address-container),
