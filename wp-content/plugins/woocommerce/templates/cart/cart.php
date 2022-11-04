@@ -191,25 +191,24 @@ do_action( 'woocommerce_before_cart' ); ?>
         </table>
         <?php do_action( 'woocommerce_after_cart_table' ); ?>
 
+    </form>
 
-        <button id="show-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
+    <button id="show-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
+        Select Multiple Addresses?
+    </button>
+
+    <div id="multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">
+
+        <button id="close-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
             Select Multiple Addresses?
         </button>
 
-        <div id="multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">
+        <button id="close-add-multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">
+            <a href="/basket">Back</a>
+        </button>
 
-            <button id="close-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
-                Select Multiple Addresses?
-            </button>
-
-            <button id="close-add-multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">
-                <a href="/basket">Back</a>
-            </button>
-
-            <?php echo do_shortcode("[woocommerce_select_multiple_addresses]"); ?>
-        </div>
-
-    </form>
+        <?php echo do_shortcode("[woocommerce_select_multiple_addresses]"); ?>
+    </div>
 
 <?php do_action( 'woocommerce_before_cart_collaterals' ); ?>
 
