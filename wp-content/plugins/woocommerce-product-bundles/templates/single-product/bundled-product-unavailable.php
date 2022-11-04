@@ -22,12 +22,15 @@ $is_out_of_stock = isset( $custom_product_data[ 'is_out_of_stock' ] ) && 'yes' =
 	<div class="bundled_item_wrap">
 		<div class="bundled_item_cart_content">
 			<div class="bundled_item_cart_details">
-				<p class="bundled_item_unavailable <?php echo $is_out_of_stock ? 'stock out-of-stock' : ''; ?>"><?php
+				<p class="bundled_item_unavailable <?php echo $is_out_of_stock ? 'stock out-of-stock' : ''; ?>">
+                <?php
 					echo $is_out_of_stock ? __( 'Out of stock', 'woocommerce' ) : __( 'Temporarily unavailable', 'woocommerce-product-bundles' );
-					if ( $bundled_item->is_limited_subscription() && $bundled_item->user_has_subscription() ) {
+					if ( $bundled_item->is_limited_subscription() && $bundled_item->user_has_subscription() )
+                    {
 						?><p class="limited-subscription-notice notice"><?php esc_html_e( 'You have an active subscription to this product already.', 'woocommerce-subscriptions' ); ?></p><?php
 					}
-				?></p>
+				?>
+                </p>
 			</div>
 		</div>
 	</div>

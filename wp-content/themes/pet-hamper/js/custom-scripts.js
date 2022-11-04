@@ -167,7 +167,7 @@ function set_multi_address_form_triggers()
     let close_form = document.querySelectorAll('#close-multi-address-form');
     let form = document.querySelectorAll('#multi-address-form');
 
-    if(open_form && close_form && form)
+    if(open_form && close_form && form && open_form[0] && close_form[0] && form[0])
     {
         open_form[0].addEventListener("click",function (e)
         {

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="cart custom_bundle  bundle_data bundle_data_<?php echo $product_id; ?>" data-bundle_form_data="<?php echo esc_attr( json_encode( $bundle_form_data ) ); ?>" data-bundle_id="<?php echo $product_id; ?>"><?php
+<div class="cart custom_bundle bundle_data bundle_data_<?php echo $product_id; ?>" data-bundle_form_data="<?php echo esc_attr( json_encode( $bundle_form_data ) ); ?>" data-bundle_id="<?php echo $product_id; ?>"><?php
 
 	if ( $is_purchasable ) {
 
@@ -85,4 +85,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?></div><?php
 	}
 
-?></div>
+?>
+</div>
+
+</div>
