@@ -276,16 +276,4 @@ get_footer( 'shop' );
 
 ?>
 
-<script>
-    function scroll_to_content()
-    {
-        console.log('scrolling');
-        var auto_scroll_to_product_content = document.querySelectorAll('.woocommerce-ordering')[0];
-
-        if(auto_scroll_to_product_content)
-        {
-            auto_scroll_to_product_content.scrollIntoView({behavior: "smooth",block: "start"})
-        }
-    }
-</script>
 

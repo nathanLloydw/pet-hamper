@@ -1,14 +1,25 @@
 
-function set_add_to_hamper_text_change()
+function set_add_to_basket_text_change()
 {
     var add_to_hamper_buttons = document.querySelectorAll('.add-product-to-assorted');
+
+    var add_to_basket_buttons = document.querySelectorAll('.add_to_cart_button');
 
     add_to_hamper_buttons.forEach(function(add_to_hamper_button)
     {
         add_to_hamper_button.addEventListener("click",function(event)
         {
             this.innerText = 'Added to hamper';
-            this.classList.add('active_hamper_prod');
+            this.classList.add('active_prod');
+        });
+    });
+
+    add_to_basket_buttons.forEach(function(add_to_basket_button)
+    {
+        add_to_basket_button.addEventListener("click",function(event)
+        {
+            this.innerText = 'Added to Basket';
+            this.classList.add('active_prod');
         });
     });
 }
@@ -185,6 +196,30 @@ function set_multi_address_form_triggers()
     }
 }
 
+function scroll_to_content()
+{
+    let auto_scroll_to_product_content = document.querySelectorAll('.woocommerce-ordering')[0];
+
+    if(auto_scroll_to_product_content)
+    {
+        auto_scroll_to_product_content.scrollIntoView({behavior: "smooth",block: "start"})
+    }
+}
+
+function manage_pagination_autoscroll()
+{
+    if(document.querySelectorAll('.page-numbers .current')[0])
+    {
+        let current_page = document.querySelectorAll('.page-numbers .current')[0].innerText;
+
+        if(parseInt(current_page) !== 1)
+        {
+            console.log('scrolling to content');
+            scroll_to_content();
+        }
+    }
+}
+
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
@@ -194,11 +229,13 @@ document.addEventListener( 'DOMContentLoaded', function()
     redirect_to_complete_cart();
     remove_line_clamp_on_click();
     set_multi_address_form_triggers();
+    manage_pagination_autoscroll();
+    set_add_to_basket_text_change();
 });
 
 jQuery(".abp_assorted_row").bind("DOMSubtreeModified", function()
 {
-    set_add_to_hamper_text_change();
+    set_add_to_basket_text_change();
     set_auto_scroll_to_hamper_onclicks();
 });
 

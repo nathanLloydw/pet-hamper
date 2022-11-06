@@ -460,6 +460,7 @@ jQuery( function( $ ) {
 		 * @param {JQuery Object} $form The cart form.
 		 */
 		apply_coupon: function( $form ) {
+
 			block( $form );
 
 			var cart = this;

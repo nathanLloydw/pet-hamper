@@ -145,7 +145,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 #mobile_view_hamper_button div { width:100%;background:#b2a598;color:white;text-align: center;padding:15px; }
 .show_all_hamper_products { width:100%;background:#b2a598;color:white;text-align: center;padding:15px;cursor: pointer;display: none; }
 
-.active_hamper_prod { background: #f4f1e5 !important;border:1px solid #b2a497 !important;color:#b2a497 !important; }
+.active_prod { background: #f4f1e5 !important;border:1px solid #b2a497 !important;color:#b2a497 !important; }
 
 .mobile-cat-filters .content { overflow: scroll;}
 
