@@ -214,7 +214,6 @@ function manage_pagination_autoscroll()
 
         if(parseInt(current_page) !== 1)
         {
-            console.log('scrolling to content');
             scroll_to_content();
         }
     }
