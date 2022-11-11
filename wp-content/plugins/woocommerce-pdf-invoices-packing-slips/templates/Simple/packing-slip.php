@@ -14,6 +14,7 @@ if(!empty($shipments))
         $method = $methods[$x]['label'];
         $destination = wcms_get_formatted_address($shipment['destination']);
         $products = $shipment['contents'];
+        $gift_message = $shipment['note'];
         $product_list = [];
 
         foreach($products as $product)
@@ -26,7 +27,7 @@ if(!empty($shipments))
             $product_list[] = $product;
         }
 
-        $packing_slip = array('shipping_address' => $destination, 'products' => $product_list,'shipping_method' => $method);
+        $packing_slip = array('shipping_address' => $destination, 'products' => $product_list,'shipping_method' => $method,'gift_message'=>$gift_message);
 
         $packing_slips[] = $packing_slip;
     }
@@ -184,7 +185,7 @@ foreach($packing_slips as $packing_slip)
 <div class="customer-notes">
 	<?php if ( $this->get_shipping_notes() ) : ?>
 		<h3><?php _e( 'Customer Notes', 'woocommerce-pdf-invoices-packing-slips' ); ?></h3>
-		<?php $this->shipping_notes(); ?>
+		<?php echo $packing_slip['gift_message'] ?? $this->shipping_notes(); ?>
 	<?php endif; ?>
 </div>
 
