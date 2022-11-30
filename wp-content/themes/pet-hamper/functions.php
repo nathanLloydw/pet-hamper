@@ -576,24 +576,15 @@ if( function_exists('acf_add_options_page') ) {
      // Lets grab the order
      $order = wc_get_order( $order_id );
 
-     echo "<script>
-     dataLayer = [{
-     'transactionTotal': '".$order->get_total()."',
-     'transactionCurrency': '".$order->get_currency()."',
-     'transactionID': '".$order_id."',
-     'transactionPromoCode': '".implode(",",$order->get_coupon_codes())."'
-     }];
-     </script>";
-
-     echo "<script>
-     dataLayer = [{
-     'transactionTotal': '".$order->get_total()."',
-     'transactionCurrency': '".$order->get_currency()."',
-     'transactionID': '".$order_id."',
-     'transactionPromoCode': '".implode(",",$order->get_coupon_codes())."',
-     'event': 'awin.dl.ready'
-     }];
-     </script>";
+//     echo "<script>
+//     dataLayer = [{
+//     'transactionTotal': '".$order->get_total()."',
+//     'transactionCurrency': '".$order->get_currency()."',
+//     'transactionID': '".$order_id."',
+//     'transactionPromoCode': '".implode(",",$order->get_coupon_codes())."',
+//     'event': 'awin.dl.ready'
+//     }];
+//     </script>";
      
      // This is the order total
      $order->get_total();
