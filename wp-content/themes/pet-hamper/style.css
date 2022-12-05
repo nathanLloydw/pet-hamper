@@ -176,6 +176,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.custom_form_data { width:100%;top: 0;padding-bottom:60px; }
 	.bundled_product_title_inner { font-size: 12px; }
 	.custom_bundle_form { width:100%; }
+	/*.woocommerce-message::before { padding-top:48px; }*/
+	.button.wc-forward { width:100%; text-align:center; }
 }
 
 @media only screen and (max-width: 1200px)
