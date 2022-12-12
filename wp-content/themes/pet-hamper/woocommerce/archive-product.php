@@ -41,9 +41,17 @@ do_action( 'woocommerce_before_main_content' );
 
 		<?php else : ?>
 
-		<h1 class="woocommerce-products-header__title page-title"><?php woocommerce_page_title(); ?></h1>
+		<h1 class="woocommerce-products-header__title page-title test-2"><?php woocommerce_page_title(); ?></h1>
 
-		<?php endif; ?>
+
+        <?php if (woocommerce_page_title(false) == 'Christmas Hampers' || woocommerce_page_title(false) == 'Dog Christmas Hamper') : ?>
+            <a href="/create-your-own-hamper">
+                <img style="margin-bottom:43px;" src="https://pet-hamper.test/wp-content/uploads/2022/06/christmas selling out banner.jpg">
+            </a>
+
+        <?php endif; ?>
+
+        <?php endif; ?>
 
 	<?php endif; ?>
 
