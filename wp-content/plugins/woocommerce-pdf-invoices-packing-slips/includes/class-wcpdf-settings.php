@@ -46,6 +46,9 @@ class Settings {
 
 		// refresh template path cache each time the general settings are updated
 		add_action( "update_option_wpo_wcpdf_settings_general", array( $this, 'general_settings_updated' ), 10, 3 );
+		// sets transient to flush rewrite rules
+		add_action( "update_option_wpo_wcpdf_settings_debug", array( $this, 'debug_settings_updated' ), 10, 3 );
+		add_action( 'init', array( $this, 'maybe_delete_flush_rewrite_rules_transient' ) );
 		// migrate old template paths to template IDs before loading settings page
 		add_action( 'wpo_wcpdf_settings_output_general', array( $this, 'maybe_migrate_template_paths' ), 9, 1 );
 
@@ -241,14 +244,30 @@ class Settings {
 
 					wp_send_json_success( array( 'pdf_data' => base64_encode( $pdf_data ) ) );
 				} else {
-					wp_send_json_error( array( 'error' => sprintf( esc_html__( 'Document not available for order #%s, try selecting a different order.', 'woocommerce-pdf-invoices-packing-slips' ), $order_id ) ) );
+					wp_send_json_error(
+						array(
+							'error' => sprintf(
+								/* translators: order ID */
+								esc_html__( 'Document not available for order #%s, try selecting a different order.', 'woocommerce-pdf-invoices-packing-slips' ),
+								$order_id
+							)
+						)
+					);
 				}
 			} else {
 				wp_send_json_error( array( 'error' => esc_html__( 'No WooCommerce orders found! Please consider adding your first order to see this preview.', 'woocommerce-pdf-invoices-packing-slips' ) ) );
 			}
 
 		} catch ( \Throwable $th ) {
-			wp_send_json_error( array( 'error' => sprintf( esc_html__( 'Error trying to generate document: %s', 'woocommerce-pdf-invoices-packing-slips' ), $th->getMessage() ) ) );
+			wp_send_json_error(
+				array(
+					'error' => sprintf(
+						/* translators: error message */
+						esc_html__( 'Error trying to generate document: %s', 'woocommerce-pdf-invoices-packing-slips' ),
+						$th->getMessage()
+					)
+				)
+			);
 		}
 
 		wp_die();
@@ -332,7 +351,15 @@ class Settings {
 				wp_send_json_error( array( 'error' => esc_html__( 'An error occurred when trying to process your request!', 'woocommerce-pdf-invoices-packing-slips' ) ) );
 			}
 		} catch ( \Throwable $th ) {
-			wp_send_json_error( array( 'error' => sprintf( esc_html__( 'Error trying to get orders: %s', 'woocommerce-pdf-invoices-packing-slips' ), $th->getMessage() ) ) );
+			wp_send_json_error(
+				array(
+					'error' => sprintf(
+						/* translators: error message */
+						esc_html__( 'Error trying to get orders: %s', 'woocommerce-pdf-invoices-packing-slips' ),
+						$th->getMessage()
+					)
+				)
+			);
 		}
 
 		wp_die();
@@ -574,6 +601,19 @@ class Settings {
 		}
 	}
 
+	public function debug_settings_updated( $old_settings, $settings, $option ) {
+		if ( is_array( $settings ) && is_array( $old_settings ) && empty( $old_settings['pretty_document_links'] ) && ! empty ( $settings['pretty_document_links'] ) ) {
+			set_transient( 'wpo_wcpdf_flush_rewrite_rules', 'yes', HOUR_IN_SECONDS );
+		}
+	}
+
+	public function maybe_delete_flush_rewrite_rules_transient() {
+		if ( get_transient( 'wpo_wcpdf_flush_rewrite_rules' ) ) {
+			flush_rewrite_rules();
+			delete_transient( 'wpo_wcpdf_flush_rewrite_rules' );
+		}
+	}
+
 	public function get_relative_template_path( $absolute_path ) {
 		if ( defined('WP_CONTENT_DIR') && strpos( WP_CONTENT_DIR, ABSPATH ) !== false ) {
 			$base_path = $this->normalize_path( ABSPATH );
@@ -637,7 +677,7 @@ class Settings {
 		$number_store_method = $this->get_sequential_number_store_method();
 		$number_store = new Sequential_Number_Store( $_POST['store'], $number_store_method );
 		$number_store->set_next( $number );
-		echo "next number ({$_POST['store']}) set to {$number}";
+		echo wp_kses_post( "next number ({$_POST['store']}) set to {$number}" );
 		die();
 	}
 
@@ -706,6 +746,16 @@ class Settings {
 		return $new_settings;
 	}
 
+	/**
+	 * Checks if guest access is enabled
+	 * 
+	 * @return bool
+	 */
+	public function is_guest_access_enabled() {
+		$guest_access = isset( $this->debug_settings['guest_access'] ) ? true : false;
+
+		return apply_filters( 'wpo_wcpdf_guest_access_enabled', $guest_access, $this );
+	}
 }
 
 endif; // class_exists

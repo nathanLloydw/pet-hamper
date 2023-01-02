@@ -1,10 +1,6 @@
 <?php
 namespace WPO\WC\PDF_Invoices;
 
-use WPO\WC\PDF_Invoices\Compatibility\WC_Core as WCX;
-use WPO\WC\PDF_Invoices\Compatibility\Order as WCX_Order;
-use WPO\WC\PDF_Invoices\Compatibility\Product as WCX_Product;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -13,7 +9,7 @@ if ( !class_exists( '\\WPO\\WC\\PDF_Invoices\\Install' ) ) :
 
 class Install {
 	
-	function __construct()	{
+	public function __construct() {
 		// run lifecycle methods
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			add_action( 'wp_loaded', array( $this, 'do_install' ) );
@@ -166,6 +162,7 @@ class Install {
 				// 'reset_number_yearly'		=> '',
 				// 'my_account_buttons'		=> '',
 				// 'invoice_number_column'		=> '',
+				// 'invoice_date_column'		=> '',
 				// 'disable_free'				=> '',
 			),
 			'wpo_wcpdf_documents_settings_packing-slip' => array(
@@ -287,6 +284,7 @@ class Install {
 					'reset_number_yearly'		=> array( 'wpo_wcpdf_template_settings' => 'yearly_reset_invoice_number' ),
 					'my_account_buttons'		=> array( 'wpo_wcpdf_general_settings' => 'my_account_buttons' ),
 					'invoice_number_column'		=> array( 'wpo_wcpdf_general_settings' => 'invoice_number_column' ),
+					'invoice_date_column'		=> array( 'wpo_wcpdf_general_settings' => 'invoice_date_column' ),
 					'disable_free'				=> array( 'wpo_wcpdf_general_settings' => 'disable_free' ),
 				),
 				'wpo_wcpdf_documents_settings_packing-slip' => array(
