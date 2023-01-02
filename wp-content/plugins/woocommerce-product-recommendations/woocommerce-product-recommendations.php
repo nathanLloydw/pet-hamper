@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Recommendations
 * Plugin URI: https://woocommerce.com/products/product-recommendations/
 * Description: Create smarter up-sells and cross-sells, place them anywhere, and measure their impact with in-depth analytics.
-* Version: 2.1.0
+* Version: 2.2.0
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -13,10 +13,10 @@
 * Domain Path: /languages/
 *
 * Requires at least: 4.4
-* Tested up to: 5.9
+* Tested up to: 6.0
 *
 * WC requires at least: 3.9
-* WC tested up to: 6.5
+* WC tested up to: 6.8
 *
 * License: GNU General Public License v3.0
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Product_Recommendations
- * @version  2.1.0
+ * @version  2.2.0
  */
 class WC_Product_Recommendations {
 
@@ -40,14 +40,14 @@ class WC_Product_Recommendations {
 	 *
 	 * @var string
 	 */
-	private $version = '2.1.0';
+	private $version = '2.2.0';
 
 	/**
 	 * Min required WC version.
 	 *
 	 * @var string
 	 */
-	private $wc_min_version = '3.3.0';
+	private $wc_min_version = '3.9.0';
 
 	/**
 	 * The single instance of the class.
@@ -418,6 +418,8 @@ class WC_Product_Recommendations {
 	 */
 	public function load_translation() {
 		load_plugin_textdomain( 'woocommerce-product-recommendations', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		// Subscribe to automated translations.
+		add_filter( 'woocommerce_translations_updates_for_' . basename( __FILE__, '.php' ), '__return_true' );
 	}
 
 	/**

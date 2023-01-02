@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product Recommendations Helper Functions.
  *
  * @class    WC_PRL_Tracker
- * @version  2.1.0
+ * @version  2.2.0
  */
 class WC_PRL_Tracker {
 
@@ -128,7 +128,7 @@ class WC_PRL_Tracker {
 		global $wpdb;
 
 		$data = array(
-			'count' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE `post_type` = 'product' AND `post_status` NOT IN ( 'trash', 'auto-draft' )" ),
+			'count' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE `post_type` = 'product' AND `post_status` = 'publish'" ),
 		);
 
 		return $data;
@@ -144,7 +144,7 @@ class WC_PRL_Tracker {
 
 		$data = array(
 			'count'         => (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->prefix}woocommerce_prl_deployments`" ),
-			'total_engines' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE `post_type` = 'prl_engine' AND `post_status` NOT IN ( 'trash', 'auto-draft' )" ),
+			'total_engines' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE `post_type` = 'prl_engine' AND `post_status` = 'publish'" ),
 		);
 
 		return $data;
@@ -249,56 +249,119 @@ class WC_PRL_Tracker {
 	private static function get_orders_data() {
 		global $wpdb;
 
+		if ( WC_PRL_Core_Compatibility::is_hpos_enabled() ) {
+			$hpos_orders_table = Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore::get_orders_table_name();
+		}
+
 		$previous_year_dates  = self::get_dates( 'previous_year' );
 		$previous_month_dates = self::get_dates( 'previous_month' );
 
 		// Revenue - Previous month.
-		$recs_revenue_prev_month = (float) $wpdb->get_var( "
-			SELECT SUM( `total` )
-			FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` as `conversions`
-			LEFT JOIN `{$wpdb->posts}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
-			WHERE `ordered_time` >= '{$previous_month_dates[ 'start' ]->getTimestamp()}'
-			AND `ordered_time` <= '{$previous_month_dates[ 'end' ]->getTimestamp()}'
-			AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
-		" );
+		if ( WC_PRL_Core_Compatibility::is_hpos_enabled() ) {
 
-		$total_revenue_prev_month = (float) $wpdb->get_var( "
-			SELECT SUM( `order_total`.`meta_value` )
-			FROM `{$wpdb->posts}` AS `orders`
-			LEFT JOIN `{$wpdb->prefix}postmeta` AS `order_total` ON `order_total`.`post_id` = `orders`.`ID`
-			WHERE `orders`.`post_date_gmt` >= '{$previous_month_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
-			AND `orders`.`post_date_gmt` <= '{$previous_month_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
-			AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
-			AND `order_total`.`meta_key` = '_order_total'
-			AND `orders`.`post_type` = 'shop_order'
-		" );
+			$recs_revenue_prev_month = (float) $wpdb->get_var( "
+				SELECT SUM( `total` )
+				FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` as `conversions`
+				LEFT JOIN `{$hpos_orders_table}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
+				WHERE `ordered_time` >= '{$previous_month_dates[ 'start' ]->getTimestamp()}'
+				AND `ordered_time` <= '{$previous_month_dates[ 'end' ]->getTimestamp()}'
+				AND `orders`.`status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+			" );
+
+			$total_revenue_prev_month = (float) $wpdb->get_var( "
+				SELECT SUM( `orders`.`total_amount` )
+				FROM `{$hpos_orders_table}` AS `orders`
+				WHERE `orders`.`date_created_gmt` >= '{$previous_month_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`date_created_gmt` <= '{$previous_month_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+				AND `orders`.`type` = 'shop_order'
+			" );
+
+		} else {
+
+			$recs_revenue_prev_month = (float) $wpdb->get_var( "
+				SELECT SUM( `total` )
+				FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` as `conversions`
+				LEFT JOIN `{$wpdb->posts}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
+				WHERE `ordered_time` >= '{$previous_month_dates[ 'start' ]->getTimestamp()}'
+				AND `ordered_time` <= '{$previous_month_dates[ 'end' ]->getTimestamp()}'
+				AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+			" );
+
+			$total_revenue_prev_month = (float) $wpdb->get_var( "
+				SELECT SUM( `order_total`.`meta_value` )
+				FROM `{$wpdb->posts}` AS `orders`
+				LEFT JOIN `{$wpdb->prefix}postmeta` AS `order_total` ON `order_total`.`post_id` = `orders`.`ID`
+				WHERE `orders`.`post_date_gmt` >= '{$previous_month_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`post_date_gmt` <= '{$previous_month_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+				AND `order_total`.`meta_key` = '_order_total'
+				AND `orders`.`post_type` = 'shop_order'
+			" );
+
+		}
 
 		$revenue_monthly_percentage = ! empty( $total_revenue_prev_month ) ? round( $recs_revenue_prev_month / $total_revenue_prev_month * 100, 4 ) : 0;
 
 		// Revenue - Previous year.
-		$recs_revenue_prev_year = (float) $wpdb->get_var( "
-			SELECT SUM( `total` )
-			FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` AS `conversions`
-			LEFT JOIN `{$wpdb->posts}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
-			WHERE `ordered_time` >= '{$previous_year_dates[ 'start' ]->getTimestamp()}'
-			AND `ordered_time` <= '{$previous_year_dates[ 'end' ]->getTimestamp()}'
-			AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
-		" );
+		if ( WC_PRL_Core_Compatibility::is_hpos_enabled() ) {
 
-		$total_revenue_prev_year = (float) $wpdb->get_var( "
-			SELECT SUM( `order_total`.`meta_value` )
-			FROM `{$wpdb->posts}` AS `orders`
-			LEFT JOIN `{$wpdb->prefix}postmeta` AS `order_total` ON `order_total`.`post_id` = `orders`.`ID`
-			WHERE `orders`.`post_date_gmt` >= '{$previous_year_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
-			AND `orders`.`post_date_gmt` <= '{$previous_year_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
-			AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
-			AND `order_total`.`meta_key` = '_order_total'
-			AND `orders`.`post_type` = 'shop_order'
-		" );
+			$recs_revenue_prev_year = (float) $wpdb->get_var( "
+				SELECT SUM( `total` )
+				FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` as `conversions`
+				LEFT JOIN `{$hpos_orders_table}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
+				WHERE `ordered_time` >= '{$previous_year_dates[ 'start' ]->getTimestamp()}'
+				AND `ordered_time` <= '{$previous_year_dates[ 'end' ]->getTimestamp()}'
+				AND `orders`.`status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+			" );
+
+			$total_revenue_prev_year = (float) $wpdb->get_var( "
+				SELECT SUM( `orders`.`total_amount` )
+				FROM `{$hpos_orders_table}` AS `orders`
+				WHERE `orders`.`date_created_gmt` >= '{$previous_year_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`date_created_gmt` <= '{$previous_year_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+				AND `orders`.`type` = 'shop_order'
+			" );
+
+		} else {
+
+			$recs_revenue_prev_year = (float) $wpdb->get_var( "
+				SELECT SUM( `total` )
+				FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions` AS `conversions`
+				LEFT JOIN `{$wpdb->posts}` AS `orders` ON `conversions`.`order_id` = `orders`.`ID`
+				WHERE `ordered_time` >= '{$previous_year_dates[ 'start' ]->getTimestamp()}'
+				AND `ordered_time` <= '{$previous_year_dates[ 'end' ]->getTimestamp()}'
+				AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+			" );
+
+			$total_revenue_prev_year = (float) $wpdb->get_var( "
+				SELECT SUM( `order_total`.`meta_value` )
+				FROM `{$wpdb->posts}` AS `orders`
+				LEFT JOIN `{$wpdb->prefix}postmeta` AS `order_total` ON `order_total`.`post_id` = `orders`.`ID`
+				WHERE `orders`.`post_date_gmt` >= '{$previous_year_dates[ 'start' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`post_date_gmt` <= '{$previous_year_dates[ 'end' ]->format( 'Y-m-d h:i:s' )}'
+				AND `orders`.`post_status` NOT IN ( 'wc-cancelled', 'wc-pending', 'wc-failed', 'wc-on-hold' )
+				AND `order_total`.`meta_key` = '_order_total'
+				AND `orders`.`post_type` = 'shop_order'
+			" );
+
+		}
 
 		$revenue_yearly_percentage = ! empty( $total_revenue_prev_year ) ? round( $recs_revenue_prev_year / $total_revenue_prev_year * 100, 4 ) : 0;
 
+		// Add first conversion date to tracking data.
+		$first_conversion_date = (int) $wpdb->get_var( "
+			SELECT min(`ordered_time`)
+			FROM `{$wpdb->prefix}woocommerce_prl_tracking_conversions`
+			" );
+
 		$data = array(
+
+			// Dates.
+			'first_conversion_date'                          => $first_conversion_date ? gmdate( 'Y-m-d H:i:s', $first_conversion_date ) : null,
+
+			// Revenues.
 			'recommendations_revenue_previous_month'         => $recs_revenue_prev_month,
 			'revenue_previous_month'                         => $total_revenue_prev_month,
 			'recommendations_revenue_previous_month_percent' => $revenue_monthly_percentage,

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Functions related to core back-compatibility.
  *
  * @class    WC_PRL_Core_Compatibility
- * @version  2.0.0
+ * @version  2.2.0
  */
 class WC_PRL_Core_Compatibility {
 
@@ -56,6 +56,15 @@ class WC_PRL_Core_Compatibility {
 	 * @var    bool
 	 */
 	private static $is_wc_admin_enabled = null;
+
+	/**
+	 * Cache HPOS status.
+	 *
+	 * @since  2.2.0
+	 *
+	 * @var bool
+	 */
+	private static $is_hpos_enabled = null;
 
 	/**
 	 * Initialization and hooks.
@@ -284,6 +293,23 @@ class WC_PRL_Core_Compatibility {
 
 		return false;
 	}
+
+	/**
+	 * Check if the usage of the custom orders table is enabled.
+	 *
+	 * @since  2.2.0
+	 *
+	 * @return bool
+	 */
+	public static function is_hpos_enabled() {
+
+		if ( ! isset( self::$is_hpos_enabled ) ) {
+			self::$is_hpos_enabled = class_exists( 'Automattic\WooCommerce\Utilities\OrderUtil' ) && Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
+		}
+
+		return self::$is_hpos_enabled;
+	}
+
 }
 
 WC_PRL_Core_Compatibility::init();

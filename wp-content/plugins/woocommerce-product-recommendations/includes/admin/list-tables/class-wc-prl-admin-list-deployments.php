@@ -19,7 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Adds a custom deployments list table.
  *
  * @class    WC_PRL_Deployments_List_Table
- * @version  1.4.16
+ * @version  2.2.0
  */
 class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
@@ -222,6 +222,8 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 	private function process_bulk_action() {
 
 		if ( $this->current_action() ) {
+
+			check_admin_referer( 'bulk-' . $this->_args['plural'] );
 
 			$deployments = array();
 			if ( isset( $_GET[ 'deployment' ] ) && is_array( $_GET[ 'deployment' ] ) ) {

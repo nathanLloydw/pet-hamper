@@ -479,7 +479,7 @@
 
 				product_id = parseInt( $cart_btn.val(), 10 );
 				if ( ! product_id ) {
-					window.console.error(
+					window.console.warn(
 						'Could not parse the product id using cart form. Tracking bypassed...'
 					);
 					return;

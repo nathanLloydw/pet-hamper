@@ -1,5 +1,18 @@
 *** WooCommerce Product Recommendations ***
 
+2022-11-28 - version 2.2.0
+* Important - Declared compatibility with the new High-Performance Order Storage.
+* Important - Security improvements.
+
+2022-11-01 - version 2.1.2
+* Tweak - Replaced console error with a warning when tracking conversion for unsupported product types.
+* Tweak - Declared incompatibility with the new High-Performance Order Storage.
+* Tweak - Improved security.
+* Tweak - Added support for automated translations delivery.
+
+2022-07-28 - version 2.1.1
+* Tweak - Minor telemetry data point adjustments.
+
 2022-05-31 - version 2.1.0
 * Fix - Fixed an issue that prevented HTML code from being saved in deployment description.
 * Fix - Fixed styles for disabled toggles in the Locations admin screen.

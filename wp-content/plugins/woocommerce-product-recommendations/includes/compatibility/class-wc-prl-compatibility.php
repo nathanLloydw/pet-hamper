@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles compatibility with other WC extensions.
  *
  * @class    WC_PRL_Compatibility
- * @version  1.4.16
+ * @version  2.2.0
  */
 class WC_PRL_Compatibility {
 
@@ -56,6 +56,9 @@ class WC_PRL_Compatibility {
 		// Include core compatibility class.
 		self::core_includes();
 
+		// Declare HPOS compatibility.
+		add_action( 'before_woocommerce_init', array( __CLASS__, 'declare_hpos_compatibility' ) );
+
 		// Load modules.
 		add_action( 'plugins_loaded', array( __CLASS__, 'module_includes' ), 100 );
 
@@ -70,6 +73,20 @@ class WC_PRL_Compatibility {
 	 */
 	public static function core_includes() {
 		require_once  WC_PRL_ABSPATH . 'includes/compatibility/core/class-wc-prl-core-compatibility.php' ;
+	}
+
+	/**
+	 * Declare HPOS( Custom Order tables) compatibility.
+	 *
+	 * @since 2.1.2
+	 */
+	public static function declare_hpos_compatibility() {
+
+		if ( ! class_exists( 'Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			return;
+		}
+
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WC_PRL()->get_plugin_basename(), true );
 	}
 
 	/**

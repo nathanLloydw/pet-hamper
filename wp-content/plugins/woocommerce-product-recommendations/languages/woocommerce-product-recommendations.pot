@@ -2,16 +2,16 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Product Recommendations 2.1.0\n"
+"Project-Id-Version: WooCommerce Product Recommendations 2.2.0\n"
 "Report-Msgid-Bugs-To: https://woocommerce.com/my-account/create-a-ticket/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-05-31T10:56:35+00:00\n"
+"POT-Creation-Date: 2022-11-28T12:03:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Domain: woocommerce-product-recommendations\n"
 
@@ -582,38 +582,38 @@ msgstr ""
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:237
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:239
 msgid "Deployments deleted."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:288
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:290
 msgid "Ready to start your Engines?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:291
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:293
 msgid "Deploy an Engine now to offer product recommendations at a Location of your store."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:294
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:296
 #: includes/admin/views/html-admin-locations.php:29
 #: includes/class-wc-prl-deployments.php:262
 msgid "Search for an Engine&hellip;"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:301
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:303
 #: includes/class-wc-prl-post-types.php:130
 msgid "Create an Engine"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:304
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:306
 msgid "Want to add product recommendations to a Location of your store?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:306
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:308
 msgid "Start by creating an Engine &mdash; then, return here to deploy it."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:308
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:310
 #: includes/class-wc-prl-post-types.php:137
 msgid "Create engine"
 msgstr ""
@@ -1304,24 +1304,24 @@ msgstr ""
 msgid "Now generating %s recommendations in the background. <strong>Note:</strong> This message is visible to store managers only."
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:149
+#: includes/compatibility/class-wc-prl-compatibility.php:166
 msgid "Product Bundles"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:150
+#: includes/compatibility/class-wc-prl-compatibility.php:167
 msgid "WooCommerce Product Bundles"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:152
-#: includes/compatibility/class-wc-prl-compatibility.php:166
+#: includes/compatibility/class-wc-prl-compatibility.php:169
+#: includes/compatibility/class-wc-prl-compatibility.php:183
 msgid "The installed version of <strong>%1$s</strong> is not supported by <strong>Product Recommendations</strong>. Please update <a href=\"%2$s\" target=\"_blank\">%3$s</a> to version <strong>%4$s</strong> or higher."
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:163
+#: includes/compatibility/class-wc-prl-compatibility.php:180
 msgid "Composite Products"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:164
+#: includes/compatibility/class-wc-prl-compatibility.php:181
 msgid "WooCommerce Composite Products"
 msgstr ""
 

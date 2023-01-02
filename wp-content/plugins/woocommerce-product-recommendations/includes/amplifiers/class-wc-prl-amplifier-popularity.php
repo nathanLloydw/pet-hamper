@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Popularity class for amplifying products based on their order number in a given time span.
  *
  * @class    WC_PRL_Amplifier_Popularity
- * @version  1.4.16
+ * @version  2.2.0
  */
 class WC_PRL_Amplifier_Popularity extends WC_PRL_Amplifier {
 
@@ -79,6 +79,28 @@ class WC_PRL_Amplifier_Popularity extends WC_PRL_Amplifier {
 						GROUP BY d.product_id
 					) as prl_popularity ON ($wpdb->posts.ID = prl_popularity.product_id)
 				";
+				$posts_clauses[ 'orderby' ] = "prl_popularity.orders_count {$data[ 'modifier' ]}, $wpdb->posts.post_date DESC";
+				$posts_clauses[ 'groupby' ] = "$wpdb->posts.ID";
+
+			} elseif ( WC_PRL_Core_Compatibility::is_hpos_enabled() ) {
+
+				$hpos_orders_table          = Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore::get_orders_table_name();
+				$where_start                = $start ? "AND {$hpos_orders_table}.date_created_gmt >= '{$start}'" : '';
+				$posts_clauses[ 'join' ]    = "
+					INNER JOIN (
+						SELECT product_id, count(*) as orders_count
+						FROM ( SELECT meta_value as product_id, date_created_gmt
+							FROM $wpdb->order_itemmeta
+							INNER JOIN {$wpdb->prefix}woocommerce_order_items ON($wpdb->order_itemmeta.order_item_id = {$wpdb->prefix}woocommerce_order_items.order_item_id)
+							INNER JOIN {$hpos_orders_table} ON({$wpdb->prefix}woocommerce_order_items.order_id = {$hpos_orders_table}.id)
+							WHERE $wpdb->order_itemmeta.meta_key = '_product_id'
+							AND {$wpdb->prefix}woocommerce_order_items.order_item_type = 'line_item'
+							{$where_start}
+							AND {$hpos_orders_table}.date_created_gmt <= '{$now}'
+							AND {$hpos_orders_table}.type = 'shop_order' ) as d
+						GROUP BY d.product_id
+					) as prl_popularity ON ($wpdb->posts.ID = prl_popularity.product_id)
+					";
 				$posts_clauses[ 'orderby' ] = "prl_popularity.orders_count {$data[ 'modifier' ]}, $wpdb->posts.post_date DESC";
 				$posts_clauses[ 'groupby' ] = "$wpdb->posts.ID";
 
