@@ -169,24 +169,27 @@
     var CONDITIONAL_LAYOUT_SETTINGS = {
         layoutSelect: "select[id*='search_layout']",
         overlayMobile: "input[id*='enable_mobile_overlay']",
-        mobileBreakpoint: "input[id*='mobile_breakpoint']",
+        switchLayoutBreakpoint: "input[id*='mobile_breakpoint']",
+        mobileOverlayBreakpoint: "input[id*='mobile_overlay_breakpoint']",
         searchIconColor: "input[id*='search_icon_color']",
-        $select: null,
+        $layoutSelectEl: null,
         $overlayMobileEl: null,
-        $mobileBreakpointEl: null,
+        $switchLayoutBreakpointEl: null,
+        $mobileOverlayBreakpointEl: null,
         $searchIconColorEl: null,
         setConditions: function () {
             var _this = this,
-                currentVal = _this.$select.find('option:selected').val(),
+                layoutVal = _this.$layoutSelectEl.find('option:selected').val(),
+                overlayOnMobileVal = _this.$overlayMobileEl.is(':checked'),
                 hasAdvSettings = $('.js-dgwt-wcas-adv-settings-toggle').hasClass('woocommerce-input-toggle--enabled');
 
-            _this.hideOption(_this.$overlayMobileEl);
-            _this.hideOption(_this.$mobileBreakpointEl);
+            _this.hideOption(_this.$switchLayoutBreakpointEl);
+            _this.hideOption(_this.$mobileOverlayBreakpointEl);
             _this.hideOption(_this.$searchIconColorEl);
 
             $("input[id*='bg_search_icon_color']").closest('tr').show();
 
-            switch (currentVal) {
+            switch (layoutVal) {
                 case 'icon':
 
                     if (hasAdvSettings) {
@@ -195,9 +198,10 @@
 
                     break;
                 case 'icon-flexible':
+                case 'icon-flexible-inv':
 
                     if (hasAdvSettings) {
-                        _this.showOption(_this.$mobileBreakpointEl);
+                        _this.showOption(_this.$switchLayoutBreakpointEl);
                         _this.showOption(_this.$searchIconColorEl);
                     }
 
@@ -205,18 +209,15 @@
                 default:
 
                     if (hasAdvSettings) {
-
-                        _this.showOption(_this.$overlayMobileEl);
-
                         $("input[id*='bg_search_icon_color']").closest('tr').hide();
-
-                        if (_this.$overlayMobileEl.is(':checked')) {
-                            _this.showOption(_this.$mobileBreakpointEl);
-                        }
                     }
-
                     break;
             }
+
+            if (overlayOnMobileVal) {
+                _this.showOption(_this.$mobileOverlayBreakpointEl);
+            }
+
         },
         hideOption: function ($el) {
             $el.closest('tr').hide();
@@ -227,7 +228,7 @@
         registerListeners: function () {
             var _this = this;
 
-            _this.$select.on('change', function () {
+            _this.$layoutSelectEl.on('change', function () {
                 _this.setConditions();
             });
 
@@ -238,12 +239,13 @@
         },
         init: function () {
             var _this = this,
-                $sel = $(_this.layoutSelect);
+                $layoutSelectEl = $(_this.layoutSelect);
 
-            if ($sel.length > 0) {
-                _this.$select = $sel;
+            if ($layoutSelectEl.length > 0) {
+                _this.$layoutSelectEl = $layoutSelectEl;
                 _this.$overlayMobileEl = $(_this.overlayMobile);
-                _this.$mobileBreakpointEl = $(_this.mobileBreakpoint);
+                _this.$switchLayoutBreakpointEl = $(_this.switchLayoutBreakpoint);
+                _this.$mobileOverlayBreakpointEl = $(_this.mobileOverlayBreakpoint);
                 _this.$searchIconColorEl = $(_this.searchIconColor);
                 _this.registerListeners();
 
@@ -262,6 +264,7 @@
         indexingWrappoerClass: 'js-dgwt-wcas-indexing-wrapper',
         indexerTabProgressClass: 'js-dgwt-wcas-indexer-tab-progress',
         indexerTabErrorClass: 'js-dgwt-wcas-indexer-tab-error',
+        indexerMenuErrorClass: 'dgwt-wcas-menu-warning-icon',
         getWrapper: function () {
             var _this = this;
 
@@ -319,6 +322,7 @@
                 var $btn = $(this);
 
                 $btn.attr('disabled', 'disabled');
+                _this.getWrapper().attr('data-stopping', '1');
 
                 $.ajax({
                     url: ajaxurl,
@@ -334,7 +338,7 @@
                         }
                     },
                     complete: function () {
-                        $btn.removeAttr('disabled');
+                        _this.getWrapper().attr('data-stopping', '0');
                     }
                 });
             })
@@ -353,6 +357,9 @@
                     },
                     success: function (response) {
                         if (typeof response != 'undefined' && response.success) {
+                            if (_this.getWrapper().attr('data-stopping') === '1') {
+                                return;
+                            }
                             _this.getWrapper().html(response.data.html);
 
                             if (response.data.loop) {
@@ -361,6 +368,8 @@
                                 $('.' + _this.indexerTabProgressClass).removeClass('active');
                                 if (response.data.status === 'error') {
                                     $('.' + _this.indexerTabErrorClass).addClass('active');
+                                } else if (response.data.status === 'completed') {
+                                    $('.' + _this.indexerMenuErrorClass).remove();
                                 }
                             }
 
@@ -671,6 +680,7 @@
         languageSwitcherClass: 'js-dgwt-wcas-analytics-lang',
         excludePhraseClass: 'js-dgwt-wcas-analytics-exclude-phrase',
         checkIndexerAction: 'js-dgwt-wcas-analytics-check-indexer',
+        resetAnalyticsAction: 'js-dgwt-wcas-analytics-reset',
         init: function () {
             var _this = this;
 
@@ -742,6 +752,7 @@
                         $el.html(response.data.html);
                         _this.loadCheckCriticalSearchesListeners();
                         _this.loadMoreListeners();
+                        _this.resetStatsListener();
                     }
                 }
             );
@@ -786,6 +797,30 @@
             })
 
 
+        },
+        resetStatsListener: function () {
+            var _this = this;
+
+            $('.' + _this.resetAnalyticsAction).on('click', function (e) {
+                var $el = $(this);
+                e.preventDefault();
+                if (confirm(dgwt_wcas.analytics.labels.reset_stats_confirm)) {
+                    var data = {
+                        'action': 'dgwt_wcas_reset_stats',
+                        '_wpnonce': dgwt_wcas.analytics.nonce.reset_stats
+                    };
+
+                    $el.next().addClass('loading');
+
+                    $.post(
+                        ajaxurl,
+                        data,
+                        function (response) {
+                            location.reload();
+                        }
+                    );
+                }
+            })
         },
         checkPhraseStatus: function ($el) {
             var _this = this,
@@ -893,10 +928,10 @@
                             $loadMoreRow.removeClass(_this.rowLoadingClass);
                             $loadMoreRow.find('img').remove();
                             $('.' + _this.criticalSearchesLoadMoreClass + ' span:first-child').text(response.data.more_label);
-                            _this.loadCheckCriticalSearchesListeners();
                         } else {
                             $loadMoreRow.remove();
                         }
+                        _this.loadCheckCriticalSearchesListeners();
                     }
                 }
             );
@@ -944,6 +979,7 @@
         searchWrapp: {},
         suggestionWrapp: {},
         searchInput: {},
+        animateTypingInterval: null,
         init: function () {
             var _this = this;
 
@@ -961,6 +997,9 @@
 
             _this.noResultsHandler();
             _this.fixSizesInit();
+
+            _this.keepPreviewVisible();
+            _this.animationController();
         },
         isChecked: function ($el) {
             return $el.length > 0 && $el.is(':checked') ? true : false;
@@ -1034,6 +1073,8 @@
                 options = [
                     'show_submit_button',
                     'max_form_width',
+                    'search_style',
+                    'search_layout',
                     'show_product_image',
                     'show_product_sku',
                     'show_product_desc',
@@ -1050,11 +1091,12 @@
                     'show_details_box'
                 ];
             for (var i = 0; i < options.length; i++) {
-                var selector = "input[id='dgwt_wcas_settings\\[" + options[i] + "\\]']";
-                var altSelector = "input[id^='dgwt_wcas_settings'][data-option-trigger='" + options[i] + "']";
-                var $el = $(selector),
-                    $altEl = $(altSelector)
-                methodToCall = 'onChange' + _this.camelCase(options[i]);
+                var tag = ['search_style', 'search_layout'].includes(options[i]) ? 'select' : 'input',
+                    selector = tag + "[id='dgwt_wcas_settings\\[" + options[i] + "\\]']",
+                    altSelector = tag + "[id^='dgwt_wcas_settings'][data-option-trigger='" + options[i] + "']",
+                    $el = $(selector),
+                    $altEl = $(altSelector),
+                    methodToCall = 'onChange' + _this.camelCase(options[i]);
 
                 if (typeof _this[methodToCall] == 'function' && $el.length > 0) {
                     _this[methodToCall]($el, $el.val());
@@ -1104,7 +1146,7 @@
 
                 _this[methodToCall]($el, $el.val());
 
-                $(document).on("change", selector, function (a) {
+                $(document).on("change", selector, function () {
                     methodToCall = $(this).attr('id').replace(']', '').replace('dgwt_wcas_settings[', '');
                     methodToCall = 'onColor' + _this.camelCase(methodToCall);
                     _this[methodToCall]($(this), this.value);
@@ -1167,12 +1209,18 @@
                 _this.onColorBgSubmitColor($textSubmitBgEl, $textSubmitBgEl.val());
                 _this.onColorTextSubmitColor($textSubmitTextEl, $textSubmitTextEl.val());
 
+                setTimeout(function () {
+                    _this.positionPreloader();
+                }, 10);
+
             } else {
                 _this.searchWrapp.addClass('dgwt-wcas-no-submit');
                 _this.searchWrapp.removeClass('dgwt-wcas-has-submit');
                 $submit.hide();
                 $('.dgwt-wcas-sf-wrapp > .dgwt-wcas-ico-magnifier').show();
+                _this.positionPreloader();
             }
+
 
         },
         onChangeShowProductImage: function ($el, value) {
@@ -1473,12 +1521,13 @@
 
                     $('.dgwt-wcas-suggestion-product:not(.dgwt-wcas-suggestion-duplicated)').addClass('dgwt-wcas-suggestion-selected');
 
-                    var searchWidth = _this.searchWrapp.width();
+                    var $visibleSearchWrapp = $('.js-dgwt-wcas-preview-bar-example');
+                    var searchWidth = $visibleSearchWrapp.width();
 
                     if (searchWidth >= 550) {
                         _this.previewWrapper.addClass('dgwt-wcas-full-width');
 
-                        var realWidth = getComputedStyle(_this.searchWrapp[0]).width;
+                        var realWidth = getComputedStyle($visibleSearchWrapp[0]).width;
                         realWidth = Math.round(parseFloat(realWidth.replace('px', '')));
 
                         if (realWidth % 2 == 0) {
@@ -1507,7 +1556,120 @@
                 _this.detailsWrapp.css('width', '');
             }
         },
+        onChangeSearchStyle: function ($el, value) {
+            var _this = this,
+                themes = ['solaris', 'pirx'],
+                $inputSubmitButton = $('input[id*="show_submit_button"]'),
+                $inputSubmitBgColor = $('label[for*="bg_submit_color"]'),
+                i;
+
+            $('.dgwt-wcas-ico-magnifier').addClass('dgwt-wcas-hidden');
+
+            for (i = 0; i < themes.length; i++) {
+                $('.js-dgwt-wcas-preview').removeClass('dgwt-wcas-open-' + themes[i]);
+                $('.js-dgwt-wcas-search-wrapp').removeClass('dgwt-wcas-style-' + themes[i]);
+            }
+
+            $('.js-dgwt-wcas-ico-magnifier-' + value).removeClass('dgwt-wcas-hidden');
+
+            $('.js-dgwt-wcas-preview').addClass('dgwt-wcas-open-' + value);
+            $('.js-dgwt-wcas-search-wrapp').addClass('dgwt-wcas-style-' + value);
+
+            if (value === 'solaris') {
+                $('label[for*="show_submit_button"] .js-dgwt-wcas-tooltip').addClass('dgwt-wcas-hidden');
+                $('label[for*="search_submit_text"]').closest('tr').removeClass('dgwt-wcas-hidden');
+                $('input[id*="search_submit_text"]').prop("disabled", false);
+                $inputSubmitBgColor.closest('tr').removeClass('dgwt-wcas-hidden');
+                $('label[for*="text_submit_color"] > span:nth-child(1)').removeClass('dgwt-wcas-hidden');
+                $('label[for*="text_submit_color"] > span:nth-child(2)').addClass('dgwt-wcas-hidden');
+                $inputSubmitButton.prop("disabled", false);
+                $('.js-dgwt-wcas-submit-button-pirx-tooltip').removeClass('dgwt-wcas-hidden');
+
+                setTimeout(function () {
+                    _this.positionPreloader();
+                }, 300);
+            }
+
+            if (value === 'pirx') {
+                $('label[for*="show_submit_button"] .js-dgwt-wcas-tooltip').removeClass('dgwt-wcas-hidden');
+                $('label[for*="search_submit_text"]').closest('tr').addClass('dgwt-wcas-hidden');
+                $('input[id*="search_submit_text"]').prop("disabled", true);
+                $('label[for*="bg_submit_color"]').closest('tr').addClass('dgwt-wcas-hidden');
+                $('label[for*="text_submit_color"] > span:nth-child(2)').removeClass('dgwt-wcas-hidden');
+                $('label[for*="text_submit_color"] > span:nth-child(1)').addClass('dgwt-wcas-hidden');
+                $('input[id*="search_submit_text"]').val('');
+
+                var $cPicker = $inputSubmitBgColor.closest('tr').find('.wp-picker-clear');
+                if($cPicker.length > 0){
+                    $cPicker[0].click();
+                }
+                _this.onColorBgSubmitColor();
+
+                if (!$inputSubmitButton.is(':checked')) {
+                    $inputSubmitButton[0].click();
+                }
+
+                $inputSubmitButton.prop("disabled", true);
+
+                _this.onTypeSearchSubmitText($('input[id*="search_submit_text"]'), '');
+
+                setTimeout(function () {
+                    _this.positionPreloader();
+                }, 10);
+
+            }
+        },
+        onChangeSearchLayout: function ($el, value) {
+            var _this = this,
+                $labels = $('.js-dgwt-wcas-preview-device-info'),
+                $barExample = $('.js-dgwt-wcas-preview-bar-example'),
+                $iconExample = $('.js-dgwt-wcas-preview-icon-example'),
+                i;
+
+            $('.js-dgwt-wcas-preview-device-info > span').addClass('dgwt-wcas-hidden');
+            $iconExample.removeClass('dgwt-wcas-preview-icon-only');
+
+            switch (value) {
+                case 'classic':
+                    $labels.addClass('dgwt-wcas-hidden');
+                    $barExample.removeClass('dgwt-wcas-hidden');
+                    $iconExample.addClass('dgwt-wcas-hidden');
+                    break;
+                case 'icon':
+                    $labels.addClass('dgwt-wcas-hidden');
+                    $barExample.addClass('dgwt-wcas-hidden');
+                    $iconExample.removeClass('dgwt-wcas-hidden');
+                    $('.dgwt-wcas-search-form').removeClass('dgwt-wcas-hidden');
+                    $('.dgwt-wcas-search-icon-arrow').removeClass('dgwt-wcas-hidden');
+                    $iconExample.addClass('dgwt-wcas-preview-icon-only');
+                    break;
+                case 'icon-flexible':
+                    $labels.removeClass('dgwt-wcas-hidden');
+                    $barExample.removeClass('dgwt-wcas-hidden');
+                    $iconExample.removeClass('dgwt-wcas-hidden');
+                    $iconExample.find('.dgwt-wcas-search-form').addClass('dgwt-wcas-hidden');
+                    $iconExample.find('.dgwt-wcas-search-icon-arrow').addClass('dgwt-wcas-hidden');
+                    $('.js-dgwt-wcas-preview-device-info[data-device="desktop"] span:nth-child(2)').removeClass('dgwt-wcas-hidden');
+                    $('.js-dgwt-wcas-preview-device-info[data-device="mobile"] span:nth-child(1)').removeClass('dgwt-wcas-hidden');
+                    break;
+                case 'icon-flexible-inv':
+                    $labels.removeClass('dgwt-wcas-hidden');
+                    $barExample.removeClass('dgwt-wcas-hidden');
+                    $iconExample.removeClass('dgwt-wcas-hidden');
+                    $iconExample.find('.dgwt-wcas-search-form').addClass('dgwt-wcas-hidden');
+                    $iconExample.find('.dgwt-wcas-search-icon-arrow').addClass('dgwt-wcas-hidden');
+                    $('.js-dgwt-wcas-preview-device-info[data-device="desktop"] span:nth-child(1)').removeClass('dgwt-wcas-hidden');
+                    $('.js-dgwt-wcas-preview-device-info[data-device="mobile"] span:nth-child(2)').removeClass('dgwt-wcas-hidden');
+                    break;
+            }
+        },
         onColorSearchIconColor: function ($el, value) {
+            var _this = this;
+            if (_this.isColor(value)) {
+                _this.searchWrapp.find('.dgwt-wcas-ico-magnifier-handler path').css('fill', value);
+            } else {
+                _this.searchWrapp.find('.dgwt-wcas-ico-magnifier-handler path').css('fill', '');
+            }
         },
         onColorBgInputColor: function ($el, value) {
             var _this = this;
@@ -1524,11 +1686,7 @@
             if (_this.isColor(value)) {
 
                 var style = '<style class="' + styleClass + '">';
-                style += '.dgwt-wcas-search-input::placeholder{opacity: 0.3; color:' + value + '!important;}';
-                style += '.dgwt-wcas-search-input::-webkit-input-placeholder{opacity: 0.3; color:' + value + '!important;}';
-                style += '.dgwt-wcas-search-input:-moz-placeholder{opacity: 0.3; color:' + value + '!important;}';
-                style += '.dgwt-wcas-search-input::-moz-placeholder{opacity: 0.3; color:' + value + '!important;}';
-                style += '.dgwt-wcas-search-input:-ms-input-placeholder{opacity: 0.3; color:' + value + '!important;}';
+                style += '.dgwt-wcas-search-input {color:' + value + '!important;}';
                 style += '.dgwt-wcas-ico-magnifier path {fill:' + value + '}';
                 style += '</style>';
 
@@ -1692,7 +1850,8 @@
             }
         },
         onTypeSearchSubmitText: function ($el, value) {
-            var $label = $('.js-dgwt-wcas-search-submit-l'),
+            var _this = this,
+                $label = $('.js-dgwt-wcas-search-submit-l'),
                 $icon = $('.js-dgwt-wcas-search-submit-m');
 
             if (value.length > 0) {
@@ -1705,6 +1864,7 @@
                 $icon.show();
             }
 
+            _this.positionPreloader();
         },
         onTypeSearchPlaceholder: function ($el, value) {
             var _this = this;
@@ -1725,6 +1885,22 @@
             }
             $('.js-dgwt-wcas-st-more-label').text(value);
         },
+        positionPreloader: function () {
+            var $submit = $('.js-dgwt-wcas-search-wrapp:not(.dgwt-wcas-hidden) .js-dgwt-wcas-search-submit'),
+                visible = $submit.is(":visible"),
+                style = $("select[id*='search_style'] option:selected").val(),
+                right = ($submit.width() + 35);
+
+            if (style == 'pirx') {
+                right = 38;
+            }
+
+            if (!visible && style == 'solaris') {
+                right = 7;
+            }
+
+            $('.dgwt-wcas-preloader').css('right', right + 'px');
+        },
         fixSizesInit: function () {
             var _this = this;
 
@@ -1732,6 +1908,177 @@
                 _this.onChangeShowDetailsBox($("input[id*='show_details_box']"));
             });
 
+        },
+        keepPreviewVisible: function () {
+            var $movingEl = $('.js-dgwt-wcas-preview-inner'),
+                $startEl = $('.js-dgwt-wcas-preview'),
+                $endEl = $('.js-dgwt-wcas-preview-source'),
+                $boundaryEl = $('.dgwt-eq-settings-form');
+
+            $(window).on('scroll.autocomplete', function () {
+                var currentTop = $(document).scrollTop(),
+                    topEdge = $startEl[0].getBoundingClientRect().top,
+                    breakPoint = topEdge - 40;
+                if (breakPoint < 0) {
+                    var offset = (-1 * breakPoint) < 1 ? 0 : (-1 * breakPoint),
+                        bottomLimit = $endEl.offset().top + $endEl.outerHeight(false),
+                        boundaryBottom = Math.floor($boundaryEl.offset().top + $boundaryEl.outerHeight(false)) - 90;
+
+                    if (bottomLimit <= boundaryBottom) {
+                        $movingEl.css('top', offset + 'px');
+                    } else {
+                        if ((currentTop + 40) < $movingEl.offset().top) {
+                            var tmp = $movingEl.css('top').replace(/px/i, '') - 10;
+                            $movingEl.css('top', tmp + 'px');
+                        }
+                    }
+                } else {
+                    $movingEl.css('top', 0);
+                }
+            });
+        },
+        animationController: function () {
+            var that = this;
+
+            $(window).on('load', function () {
+                var $searchBarSettings = $('#dgwt_wcas_form_body-tab');
+                if ($searchBarSettings.length && $searchBarSettings.hasClass('nav-tab-active')) {
+                    that.startAnimateTyping();
+                }
+            });
+
+            $('.dgwt_wcas_settings-nav-tab-wrapper > a').on('click', function () {
+                if ($(this).attr('id') === 'dgwt_wcas_form_body-tab') {
+                    that.stopAnimateTyping();
+                    that.startAnimateTyping();
+                } else {
+                    that.stopAnimateTyping();
+                }
+            });
+
+            $('.dgwt_wcas_settings-nav-tab-wrapper > a').on('click', function () {
+                if ($(this).attr('id') === 'dgwt_wcas_form_body-tab') {
+                    that.stopAnimateTyping();
+                    that.startAnimateTyping();
+                } else {
+                    that.stopAnimateTyping();
+                }
+            });
+
+            $('input[id*="search_placeholder"]').on('focus', function () {
+                that.stopAnimateTyping();
+                _this.searchInput.val('');
+            });
+
+            $('input[id*="search_placeholder"]').on('blur', function () {
+                that.startAnimateTyping();
+            });
+
+        },
+        startAnimateTyping: function () {
+            var that = this,
+                frame = 0,
+                $wrapp = $('.js-dgwt-wcas-search-wrapp'),
+                $searchBar = $('.js-dgwt-wcas-search-input'),
+                $closeEl = $('.dgwt-wcas-preloader'),
+                closeSvg = $('.js-dgwt-wcas-preview-elements-close').html();
+
+            // TODO [refactor] shorten it using a recursive function
+            that.animateTypingInterval = setInterval(function () {
+                frame++;
+
+                if (frame === 10) {
+                    $searchBar.val('f');
+                    $wrapp.addClass('dgwt-wcas-search-filled');
+                    $wrapp.addClass('dgwt-wcas-search-focused');
+                    $closeEl.addClass('dgwt-wcas-close');
+                }
+
+                if (frame === 11) {
+                    $searchBar.val('fi');
+                }
+                if (frame === 12) {
+                    $searchBar.val('fib');
+                    $closeEl.append(closeSvg);
+                    that.positionPreloader();
+                }
+                if (frame === 13) {
+                    $searchBar.val('fibo');
+                }
+                if (frame === 14) {
+                    $searchBar.val('fibo ');
+                }
+                if (frame === 15) {
+                    $searchBar.val('fibo s');
+                }
+                if (frame === 16) {
+                    $searchBar.val('fibo se');
+                }
+                if (frame === 17) {
+                    $searchBar.val('fibo sea');
+                }
+                if (frame === 18) {
+                    $searchBar.val('fibo sear');
+                }
+                if (frame === 19) {
+                    $searchBar.val('fibo searc');
+                }
+                if (frame === 20) {
+                    $searchBar.val('fibo search');
+                }
+                if (frame === 30) {
+                    $searchBar.val('fibo searc');
+                }
+                if (frame === 31) {
+                    $searchBar.val('fibo sear');
+                }
+                if (frame === 32) {
+                    $searchBar.val('fibo sea');
+                }
+                if (frame === 33) {
+                    $searchBar.val('fibo se');
+                }
+                if (frame === 34) {
+                    $searchBar.val('fibo s');
+                }
+                if (frame === 35) {
+                    $searchBar.val('fibo ');
+                }
+                if (frame === 36) {
+                    $searchBar.val('fibo');
+                }
+                if (frame === 37) {
+                    $searchBar.val('fib');
+                }
+                if (frame === 38) {
+                    $searchBar.val('fi');
+                    $closeEl.removeClass('dgwt-wcas-close');
+                }
+                if (frame === 39) {
+                    $searchBar.val('f');
+                }
+                if (frame === 40) {
+                    $searchBar.val('');
+                    $closeEl.html('');
+                    $wrapp.removeClass('dgwt-wcas-search-filled');
+                }
+                if (frame === 45) {
+                    frame = 0;
+                }
+            }, 200);
+        },
+        stopAnimateTyping() {
+            var that = this,
+                $wrapp = $('.js-dgwt-wcas-search-wrapp'),
+                $searchBar = $('.js-dgwt-wcas-search-input'),
+                $closeEl = $('.dgwt-wcas-preloader');
+
+            $closeEl.removeClass('dgwt-wcas-close');
+            $searchBar.val('');
+            $closeEl.html('');
+            $wrapp.removeClass('dgwt-wcas-search-filled');
+
+            clearInterval(that.animateTypingInterval);
         }
     };
 
@@ -1742,11 +2089,10 @@
         issuesListClass: '.js-dgwt-wcas-troubleshooting-issues',
         progressBar: '.dgwt-wcas-troubleshooting-wrapper .progress_bar',
         progressBarInner: '.dgwt-wcas-troubleshooting-wrapper .progress-bar-inner',
-        resetButtonName: 'dgwt-wcas-reset-async-tests',
         fixOutofstockButtonName: 'dgwt-wcas-fix-out-of-stock-relationships',
         maintenanceAnalyticsButtonName: 'dgwt-wcas-maintenance-analytics',
         switchAlternativeEndpoint: 'dgwt-wcas-switch-alternative-endpoint',
-        dismissElementorTemplateButtonName: 'dgwt-wcas-dismiss-elementor-template',
+        asyncActionButtonNameBegining: 'dgwt-wcas-async-action-',
         init: function () {
             var _this = this;
             if (typeof dgwt_wcas['troubleshooting'] === 'undefined') {
@@ -1774,22 +2120,6 @@
             if (dgwt_wcas.troubleshooting.tests.async.length > 0) {
                 _this.maybeRunNextAsyncTest();
             }
-
-            $(document).on('click', 'input[name="' + _this.resetButtonName + '"]', function (e) {
-                $('input[name="' + _this.resetButtonName + '"]').attr('disabled', 'disabled');
-                var data = {
-                    'action': 'dgwt_wcas_troubleshooting_reset_async_tests',
-                    '_wpnonce': dgwt_wcas.troubleshooting.nonce.troubleshooting_reset_async_tests
-                };
-                $.post(
-                    ajaxurl,
-                    data,
-                    function () {
-                        location.reload();
-                    }
-                );
-                return false;
-            });
 
             $(document).on('click', 'input[name="' + _this.fixOutofstockButtonName + '"]', function (e) {
                 $('input[name="' + _this.fixOutofstockButtonName + '"]').attr('disabled', 'disabled').next().addClass('loading');
@@ -1841,20 +2171,44 @@
                 return false;
             });
 
-            $(document).on('click', 'input[name="' + _this.dismissElementorTemplateButtonName + '"]', function (e) {
-                $('input[name="' + _this.dismissElementorTemplateButtonName + '"]').attr('disabled', 'disabled');
+            $(document).on('click', 'input[name^="' + _this.asyncActionButtonNameBegining + '"]', function (e) {
+                var $el = $(this);
+                $el.attr('disabled', 'disabled').next('.dgwt-wcas-ajax-loader').addClass('loading');
                 var data = {
-                    'action': 'dgwt_wcas_troubleshooting_dismiss_elementor_template',
-                    '_wpnonce': dgwt_wcas.troubleshooting.nonce.troubleshooting_dismiss_elementor_template
+                    'action': 'dgwt_wcas_troubleshooting_async_action',
+                    'internal_action': $el.data('internal-action'),
+                    'meta': $el.data('meta'),
+                    '_wpnonce': dgwt_wcas.troubleshooting.nonce.troubleshooting_async_action
                 };
                 $.post(
                     ajaxurl,
                     data,
-                    function () {
-                        location.reload();
+                    function (response) {
+                        var success = typeof response.success === 'boolean' ? response.success : false;
+                        var timeout = 0;
+                        if (typeof response.data.message === "string" && response.data.message.length > 0) {
+                            $el.next()
+                                .next('.dgwt-wcas-async-action-message')
+                                .text(response.data.message)
+                                .removeClass('success')
+                                .removeClass('error')
+                                .addClass(success ? 'success' : 'error');
+                            timeout = 500;
+                        }
+                        var url = window.location.href;
+                        if (typeof response.data.args === "object") {
+                            url = wp.url.addQueryArgs(url, response.data.args);
+                        }
+                        setTimeout(function () {
+                            window.location = url;
+                        }, timeout);
                     }
                 );
                 return false;
+            });
+
+            $(document).on('change', '#dgwt-wcas-send-reports-in-feature', function () {
+                $('#dgwt-wcas-async-action-send-indexer-failure-report').data('meta', JSON.stringify({'auto_send': $(this).is(':checked')}));
             });
         },
         appendIssue: function (issue, incrementCounter) {
@@ -2005,7 +2359,7 @@
                 components: {
                     Selectize
                 },
-                props: ['nonce', 'rule', 'rules', 'index'],
+                props: ['securitynonce', 'rule', 'rules', 'index'],
                 data() {
                     return {
                         isSelectActive: true,
@@ -2039,7 +2393,7 @@
                     },
                     getSelectizeSettings(type) {
                         var options = (typeof dgwt_wcas_filters_rules_selected_options[type] === 'undefined') ? [] : dgwt_wcas_filters_rules_selected_options[type];
-                        return productSearchSettings({nonce: this.nonce, type: type, options: options});
+                        return productSearchSettings({nonce: this.securitynonce, type: type, options: options});
                     },
                 },
             });

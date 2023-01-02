@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Multilingual {
 
 	public static $currentCurrency = '';
+	public static $langs = null;
 
 	/**
 	 * Check if the website is multilingual
@@ -52,7 +53,7 @@ class Multilingual {
 	/**
 	 * Get Provider
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public static function getProvider() {
 		$provider = 'not set';
@@ -257,6 +258,9 @@ class Multilingual {
 	 * @return array
 	 */
 	public static function getLanguages( $includeInvalid = false ) {
+		if ( self::$langs !== null && ! $includeInvalid ) {
+			return self::$langs;
+		}
 
 		$langs = array();
 
@@ -303,8 +307,11 @@ class Multilingual {
 
 		$langs = apply_filters( 'dgwt/wcas/multilingual/languages', $langs, $includeInvalid );
 
-		return $langs;
+		if ( ! $includeInvalid ) {
+			self::$langs = $langs;
+		}
 
+		return $langs;
 	}
 
 	/**
@@ -380,9 +387,7 @@ class Multilingual {
 				$termsInLang = get_terms( apply_filters( 'dgwt/wcas/search/' . $taxonomy . '/args', $args ) );
 
 				if ( ! empty( $termsInLang ) && is_array( $termsInLang ) ) {
-					;
 					foreach ( $termsInLang as $termInLang ) {
-
 						if ( ! in_array( $termInLang->term_id, $usedIds ) ) {
 							$terms[]   = $termInLang;
 							$usedIds[] = $termInLang->term_id;
@@ -451,13 +456,13 @@ class Multilingual {
 		}
 
 		if ( self::isPolylang() ) {
-
-			$terms = get_terms( array(
-				'taxonomy'   => $args['taxonomy'],
+			$args = wp_parse_args( $args, array(
+				'taxonomy'   => '',
 				'hide_empty' => true,
 				'lang'       => $lang,
 			) );
 
+			$terms = get_terms( $args );
 		}
 
 		$terms = apply_filters( 'dgwt/wcas/multilingual/terms-in-language', $terms, $args, $lang );

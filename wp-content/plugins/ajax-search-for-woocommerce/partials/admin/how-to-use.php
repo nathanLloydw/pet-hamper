@@ -8,11 +8,14 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 }
 
 $utmLink = 'https://fibosearch.com/pricing/?utm_source=wp-admin&utm_medium=referral&utm_campaign=upgrade-link&utm_content=how-to-use';
+$blockEditorUrl = 'https://fibosearch.com/documentation/get-started/how-to-add-fibosearch-to-your-website/#add-fibosearch-with-the-dedicated-fibosearch-block';
+$blockEditorLink = '<a href="'. $blockEditorUrl .'">' . __( 'learn how to use blocks', 'ajax-search-for-woocommerce' ) . '</a>';
 
 ?>
-	<h4><?php _e( 'There are four easy ways to display the search bar in your theme', 'ajax-search-for-woocommerce' ); ?>: </h4>
+	<h4><?php _e( 'There are five easy ways to display the search bar in your theme', 'ajax-search-for-woocommerce' ); ?>: </h4>
 	<ol>
 		<li><?php printf( __( 'As a menu item - go to the %s and add the menu item “FiboSearch bar”. Done!', 'ajax-search-for-woocommerce' ), '<a href="' . admin_url( 'nav-menus.php' ) . '" target="_blank">' . __( 'Menu Screen', 'ajax-search-for-woocommerce' ) . '</a>' ) ?>
+		<li><?php echo __( 'As a block', 'ajax-search-for-woocommerce' ) . ' - ' . $blockEditorLink; ?></li>
 		<li><?php printf( __( 'Using a shortcode - %s', 'ajax-search-for-woocommerce' ), '<code>[fibosearch]</code>' ); ?></li>
 		<li><?php printf( __( 'As a widget - go to the %s and choose “FiboSearch bar”', 'ajax-search-for-woocommerce' ), '<a href="' . admin_url( 'widgets.php' ) . '" target="_blank">' . __( 'Widgets Screen', 'ajax-search-for-woocommerce' ) . '</a>' ) ?>
 		<li><?php printf( __( 'Using PHP - %s', 'ajax-search-for-woocommerce' ), '<code>&lt;?php echo do_shortcode(\'[fibosearch]\'); ?&gt;</code>' ); ?></li>

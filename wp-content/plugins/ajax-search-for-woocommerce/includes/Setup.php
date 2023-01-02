@@ -8,17 +8,49 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Setup {
+	/**
+	 * @var string
+	 */
+	private $thumbnailSize;
 
 	public function init() {
-		add_action( 'init', array( $this, 'setImageSize' ) );
+		add_action( 'init', array( $this, 'setThumbnailSize' ) );
+
+		add_filter( 'woocommerce_regenerate_images_intermediate_image_sizes', array( $this, 'getImageSizes' ) );
+	}
+
+	/**
+	 * Get default image size
+	 *
+	 * @return string
+	 */
+	public function getThumbnailSize() {
+		return $this->thumbnailSize;
 	}
 
 	/**
 	 * Register custom image size
+	 *
 	 * @return void
 	 */
-	public function setImageSize() {
-		add_image_size( 'dgwt-wcas-product-suggestion', 64, 0, false );
+	public function setThumbnailSize() {
+		$this->thumbnailSize = apply_filters( 'dgwt/wcas/setup/thumbnail_size', 'dgwt-wcas-product-suggestion' );
+
+		if ( $this->thumbnailSize === 'dgwt-wcas-product-suggestion' ) {
+			add_image_size( 'dgwt-wcas-product-suggestion', 64, 0, false );
+		}
 	}
 
+	/**
+	 * Images sizes to regenerate
+	 *
+	 * @param array $sizes
+	 *
+	 * @return array
+	 */
+	public function getImageSizes( $sizes ) {
+		$sizes[] = $this->getThumbnailSize();
+
+		return array_unique( $sizes );
+	}
 }

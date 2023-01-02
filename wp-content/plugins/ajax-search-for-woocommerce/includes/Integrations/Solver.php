@@ -10,7 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Solver
  *
- * Solves conflicts with other plugins
+ * Solve conflicts with other plugins
  */
 class Solver
 {
@@ -19,6 +19,8 @@ class Solver
         $this->solveSearchWPWooCommerceIntegration();
         $this->solveDiviWithBuilderWC();
         $this->solveMedicorCoreScrips();
+        $this->solveGeoTargetingWPScripts();
+        $this->solveEmptyImages();
     }
     
     /**
@@ -65,6 +67,62 @@ class Solver
                 wp_enqueue_style( 'dgwt-wcas-style' );
             }, PHP_INT_MAX );
         }
+    }
+    
+    /**
+     * Preventing the GeoTargetingWP plugin from loading scripts in the settings page
+     * because the Selectize.js script is loaded twice
+     *
+     * @return void
+     */
+    public function solveGeoTargetingWPScripts()
+    {
+        if ( !Helpers::isSettingsPage() ) {
+            return;
+        }
+        add_action( 'admin_enqueue_scripts', function () {
+            wp_dequeue_script( 'geot' );
+            wp_dequeue_script( 'geot-chosen' );
+            wp_dequeue_script( 'geot-selectize' );
+        }, 999 );
+    }
+    
+    /**
+     * Preventing empty image URLs (null) from being passed to the indexer
+     *
+     * @return void
+     */
+    public function solveEmptyImages()
+    {
+        add_filter(
+            'dgwt/wcas/product/thumbnail_src',
+            function ( $url, $id, $product ) {
+            return ( empty($url) ? wc_placeholder_img_src() : $url );
+        },
+            PHP_INT_MAX - 5,
+            3
+        );
+        add_filter(
+            'dgwt/wcas/variation/thumbnail_src',
+            function ( $url, $parentID, $variationID ) {
+            return ( empty($url) ? wc_placeholder_img_src() : $url );
+        },
+            PHP_INT_MAX - 5,
+            3
+        );
+        add_filter(
+            'dgwt/wcas/term/thumbnail_src',
+            function (
+            $url,
+            $termID,
+            $size,
+            $term
+        ) {
+            return ( empty($url) ? wc_placeholder_img_src() : $url );
+        },
+            PHP_INT_MAX - 5,
+            4
+        );
     }
 
 }

@@ -223,7 +223,7 @@ class DetailsBox
             do_action( 'dgwt/wcas/details_panel/term_products/container_before' );
             echo  '<div class="dgwt-wcas-products-in-cat">' ;
             echo  ( !empty($title) ? $title : '' ) ;
-            $thumbSize = apply_filters( 'dgwt/wcas/suggestion_details/term_products/thumb_size', 'dgwt-wcas-product-suggestion' );
+            $thumbSize = apply_filters( 'dgwt/wcas/suggestion_details/term_products/thumb_size', DGWT_WCAS()->setup->getThumbnailSize() );
             $responsiveImages = apply_filters( 'dgwt/wcas/suggestion_details/responsive_images', true );
             while ( $products->have_posts() ) {
                 $products->the_post();

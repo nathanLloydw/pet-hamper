@@ -19,7 +19,8 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 	<div class="js-dgwt-wcas-troubleshooting-issues-critical"></div>
 	<div class="js-dgwt-wcas-troubleshooting-issues-recommended"></div>
 	<div>
-		<?php submit_button( __( 'Recheck the status', 'ajax-search-for-woocommerce' ), 'primary', 'dgwt-wcas-reset-async-tests', false ); ?>
+		<?php submit_button( __( 'Recheck the status', 'ajax-search-for-woocommerce' ), 'primary', 'dgwt-wcas-async-action-reset-async-tests', false, array( 'data-internal-action' => 'reset_async_tests' ) ); ?>
+		<span class="dgwt-wcas-ajax-loader" style="margin-top: 5px;"></span>
 	</div>
 </div>
 <script id="tmpl-dgwt-wcas-troubleshooting-issue" type="text/template">

@@ -12,9 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Scripts {
 
 	public function __construct() {
-
 		add_action( 'wp_enqueue_scripts', array( $this, 'loadScripts' ) );
-
 	}
 
 	/**
@@ -25,7 +23,6 @@ class Scripts {
 	 */
 
 	public function loadScripts() {
-
 		$min = SCRIPT_DEBUG ? '' : '.min';
 
 		//Register
@@ -46,7 +43,5 @@ class Scripts {
 		$localize = Helpers::getScriptsSettings();
 
 		wp_localize_script( 'jquery-dgwt-wcas', 'dgwt_wcas', $localize );
-
 	}
-
 }

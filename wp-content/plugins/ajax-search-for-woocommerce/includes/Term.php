@@ -65,7 +65,7 @@ class Term {
 	 */
 	public function getThumbnailSrc( $size = '' ) {
 		$src  = '';
-		$size = empty( $size ) ? 'dgwt-wcas-product-suggestion' : $size;
+		$size = empty( $size ) ? DGWT_WCAS()->setup->getThumbnailSize() : $size;
 
 		if ( ! $this->isValid() ) {
 			return $src;

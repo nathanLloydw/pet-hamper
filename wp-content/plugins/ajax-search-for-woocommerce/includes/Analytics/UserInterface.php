@@ -2,6 +2,7 @@
 
 namespace DgoraWcas\Analytics;
 
+use  DgoraWcas\Helpers ;
 use  DgoraWcas\Multilingual ;
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) {
@@ -16,6 +17,7 @@ class UserInterface
     const  LOAD_MORE_SEARCH_PAGE_NONCE = 'analytics-load-more-search-page' ;
     const  CRITICAL_CHECK_NONCE = 'analytics-critical-check' ;
     const  EXCLUDE_CRITICAL_PHRASE_NONCE = 'analytics-exclude-critical-phrase' ;
+    const  RESET_STATS_NONCE = 'analytics-reset-stats' ;
     const  CSS_CLASS_PLACEHOLDER = 'js-dgwt-wcas-stats-placeholder' ;
     const  CRITICAL_SEARCHES_LOAD_LIMIT = 10 ;
     const  TABLE_ROW_LIMIT_LIMIT = 10 ;
@@ -51,6 +53,7 @@ class UserInterface
         add_action( 'wp_ajax_dgwt_wcas_laod_more_search_page', array( $this, 'loadMoreSearchPage' ) );
         add_action( 'wp_ajax_dgwt_wcas_check_critical_phrase', array( $this, 'checkCriticalPhrase' ) );
         add_action( 'wp_ajax_dgwt_wcas_exclude_critical_phrase', array( $this, 'excludeCriticalPhrase' ) );
+        add_action( 'wp_ajax_dgwt_wcas_reset_stats', array( $this, 'resetStats' ) );
         if ( $this->analytics->isModuleEnabled() ) {
             add_action( DGWT_WCAS_SETTINGS_KEY . '-form_end_' . self::SECTION_ID, array( $this, 'tabContent' ) );
         }
@@ -116,10 +119,14 @@ class UserInterface
             'load_more_search_page'       => wp_create_nonce( self::LOAD_MORE_SEARCH_PAGE_NONCE ),
             'check_critical_phrase'       => wp_create_nonce( self::CRITICAL_CHECK_NONCE ),
             'exclude_critical_phrase'     => wp_create_nonce( self::EXCLUDE_CRITICAL_PHRASE_NONCE ),
+            'reset_stats'                 => wp_create_nonce( self::RESET_STATS_NONCE ),
         ),
             'enabled' => $this->analytics->isModuleEnabled(),
             'images'  => array(
             'placeholder' => DGWT_WCAS_URL . 'assets/img/admin-stats-placeholder.png',
+        ),
+            'labels'  => array(
+            'reset_stats_confirm' => __( 'Are you sure you want to reset stats?', 'ajax-search-for-woocommerce' ),
         ),
         );
         return $localize;
@@ -356,7 +363,7 @@ class UserInterface
             case 'with-results':
                 $html = '<p>';
                 $html .= '<b class="dgwt-wcas-analytics-text-good">' . __( "Perfect!", 'ajax-search-for-woocommerce' ) . '</b>';
-                $html .= ' ' . __( "It's solved.", 'ajax-search-for-woocommerce' );
+                $html .= ' ' . __( "It's sorted.", 'ajax-search-for-woocommerce' );
                 $html .= ' ' . sprintf( _n(
                     "This phrase returns 1 product.",
                     "This phrase returns %d products.",
@@ -369,7 +376,7 @@ class UserInterface
                 break;
             case 'without-results':
                 $html = '<p>';
-                $html .= '<b class="dgwt-wcas-analytics-text-poorly">' . __( "Poorly!", 'ajax-search-for-woocommerce' ) . '</b>';
+                $html .= '<b class="dgwt-wcas-analytics-text-poorly">' . __( "Poor!", 'ajax-search-for-woocommerce' ) . '</b>';
                 $html .= ' ' . __( "Still this phrase doesn't return any results. Learn how to fix it.", 'ajax-search-for-woocommerce' );
                 $html .= '</p>';
                 break;
@@ -408,11 +415,26 @@ class UserInterface
                 $data->setLang( $lang );
             }
             if ( $data->markAsSolved( $phrase ) ) {
-                wp_send_json_success( '<p>' . __( 'This phrase has been solved! This row will disappear after refreshing the page.', 'ajax-search-for-woocommerce' ) . '</p>' );
+                wp_send_json_success( '<p>' . __( 'This phrase has been resolved! This row will disappear after refreshing the page.', 'ajax-search-for-woocommerce' ) . '</p>' );
             }
         }
         
         wp_send_json_error( 'empty phrase' );
+    }
+    
+    /**
+     * Reset stats. AJAX callback
+     *
+     * @return void
+     */
+    public function resetStats()
+    {
+        if ( !current_user_can( 'administrator' ) ) {
+            wp_die( -1, 403 );
+        }
+        check_ajax_referer( self::RESET_STATS_NONCE );
+        Database::wipeAllRecords();
+        wp_send_json_success();
     }
     
     /**
@@ -442,6 +464,7 @@ class UserInterface
             'synonyms' => $mainUrl . '#synonyms',
             'support'  => 'https://fibosearch.com/contact/',
         ),
+            'table-info'                       => Helpers::getTableInfo( Database::getTableName() ),
         );
         // Autocomplete
         $data->setContext( 'autocomplete' );

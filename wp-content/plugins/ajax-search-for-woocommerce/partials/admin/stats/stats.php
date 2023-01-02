@@ -7,9 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="dgwt-wcas-analytics-module-critical">
 	<h3><?php _e( 'Critical searches without result', 'ajax-search-for-woocommerce' ); ?></h3>
 	<?php if ( ! empty( $vars['critical-searches'] ) ): ?>
-		<p class="dgwt-wcas-analytics-subtitle"><?php printf( __( "The FiboSearch analyzer found <b>%d critical search phrases</b> that have been typed by users over the last %d days. These phrases don`t return any search results. It's time to fix it.", 'ajax-search-for-woocommerce' ),
-				$vars['critical-searches-total'], $vars['days'] ); ?></p>
-
+		<p class="dgwt-wcas-analytics-subtitle">
+			<?php printf( _n( 'The FiboSearch analyzer found <b>1 critical search phrase</b>.', 'The FiboSearch analyzer found <b>%d critical search phrases</b>.', $vars['critical-searches-total'], 'ajax-search-for-woocommerce' ), $vars['critical-searches-total'] );
+			echo ' ';
+			printf( _n( 'These phrases have been typed by users over the last 1 day.', 'These phrases have been typed by users over the last %d days.', $vars['days'], 'ajax-search-for-woocommerce' ), $vars['days'] );
+			echo ' ';
+			_e( "These phrases don`t return any search results. It's time to fix it.", 'ajax-search-for-woocommerce' );
+			?>
+		</p>
 		<div class="dgwt-wcas-analytics-module-critical-body">
 			<table class="widefat fixed dgwt-wcas-analytics-table">
 				<thead>
@@ -118,8 +123,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="dgwt-wcas-analytics-module-tables">
 	<div class="dgwt-wcas-analytics-module-table">
-		<h3><?php _e( 'Top searches with results', 'ajax-search-for-woocommerce' ); ?></h3>
-		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'autocomplete', 'ajax-search-for-woocommerce' ); ?></p>
+		<h3><?php _e( 'Top searches - autocomplete', 'ajax-search-for-woocommerce' ); ?></h3>
+		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'The list of phrases with results is displayed to users as a drop down list with auto suggestions.', 'ajax-search-for-woocommerce' ); ?></p>
 
 		<table class="widefat fixed dgwt-wcas-analytics-table">
 			<thead>
@@ -166,8 +171,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<div class="dgwt-wcas-analytics-module-table">
 
-		<h3><?php _e( 'Top searches with results', 'ajax-search-for-woocommerce' ); ?></h3>
-		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'search results page', 'ajax-search-for-woocommerce' ); ?></p>
+		<h3><?php _e( 'Top searches - WooCommerce search results page', 'ajax-search-for-woocommerce' ); ?></h3>
+		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'Here is the list of phrases that were typed by users who followed the pattern: type the phrase into the bar → clicked “See all results” or just hit enter/return (for Mac users)', 'ajax-search-for-woocommerce' ); ?></p>
 
 
 		<table class="widefat fixed dgwt-wcas-analytics-table">
@@ -213,6 +218,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</table>
 
 	</div>
+</div>
 
-
+<div class="dgwt-wcas-analytics-module-reset">
+	<h3><?php _e( 'Maintenance', 'ajax-search-for-woocommerce' ) ?></h3>
+	<p class="dgwt-wcas-analytics-subtitle">
+		<?php
+		$reset = sprintf( '<a class="js-dgwt-wcas-analytics-reset" href="#">%s</a>', __( 'reset your stats', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+		$size  = $vars['autocomplete']['total-results'] > 0 ? $vars['table-info']['data'] + $vars['table-info']['index'] : 0;
+		?>
+		<?php printf( _x( 'The stats older than %d days are removed from your database on a daily basis. Now you have %d records in the DB that weigh %.2fMB. You can %s now and start collecting them all over again.', 'The last placeholder is a button with text "reset your stats"', 'ajax-search-for-woocommerce' ), $vars['days'], esc_html( $vars['autocomplete']['total-results'] ), $size, $reset ); ?>
+	</p>
 </div>

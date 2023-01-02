@@ -2,8 +2,8 @@
 
 namespace DgoraWcas;
 
-use  DgoraWcas\Engines\TNTSearchMySQL\Indexer\Builder ;
 use  DgoraWcas\Engines\TNTSearchMySQL\SearchQuery\SearchResultsPageQuery ;
+use  DgoraWcas\Engines\TNTSearchMySQL\Support\Cache ;
 use  DgoraWcas\Integrations\Solver ;
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) {
@@ -70,8 +70,9 @@ class Helpers
         if ( DGWT_WCAS()->settings->getOption( 'show_details_box' ) === 'on' ) {
             $classes[] = 'dgwt-wcas-is-detail-box';
         }
+        $hasSubmit = ( isset( $args['submit_btn'] ) ? $args['submit_btn'] : DGWT_WCAS()->settings->getOption( 'show_submit_button' ) );
         
-        if ( DGWT_WCAS()->settings->getOption( 'show_submit_button' ) === 'on' ) {
+        if ( $hasSubmit === 'on' ) {
             $classes[] = 'dgwt-wcas-has-submit';
         } else {
             $classes[] = 'dgwt-wcas-no-submit';
@@ -80,6 +81,12 @@ class Helpers
         if ( !empty($args['class']) ) {
             $classes[] = esc_html( $args['class'] );
         }
+        
+        if ( !empty($args['style']) ) {
+            $type = esc_html( $args['style'] );
+            $classes[] = 'dgwt-wcas-style-' . $type;
+        }
+        
         
         if ( !empty($args['layout']) ) {
             $type = esc_html( $args['layout'] );
@@ -110,9 +117,9 @@ class Helpers
      *
      * @return string
      */
-    public static function getMagnifierIco( $class = 'dgwt-wcas-ico-magnifier', $type = 'magnifier-thin' )
+    public static function getMagnifierIco( $class = 'dgwt-wcas-ico-magnifier', $type = 'magnifier-thin', $color = '' )
     {
-        return apply_filters( 'dgwt/wcas/form/magnifier_ico', self::getIcon( $type, $class ), $class );
+        return apply_filters( 'dgwt/wcas/form/magnifier_ico', self::getIcon( $type, $class, $color ), $class );
     }
     
     /**
@@ -126,43 +133,43 @@ class Helpers
         ob_start();
         switch ( $name ) {
             case 'magnifier-thin':
-                $color = ( empty($color) ? '#444' : $color );
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
-				<svg version="1.1" class="<?php 
+				<svg class="<?php 
                 echo  $class ;
                 ?>" xmlns="http://www.w3.org/2000/svg"
 					 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 51.539 51.361" enable-background="new 0 0 51.539 51.361" xml:space="preserve">
-		             <path fill="<?php 
-                echo  $color ;
-                ?>"
+					 viewBox="0 0 51.539 51.361" xml:space="preserve">
+		             <path <?php 
+                echo  $style ;
+                ?>
 						   d="M51.539,49.356L37.247,35.065c3.273-3.74,5.272-8.623,5.272-13.983c0-11.742-9.518-21.26-21.26-21.26 S0,9.339,0,21.082s9.518,21.26,21.26,21.26c5.361,0,10.244-1.999,13.983-5.272l14.292,14.292L51.539,49.356z M2.835,21.082 c0-10.176,8.249-18.425,18.425-18.425s18.425,8.249,18.425,18.425S31.436,39.507,21.26,39.507S2.835,31.258,2.835,21.082z"/>
 				</svg>
 				<?php 
                 break;
             case 'magnifier-md':
-                $color = ( empty($color) ? '#444' : $color );
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
                 ?>" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24"
 					 width="24">
-					<path fill="<?php 
-                echo  $color ;
-                ?>"
+					<path <?php 
+                echo  $style ;
+                ?>
 						  d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
 				</svg>
 				<?php 
                 break;
             case 'magnifier-pirx':
-                $color = ( empty($color) ? '#111111' : $color );
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
                 ?>" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-					<path fill="<?php 
-                echo  $color ;
-                ?>" d=" M 16.722523,17.901412 C 16.572585,17.825208 15.36088,16.670476 14.029846,15.33534 L 11.609782,12.907819 11.01926,13.29667 C 8.7613237,14.783493 5.6172703,14.768302 3.332423,13.259528 -0.07366363,11.010358 -1.0146502,6.5989684 1.1898146,3.2148776
+					<path <?php 
+                echo  $style ;
+                ?> d=" M 16.722523,17.901412 C 16.572585,17.825208 15.36088,16.670476 14.029846,15.33534 L 11.609782,12.907819 11.01926,13.29667 C 8.7613237,14.783493 5.6172703,14.768302 3.332423,13.259528 -0.07366363,11.010358 -1.0146502,6.5989684 1.1898146,3.2148776
 						  1.5505179,2.6611594 2.4056498,1.7447266 2.9644271,1.3130497 3.4423015,0.94387379 4.3921825,0.48568469 5.1732652,0.2475835 5.886299,0.03022609 6.1341883,0 7.2037391,0 8.2732897,0 8.521179,0.03022609 9.234213,0.2475835 c 0.781083,0.23810119 1.730962,0.69629029 2.208837,1.0654662
 						  0.532501,0.4113763 1.39922,1.3400096 1.760153,1.8858877 1.520655,2.2998531 1.599025,5.3023778 0.199549,7.6451086 -0.208076,0.348322 -0.393306,0.668209 -0.411622,0.710863 -0.01831,0.04265 1.065556,1.18264 2.408603,2.533307 1.343046,1.350666 2.486621,2.574792 2.541278,2.720279 0.282475,0.7519
 						  -0.503089,1.456506 -1.218488,1.092917 z M 8.4027892,12.475062 C 9.434946,12.25579 10.131043,11.855461 10.99416,10.984753 11.554519,10.419467 11.842507,10.042366 12.062078,9.5863882 12.794223,8.0659672 12.793657,6.2652398 12.060578,4.756293 11.680383,3.9737304 10.453587,2.7178427
@@ -173,55 +180,58 @@ class Helpers
 				<?php 
                 break;
             case 'arrow-left':
-                $color = ( empty($color) ? '#fff' : $color );
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
                 ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-					<path fill="<?php 
-                echo  $color ;
-                ?>"
+					<path <?php 
+                echo  $style ;
+                ?>
 						  d="M14 6.125H3.351l4.891-4.891L7 0 0 7l7 7 1.234-1.234L3.35 7.875H14z" fill-rule="evenodd"/>
 				</svg>
 				<?php 
                 break;
             case 'close':
-                $color = ( empty($color) ? '#ccc' : $color );
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
                 ?>" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24"
 					 width="24">
-					<path fill="<?php 
-                echo  $color ;
-                ?>"
+					<path <?php 
+                echo  $style ;
+                ?>
 						  d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/>
 				</svg>
 				<?php 
                 break;
             case 'preloader':
-                $color = ( empty($color) ? '#ddd' : $color );
+                $style = ( empty($color) ? '' : 'style="stroke: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="dgwt-wcas-loader-circular <?php 
                 echo  $class ;
                 ?>" viewBox="25 25 50 50">
 					<circle class="dgwt-wcas-loader-circular-path" cx="50" cy="50" r="20" fill="none"
-							stroke="<?php 
-                echo  $color ;
-                ?>" stroke-miterlimit="10"/>
+							<?php 
+                echo  $style ;
+                ?> stroke-miterlimit="10"/>
 				</svg>
 				<?php 
                 break;
             case 'face-smile':
-                $color = ( empty($color) ? '#ddd' : $color );
+                $style = ( empty($color) ? '' : 'style="border-color: ' . esc_attr( $color ) . '"' );
+                $style2 = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
-                ?>" width="64" height="54" viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
+                ?>" <?php 
+                echo  $style ;
+                ?> width="64" height="54" viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
 					<g transform="translate(-34.294922,-62.985674)">
-						<path fill="<?php 
-                echo  $color ;
-                ?>"
+						<path <?php 
+                echo  $style2 ;
+                ?>
 							  d="m 60.814237,116.23604 c -9.048223,-1.66914 -16.519379,-6.20497 -21.793789,-13.23128 -1.60071,-2.1324 -4.314629,-7.202619 -4.669151,-8.723059 -0.160775,-0.68952 -0.10638,-0.72795 1.948599,-1.37712 2.642805,-0.83486 2.824539,-0.83179 3.160818,0.0535 2.303833,6.06532 7.117271,11.515849 13.090786,14.823419 3.461115,1.91644 6.665367,2.90424 10.975589,3.38351 8.531032,0.94862 17.134659,-2.15367 23.386899,-8.4328 3.02499,-3.037969 4.6729,-5.555849 6.38356,-9.753479 l 0.39246,-0.963 2.31721,0.75094 c 2.22899,0.72234 2.31594,0.77987 2.28317,1.51079 -0.042,0.93936 -2.04226,5.11147 -3.54876,7.402399 -1.51073,2.29734 -5.78521,6.66064 -8.29613,8.46852 -4.24115,3.05365 -9.37348,5.21483 -14.417657,6.07116 -2.90299,0.49283 -8.586032,0.50118 -11.213604,0.0164 z M 47.412846,73.573941 c -0.309888,-0.59465 -0.464319,-1.51592 -0.477161,-2.84652 -0.02483,-2.57365 0.873951,-4.54095 2.753263,-6.02646 1.633788,-1.29143 2.83173,-1.69831 4.961024,-1.685 2.909938,0.0182 5.40834,1.54992 6.76366,4.14667 0.581876,1.11485 0.698121,1.68141 0.704505,3.43363 0.0045,1.23792 -0.144736,2.45984 -0.363942,2.97966 -0.361143,0.85641 -0.401692,0.87525 -1.4427,0.67016 -1.441299,-0.28395 -9.681541,-0.29597 -11.215046,-0.0164 -1.208977,0.22044 -1.231574,0.21163 -1.683603,-0.65577 z m 23.590775,-0.1224 c -0.24773,-0.57773 -0.44716,-1.76886 -0.46047,-2.75021 -0.0439,-3.23955 2.24441,-6.50245 5.168157,-7.3692 3.62299,-1.07405 7.38202,0.40563 9.28658,3.6555 0.92458,1.57769 1.14637,4.5061 0.47452,6.26533 l -0.46168,1.20889 -1.21243,-0.22321 c -1.58287,-0.29141 -9.51286,-0.28827 -11.113147,0.004 l -1.24453,0.22755 z"
 							  id="path21"/>
 					</g>
@@ -229,24 +239,111 @@ class Helpers
 				<?php 
                 break;
             case 'face-sad':
-                $color = ( empty($color) ? '#ddd' : $color );
+                $style = ( empty($color) ? '' : 'style="border-color: ' . esc_attr( $color ) . '"' );
+                $style2 = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
                 ?>
 				<svg class="<?php 
                 echo  $class ;
-                ?>" width="64" height="54" viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
+                ?>" <?php 
+                echo  $style ;
+                ?> width="64" height="54" viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
 					<g
 						transform="translate(-34.294922,-62.985674)">
 						<path
-							fill="<?php 
-                echo  $color ;
-                ?>"
+							<?php 
+                echo  $style2 ;
+                ?>
 							d="m 65.333527,90.188647 c -4.021671,0.04374 -7.952038,1.143031 -11.366869,2.831872 -2.463508,1.202323 -4.481746,2.907174 -6.347127,4.661802 -1.281094,1.28132 -2.179231,2.786709 -2.971747,4.298239 -0.224234,0.44934 -0.524822,1.14105 0.121782,1.45463 1.051756,0.40354 2.200055,0.61503 3.294735,0.93066 0.910618,-1.93591 2.051059,-3.84127 3.823337,-5.359309 2.631922,-2.416592 6.216388,-4.201746 10.051876,-4.937105 3.649681,-0.714791 7.581941,-0.473293 11.128238,0.561988 5.123487,1.585728 9.378549,4.981727 11.316726,9.159886 0.309445,0.53176 1.133677,0.34172 1.670314,0.20167 0.749446,-0.21997 1.601188,-0.3033 2.249216,-0.69551 0.392685,-0.41377 -0.04361,-0.941 -0.217903,-1.36088 -1.187297,-2.097179 -2.607848,-4.146079 -4.601341,-5.811643 -3.684753,-3.211163 -8.802941,-5.255991 -14.137691,-5.844622 -1.333029,-0.105798 -2.675274,-0.117509 -4.013546,-0.09168 z"/>
 						<path
-							fill="<?php 
-                echo  $color ;
-                ?>"
+							<?php 
+                echo  $style2 ;
+                ?>
 							d="m 98.621511,94.193314 c -42.884393,-20.805093 -21.442196,-10.402547 0,0 z M 47.743964,73.489793 c -0.309888,-0.59465 -0.464319,-1.51592 -0.477161,-2.84652 -0.02483,-2.57365 0.873951,-4.54095 2.753263,-6.02646 1.633788,-1.29143 2.83173,-1.69831 4.961024,-1.685 2.909938,0.0182 5.40834,1.54992 6.76366,4.14667 0.581876,1.11485 0.698121,1.68141 0.704505,3.43363 0.0045,1.23792 -0.144736,2.45984 -0.363942,2.97966 -0.361143,0.85641 -0.401692,0.87525 -1.4427,0.67016 -1.441299,-0.28395 -9.681541,-0.29597 -11.215046,-0.0164 -1.208977,0.22044 -1.231574,0.21163 -1.683603,-0.65577 z m 23.590775,-0.1224 c -0.24773,-0.57773 -0.44716,-1.76886 -0.46047,-2.75021 -0.0439,-3.23955 2.24441,-6.50245 5.168157,-7.3692 3.62299,-1.07405 7.38202,0.40563 9.28658,3.6555 0.92458,1.57769 1.14637,4.5061 0.47452,6.26533 l -0.46168,1.20889 -1.21243,-0.22321 c -1.58287,-0.29141 -9.51286,-0.28827 -11.113147,0.004 l -1.24453,0.22755 z"/>
 					</g>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-inactive':
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24"
+					 width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M12 13Q11.15 13 10.575 12.425Q10 11.85 10 11V5Q10 4.15 10.575 3.575Q11.15 3 12 3Q12.85 3 13.425 3.575Q14 4.15 14 5V11Q14 11.85 13.425 12.425Q12.85 13 12 13ZM12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8Q12 8 12 8ZM11.5 20.5V16.975Q9.15 16.775 7.575 15.062Q6 13.35 6 11H7Q7 13.075 8.463 14.537Q9.925 16 12 16Q14.075 16 15.538 14.537Q17 13.075 17 11H18Q18 13.35 16.425 15.062Q14.85 16.775 12.5 16.975V20.5ZM12 12Q12.425 12 12.713 11.712Q13 11.425 13 11V5Q13 4.575 12.713 4.287Q12.425 4 12 4Q11.575 4 11.288 4.287Q11 4.575 11 5V11Q11 11.425 11.288 11.712Q11.575 12 12 12Z"/>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-inactive-pirx':
+                // https://fonts.google.com/icons Icon: Mic Fill: 0 Weight: 400 Grade: 0 Optical size: 24
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M12 14q-1.25 0-2.125-.875T9 11V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 1.25-.875 2.125T12 14Zm0-6Zm-1 13v-3.075q-2.6-.35-4.3-2.325Q5 13.625 5 11h2q0 2.075 1.463 3.537Q9.925 16 12 16t3.538-1.463Q17 13.075 17 11h2q0 2.625-1.7 4.6-1.7 1.975-4.3 2.325V21Zm1-9q.425 0 .713-.288Q13 11.425 13 11V5q0-.425-.287-.713Q12.425 4 12 4t-.712.287Q11 4.575 11 5v6q0 .425.288.712.287.288.712.288Z"/>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-active':
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24"
+					 width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M12 13Q11.15 13 10.575 12.425Q10 11.85 10 11V5Q10 4.15 10.575 3.575Q11.15 3 12 3Q12.85 3 13.425 3.575Q14 4.15 14 5V11Q14 11.85 13.425 12.425Q12.85 13 12 13ZM11.5 20.5V16.975Q9.15 16.775 7.575 15.062Q6 13.35 6 11H7Q7 13.075 8.463 14.537Q9.925 16 12 16Q14.075 16 15.538 14.537Q17 13.075 17 11H18Q18 13.35 16.425 15.062Q14.85 16.775 12.5 16.975V20.5Z"/>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-active-pirx':
+                // https://fonts.google.com/icons Icon: Mic Fill: 1 Weight: 400 Grade: 0 Optical size: 24
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24"
+					 width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M12 14q-1.25 0-2.125-.875T9 11V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 1.25-.875 2.125T12 14Zm-1 7v-3.075q-2.6-.35-4.3-2.325Q5 13.625 5 11h2q0 2.075 1.463 3.537Q9.925 16 12 16t3.538-1.463Q17 13.075 17 11h2q0 2.625-1.7 4.6-1.7 1.975-4.3 2.325V21Z"/>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-disabled':
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M16.725 13.4 15.975 12.625Q16.1 12.325 16.2 11.9Q16.3 11.475 16.3 11H17.3Q17.3 11.75 17.138 12.337Q16.975 12.925 16.725 13.4ZM13.25 9.9 9.3 5.925V5Q9.3 4.15 9.875 3.575Q10.45 3 11.3 3Q12.125 3 12.713 3.575Q13.3 4.15 13.3 5V9.7Q13.3 9.75 13.275 9.8Q13.25 9.85 13.25 9.9ZM10.8 20.5V17.025Q8.45 16.775 6.875 15.062Q5.3 13.35 5.3 11H6.3Q6.3 13.075 7.763 14.537Q9.225 16 11.3 16Q12.375 16 13.312 15.575Q14.25 15.15 14.925 14.4L15.625 15.125Q14.9 15.9 13.913 16.4Q12.925 16.9 11.8 17.025V20.5ZM19.925 20.825 1.95 2.85 2.675 2.15 20.65 20.125Z"/>
+				</svg>
+				<?php 
+                break;
+            case 'voice-search-disabled-pirx':
+                // https://fonts.google.com/icons Icon: Mic Off Fill: 1 Weight: 400 Grade: 0 Optical size: 24
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+					<path <?php 
+                echo  $style ;
+                ?>
+						  d="M17.75 14.95 16.3 13.5q.35-.575.525-1.2Q17 11.675 17 11h2q0 1.1-.325 2.087-.325.988-.925 1.863Zm-2.95-3L9 6.15V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 .275-.062.5-.063.225-.138.45ZM11 21v-3.1q-2.6-.35-4.3-2.312Q5 13.625 5 11h2q0 2.075 1.463 3.537Q9.925 16 12 16q.85 0 1.613-.262.762-.263 1.387-.738l1.425 1.425q-.725.575-1.587.962-.863.388-1.838.513V21Zm8.8 1.6L1.4 4.2l1.4-1.4 18.4 18.4Z"/>
 				</svg>
 				<?php 
                 break;
@@ -846,8 +943,9 @@ class Helpers
         if ( empty($tableName) ) {
             return false;
         }
-        $sql = $wpdb->prepare( "SHOW TABLES LIKE %s", $tableName );
-        if ( !empty($wpdb->get_var( $sql )) ) {
+        $sql = $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->prefix . 'dgwt_wcas_%' );
+        $result = $wpdb->get_col( $sql );
+        if ( is_array( $result ) && in_array( $tableName, $result ) ) {
             $exist = true;
         }
         return $exist;
@@ -1055,6 +1153,9 @@ class Helpers
      */
     public static function localDate( $timestamp, $format = '' )
     {
+        if ( empty($timestamp) ) {
+            return '';
+        }
         if ( empty($format) ) {
             $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
         }
@@ -1245,16 +1346,23 @@ class Helpers
      */
     public static function getLayoutSettings()
     {
-        $breakpoint = DGWT_WCAS()->settings->getOption( 'mobile_breakpoint', 992 );
+        $layoutBreakpoint = DGWT_WCAS()->settings->getOption( 'mobile_breakpoint', 992 );
+        $layoutBreakpoint = apply_filters( 'dgwt/wcas/scripts/mobile_breakpoint', $layoutBreakpoint );
+        // deprecated
+        $mobileOverlayBreakpoint = DGWT_WCAS()->settings->getOption( 'mobile_overlay_breakpoint', 992 );
         $layout = array(
-            'layout'                 => DGWT_WCAS()->settings->getOption( 'search_layout', 'classic' ),
-            'mobile_overlay'         => ( DGWT_WCAS()->settings->getOption( 'enable_mobile_overlay' ) === 'on' ? true : false ),
-            'mobile_overlay_wrapper' => apply_filters( 'dgwt/wcas/scripts/mobile_overlay_wrapper', 'body' ),
-            'breakpoint'             => apply_filters( 'dgwt/wcas/scripts/mobile_breakpoint', $breakpoint ),
-            'darken_background'      => ( DGWT_WCAS()->settings->getOption( 'darken_background', 'off' ) === 'on' ? true : false ),
+            'style'                     => DGWT_WCAS()->settings->getOption( 'search_style', 'solaris' ),
+            'icon'                      => 'magnifier-thin',
+            'layout'                    => DGWT_WCAS()->settings->getOption( 'search_layout', 'classic' ),
+            'layout_breakpoint'         => apply_filters( 'dgwt/wcas/scripts/layout_breakpoint', $layoutBreakpoint ),
+            'mobile_overlay'            => ( DGWT_WCAS()->settings->getOption( 'enable_mobile_overlay' ) === 'on' ? true : false ),
+            'mobile_overlay_breakpoint' => apply_filters( 'dgwt/wcas/scripts/mobile_overlay_breakpoint', $mobileOverlayBreakpoint ),
+            'mobile_overlay_wrapper'    => apply_filters( 'dgwt/wcas/scripts/mobile_overlay_wrapper', 'body' ),
+            'darken_background'         => ( DGWT_WCAS()->settings->getOption( 'darken_background', 'off' ) === 'on' ? true : false ),
+            'icon_color'                => DGWT_WCAS()->settings->getOption( 'search_icon_color' ),
         );
-        if ( in_array( $layout['layout'], array( 'icon', 'icon-flexible' ) ) ) {
-            $layout['mobile_overlay'] = true;
+        if ( $layout['style'] === 'pirx' ) {
+            $layout['icon'] = 'magnifier-pirx';
         }
         return (object) $layout;
     }
@@ -1278,7 +1386,7 @@ class Helpers
             'action_get_prices'            => DGWT_WCAS_GET_PRICES_ACTION,
             'min_chars'                    => 3,
             'width'                        => 'auto',
-            'show_details_box'             => false,
+            'show_details_panel'           => false,
             'show_images'                  => false,
             'show_price'                   => false,
             'show_desc'                    => false,
@@ -1292,7 +1400,8 @@ class Helpers
             'taxonomy_brands'              => '',
             'img_url'                      => DGWT_WCAS_URL . 'assets/img/',
             'is_premium'                   => dgoraAsfwFs()->is_premium(),
-            'mobile_breakpoint'            => $layout->breakpoint,
+            'layout_breakpoint'            => $layout->layout_breakpoint,
+            'mobile_overlay_breakpoint'    => $layout->mobile_overlay_breakpoint,
             'mobile_overlay_wrapper'       => $layout->mobile_overlay_wrapper,
             'mobile_overlay_delay'         => apply_filters( 'dgwt/wcas/scripts/overlay_delay_ms', 0 ),
             'debounce_wait_ms'             => apply_filters( 'dgwt/wcas/scripts/debounce_wait_ms', 400 ),
@@ -1302,12 +1411,25 @@ class Helpers
             'close_icon'                   => self::getIcon( 'close' ),
             'back_icon'                    => self::getIcon( 'arrow-left' ),
             'preloader_icon'               => self::getIcon( 'preloader' ),
+            'voice_search_inactive_icon'   => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-inactive-pirx' : 'voice-search-inactive' ), 'dgwt-wcas-voice-search-mic-inactive' ),
+            'voice_search_active_icon'     => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-active-pirx' : 'voice-search-active' ), 'dgwt-wcas-voice-search-mic-active' ),
+            'voice_search_disabled_icon'   => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-disabled-pirx' : 'voice-search-disabled' ), 'dgwt-wcas-voice-search-mic-disabled' ),
             'custom_params'                => (object) apply_filters( 'dgwt/wcas/scripts/custom_params', array() ),
             'convert_html'                 => true,
             'suggestions_wrapper'          => apply_filters( 'dgwt/wcas/scripts/suggestions_wrapper', 'body' ),
             'show_product_vendor'          => dgoraAsfwFs()->is_premium() && class_exists( 'DgoraWcas\\Integrations\\Marketplace\\Marketplace' ) && DGWT_WCAS()->marketplace->showProductVendor(),
             'disable_hits'                 => apply_filters( 'dgwt/wcas/scripts/disable_hits', false ),
             'disable_submit'               => apply_filters( 'dgwt/wcas/scripts/disable_submit', false ),
+            'fixer'                        => apply_filters( 'dgwt/wcas/scripts/fixer', array(
+            'broken_search_ui'                  => true,
+            'broken_search_ui_ajax'             => true,
+            'broken_search_ui_hard'             => false,
+            'broken_search_elementor_popups'    => true,
+            'broken_search_browsers_back_arrow' => true,
+            'force_refresh_checkout'            => true,
+        ) ),
+            'voice_search_enabled'         => defined( 'DGWT_WCAS_VOICE_SEARCH_ENABLE' ) && DGWT_WCAS_VOICE_SEARCH_ENABLE,
+            'voice_search_lang'            => apply_filters( 'dgwt/wcas/scripts/voice_search_lang', get_bloginfo( 'language' ) ),
         );
         if ( Multilingual::isMultilingual() ) {
             $localize['current_lang'] = Multilingual::getCurrentLanguage();
@@ -1323,7 +1445,7 @@ class Helpers
         }
         // Show/hide Details panel
         if ( DGWT_WCAS()->settings->getOption( 'show_details_box' ) === 'on' ) {
-            $localize['show_details_box'] = true;
+            $localize['show_details_panel'] = true;
         }
         // Show/hide images
         if ( DGWT_WCAS()->settings->getOption( 'show_product_image' ) === 'on' ) {
@@ -1509,18 +1631,6 @@ class Helpers
     }
     
     /**
-     * Get plugin version
-     *
-     * @return string
-     */
-    public static function getPluginVersion()
-    {
-        global  $wpdb ;
-        $version = $wpdb->get_var( "SELECT option_value FROM {$wpdb->options} WHERE option_name = 'dgwt_wcas_version_pro'" );
-        return ( empty($version) ? '' : $version );
-    }
-    
-    /**
      * Get AJAX search endpoint URL
      *
      * @param null $scheme
@@ -1632,6 +1742,62 @@ class Helpers
             $sql .= " COLLATE " . $collate;
         }
         return apply_filters( 'dgwt/wcas/db/collation/sql', $sql, $context );
+    }
+    
+    /**
+     * Check if string ends with another string
+     *
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return bool
+     */
+    public static function endsWith( $haystack, $needle )
+    {
+        $length = strlen( $needle );
+        return ( $length > 0 ? substr( $haystack, -$length ) === $needle : true );
+    }
+    
+    /**
+     * Get table info
+     *
+     * @return float[]
+     */
+    public static function getTableInfo( $table = '' )
+    {
+        global  $wpdb ;
+        if ( !defined( 'DB_NAME' ) || empty($table) ) {
+            return array(
+                'data'  => 0.0,
+                'index' => 0.0,
+            );
+        }
+        $info = $wpdb->get_row( $wpdb->prepare( "SELECT\n\t\t\t\t\t    round( ( data_length / 1024 / 1024 ), 2 ) 'data',\n\t\t\t\t\t    round( ( index_length / 1024 / 1024 ), 2 ) 'index'\n\t\t\t\t\tFROM information_schema.TABLES\n\t\t\t\t\tWHERE table_schema = %s\n\t\t\t\t\tAND table_name = %s;", DB_NAME, $table ), ARRAY_A );
+        if ( !isset( $info['data'] ) || !isset( $info['index'] ) ) {
+            return array(
+                'data'  => 0.0,
+                'index' => 0.0,
+            );
+        }
+        $info['data'] = floatval( $info['data'] );
+        $info['index'] = floatval( $info['index'] );
+        return $info;
+    }
+    
+    /**
+     * Get names of all FiboSearch options
+     *
+     * @return array
+     */
+    public static function getAllOptionNames()
+    {
+        global  $wpdb ;
+        $options = array();
+        $res = $wpdb->get_col( "SELECT SQL_NO_CACHE option_name FROM {$wpdb->options} WHERE option_name LIKE 'dgwt_wcas_%'" );
+        if ( !empty($res) && is_array( $res ) ) {
+            $options = $res;
+        }
+        return $options;
     }
 
 }

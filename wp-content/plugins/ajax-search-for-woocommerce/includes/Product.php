@@ -156,7 +156,7 @@ class Product
     public function getThumbnailSrc( $size = '' )
     {
         $src = '';
-        $size = ( empty($size) ? 'dgwt-wcas-product-suggestion' : $size );
+        $size = ( empty($size) ? DGWT_WCAS()->setup->getThumbnailSize() : $size );
         $imageID = $this->wcProduct->get_image_id();
         
         if ( !empty($imageID) ) {
@@ -198,7 +198,7 @@ class Product
      */
     public function getThumbnailSrcset( $size = '' )
     {
-        $size = ( empty($size) ? 'dgwt-wcas-product-suggestion' : $size );
+        $size = ( empty($size) ? DGWT_WCAS()->setup->getThumbnailSize() : $size );
         $imageID = $this->wcProduct->get_image_id();
         $srcset = ( function_exists( 'wp_get_attachment_image_srcset' ) ? (string) wp_get_attachment_image_srcset( $imageID, $size ) : '' );
         return apply_filters(
@@ -218,7 +218,7 @@ class Product
      */
     public function getThumbnailSizes( $size = '' )
     {
-        $size = ( empty($size) ? 'dgwt-wcas-product-suggestion' : $size );
+        $size = ( empty($size) ? DGWT_WCAS()->setup->getThumbnailSize() : $size );
         $imageID = $this->wcProduct->get_image_id();
         $sizes = ( function_exists( 'wp_get_attachment_image_sizes' ) ? (string) wp_get_attachment_image_sizes( $imageID, $size ) : false );
         return apply_filters(

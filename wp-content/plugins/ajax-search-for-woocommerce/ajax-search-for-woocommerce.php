@@ -4,13 +4,13 @@
  * Plugin Name: FiboSearch - AJAX Search for WooCommerce
  * Plugin URI: https://fibosearch.com?utm_source=wp-admin&utm_medium=referral&utm_campaign=author_uri&utm_gen=utmdc
  * Description: The most popular WooCommerce product search. Gives your users a well-designed advanced AJAX search bar with live search suggestions.
- * Version: 1.18.1
+ * Version: 1.21.0
  * Author: FiboSearch Team
  * Author URI: https://fibosearch.com?utm_source=wp-admin&utm_medium=referral&utm_campaign=author_uri&utm_gen=utmdc
  * Text Domain: ajax-search-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 5.5
- * WC tested up to: 6.5
+ * WC tested up to: 7.1
  *
  */
 // Exit if accessed directly
@@ -32,6 +32,10 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
          * @var \DgoraWcas\Settings
          */
         public  $settings ;
+        /**
+         * @var \DgoraWcas\Setup
+         */
+        public  $setup ;
         public  $multilingual ;
         /**
          * @var \DgoraWcas\Integrations\Themes\ThemesCompatibility
@@ -49,8 +53,6 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
          * @var \DgoraWcas\Engines\WordPressNative\Search
          */
         public  $nativeSearch ;
-        public  $tntsearch ;
-        public  $tntsearchValid = false ;
         /**
          * @var \DgoraWcas\Engines\TNTSearchMySQL\TNTSearch
          */
@@ -69,8 +71,8 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                 }
                 self::$instance->systemHooks();
                 self::$instance->autoload();
-                $setup = new \DgoraWcas\Setup();
-                $setup->init();
+                self::$instance->setup = new \DgoraWcas\Setup();
+                self::$instance->setup->init();
                 self::$instance->settings = new \DgoraWcas\Settings();
                 self::$instance->hooks();
                 new \DgoraWcas\Integrations\Plugins\PluginsCompatibility();
@@ -94,8 +96,6 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                     new \DgoraWcas\Admin\Promo\FeedbackNotice();
                     new \DgoraWcas\Admin\Promo\Upgrade();
                     new \DgoraWcas\Admin\Troubleshooting();
-                    $regenerateImages = new \DgoraWcas\Admin\RegenerateImages();
-                    $regenerateImages->init();
                 }
                 
                 
@@ -105,6 +105,13 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                 }
                 
                 new \DgoraWcas\Integrations\Solver();
+                global  $wp_version ;
+                
+                if ( version_compare( $wp_version, '5.9' ) >= 0 ) {
+                    $blocks = new \DgoraWcas\Blocks();
+                    $blocks->init();
+                }
+            
             }
             
             self::$instance->tnow = time();
@@ -149,6 +156,12 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                 return false;
             }
             
+            
+            if ( !file_exists( DGWT_WCAS_DIR . 'vendor/autoload.php' ) ) {
+                add_action( 'admin_notices', array( $this, 'adminNoticeNoVendor' ) );
+                return false;
+            }
+            
             return true;
         }
         
@@ -166,8 +179,7 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
 		    <div class="notice notice-error dgwt-wcas-notice">
 			    <p>
 				    <?php 
-            printf( __( '%s: You need PHP version at least 7.0 to run this plugin. You are currently using PHP version ', 'ajax-search-for-woocommerce' ), '<b>' . DGWT_WCAS_NAME . '</b>' );
-            echo  PHP_VERSION . '.' ;
+            printf( __( '%s: You need PHP version at least 7.0 to run this plugin. You are currently using PHP version %s.', 'ajax-search-for-woocommerce' ), '<b>' . DGWT_WCAS_NAME . '</b>', PHP_VERSION );
             ?>
 			    </p>
 		    </div>
@@ -190,6 +202,24 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
 			    </p>
 		    </div>
 		    <?php 
+        }
+        
+        /**
+         * Notice: requires /vendor
+         *
+         * @return void
+         */
+        public function adminNoticeNoVendor()
+        {
+            ?>
+			<div class="notice notice-error dgwt-wcas-notice">
+				<p>
+					<?php 
+            printf( __( '%s is enabled but not effective. It is missing core files. Please reinstall the plugin.', 'ajax-search-for-woocommerce' ), '<b>' . DGWT_WCAS_FULL_NAME . '</b>' );
+            ?>
+				</p>
+			</div>
+			<?php 
         }
         
         /**
@@ -237,9 +267,7 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
          */
         public function autoload()
         {
-            if ( file_exists( DGWT_WCAS_DIR . 'vendor/autoload.php' ) ) {
-                require_once DGWT_WCAS_DIR . 'vendor/autoload.php';
-            }
+            require_once DGWT_WCAS_DIR . 'vendor/autoload.php';
             require_once DGWT_WCAS_DIR . 'widget.php';
         }
         
@@ -268,11 +296,18 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                 array(),
                 DGWT_WCAS_VERSION
             );
+            // Register front styles for block editor
+            wp_register_style(
+                'dgwt-wcas-style',
+                apply_filters( 'dgwt/wcas/scripts/css_style_url', DGWT_WCAS_URL . 'assets/css/style' . $min . '.css' ),
+                array(),
+                DGWT_WCAS_VERSION
+            );
             // Register JS
             wp_register_script(
                 'dgwt-wcas-admin-js',
                 DGWT_WCAS_URL . 'assets/js/admin' . $min . '.js',
-                array( 'jquery' ),
+                array( 'jquery', 'wp-url' ),
                 DGWT_WCAS_VERSION
             );
             
@@ -295,6 +330,7 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
                 wp_enqueue_style( 'dgwt-wcas-admin-style' );
                 
                 if ( !dgoraAsfwFs()->is_activation_mode() ) {
+                    add_thickbox();
                     wp_enqueue_style( 'wp-color-picker' );
                     wp_enqueue_script( 'dgwt-wcas-admin-js' );
                     wp_enqueue_script( 'wp-color-picker' );
@@ -321,6 +357,9 @@ if ( !class_exists( 'DGWT_WC_Ajax_Search' ) && !function_exists( 'dgoraAsfwFs' )
             }
             
             if ( \DgoraWcas\Helpers::isCheckoutPage() ) {
+                wp_enqueue_style( 'dgwt-wcas-admin-style' );
+            }
+            if ( \DgoraWcas\Helpers::isDebugPage() ) {
                 wp_enqueue_style( 'dgwt-wcas-admin-style' );
             }
         }

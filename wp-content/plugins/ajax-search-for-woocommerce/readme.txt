@@ -2,9 +2,9 @@
 Contributors: damian-gora, matczar
 Tags: woocommerce search, ajax search, search by sku, product search, woocommerce
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 1.18.1
+Stable tag: 1.21.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,20 +73,21 @@ Any suggestions or comments are welcome. Feel free to contact us via the [contac
 1. Install the plugin from within the Dashboard or upload the directory `ajax-search-for-woocommerce` and all its contents to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Go to `WooCommerce → FiboSearch` and set your preferences.
-4. Use a shortcode `[fibosearch]` or go to the `Appearance → Menu` and add menu item `FiboSearch` or go to the `Appearance → Widgets` and choose `FiboSearch`
+4. Embed the search bar in your theme.
 
 == Frequently Asked Questions ==
 
 = How do I embed the search bar in my theme? =
-There are five easy ways to display the FiboSearch bar in your theme:
+There are many easy ways to display the FiboSearch bar in your theme:
 
+– **Replacing the existing search bar with one click** - it is possible for dozens of popular themes
 – **As a menu item** - in your WordPress admin panel, go to `Appearance → Menu` and add `FiboSearch bar` as a menu item
 – **Using a shortcode**
 
 `[fibosearch]`
 
 – **As a widget** - in your WordPress admin panel, go to `Appearance → Widgets` and choose `FiboSearch`
-
+– **As a block** - [learn how to use blocks](https://fibosearch.com/documentation/get-started/how-to-add-fibosearch-to-your-website/#add-fibosearch-with-the-dedicated-fibosearch-block) and FiboSearch together
 – **Using PHP**
 
 `<?php echo do_shortcode('[fibosearch]'); ?>`
@@ -105,7 +106,7 @@ We have prepared a one-click replacement of the search bar for the following the
 *  Astra
 *  Avada
 *  Sailent
-*  and 31 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
+*  and 34 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
 
 
 If you want to replace your search bar in another theme, please [contact our support team](https://fibosearch.com/contact/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=contact&utm_gen=utmdc).
@@ -141,6 +142,77 @@ You can read more and compare Pro and Free features here: [Full comparison - Pro
 5. Settings page
 
 == Changelog ==
+
+= 1.21.0, November 21, 2022 =
+* ADD: Integration with Product GTIN (EAN, UPC, ISBN) for WooCommerce plugin
+* ADD: Integration with EAN for WooCommerce plugin
+* ADD: Troubleshooting - checks if products thumbnails need to be regenerated
+
+* FIX: Missing translation domain in some texts
+* FIX: Support variants of &lt;br&gt; tag in product names in autocomplete
+* FIX: Unable to embed search bar as a widget
+* FIX: Disable voice search for Chrome on iPhone or iPad
+* FIX: Integration with the Astra theme - unclosed  &lt;div&gt; tag
+* FIX: Exclude save phrases to analyze when the phrase is 'fibotests' or the user has a specific role.
+* FIX: UI_FIXER: check if event listeners were correctly added to search inputs. If no, reinitiate the search instance
+* FIX: UI_FIXER: rebuild all search bars without correct JS events
+* FIX: Redundant DB queries related to the existence of plugin tables
+
+* CHANGE: Updated Freemius SDK to v2.5.2
+
+
+
+
+
+= 1.20.0, September 13, 2022 =
+* ADD: Integration with Woostify theme
+* ADD: Integration with Neve theme
+* ADD: Integration with WP Rocket
+* ADD: Include block sources in the plugin package
+* ADD: Possibility to reset search statistics from the settings page
+* ADD: Support for &lt;sub&gt; element in autocomplete suggestions
+
+* FIX: Incorrect display of styles with personalization of the search
+* FIX: Wrong settings index in Impreza and Enfold theme
+* FIX: Removed of unnecessary language files
+* FIX: Always set cursor at the end of the input
+* FIX: Incorrect verification if the browser supports speech recognition
+* FIX: FiboSearch Analytics - not working “check” buttons of the latest loading list
+* FIX: Unnecessary options and transients after uninstalling plugin
+
+
+= 1.19.0, July 27, 2022 =
+* ADD: New feature - New search layout called “Pirx”
+* ADD: New feature - FiboSearch Analytics
+* ADD: New feature - Layout type: Icon on desktop, search bar on mobile
+* ADD: New feature - Voice search
+* ADD: New feature - FiboSearch blocks in the block editor
+* ADD: Separated option “mobile_overlay_breakpoint” to handle overlay on mobile breakpoint
+* ADD: Add "mobile_overlay_breakpoint" as a shortcode param to add the opportunity to set this value independently from global settings
+* ADD: New search bars fixer: try to regenerate search bars when they were added by AJAX callbacks
+* ADD: Support for header builder in integration with Astra theme
+* ADD: Another question marks for FiboSearch settings that cover our documentation
+* ADD: Settings preview - smooth scrolling
+* ADD: Settings preview - animate typing on a search preview for “Search bar” tab
+* ADD: Support all types of layout in widget and embedding via Menu
+* ADD: Ability to reset plugin settings to default values
+* ADD: New shortcode params: “submit_btn” and “submit_text”
+
+* FIX: WOOF – Products Filter for WooCommerce integration: broken counters on the search results page
+* FIX: Interdependent settings in Settings -> Search bar -> Style -> Design
+* FIX: Improved darkened background positioning (support for sticky elements as well)
+* FIX: Improved search suggestions and the details panel positioning (support for sticky elements as well)
+* FIX: Settings page - wrong position of a questions mark (Safari)
+* FIX: JavaScript errors in the settings page when the GeoTargetingWP plugin is active
+* FIX: Try to add “dgwt-wcas-active” class again if it has not been added by other events
+* FIX: Incorrect elements position after load “iconMode”
+* FIX: Incorrect adding CSS class as shortcode parameter
+* FIX: English grammar typos
+
+* CHANGE: Updated Freemius SDK to v2.4.4
+* REFACTOR: Indexer - Replacing “PDO” with WPDB”
+* REFACTOR: Settings page - rebuild the settings section Search Bar -> Appearance to improve UX
+* REFACTOR: Search bars fixer
 
 = 1.18.1, May 23, 2022 =
 * FIX: Exceeding the memory limit on the search results page

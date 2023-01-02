@@ -175,4 +175,13 @@ class Database {
 
 		return intval( $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dgwt_wcas_stats" ) );
 	}
+
+	/**
+	 * @return string
+	 */
+	public static function getTableName() {
+		global $wpdb;
+
+		return $wpdb->prefix . Database::DB_NAME;
+	}
 }

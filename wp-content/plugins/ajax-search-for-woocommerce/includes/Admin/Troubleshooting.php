@@ -2,7 +2,9 @@
 
 namespace DgoraWcas\Admin;
 
+use  DgoraWcas\Admin\Promo\FeedbackNotice ;
 use  DgoraWcas\Admin\Promo\Upgrade ;
+use  DgoraWcas\Engines\TNTSearchMySQL\Indexer\Logger ;
 use  DgoraWcas\Helpers ;
 use  DgoraWcas\Engines\TNTSearchMySQL\Indexer\Builder ;
 use  DgoraWcas\Multilingual ;
@@ -15,11 +17,12 @@ class Troubleshooting
     const  SECTION_ID = 'dgwt_wcas_troubleshooting' ;
     const  TRANSIENT_RESULTS_KEY = 'dgwt_wcas_troubleshooting_async_results' ;
     const  ASYNC_TEST_NONCE = 'troubleshooting-async-test' ;
-    const  RESET_ASYNC_TESTS_NONCE = 'troubleshooting-reset-async-tests' ;
     const  FIX_OUTOFSTOCK_NONCE = 'troubleshooting-fix-outofstock' ;
-    const  DISMIS_ELEMENTOR_TEMPLATE_NONCE = 'troubleshooting-dismiss-elementor-template' ;
+    const  ASYNC_ACTION_NONCE = 'troubleshooting-async-action' ;
     const  MAINTENANCE_ANALYTICS_NONCE = 'troubleshooting-maintenance-analytics' ;
     const  SWITCH_ALTERNATIVE_ENDPOINT = 'troubleshooting-switch-alternative-endpoint' ;
+    // Regenerate images.
+    const  IMAGES_ALREADY_REGENERATED_OPT_KEY = 'dgwt_wcas_images_regenerated' ;
     public function __construct()
     {
         if ( !$this->checkRequirements() ) {
@@ -28,10 +31,11 @@ class Troubleshooting
         add_filter( 'dgwt/wcas/settings', array( $this, 'addSettingsTab' ) );
         add_filter( 'dgwt/wcas/settings/sections', array( $this, 'addSettingsSection' ) );
         add_filter( 'dgwt/wcas/scripts/admin/localize', array( $this, 'localizeSettings' ) );
+        add_filter( 'removable_query_args', array( $this, 'addRemovableQueryArgs' ) );
         add_action( DGWT_WCAS_SETTINGS_KEY . '-form_bottom_' . self::SECTION_ID, array( $this, 'tabContent' ) );
         add_action( 'wp_ajax_dgwt_wcas_troubleshooting_test', array( $this, 'asyncTest' ) );
-        add_action( 'wp_ajax_dgwt_wcas_troubleshooting_reset_async_tests', array( $this, 'resetAsyncTests' ) );
-        add_action( 'wp_ajax_dgwt_wcas_troubleshooting_dismiss_elementor_template', array( $this, 'dismissElementorTemplate' ) );
+        add_action( 'wp_ajax_dgwt_wcas_troubleshooting_async_action', array( $this, 'asyncActionHandler' ) );
+        add_action( 'admin_notices', array( $this, 'showNotices' ) );
     }
     
     /**
@@ -71,6 +75,39 @@ class Troubleshooting
     }
     
     /**
+     * Add custom query variable names to remove
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function addRemovableQueryArgs( $args )
+    {
+        $args[] = 'dgwt-wcas-regenerate-images-started';
+        return $args;
+    }
+    
+    /**
+     * Show troubleshooting notices
+     *
+     * @return void
+     */
+    public function showNotices()
+    {
+        
+        if ( isset( $_REQUEST['dgwt-wcas-regenerate-images-started'] ) ) {
+            ?>
+			<div class="notice notice-success dgwt-wcas-notice">
+				<p><?php 
+            _e( 'Regeneration of images started. The process will continue in the background.', 'ajax-search-for-woocommerce' );
+            ?></p>
+			</div>
+			<?php 
+        }
+    
+    }
+    
+    /**
      * AJAX callback for running async test
      */
     public function asyncTest()
@@ -94,29 +131,40 @@ class Troubleshooting
     }
     
     /**
-     * Reset stored results of async tests
+     * Async action handler
      */
-    public function resetAsyncTests()
+    public function asyncActionHandler()
     {
         if ( !current_user_can( 'administrator' ) ) {
             wp_die( -1, 403 );
         }
-        check_ajax_referer( self::RESET_ASYNC_TESTS_NONCE );
-        delete_transient( self::TRANSIENT_RESULTS_KEY );
-        wp_send_json_success();
-    }
-    
-    /**
-     * Dismiss Elementor template error
-     */
-    public function dismissElementorTemplate()
-    {
-        if ( !current_user_can( 'administrator' ) ) {
-            wp_die( -1, 403 );
+        check_ajax_referer( self::ASYNC_ACTION_NONCE );
+        $internalAction = $_POST['internal_action'] ?? '';
+        $data = array();
+        $success = false;
+        switch ( $internalAction ) {
+            case 'dismiss_elementor_template':
+                update_option( 'dgwt_wcas_dismiss_elementor_template', '1' );
+                $success = true;
+                break;
+            case 'reset_async_tests':
+                // Reset stored results of async tests.
+                delete_transient( self::TRANSIENT_RESULTS_KEY );
+                $success = true;
+                break;
+            case 'dismiss_regenerate_images':
+                update_option( self::IMAGES_ALREADY_REGENERATED_OPT_KEY, '1' );
+                $success = true;
+                break;
+            case 'regenerate_images':
+                $this->regenerateImages();
+                $data['args'] = array(
+                    'dgwt-wcas-regenerate-images-started' => true,
+                );
+                $success = true;
+                break;
         }
-        check_ajax_referer( self::DISMIS_ELEMENTOR_TEMPLATE_NONCE );
-        update_option( 'dgwt_wcas_dismiss_elementor_template', '1' );
-        wp_send_json_success();
+        ( $success ? wp_send_json_success( $data ) : wp_send_json_error( $data ) );
     }
     
     /**
@@ -131,9 +179,8 @@ class Troubleshooting
         $localize['troubleshooting'] = array(
             'nonce' => array(
             'troubleshooting_async_test'                  => wp_create_nonce( self::ASYNC_TEST_NONCE ),
-            'troubleshooting_reset_async_tests'           => wp_create_nonce( self::RESET_ASYNC_TESTS_NONCE ),
             'troubleshooting_fix_outofstock'              => wp_create_nonce( self::FIX_OUTOFSTOCK_NONCE ),
-            'troubleshooting_dismiss_elementor_template'  => wp_create_nonce( self::DISMIS_ELEMENTOR_TEMPLATE_NONCE ),
+            'troubleshooting_async_action'                => wp_create_nonce( self::ASYNC_ACTION_NONCE ),
             'troubleshooting_switch_alternative_endpoint' => wp_create_nonce( self::SWITCH_ALTERNATIVE_ENDPOINT ),
             'troubleshooting_maintenance_analytics'       => wp_create_nonce( self::MAINTENANCE_ANALYTICS_NONCE ),
         ),
@@ -219,11 +266,11 @@ class Troubleshooting
         $errors = array();
         // GTranslate
         if ( class_exists( 'GTranslate' ) ) {
-            $errors[] = sprintf( __( 'You use the %s plugin. The %s does not support this plugin.', 'ajax-search-for-woocommerce' ), 'GTranslate', DGWT_WCAS_NAME );
+            $errors[] = sprintf( __( 'You are using the %s plugin. The %s does not support this plugin.', 'ajax-search-for-woocommerce' ), 'GTranslate', DGWT_WCAS_NAME );
         }
         // WooCommerce Product Sort and Display
         if ( defined( 'WC_PSAD_VERSION' ) ) {
-            $errors[] = sprintf( __( 'You use the %s plugin. The %s does not support this plugin.', 'ajax-search-for-woocommerce' ), 'WooCommerce Product Sort and Display', DGWT_WCAS_NAME );
+            $errors[] = sprintf( __( 'You are using the %s plugin. The %s does not support this plugin.', 'ajax-search-for-woocommerce' ), 'WooCommerce Product Sort and Display', DGWT_WCAS_NAME );
         }
         
         if ( !empty($errors) ) {
@@ -299,13 +346,10 @@ class Troubleshooting
             $linkToDocs = 'https://fibosearch.com/documentation/troubleshooting/the-search-index-could-not-be-built/';
             $linkToWpHealth = admin_url( 'site-health.php' );
             $result['label'] = __( 'Your site could not complete a loopback request', 'ajax-search-for-woocommerce' );
-            if ( !dgoraAsfwFs()->is_premium() ) {
-                $result['description'] = __( 'This issue may affect the search results page and e.g. display all products every time', 'ajax-search-for-woocommerce' );
-            }
             $result['description'] .= '<h3 class="dgwt-wcas-font-thin">' . __( 'Solutions:', 'ajax-search-for-woocommerce' ) . '</h3>';
             $result['description'] .= '<h4>' . __( "Your server can't send an HTTP request to itself", 'ajax-search-for-woocommerce' ) . '</h4>';
             $result['description'] .= '<p>' . sprintf( __( 'Go to <a href="%s" target="_blank">Tools -> Site Health</a> in your WordPress. You should see issues related to REST API or Loopback request. Expand descriptions of these errors and follow the instructions. Probably you will need to contact your hosting provider to solve it.', 'ajax-search-for-woocommerce' ), $linkToWpHealth ) . '</p>';
-            $result['description'] .= '<p>' . __( 'Is your website publicly available only for whitelisted IPs? <b>Add your server IP to the whitelist</b>. That’s all. This is a common mistake when access is blocked by a <code>.htaccess</code> file. Developers add a list of allowed IPs, but they forget to add the IP of the server to allow make HTTP requests to itself.', 'ajax-search-for-woocommerce' ) . '</p>';
+            $result['description'] .= '<p>' . __( 'Is your website publicly available only for whitelisted IPs? <b>Add your server IP to the whitelist</b>. That’s all. This is a common mistake when access is blocked by a <code>.htaccess</code> file. Developers add a list of allowed IPs, but they forget to add the IP of the server to allow it to make HTTP requests to itself.', 'ajax-search-for-woocommerce' ) . '</p>';
         }
         
         $this->storeResult( $result );
@@ -329,9 +373,6 @@ class Troubleshooting
         $errors = array();
         if ( !extension_loaded( 'mbstring' ) ) {
             $errors[] = sprintf( __( 'Required PHP extension: %s', 'ajax-search-for-woocommerce' ), 'mbstring' );
-        }
-        if ( !extension_loaded( 'pdo_mysql' ) ) {
-            $errors[] = sprintf( __( 'Required PHP extension: %s', 'ajax-search-for-woocommerce' ), 'pdo_mysql' );
         }
         
         if ( !empty($errors) ) {
@@ -362,7 +403,7 @@ class Troubleshooting
             $result['description'] = __( 'Great! Our plugin works great with this version of WordPress.', 'ajax-search-for-woocommerce' );
             $result['status'] = 'good';
         } else {
-            $result['description'] = __( 'Install the latest version of WordPress for our plugin to work as best it can!', 'ajax-search-for-woocommerce' );
+            $result['description'] = __( 'Install the latest version of WordPress for our plugin for optimal performance!', 'ajax-search-for-woocommerce' );
             $result['status'] = 'critical';
         }
         
@@ -397,7 +438,7 @@ class Troubleshooting
                 $ajaxAtcLabel,
                 $redirectLabel
             ) . '</p>';
-            $result['description'] .= __( 'Your settings should looks like the picture below:', 'ajax-search-for-woocommerce' );
+            $result['description'] .= __( 'Your settings should look like the picture below:', 'ajax-search-for-woocommerce' );
             $result['description'] .= '<p><img style="max-width: 720px" src="' . DGWT_WCAS_URL . 'assets/img/admin-troubleshooting-atc.png" /></p>';
             $result['status'] = 'critical';
         }
@@ -406,7 +447,53 @@ class Troubleshooting
     }
     
     /**
-     * Tests if "Searching by Text" extension from WOOF - WooCommerce Products Filter is enabled.
+     * Tests if "Searching by Text (old version)" extension from WOOF - WooCommerce Products Filter is enabled.
+     * It's incompatible with our plugin and should be disabled.
+     *
+     * @return array The test result.
+     */
+    public function getTestWoofSearchText2Extension()
+    {
+        $result = array(
+            'label'       => '',
+            'status'      => 'good',
+            'description' => '',
+            'actions'     => '',
+            'test'        => 'WoofSearchText2Extension',
+        );
+        if ( !defined( 'WOOF_VERSION' ) || !isset( $GLOBALS['WOOF'] ) ) {
+            return $result;
+        }
+        if ( !method_exists( 'WOOF_EXT', 'is_ext_activated' ) ) {
+            return $result;
+        }
+        $extDirs = $GLOBALS['WOOF']->get_ext_directories();
+        if ( empty($extDirs['default']) ) {
+            return $result;
+        }
+        $extPaths = array_filter( $extDirs['default'], function ( $path ) {
+            return Helpers::endsWith( $path, 'ext/by_text_2' );
+        } );
+        if ( empty($extPaths) ) {
+            return $result;
+        }
+        $extPath = array_shift( $extPaths );
+        
+        if ( \WOOF_EXT::is_ext_activated( $extPath ) ) {
+            $settingsUrl = admin_url( 'admin.php?page=wc-settings&tab=woof' );
+            $result['label'] = __( 'Incompatible "Searching by Text" extension from "WOOF - WooCommerce Products Filter plugin" is active', 'ajax-search-for-woocommerce' );
+            $result['description'] = '<p><b>' . __( 'Solution', 'ajax-search-for-woocommerce' ) . '</b></p>';
+            $result['description'] .= '<p>' . sprintf( __( 'Go to <code>WooCommerce -> Settings -> <a href="%s" target="_blank">Products Filter (tab)</a> -> Extensions (tab)</code>, uncheck <code>Searching by Text</code> extension and save changes.', 'ajax-search-for-woocommerce' ), $settingsUrl ) . '</p>';
+            $result['description'] .= __( 'Extensions should looks like the picture below:', 'ajax-search-for-woocommerce' );
+            $result['description'] .= '<p><img style="max-width: 720px" src="' . DGWT_WCAS_URL . 'assets/img/admin-troubleshooting-woof.png?rev=2" /></p>';
+            $result['status'] = 'critical';
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Tests if "HUSKY - Advanced searching by Text" extension from WOOF - WooCommerce Products Filter is enabled.
      * It's incompatible with our plugin and should be disabled.
      *
      * @return array The test result.
@@ -431,7 +518,7 @@ class Troubleshooting
             return $result;
         }
         $extPaths = array_filter( $extDirs['default'], function ( $path ) {
-            return strpos( $path, 'ext/by_text' ) !== false;
+            return Helpers::endsWith( $path, 'ext/by_text' );
         } );
         if ( empty($extPaths) ) {
             return $result;
@@ -440,14 +527,46 @@ class Troubleshooting
         
         if ( \WOOF_EXT::is_ext_activated( $extPath ) ) {
             $settingsUrl = admin_url( 'admin.php?page=wc-settings&tab=woof' );
-            $result['label'] = __( 'Incompatible "Searching by Text" extension from WOOF - WooCommerce Products Filter plugin is active', 'ajax-search-for-woocommerce' );
+            $result['label'] = __( 'Incompatible "HUSKY - Advanced searching by Text" extension from "WOOF - WooCommerce Products Filter plugin" is active', 'ajax-search-for-woocommerce' );
             $result['description'] = '<p><b>' . __( 'Solution', 'ajax-search-for-woocommerce' ) . '</b></p>';
-            $result['description'] .= '<p>' . sprintf( __( 'Go to <code>WooCommerce -> Settings -> <a href="%s" target="_blank">Products Filter (tab)</a> -> Extensions (tab)</code>, uncheck <code>Searching by Text</code> extension and save changes.', 'ajax-search-for-woocommerce' ), $settingsUrl ) . '</p>';
+            $result['description'] .= '<p>' . sprintf( __( 'Go to <code>WooCommerce -> Settings -> <a href="%s" target="_blank">Products Filter (tab)</a> -> Extensions (tab)</code>, uncheck <code>HUSKY - Advanced searching by Text</code> extension and save changes.', 'ajax-search-for-woocommerce' ), $settingsUrl ) . '</p>';
             $result['description'] .= __( 'Extensions should looks like the picture below:', 'ajax-search-for-woocommerce' );
-            $result['description'] .= '<p><img style="max-width: 720px" src="' . DGWT_WCAS_URL . 'assets/img/admin-troubleshooting-woof.png" /></p>';
+            $result['description'] .= '<p><img style="max-width: 720px" src="' . DGWT_WCAS_URL . 'assets/img/admin-troubleshooting-woof2.png" /></p>';
             $result['status'] = 'critical';
         }
         
+        return $result;
+    }
+    
+    /**
+     * Tests if "Try to ajaxify the shop" option from WOOF - WooCommerce Products Filter is enabled.
+     * It's incompatible with our plugin and should be disabled.
+     *
+     * @return array The test result.
+     */
+    public function getTestWoofTryToAjaxifyOption()
+    {
+        $result = array(
+            'label'       => '',
+            'status'      => 'good',
+            'description' => '',
+            'actions'     => '',
+            'test'        => 'WoofTryToAjaxifyOption',
+        );
+        if ( !defined( 'WOOF_VERSION' ) ) {
+            return $result;
+        }
+        if ( version_compare( WOOF_VERSION, '1.2.3' ) < 0 ) {
+            return $result;
+        }
+        if ( !get_option( 'woof_try_ajax', 0 ) ) {
+            return $result;
+        }
+        $settingsUrl = admin_url( 'admin.php?page=wc-settings&tab=woof' );
+        $result['label'] = __( 'Incompatible "Try to ajaxify the shop" option from WOOF - WooCommerce Products Filter plugin is enabled', 'ajax-search-for-woocommerce' );
+        $result['description'] = '<p><b>' . __( 'Solution', 'ajax-search-for-woocommerce' ) . '</b></p>';
+        $result['description'] .= '<p>' . sprintf( __( 'Go to <code>WooCommerce -> Settings -> <a href="%s" target="_blank">Products Filter (tab)</a> -> Options (tab)</code>, set <code>Try to ajaxify the shop</code> option to <code>No</code> and save changes.', 'ajax-search-for-woocommerce' ), $settingsUrl ) . '</p>';
+        $result['status'] = 'critical';
         return $result;
     }
     
@@ -499,16 +618,78 @@ class Troubleshooting
             $dismissButton = get_submit_button(
                 __( 'Dismiss', 'ajax-search-for-woocommerce' ),
                 'secondary',
-                'dgwt-wcas-dismiss-elementor-template',
-                false
+                'dgwt-wcas-async-action-dismiss-elementor-template',
+                false,
+                array(
+                'data-internal-action' => 'dismiss_elementor_template',
+            )
             );
             $templateLink = '<a target="_blank" href="' . admin_url( 'post.php?post=' . $document->get_post()->ID . '&action=elementor' ) . '">' . $document->get_post()->post_title . '</a>';
-            $result['label'] = __( 'There is no correct template in Elementor Theme Builder for the WooCommerce search results page.', 'ajax-search-for-woocommerce' );
+            $result['label'] = __( 'There is no correct template in the Elementor Theme Builder for the WooCommerce search results page.', 'ajax-search-for-woocommerce' );
             $result['description'] = '<p>' . sprintf( __( 'You are using Elementor and we noticed that the template used in the search results page titled <strong>%s</strong> does not include the <strong>Archive Products</strong> widget.', 'ajax-search-for-woocommerce' ), $templateLink ) . '</p>';
             $result['description'] .= '<p><b>' . __( 'Solution', 'ajax-search-for-woocommerce' ) . '</b></p>';
             $result['description'] .= '<p>' . sprintf( __( 'Add <strong>Archive Products</strong> widget to the template <strong>%s</strong> or create a new template dedicated to the WooCommerce search results page. Learn how to do it in <a href="%s" target="_blank">our documentation</a>.', 'ajax-search-for-woocommerce' ), $templateLink, $linkToDocs ) . '</p>';
             $result['description'] .= '<br/><hr/><br/>';
-            $result['description'] .= '<p>' . sprintf( __( 'If you think the search results page is displaying your products correctly, you can ignore and dismiss this message: %s', 'ajax-search-for-woocommerce' ), $dismissButton ) . '</p>';
+            $result['description'] .= '<p>' . sprintf( __( 'If you think the search results page is displaying your products correctly, you can ignore and dismiss this message: %s', 'ajax-search-for-woocommerce' ), $dismissButton ) . '<span class="dgwt-wcas-ajax-loader"></span></p>';
+            $result['status'] = 'critical';
+            return $result;
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Test if images need to be regenerated
+     *
+     * @return array The test result.
+     */
+    public function getTestNotRegeneratedImages()
+    {
+        global  $wpdb ;
+        $displayImages = DGWT_WCAS()->settings->getOption( 'show_product_image' ) === 'on' || DGWT_WCAS()->settings->getOption( 'show_product_tax_product_cat_images' ) === 'on';
+        $regenerated = get_option( self::IMAGES_ALREADY_REGENERATED_OPT_KEY );
+        $activationDate = get_option( FeedbackNotice::ACTIVATION_DATE_OPT );
+        $isTimeToDisplay = !empty($activationDate) && strtotime( '-2 days' ) >= $activationDate;
+        $placeholderImage = get_option( 'woocommerce_placeholder_image', 0 );
+        $totalImages = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*)\n\t\t\tFROM {$wpdb->posts}\n\t\t\tWHERE post_type = 'attachment'\n\t\t\tAND post_mime_type LIKE 'image/%'\n\t\t\tAND ID != %d", $placeholderImage ) );
+        $imagesBeforeActivation = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*)\n\t\t\tFROM {$wpdb->posts}\n\t\t\tWHERE post_type = 'attachment'\n\t\t\tAND post_mime_type LIKE 'image/%'\n\t\t\tAND ID != %d\n\t\t\tAND post_date < %s\n\t\t\t", $placeholderImage, wp_date( 'Y-m-d H:i:s', $activationDate ) ) );
+        $percentageOfOldImages = 0;
+        if ( $totalImages > 0 ) {
+            $percentageOfOldImages = (double) ($imagesBeforeActivation * 100) / $totalImages;
+        }
+        $result = array(
+            'label'       => '',
+            'status'      => 'good',
+            'description' => '',
+            'actions'     => '',
+            'test'        => 'NotRegeneratedImages',
+        );
+        
+        if ( empty($regenerated) && $displayImages && $isTimeToDisplay && $percentageOfOldImages > 15 ) {
+            $dismissButton = get_submit_button(
+                __( 'Dismiss', 'ajax-search-for-woocommerce' ),
+                'secondary',
+                'dgwt-wcas-async-action-dismiss-regenerate-images',
+                false,
+                array(
+                'data-internal-action' => 'dismiss_regenerate_images',
+            )
+            );
+            $regenerateImagesButton = get_submit_button(
+                __( 'Regenerate WooCommerce images', 'ajax-search-for-woocommerce' ),
+                'secondary',
+                'dgwt-wcas-async-action-regenerate-images',
+                false,
+                array(
+                'data-internal-action' => 'regenerate_images',
+            )
+            );
+            $pluginLink = '<a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a>';
+            $result['label'] = __( 'Regenerate images', 'ajax-search-for-woocommerce' );
+            $result['description'] = '<p>' . __( 'It is recommended to generate a special small image size for existing products to ensure a better user experience. This is a one-time action.', 'ajax-search-for-woocommerce' ) . '</p>';
+            $result['description'] .= '<p>' . sprintf( __( 'You can do it by clicking %s or use an external plugin such as %s.', 'ajax-search-for-woocommerce' ), $regenerateImagesButton, $pluginLink ) . '</p>';
+            $result['description'] .= '<hr/>';
+            $result['description'] .= '<p>' . sprintf( __( 'If you have regenerated the images or do not think it is necessary, you can ignore and dismiss this message: %s', 'ajax-search-for-woocommerce' ), $dismissButton ) . '<span class="dgwt-wcas-ajax-loader"></span></p>';
             $result['status'] = 'critical';
             return $result;
         }
@@ -543,13 +724,25 @@ class Troubleshooting
         ),
             array(
             'label' => __( 'Incompatible "Searching by Text" extension in WOOF - WooCommerce Products Filter', 'ajax-search-for-woocommerce' ),
+            'test'  => 'WoofSearchText2Extension',
+        ),
+            array(
+            'label' => __( 'Incompatible "HUSKY - Advanced searching by Text" extension in WOOF - WooCommerce Products Filter', 'ajax-search-for-woocommerce' ),
             'test'  => 'WoofSearchTextExtension',
+        ),
+            array(
+            'label' => __( 'Incompatible "Try to ajaxify the shop" option in WOOF - WooCommerce Products Filter', 'ajax-search-for-woocommerce' ),
+            'test'  => 'WoofTryToAjaxifyOption',
         ),
             array(
             'label' => __( 'Elementor search results template', 'ajax-search-for-woocommerce' ),
             'test'  => 'ElementorSearchResultsTemplate',
         )
         ),
+            'async'  => array( array(
+            'label' => __( 'Not regenerated images', 'ajax-search-for-woocommerce' ),
+            'test'  => 'NotRegeneratedImages',
+        ) ),
         );
         if ( !dgoraAsfwFs()->is_premium() ) {
             // List of tests only for free plugin version
@@ -738,6 +931,26 @@ class Troubleshooting
         }
         $asyncTestsResults[$result['test']] = $result;
         set_transient( self::TRANSIENT_RESULTS_KEY, $asyncTestsResults, 15 * 60 );
+    }
+    
+    /**
+     * Regenerate images
+     *
+     * @return void
+     */
+    private function regenerateImages()
+    {
+        
+        if ( class_exists( 'WC_Regenerate_Images' ) ) {
+            if ( method_exists( 'Jetpack', 'is_module_active' ) && \Jetpack::is_module_active( 'photon' ) ) {
+                return;
+            }
+            if ( apply_filters( 'woocommerce_background_image_regeneration', true ) ) {
+                \WC_Regenerate_Images::queue_image_regeneration();
+            }
+        }
+        
+        update_option( self::IMAGES_ALREADY_REGENERATED_OPT_KEY, '1' );
     }
 
 }

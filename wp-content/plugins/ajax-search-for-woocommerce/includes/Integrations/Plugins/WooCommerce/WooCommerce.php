@@ -29,6 +29,8 @@ class WooCommerce {
 		}
 
 		$this->syncWithOutOfStockVisibility();
+
+		add_action( 'before_woocommerce_init', array( $this, 'declare_compatibility' ) );
 	}
 
 	/**
@@ -133,5 +135,17 @@ class WooCommerce {
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Declare compatibility with WooCommerce features
+	 *
+	 * @return void
+	 */
+	public function declare_compatibility() {
+		// https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book#declaring-extension-incompatibility
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', DGWT_WCAS_FILE, true );
+		}
 	}
 }
