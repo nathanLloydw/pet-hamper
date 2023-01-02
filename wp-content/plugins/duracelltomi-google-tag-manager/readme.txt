@@ -3,9 +3,9 @@ Contributors: duracelltomi
 Donate link: https://gtm4wp.com/
 Tags: google tag manager, tag manager, gtm, google, adwords, google adwords, google ads, adwords remarketing, google ads remarketing, remarketing, google analytics, analytics, facebook ads, facebook remarketing, facebook pixel, google optimize, personalisation
 Requires at least: 3.4.0
-Requires PHP: 5.6
-Tested up to: 6.0.0
-Stable tag: 1.16.1
+Requires PHP: 7.4
+Tested up to: 6.1.1
+Stable tag: 1.16.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -24,10 +24,7 @@ Google's official help pages includes [more details about the data layer](https:
 
 You can also add your Google Optimize container with the [recommended code setup](https://support.google.com/optimize/answer/7359264?hl=en)
 
-**Some parts of the plugin require PHP 5.6 newer.
-PHP 7.0 or newer is recommended.**
-
-Please note that PHP versions 7.2 or older already reached their end of life cycle thus it is recommended to upgrade. If you are not sure which version you are using, please contact your hosting provider for support.
+**PHP 7.4 is required to use this plugin.**
 
 = GTM container code placement =
 
@@ -234,6 +231,15 @@ https://gtm4wp.com/how-to-articles/how-to-exclude-admin-users-from-being-tracked
 6. Scroll tracking
 
 == Changelog ==
+
+= 1.16.2 =
+
+* Fixed: server side GTM hostname did not work if domain name included a hyphen character
+* Fixed: user login and user registration data layer events were swapped, thanks [danvy](https://github.com/danvy) for the fix
+* Fixed: JavaScript error in Chrome around event.target.closest calls, thanks [pinkasey](https://github.com/pinkasey) for the fix
+* Fixed: cast _ga_tracked variable as integer to make the identical operator work correctly, thanks [Irfan](https://github.com/in-codes) for the suggestion
+* Fixed: removed extra code added in 1.14 that reloads pages in Safari in WooCommerce integration. It broke some sites.
+* Updated: required PHP version raised to 7.4. Currently, this is not a hard requirement but from now I could include updates that will require this PHP version.
 
 = 1.16.1 = 
 
@@ -810,6 +816,10 @@ Please report all bugs found in my plugin using the [contact form on my website]
 * First beta release
 
 == Upgrade Notice ==
+
+= 1.16.2 =
+
+Bugfix release
 
 = 1.16.1 =
 

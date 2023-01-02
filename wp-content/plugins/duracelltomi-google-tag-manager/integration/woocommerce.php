@@ -285,7 +285,7 @@ function gtm4wp_map_eec_to_ga4( $productdata ) {
 
 		$num_category_parts = min( 5, count( $category_parts ) );
 		for ( $i = 1; $i < $num_category_parts; $i++ ) {
-			$ga4_product[ 'item_category_' . (string) ( $i + 1 ) ] = $category_parts[ $i ];
+			$ga4_product[ 'item_category' . (string) ( $i + 1 ) ] = $category_parts[ $i ];
 		}
 	}
 
@@ -840,7 +840,7 @@ function gtm4wp_woocommerce_datalayer_filter_items( $data_layer ) {
 			);
 		}
 
-		if ( ( 1 === get_post_meta( $order_id, '_ga_tracked', true ) ) && ! $do_not_flag_tracked_order ) {
+		if ( ( 1 === (int) get_post_meta( $order_id, '_ga_tracked', true ) ) && ! $do_not_flag_tracked_order ) {
 			unset( $order );
 		}
 
@@ -1012,7 +1012,7 @@ function gtm4wp_woocommerce_thankyou( $order_id ) {
 	}
 
 	$do_not_flag_tracked_order = (bool) ( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCNOORDERTRACKEDFLAG ] );
-	if ( ( 1 === get_post_meta( $order_id, '_ga_tracked', true ) ) && ! $do_not_flag_tracked_order ) {
+	if ( ( 1 === (int) get_post_meta( $order_id, '_ga_tracked', true ) ) && ! $do_not_flag_tracked_order ) {
 		unset( $order );
 	}
 
@@ -1036,10 +1036,10 @@ function gtm4wp_woocommerce_thankyou( $order_id ) {
 		$add_cookiebot_ignore = $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_COOKIEBOT ];
 
 		echo '
-        <script data-cfasync="false" data-pagespeed-no-defer' . ( $has_html5_support ? ' type="text/javascript"' : '' ) . ( $add_cookiebot_ignore ? ' data-cookieconsent="ignore"' : '' ) . '>
-            window.' . esc_js( $gtm4wp_datalayer_name ) . ' = window.' . esc_js( $gtm4wp_datalayer_name ) . ' || [];
-            window.' . esc_js( $gtm4wp_datalayer_name ) . '.push(' . wp_json_encode( $data_layer ) . ');
-        </script>';
+<script data-cfasync="false" data-pagespeed-no-defer' . ( $has_html5_support ? ' type="text/javascript"' : '' ) . ( $add_cookiebot_ignore ? ' data-cookieconsent="ignore"' : '' ) . '>
+	window.' . esc_js( $gtm4wp_datalayer_name ) . ' = window.' . esc_js( $gtm4wp_datalayer_name ) . ' || [];
+	window.' . esc_js( $gtm4wp_datalayer_name ) . '.push(' . wp_json_encode( $data_layer ) . ');
+</script>';
 
 		if ( ! $do_not_flag_tracked_order ) {
 			update_post_meta( $order_id, '_ga_tracked', 1 );
@@ -1653,35 +1653,6 @@ function gtm4wp_add_productdata_to_wc_block( $content, $data, $product ) {
 	return preg_replace( '/<li.+class=("|"[^"]+)wc-block-grid__product("|[^"]+")[^<]*>/i', '$0' . $product_data_tag, $content );
 }
 
-/**
- * Executed during wp_head with high priority.
- * Adds a JavaScript code that reloads the page in Safari if the user landed on the page using the back button of the browser.
- * Since the back button loads the previous state of the page instead of a new, clean state, some double tracking preventions
- * break the functionality of GTM4WP.
- *
- * @return void
- */
-function gtm4wp_woocommerce_header_top() {
-	global $gtm4wp_options;
-
-	$has_html5_support    = current_theme_supports( 'html5' );
-	$add_cookiebot_ignore = $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_COOKIEBOT ];
-
-	echo '<script' . ( $has_html5_support ? ' type="text/javascript"' : '' ) . ( $add_cookiebot_ignore ? ' data-cookieconsent="ignore"' : '' ) . ">
-const gtm4wp_is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-if ( gtm4wp_is_safari ) {
-	window.addEventListener('pageshow', function(event) {
-		if ( event.persisted ) {
-			// if Safari loads the page from cache usually by navigating with the back button
-			// it creates issues with product list click tracking
-			// therefore GTM4WP forces the page reload in this browser
-			window.location.reload();
-		}
-	});
-}
-</script>";
-}
-
 // do not add filter if someone enabled WooCommerce integration without an activated WooCommerce plugin.
 if ( function_exists( 'WC' ) ) {
 	add_filter( GTM4WP_WPFILTER_COMPILE_DATALAYER, 'gtm4wp_woocommerce_datalayer_filter_items' );
@@ -1719,7 +1690,5 @@ if ( function_exists( 'WC' ) ) {
 		add_action( 'woocommerce_shortcode_before_top_rated_products_loop', 'gtm4wp_before_top_rated_products_loop' );
 		add_action( 'woocommerce_shortcode_before_featured_products_loop', 'gtm4wp_before_featured_products_loop' );
 		add_action( 'woocommerce_shortcode_before_related_products_loop', 'gtm4wp_before_related_products_loop' );
-
-		add_action( 'wp_head', 'gtm4wp_woocommerce_header_top', 1, 0 );
 	}
 }
