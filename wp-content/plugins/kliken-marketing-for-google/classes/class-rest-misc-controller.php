@@ -60,7 +60,7 @@ class REST_Misc_Controller extends \WC_REST_CRUD_Controller {
 		// For now, just sanitize the token as a text string (no tags, no simple injections).
 		$token = sanitize_text_field( $request->get_param( 'token' ) );
 		if ( ! $token ) {
-			return new \WP_Error( 'rest_bad_request', __( 'Invalid Data', 'kliken-marketing-for-google' ), [ 'status' => 400 ] );
+			return new \WP_Error( 'rest_bad_request', __( 'Invalid Data.', 'kliken-marketing-for-google' ), [ 'status' => 400 ] );
 		}
 
 		$saved_settings                 = Helper::get_plugin_options();
@@ -88,7 +88,7 @@ class REST_Misc_Controller extends \WC_REST_CRUD_Controller {
 		$data = get_option( "woocommerce_wc_services_{$carrier_name}_{$id}_form_settings" );
 
 		if ( ! $data || empty( $data ) || empty( $data->services ) ) {
-			return new \WP_Error( 'no_wc_services', __( 'Invalid Data', 'kliken-marketing-for-google' ), [ 'status' => 404 ] );
+			return new \WP_Error( 'no_wc_services', __( 'Invalid Data.', 'kliken-marketing-for-google' ), [ 'status' => 404 ] );
 		}
 
 		$carrier_services = [];

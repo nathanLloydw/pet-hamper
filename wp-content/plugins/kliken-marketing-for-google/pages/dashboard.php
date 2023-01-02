@@ -10,15 +10,16 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wrap kk-wrapper">
-	<h2><?php esc_html_e( 'Google Ads & Marketing by Kliken', 'kliken-marketing-for-google' ); ?></h2>
+	<h2><?php esc_html_e( 'AI Powered Marketing', 'kliken-marketing-for-google' ); ?></h2>
 
-	<p><?php esc_html_e( 'Launch Google Shopping ads and get your products found online easily.', 'kliken-marketing-for-google' ); ?></p>
+	<p><?php esc_html_e( 'Reach beyond your competition on Google, Facebook and the Open Web, and unleash the power of your brand with Kliken.', 'kliken-marketing-for-google' ); ?></p>
 
 	<div class="kk-box">
 		<div class="kk-box-header">
 			<div class="kk-img-container">
-				<img src="https://msacdn.s3.amazonaws.com/images/logos/woocommerce/GoogleHeader-Logo.svg" alt="Google Logo" height="40" class="kk-google-img">
-				<img src="https://msacdn.s3.amazonaws.com/images/logos/woocommerce/PoweredByKliken.png" alt="Powered by Kliken" class="kk-poweredby-img">
+				<img srcset="https://msacdn.s3.amazonaws.com/images/logos/woocommerce/KlikenLogoTagline@2x.png 2x, https://msacdn.s3.amazonaws.com/images/logos/woocommerce/KlikenLogoTagline.png 1x"
+					src="https://msacdn.s3.amazonaws.com/images/logos/woocommerce/KlikenLogoTagline.png" 
+					alt="Kliken Logo" class="kk-logo-img">
 			</div>
 		</div>
 
@@ -28,26 +29,49 @@ defined( 'ABSPATH' ) || exit;
 			<p class="subhdr"><?php esc_html_e( 'Your WooCommerce store is connected to your Kliken account.', 'kliken-marketing-for-google' ); ?></p>
 
 			<hr>
-
+			
 			<div class="kk-link">
-				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/dashboard' ); ?>">
-					<?php esc_html_e( 'Campaign Dashboard', 'kliken-marketing-for-google' ); ?>
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/create' ); ?>">
+					<?php esc_html_e( 'Create a New Kliken Ads Campaign', 'kliken-marketing-for-google' ); ?>
 				</a>
-				<p class="sub-note"><?php esc_html_e( 'Open your dashboard to review your campaign\'s performance', 'kliken-marketing-for-google' ); ?></p>
+				<p class="sub-note"><?php esc_html_e( 'Build a Kliken Ads campaign in less than 10 minutes, and start reaching customers as they search for your products across the Open Web.', 'kliken-marketing-for-google' ); ?></p>
 			</div>
 
 			<div class="kk-link">
-				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/create' ); ?>">
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/manage' ); ?>">
+					<?php esc_html_e( 'Manage Your Kliken Ads Campaigns', 'kliken-marketing-for-google' ); ?>
+				</a>
+				<p class="sub-note"><?php esc_html_e( 'Make changes to your active campaigns, purchase one you\'ve built, or reinstate your canceled campaigns.', 'kliken-marketing-for-google' ); ?></p>
+			</div>
+
+			<div class="kk-link">
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/dashboard' ); ?>">
+					<?php esc_html_e( 'Kliken Ads Open Web Campaign Dashboard', 'kliken-marketing-for-google' ); ?>
+				</a>
+				<p class="sub-note"><?php esc_html_e( 'See how your ads are performing by visiting your dashboard.', 'kliken-marketing-for-google' ); ?></p>
+			</div>
+
+			<hr>
+			
+			<div class="kk-link">
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/openweb/default.aspx/new' ); ?>">
 					<?php esc_html_e( 'Create a New Google Shopping Campaign', 'kliken-marketing-for-google' ); ?>
 				</a>
 				<p class="sub-note"><?php esc_html_e( 'Build a campaign in a few minutes, and sell to customers as they search for your products on Google.', 'kliken-marketing-for-google' ); ?></p>
 			</div>
 
 			<div class="kk-link">
-				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/shopping/manage' ); ?>">
-					<?php esc_html_e( 'Manage Campaigns', 'kliken-marketing-for-google' ); ?>
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/openweb/default.aspx/manage' ); ?>">
+					<?php esc_html_e( 'Manage Your Google Campaigns', 'kliken-marketing-for-google' ); ?>
 				</a>
-				<p class="sub-note"><?php esc_html_e( 'Make changes to your active campaigns, purchase one you built, or reinstate your cancelled campaigns.', 'kliken-marketing-for-google' ); ?></p>
+				<p class="sub-note"><?php esc_html_e( 'Make changes to your active campaigns, purchase ones you\'ve built, or reinstate your canceled campaigns.', 'kliken-marketing-for-google' ); ?></p>
+			</div>
+
+			<div class="kk-link">
+				<a class="sub-heading" href="<?php echo esc_url( KK_WC_WOOKLIKEN_BASE_URL . 'smb/openweb/default.aspx/stats' ); ?>">
+					<?php esc_html_e( 'Google Campaign Dashboard', 'kliken-marketing-for-google' ); ?>
+				</a>
+				<p class="sub-note"><?php esc_html_e( 'Open your dashboard to review your campaign\'s performance.', 'kliken-marketing-for-google' ); ?></p>
 			</div>
 
 			<hr>

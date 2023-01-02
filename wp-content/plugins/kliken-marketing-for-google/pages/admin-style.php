@@ -41,7 +41,7 @@
 	.kk-wrapper .kk-box-content {
 		background-color: white;
 		border: 1px solid #cccccc;
-		padding: 30px;
+		padding: 10px 30px 30px;
 	}
 
 	.kk-wrapper .sub-heading {
@@ -57,13 +57,12 @@
 	}
 
 	.kk-wrapper .kk-img-container {
-		margin: 20px;
+		margin: 10px 20px;
 	}
 
-	.kk-wrapper .kk-google-img {
-		height: 40px;
+	.kk-wrapper .kk-logo-img {
+		height: 120px;
 		display: block;
-		margin-bottom: -5px;
 	}
 
 	.kk-wrapper .kk-poweredby-img {

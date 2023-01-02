@@ -22,7 +22,7 @@ class WC_Integration extends \WC_Integration {
 		global $woocommerce;
 
 		$this->id           = KK_WC_INTEGRATION_PAGE_ID;
-		$this->method_title = __( 'Google Ads & Marketing by Kliken', 'kliken-marketing-for-google' );  // This is for the sub-section text.
+		$this->method_title = __( 'AI Powered Marketing', 'kliken-marketing-for-google' );  // This is for the sub-section text.
 
 		if ( true === $init ) {
 			// Load the settings.
@@ -60,7 +60,7 @@ class WC_Integration extends \WC_Integration {
 			],
 			'guide_link'   => [
 				'type'        => 'desc',
-				'description' => '<a href="https://support.sitewit.com/hc/en-us/articles/360016107933-WooCommerce-Advanced-Options" target="_blank" rel="noopener noreferrer">' . __( 'What are these options?', 'kliken-marketing-for-google' ) . '</a>',
+				'description' => '<a href="https://support.kliken.com/hc/en-us/articles/360016107933-WooCommerce-Advanced-Options" target="_blank" rel="noopener noreferrer">' . __( 'What are these options?', 'kliken-marketing-for-google' ) . '</a>',
 				'desc_tip'    => '',
 			],
 		];

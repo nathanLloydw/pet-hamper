@@ -52,7 +52,13 @@ class Plugin {
 			load_plugin_textdomain( 'kliken-marketing-for-google', false, KK_WC_PLUGIN_REL_PATH . '/languages' );
 
 			if ( $this->_bootstrapped ) {
-				throw new \Exception( __( 'Google Ads & Marketing by Kliken plugin can only be called once', 'kliken-marketing-for-google' ), self::ALREADY_BOOTSTRAPED );
+				throw new \Exception( sprintf( 
+						/* translators: %s: Plugin name. Do not translate. */
+						__( '%s plugin can only be called once.', 'kliken-marketing-for-google' ), 
+						__( 'AI Powered Marketing' ) 
+					),
+					self::ALREADY_BOOTSTRAPED 
+				);
 			}
 
 			$this->check_dependencies();
@@ -128,7 +134,7 @@ class Plugin {
 	}
 
 	/**
-	 * Show bootstrap (warning) message if needed.
+	 * Show bootstrap (error) message if needed.
 	 */
 	public function show_bootstrap_message() {
 		$message = get_site_transient( KK_WC_BOOTSTRAP_MESSAGE );
@@ -136,7 +142,7 @@ class Plugin {
 		if ( ! empty( $message )
 			&& false === get_option( KK_WC_BOOTSTRAP_MESSAGE . self::DISMISS_POSTFIX, false )
 			&& current_user_can( 'manage_options' ) ) {
-			Message::show_warning( $message, 'bsmessage' );
+			Message::show_error( $message, 'bsmessage' );
 		}
 	}
 
@@ -270,13 +276,25 @@ class Plugin {
 	 */
 	private function check_dependencies() {
 		if ( ! function_exists( 'wc' ) ) {
-			throw new \Exception( __( 'Google Ads & Marketing by Kliken requires WooCommerce to be activated', 'kliken-marketing-for-google' ), self::DEPENDENCIES_UNSATISFIED );
+			throw new \Exception( sprintf( 
+					/* translators: %s: Plugin name. Do not translate. */
+					__( '%s requires WooCommerce to be activated.', 'kliken-marketing-for-google' ), 
+					__( 'AI Powered Marketing' )
+				),
+				self::DEPENDENCIES_UNSATISFIED
+			);
 		}
 
 		$required_woo_version = '3.0';
 		if ( version_compare( wc()->version, $required_woo_version, '<' ) ) {
-			/* translators: %s: Version number of WooCommerce required to run plugin. Do not translate. */
-			throw new \Exception( sprintf( __( 'Google Ads & Marketing by Kliken requires WooCommerce version %s or greater', 'kliken-marketing-for-google' ), $required_woo_version ), self::DEPENDENCIES_UNSATISFIED );
+			throw new \Exception( sprintf(
+					/* translators: %s: Plugin name. %s: Version number of WooCommerce required to run plugin. Do not translate. */
+					__( '%s requires WooCommerce version %s or greater.', 'kliken-marketing-for-google' ), 
+					__( 'AI Powered Marketing' ),
+					$required_woo_version 
+				),
+				self::DEPENDENCIES_UNSATISFIED
+			);
 		}
 	}
 

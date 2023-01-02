@@ -1,9 +1,9 @@
 <?php
 /**
-Plugin Name: Google Ads & Marketing by Kliken
+Plugin Name: AI Powered Marketing
 Plugin URI: https://woo.kliken.com/
-Description: The automated Google Shopping solution to get your products found on Google, and grow your WooCommerce Store!
-Version: 1.0.8
+Description: Kliken's all-in-one marketing platform helps business owners reach high-intent customers, surpass your competition and realize significant growth in sales, while decreasing conversion costs.
+Version: 1.1.0
 Author: Kliken
 Author URI: http://kliken.com/
 Developer: Kliken
@@ -12,7 +12,7 @@ Text Domain: kliken-marketing-for-google
 Domain path: /languages
 
 WC requires at least: 3.0
-WC tested up to: 6.0
+WC tested up to: 7.2
 
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -29,7 +29,6 @@ define( 'KK_WC_PLUGIN_REL_PATH', basename( dirname( __FILE__ ) ) );
 define( 'KK_WC_AFFILIATE_ID', '82E7B644-DB42-40E9-9EDF-6FD10A4BAFB3' );
 define( 'KK_WC_WOOKLIKEN_BASE_URL', 'https://woo.kliken.com/' );
 define( 'KK_WC_AUTH_CALLBACK_URL', 'https://app.mysite-analytics.com/WebHooks/WooCommerceAuth/' );
-define( 'KK_WC_AUTH_APP_NAME', 'Google Ads & Marketing by Kliken' );
 
 define( 'KK_WC_INTEGRATION_PAGE_ID', 'kk_wcintegration' );
 

@@ -192,7 +192,7 @@ class Helper {
 	}
 
 	/**
-	 * Add SiteWit tracking script to page.
+	 * Add Kliken tracking script to page.
 	 */
 	public static function add_tracking_script() {
 		global $wp;
@@ -208,6 +208,8 @@ class Helper {
 			$cart = self::build_cart_data();
 
 			if ( null !== $cart ) {
+				$currency = get_option( 'woocommerce_currency', 'USD' );
+
 				include_once KK_WC_PLUGIN_DIR . 'pages/cartscript.php';
 			}
 		}
@@ -373,7 +375,7 @@ class Helper {
 		}
 
 		$authorization_url = get_site_url() . '/wc-auth/v1/authorize'
-			. '?app_name=' . rawurlencode( KK_WC_AUTH_APP_NAME )
+			. '?app_name=' . rawurlencode( __( 'AI Powered Marketing' ) )
 			. '&scope=read_write'
 			. '&user_id=' . base64_encode( $account_id . ':' . $application_token )
 			. '&return_url=' . rawurlencode( 'bit.ly/2OweS8h' ) // This links back to woo.kliken.com. We just need to do this to shorten the link because some WordPress hostings seem to dislike long links.
@@ -461,13 +463,15 @@ class Helper {
 	public static function get_onboarding_message() {
 		return sprintf(
 			wp_kses(
-				/* translators: %s: A hyperlink */
-				__( '<strong>Google Ads & Marketing by Kliken plugin is almost ready.</strong> <a href="%s">Click here</a> to get started.', 'kliken-marketing-for-google' ),
+				/* translators: %s: Plugin name. %s: A hyperlink. Do not translate. */
+				__( '<strong>%s plugin is almost ready.</strong> <a href="%s">Click here</a> to get started.', 'kliken-marketing-for-google' ),
 				[
 					'strong' => [],
 					'a'      => [ 'href' => [] ],
 				]
-			), esc_url( self::get_plugin_page() )
+			), 
+			__( 'AI Powered Marketing' ),
+			esc_url( self::get_plugin_page() )
 		);
 	}
 

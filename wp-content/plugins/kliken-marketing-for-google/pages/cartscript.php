@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
 
 <script type="text/javascript">
 	var swPreRegister = function() {
+		sw.config.currency = "<?php echo esc_attr( $currency ); ?>";
+
 		let itemsForGTAG = [];
 		let swCart = [];
 		<?php foreach ($cart as $key => $value) : ?>
