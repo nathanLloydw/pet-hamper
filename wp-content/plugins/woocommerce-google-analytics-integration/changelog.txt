@@ -1,5 +1,35 @@
 *** Changelog ***
 
+= 1.5.18 - 2022-12-14 =
+* Add - .nvmrc file.
+* Tweak - WC 7.2 compatibility.
+
+= 1.5.17 - 2022-11-09 =
+* Add - New Google Analytics task in WC.
+
+= 1.5.16 - 2022-11-03 =
+* Add - Declare compatibility for High Performance Order Storage.
+* Tweak - WC 7.1 compatibility.
+* Tweak - WP 6.1 compatibility.
+
+= 1.5.15 - 2022-10-04 =
+* Add - Support for a Google Tag ID.
+* Tweak - WC 7.0 compatibility.
+
+= 1.5.14 - 2022-09-02 =
+* Dev - Add branch-labels GH workflow.
+* Dev - GH release config and the new PR template.
+* Tweak - WC 6.9 compatibility.
+
+= 1.5.13 - 2022-08-03 =
+* Fix - Custom Order table compatibility.
+
+= 1.5.12 - 2022-07-27 =
+* Tweak - WC 6.8 compatibility.
+
+= 1.5.11 - 2022-07-06 =
+* Tweak - WC 6.7 compatibility.
+
 = 1.5.10 - 2022-06-07 =
 * Tweak - WC 6.6 compatibility.
 
