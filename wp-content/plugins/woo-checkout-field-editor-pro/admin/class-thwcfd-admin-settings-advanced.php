@@ -67,13 +67,13 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 				'name'=>'enable_placeholder_override', 'label'=>__('Enable placeholder override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>1
 			),
 			'enable_class_override' => array(
-				'name'=>'enable_class_override', 'label'=>__('Enable class override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>0
+				'name'=>'enable_class_override', 'label'=>__('Enable class override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>1
 			),
 			'enable_priority_override' => array(
 				'name'=>'enable_priority_override', 'label'=>__('Enable priority override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>1
 			),
 			'enable_required_override' => array(
-				'name'=>'enable_required_override', 'label'=>__('Enable required validation override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>0
+				'name'=>'enable_required_override', 'label'=>__('Enable required validation override for address fields.', 'woo-checkout-field-editor-pro'), 'type'=>'checkbox', 'value'=>'1', 'checked'=>1
 			),
 		);
 	}
@@ -199,7 +199,7 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 			'option_key_additional_fields' => $settings_additional,
 			'option_key_advanced_settings' => $settings_advanced,
 		);
-		return base64_encode(serialize($plugin_settings));
+		return base64_encode(json_encode($plugin_settings));
 	}
 	
 	public function render_import_export_settings(){
@@ -260,13 +260,14 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 			$settings_data_encoded = sanitize_textarea_field(wp_unslash($_POST['i_settings_data']));
 			$base64_decoded = base64_decode($settings_data_encoded);
 
-			if(!is_serialized($base64_decoded)){
+			if(!$this->is_json($base64_decoded,$return_data = false)){
 				$this->print_notices(__('The entered import settings data is invalid. Please try again with valid data.', 'woo-extra-product-options'), 'error', false);
 				return false;
 			}
 
-			$settings = unserialize($base64_decoded); 
-			
+			// $settings = unserialize($base64_decoded, ['allowed_classes' => false]);
+			$settings = json_decode($base64_decoded,true);
+
 			if($settings){	
 				foreach($settings as $key => $value){
 					if($key === 'option_key_billing_fields'){
@@ -292,6 +293,11 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 				return false;
 			}	 			
 		}
+	}
+
+	function is_json($settings,$return_data = false) {
+		$data = json_decode($settings);
+		return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? $data : TRUE) : FALSE;
 	}
 
     /**********************************************
