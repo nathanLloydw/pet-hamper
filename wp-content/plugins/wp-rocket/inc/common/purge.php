@@ -126,7 +126,8 @@ function rocket_get_purge_urls( $post_id, $post ) {
 				}
 				continue;
 			}
-			$purge_urls[] = trailingslashit( $home_url ) . $page;
+
+			$purge_urls[] = trailingslashit( $home_url ) . ltrim( $page, '/' );
 		}
 	}
 
@@ -484,6 +485,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+				rocket_renew_box( 'preload_notice' );
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.

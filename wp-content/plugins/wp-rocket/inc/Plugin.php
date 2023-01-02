@@ -25,6 +25,7 @@ use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
 use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
+use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider as RUCSSServiceProvider;
 use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider;
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
@@ -35,6 +36,7 @@ use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
+use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -206,7 +208,10 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'preload_admin_subscriber',
 			'minify_admin_subscriber',
+			'action_scheduler_check',
+			'actionscheduler_admin_subscriber',
 		];
 	}
 
@@ -262,7 +267,9 @@ class Plugin {
 		$this->container->addServiceProvider( DelayJSServiceProvider::class );
 		$this->container->addServiceProvider( RUCSSServiceProvider::class );
 		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
+		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
+		$this->container->addServiceProvider( ThemesServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -270,9 +277,6 @@ class Plugin {
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'expired_cache_purge_subscriber',
-			'preload_subscriber',
-			'sitemap_preload_subscriber',
-			'partial_preload_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
@@ -285,7 +289,6 @@ class Plugin {
 			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
-			'cache_dir_size_check',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
@@ -304,9 +307,12 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
+			'preload_subscriber',
+			'preload_front_subscriber',
 			'polygon',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'preload_cron_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
@@ -324,12 +330,24 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'minimalist_blogger',
 			'convertplug',
+			'dynamic_lists_subscriber',
 			'jevelin',
 			'unlimited_elements',
 			'inline_related_posts',
+			'jetpack',
+			'rank_math_seo',
+			'all_in_one_seo_pack',
+			'seopress',
+			'the_seo_framework',
 			'wpml',
 			'xstore',
+			'cloudflare_plugin_subscriber',
+			'uncode',
+			'rocket_lazy_load',
+			'cache_config',
+			'the_events_calendar',
 		];
 
 		$host_type = HostResolver::get_host_service();
