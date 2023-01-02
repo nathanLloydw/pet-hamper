@@ -26,12 +26,15 @@ function sb_instagram_menu() {
 		$notice = ' <span class="update-plugins sbi-error-alert sbi-notice-alert"><span>!</span></span>';
 	}
 
-	$sbi_notifications = new SBI_Notifications();
-	$notifications = $sbi_notifications->get();
+	$notifications = false;
+	if ( class_exists( '\SBI_Notifications' ) ) {
+		$sbi_notifications = new \SBI_Notifications();
+		$notifications = $sbi_notifications->get();
+	}
 
 	$notice_bubble = '';
 	if ( empty( $notice ) && ! empty( $notifications ) && is_array( $notifications ) ) {
-		$notice_bubble = ' <span class="sbi-notice-alert"><span>'.count( $notifications ).'</span></span>';
+		$notice_bubble = ' <span class="sbi-notice-alert"><span>' . count( $notifications ) . '</span></span>';
 	}
 
 	add_menu_page(
