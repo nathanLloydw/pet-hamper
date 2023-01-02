@@ -16,6 +16,7 @@
 if ( ! isset($feed_template) ) {
 	return;
 }
+$wpfm_hide_char              = get_option( 'rex_feed_hide_character_limit_field', 'on' );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -53,6 +54,7 @@ $keyy = rand(999, 3000); ?>
         <div class="static-input">
 			<?php $feed_template->printInput( $keyy, 'st_value', '' ); ?>
         </div>
+        <?php do_action( 'rex_feed_after_static_input', $feed_template, $keyy, '' );?>
     </td>
     <td data-title="Prefix : "><?php $feed_template->printInput( $keyy, 'prefix', '' ); ?></td>
     <td data-title="Suffix : "><?php $feed_template->printInput( $keyy, 'suffix', '' ); ?></td>
@@ -71,11 +73,17 @@ $keyy = rand(999, 3000); ?>
     $hide_meta = $display_none;
     $hide_static = $display_none;
 
-    if ( $item[ 'type' ] === 'meta' ) {
-        $hide_meta = '';
-    }
-    elseif ( $item[ 'type' ] === 'static' ) {
-        $hide_static = '';
+    if( isset( $item[ 'type' ] ) ) {
+        if ( $item[ 'type' ] === 'meta' ) {
+            $hide_meta = '';
+        }
+        elseif ( $item[ 'type' ] === 'static' ) {
+            $hide_static = '';
+        }
+        elseif( 'combined' === $item[ 'type' ] && ( function_exists( 'rex_feed_is_wpfm_pro_active' ) && !rex_feed_is_wpfm_pro_active() ) ) {
+            $hide_meta = '';
+            $item[ 'type' ] = 'meta';
+        }
     }
 	?>
     <tr data-row-id="<?php echo esc_html($key); ?>">
@@ -92,7 +100,7 @@ $keyy = rand(999, 3000); ?>
         <td data-title="Value : ">
             <div class="meta-dropdown" <?php echo filter_var( $hide_meta ); ?>>
 				<?php
-				echo '<select class="attr-val-dropdown" name="fc['.esc_attr($key).'][' . esc_attr( 'meta_key' ) . ']" >';
+				echo '<select class="attr-val-dropdown select2-attr-dropdown" name="fc['.esc_attr($key).'][' . esc_attr( 'meta_key' ) . ']" >';
 				echo "<option value=''>".esc_html__('Please Select', 'rex-product-feed')."</option>";
 				echo $feed_template->printProductAttributes( isset( $item['meta_key'] ) ? $item['meta_key'] : '' ); // phpcs:ignore
 				echo "</select>";

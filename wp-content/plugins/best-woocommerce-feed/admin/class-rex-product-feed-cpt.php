@@ -85,15 +85,22 @@ class Rex_Product_CPT {
     public function fill_product_feed_columns( $column, $post_id ) {
         switch ( $column ) {
             case 'merchant' :
-                echo esc_html( ucwords( str_replace('_', ' ' , get_post_meta( $post_id, 'rex_feed_merchant', true )) ) );
+                $feed_merchant = get_post_meta( $post_id, '_rex_feed_merchant', true ) ?: get_post_meta( $post_id, 'rex_feed_merchant', true );
+                echo esc_html( ucwords( str_replace('_', ' ' , $feed_merchant ) ) );
                 break;
             case 'xml_feed' :
-                echo  esc_url( get_post_meta( $post_id , 'rex_feed_xml_file' , true ) ) ;
+                $feed_url = get_post_meta( $post_id , '_rex_feed_xml_file' , true ) ?: get_post_meta( $post_id , 'rex_feed_xml_file' , true );
+                echo  esc_url( $feed_url ) ;
                 break;
             case 'refresh_interval' :
-                $schedule = get_post_meta( $post_id, 'rex_feed_schedule', true );
+                $schedule = get_post_meta( $post_id, '_rex_feed_schedule', true ) ?: get_post_meta( $post_id, 'rex_feed_schedule', true );
                 $custom_time = $schedule === 'custom' ? get_post_meta( $post_id, 'rex_feed_custom_time', true ) . ':00' : '';
-                $format      = get_option( 'time_format', 'g:i a' );
+
+                if( $schedule === 'custom' ) {
+                    $custom_time = get_post_meta( $post_id, '_rex_feed_custom_time', true ) ?: get_post_meta( $post_id, 'rex_feed_custom_time', true );
+                    $custom_time = $custom_time ? $custom_time . ':00' : '';
+                }
+                $format = get_option( 'time_format', 'g:i a' );
 
                 echo esc_html( ucwords( $schedule ) );
                 if( $schedule === 'custom' && $custom_time !== '' ) {
@@ -103,9 +110,10 @@ class Rex_Product_CPT {
                 }
                 break;
             case 'feed_status' :
-                if ( get_post_meta( $post_id, 'rex_feed_status', true ) ) {
+                $feed_update_status = get_post_meta( $post_id, '_rex_feed_status', true ) ?: get_post_meta( $post_id, 'rex_feed_status', true );
+                if ( $feed_update_status ) {
 
-                    if(get_post_meta( $post_id, 'rex_feed_status', true ) == 'processing') {
+                    if( 'processing' === $feed_update_status ) {
                     	?>
 	                    <script>
                             (function($) {
@@ -118,22 +126,25 @@ class Rex_Product_CPT {
                             })(jQuery);
 	                    </script>
 						<?php
-                        echo '<div class="blink">' . esc_html( ucwords( get_post_meta( $post_id, 'rex_feed_status', true ) ) ) . '<span>.</span><span>.</span><span>.</span></div>';
-                    }else {
-                        echo esc_html( ucwords( get_post_meta( $post_id, 'rex_feed_status', true ) ) );
+                        echo '<div class="blink">' . esc_html( ucwords( $feed_update_status ) ) . '<span>.</span><span>.</span><span>.</span></div>';
                     }
-                }else {
+                    else {
+                        echo esc_html( ucwords( $feed_update_status ) );
+                    }
+                }
+                else {
                     echo 'Completed';
                 }
                 break;
             case 'view_feed' :
-                $url = esc_url( get_post_meta( $post_id, 'rex_feed_xml_file', true ) );
+                $url = get_post_meta( $post_id, '_rex_feed_xml_file', true ) ?: get_post_meta( $post_id, 'rex_feed_xml_file', true );
+                $url = esc_url( $url );
                 echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '">View</a> ';
                 echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '" download>Download</a>';
                 break;
             case 'total_products' :
-	            $total_products = get_post_meta( $post_id, 'rex_feed_total_products', true )
-                    ? get_post_meta( $post_id, 'rex_feed_total_products', true ) : array(
+                $total_products = get_post_meta( $post_id, '_rex_feed_total_products', true ) ?: get_post_meta( $post_id, 'rex_feed_total_products', true );
+	            $total_products = $total_products ?: array(
 		            'total'           => 0,
 		            'simple'          => 0,
 		            'variable'        => 0,
@@ -145,12 +156,15 @@ class Rex_Product_CPT {
 		            $total_products[ 'variable_parent' ] = 0;
 	            }
 
-	            $product_count = get_post_meta( $post_id, 'rex_feed_total_products_for_all_feed', true )
-                    ? get_post_meta( $post_id, 'rex_feed_total_products_for_all_feed', true ) : $total_products[ 'total' ];
-                $product_count = $product_count < $total_products[ 'total' ] ? $total_products[ 'total' ] : $product_count;
+	            $product_count = get_post_meta( $post_id, '_rex_feed_total_products_for_all_feed', true ) ?: get_post_meta( $post_id, 'rex_feed_total_products_for_all_feed', true );
+                $product_count = $product_count ?: $total_products[ 'total' ];
+                $product_count = isset( $total_products[ 'total' ] ) && $product_count < $total_products[ 'total' ] ? $total_products[ 'total' ] : $product_count;
 
                 echo '<ul style="margin: 0;">';
                 echo '<li><b>' . esc_html__('Total products : ', 'rex-product-feed'). esc_html( $total_products[ 'total' ] ) . '/'. esc_html( $product_count ) .'</b></li>';
+                if( isset( $total_products[ 'total_reviews' ] ) ) {
+                    echo '<li><b>' . esc_html__('Total reviews : ', 'rex-product-feed'). esc_html( $total_products[ 'total_reviews' ] ) .'</b></li>';
+                }
                 echo '<li><b>' . esc_html__('Simple products : ', 'rex-product-feed'). esc_html( $total_products['simple'] ) . '</b></li>';
                 echo '<li><b>' . esc_html__('Variable parent : ', 'rex-product-feed'). esc_html( $total_products['variable_parent'] ) . '</b></li>';
                 echo '<li><b>' . esc_html__('Variations : ', 'rex-product-feed'). esc_html( $total_products['variable'] ) . '</b></li>';
@@ -166,7 +180,7 @@ class Rex_Product_CPT {
                     $formatted_time = date($format, strtotime($last_updated));
                 }
 
-                $schedule = get_post_meta( $post_id, 'rex_feed_schedule', true );
+                $schedule = get_post_meta( $post_id, '_rex_feed_schedule', true ) ?: get_post_meta( $post_id, 'rex_feed_schedule', true );
               
                 echo '<div><strong>'.esc_html__('Last Updated: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.esc_attr( $formatted_time ).'">'.esc_html($formatted_time).'</span></div></br>';
 

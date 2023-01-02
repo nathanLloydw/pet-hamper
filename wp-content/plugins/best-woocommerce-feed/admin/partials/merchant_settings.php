@@ -22,6 +22,9 @@ if ( !( $rex_google_merchant->is_authenticate() ) ) {
 	if ( $client_id && $client_secret && $merchant_id ) {
 		$html = $rex_google_merchant->get_access_token_html();
 	}
+    else {
+        $html = $rex_google_merchant->get_new_user_authenticate_markups();
+    }
 }
 else {
 	$html = $rex_google_merchant->authorization_success_html();

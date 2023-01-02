@@ -49,11 +49,13 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -153,9 +155,9 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
 
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 	    }
     }
 
@@ -185,10 +187,11 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     if ( is_array( $value ) && !empty( $value ) ) {
                         foreach ( $value as $shipping ) {
                             $shipping_country = isset( $shipping[ 'country' ] ) ? $shipping[ 'country' ] : '';
+                            $shipping_region = isset($shipping['region']) ? $shipping['region'] : '';
                             $shipping_service = isset( $shipping[ 'service' ] ) ? $shipping[ 'service' ] : '';
                             $shipping_price = isset( $shipping[ 'price' ] ) ? $shipping[ 'price' ] : '';
 
-                            $item->$key( $shipping_country, $shipping_service, $shipping_price ); // invoke $key as method of $item object.
+                            $item->$key( $shipping_country, $shipping_region, $shipping_service, $shipping_price ); // invoke $key as method of $item object.
                         }
                     }
                 }
@@ -222,6 +225,9 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
             if( $product_type === 'variation' && $check_item_group_id === 0){
                 $item->item_group_id($product->get_parent_id());
+            }
+            else {
+                $item->item_group_id('');
             }
         }
     }

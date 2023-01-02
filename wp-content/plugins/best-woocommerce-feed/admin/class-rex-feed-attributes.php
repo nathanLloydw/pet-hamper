@@ -57,8 +57,17 @@ class Rex_Feed_Attributes
         if( wpfm_is_yoast_active() ) {
             $attributes = array_merge( $attributes, self::get_yoast_attributes() );
         }
+        if( in_array( 'seo-by-rank-math/rank-math.php', $plugins ) ) {
+            $attributes = array_merge( $attributes, self::get_rankmath_attributes() );
+        }
         if( in_array( 'woo-discount-rules/woo-discount-rules.php', $plugins ) ) {
             $attributes = array_merge( $attributes, self::get_woo_discount_rules_attributes() );
+        }
+        if( in_array( 'ean-for-woocommerce/ean-for-woocommerce.php', $plugins ) ) {
+            $attributes = array_merge( $attributes, self::get_ean_by_woocommerce_attributes() );
+        }
+        if( function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) && wpfm_is_discount_rules_asana_plugins_active() ) {
+            $attributes = array_merge( $attributes, self::get_discounts_by_asana_plugins_attributes() );
         }
         if( apply_filters( 'wpfm_is_premium_activate', false ) ) {
             $attributes = array_merge( $attributes, self::get_wpfm_custom_attributes() );
@@ -104,6 +113,7 @@ class Rex_Feed_Attributes
             'description'                    => 'Product Description',
             'parent_desc'                    => 'Product Description [Parent]',
             'short_description'              => 'Product Short Description',
+            'product_cat_ids'                => 'Product Category ID(s)',
             'product_cats'                   => 'Product Categories',
             'product_cats_path'              => 'Product Categories Path (with separator ">")',
             'product_cats_path_pipe'         => 'Product Categories Path (with separator "|")',
@@ -169,6 +179,7 @@ class Rex_Feed_Attributes
             'main_image'          => 'Main Image',
             'featured_image'      => 'Featured Image',
             'thumbnail_image'     => 'Thumbnail Image',
+            'all_image_array'     => 'All Images (raw data)',
             'all_image'           => 'All Images (comma separated)',
             'all_image_pipe'      => 'All Images (separated by "|")',
             'variation_img'       => 'Variation Image',
@@ -294,7 +305,8 @@ class Rex_Feed_Attributes
     {
         $attributes = array(
             'yoast_title'              => 'Product Title [Yoast SEO]',
-            'yoast_primary_cat'        => 'Yoast Primary Category',
+            'yoast_primary_cat'        => 'Yoast Primary Category Name',
+            'yoast_primary_cat_id'     => 'Yoast Primary Category ID',
             'yoast_meta_desc'          => 'Product Description [Yoast SEO]',
             'yoast_primary_cats_path'  => 'Yoast Primary Category Path (with separator ">")',
             'yoast_primary_cats_pipe'  => 'Yoast Primary Category Path (with separator "|")',
@@ -303,6 +315,21 @@ class Rex_Feed_Attributes
         asort( $attributes );
         return array(
             'YOAST Attributes' => $attributes,
+        );
+    }
+
+    /**
+     * Gets RankMath attributes
+     * @return string[][]
+     */
+    public static function get_rankmath_attributes()
+    {
+        $attributes = array(
+            'rankmath_primary_cat_id' => 'RankMath Primary Category ID',
+            'rankmath_primary_cat'    => 'RankMath Primary Category Name',
+        );
+        return array(
+            'RankMath Attributes' => $attributes,
         );
     }
 
@@ -505,8 +532,14 @@ class Rex_Feed_Attributes
      */
     public static function get_shipping_attributes() {
         return [
-            "shipping"       => "Shipping",
-            "shipping_class" => "Shipping Class",
+            "shipping"                    => "Shipping (Google/Facebook Format)",
+            "shipping_class"              => "Shipping Class",
+            "shipping_cost"               => "Shipping Cost (Base)",
+            "shipping_class_cost"         => "Shipping Cost (Class)",
+            "shipping_no_class_cost"      => "Shipping Cost (No Class)",
+            "shipping_cost_base_class"    => "Shipping Cost (Base + Class)",
+            "shipping_cost_base_no_class" => "Shipping Cost (Base + No Class)",
+            "local_pickup_cost"           => "Shipping Cost (Local Pickup)",
         ];
     }
 
@@ -518,8 +551,49 @@ class Rex_Feed_Attributes
      */
     public static function get_tax_attributes() {
         return [
-            "tax"       => "Tax",
+            "tax"       => "Tax (Google/Facebook Format)",
             "tax_class" => "Tax Class",
+        ];
+    }
+
+
+    /**
+     * @desc Gets attributes by EAN by WooCommerce
+     * @since 7.2.19
+     * @return string[][]
+     */
+    public static function get_ean_by_woocommerce_attributes()
+    {
+        return array(
+            'EAN by WooCommerce' => array(
+                '_alg_ean'       => get_option( 'alg_wc_ean_title', esc_html__( 'EAN', 'rex-product-feed' ) )
+            )
+        );
+    }
+
+
+    /**
+     * @desc Get price attributes by
+     * Discount Rules and Dynamic Pricing for WooCommerce
+     * @since 7.2.20
+     * @return string[][]
+     */
+    public static function get_discounts_by_asana_plugins_attributes() {
+        return [
+            'Discounted Price - by Asana Plugins' => [
+                'asana_price'                  => 'Regular Price',
+                'asana_current_price'          => 'Price',
+                'asana_sale_price'             => 'Sale Price',
+                'asana_price_with_tax'         => 'Regular price with tax',
+                'asana_current_price_with_tax' => 'Price with tax',
+                'asana_sale_price_with_tax'    => 'Sale price with tax',
+                'asana_price_excl_tax'         => 'Regular price excl. tax',
+                'asana_current_price_excl_tax' => 'Price excl. tax',
+                'asana_sale_price_excl_tax'    => 'Sale price excl. tax',
+                'asana_price_db'               => 'Regular Price (From DB)',
+                'asana_current_price_db'       => 'Price (From DB)',
+                'asana_sale_price_db'          => 'Sale Price (From DB)',
+            ]
         ];
     }
 }

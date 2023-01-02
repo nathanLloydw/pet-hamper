@@ -255,11 +255,12 @@ class Item
      * @param $cost
      * @param null $region
      */
-    public function shipping( $country = null, $service = null, $price = null, $string_val = null )
+    public function shipping( $country = null, $region = null, $service = null, $price = null, $string_val = null )
     {
         $node = new Node('shipping');
         if ( null === $string_val ) {
             $value = "<g:country>{$country}</g:country>";
+            $value .= "<g:region>{$region}</g:region>";
             $value .= "<g:service>{$service}</g:service>";
             $value .= "<g:price>{$price}</g:price>";
 

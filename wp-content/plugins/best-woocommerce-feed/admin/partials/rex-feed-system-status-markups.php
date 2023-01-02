@@ -24,6 +24,10 @@ $system_status = Rex_Feed_System_Status::get_all_system_status();
             <?php
                 foreach ( $system_status as $status ) {
                     if ( isset( $status[ 'label' ] ) && $status[ 'label' ] !== '' && isset( $status[ 'message' ] ) && $status[ 'message' ] !== '' ) {
+                        $skip_label = [ 'Version', 'WP Cron' ];
+                        if( in_array( $status[ 'label' ], $skip_label ) && !isset( $status[ 'status' ] ) ) {
+                            continue;
+                        }
             ?>
                 <!-- `rex-system-status__info` element in the `rex-system-status` block  -->
                 <div class="rex-system-status__info">

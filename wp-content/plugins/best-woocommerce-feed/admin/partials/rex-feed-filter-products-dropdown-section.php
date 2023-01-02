@@ -7,7 +7,8 @@
 	</label>
 	<select name="<?php echo esc_attr( $this->prefix ) . 'products'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'products'; ?>">
 		<?php
-		$prev_value = get_post_meta( get_the_ID(), 'rex_feed_products', true );
+		$prev_value = get_post_meta( get_the_ID(), '_rex_feed_products', true );
+		$prev_value = $prev_value ?: get_post_meta( get_the_ID(), 'rex_feed_products', true );
 		$prev_value = $prev_value !== '' && 'filter' !== $prev_value ? $prev_value : 'all';
 		foreach ( $options as $key => $value ) {
 			$selected = $key === $prev_value ? ' selected' : '';

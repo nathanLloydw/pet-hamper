@@ -11,7 +11,7 @@
  * @subpackage Rex_Product_Feed/admin
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Product_Ebay_Seller_Data_Retriever extends Rex_Product_Ebay_Mip_Data_Retriever {
+class Rex_Product_Ebay_Seller_Data_Retriever extends Rex_Product_Data_Retriever {
 
     /**
      * @var $ebay_seller_config
@@ -23,7 +23,7 @@ class Rex_Product_Ebay_Seller_Data_Retriever extends Rex_Product_Ebay_Mip_Data_R
     public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys, $ebay_seller_config ) {
         $this->ebay_seller_config = $ebay_seller_config;
         $this->merchant = 'ebay_seller';
-        parent::__construct($product, $feed, $product_meta_keys );
+        parent::__construct( $product, $feed, $product_meta_keys );
     }
 
     /**
@@ -56,23 +56,6 @@ class Rex_Product_Ebay_Seller_Data_Retriever extends Rex_Product_Ebay_Mip_Data_R
             } elseif (isset($rule['cust_attr'])) {
                 $this->data[ $rule['cust_attr'] ] = $this->set_val( $rule );
             }
-
         }
-    }
-
-    public function insertValueAtPosition($arr, $insertedArray, $position) {
-        $i = 0;
-        $new_array=[];
-        foreach ($arr as $key => $value) {
-            if ($i == $position) {
-                foreach ($insertedArray as $ikey => $ivalue) {
-                    $new_array[$ikey] = $ivalue;
-                }
-            }else {
-                $new_array[$key] = $value;
-            }
-            $i++;
-        }
-        return $new_array;
     }
 }

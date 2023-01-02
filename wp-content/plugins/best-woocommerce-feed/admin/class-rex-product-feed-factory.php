@@ -14,7 +14,6 @@ class Rex_Product_Feed_Factory {
     private static $other_merchants;
     private static $google_format;
     private static $facebook_format;
-    private static $ibud_format;
     private static $mirakl_format;
     private static $bestprice_format;
     private static $DealsForU;
@@ -23,7 +22,6 @@ class Rex_Product_Feed_Factory {
     public static function build( $config, $bypass = false , $product_ids = array()){
         
         $log = wc_get_logger();
-        $context = array( 'source' => 'WPFM' );
         self::$other_merchants = apply_filters('wpfm_merchant_custom',
             array(
                 'adform',
@@ -38,7 +36,6 @@ class Rex_Product_Feed_Factory {
                 'winesearcher',
                 'whiskymarketplace',
                 'trovaprezzi',
-                'rss',
                 'nextag',
                 'nextag',
                 'pricegrabber',
@@ -88,7 +85,6 @@ class Rex_Product_Feed_Factory {
                 'jet',
                 'bonanza',
                 'adcell',
-                // 'zbozi',
                 'stylefruits',
                 'medizinfuchs',
                 'moebel',
@@ -149,7 +145,6 @@ class Rex_Product_Feed_Factory {
                 'kauftipp',
                 'rakuten_advertising',
                 'pricefalls',
-                'google_express',
                 'google_hotel_ads',
                 'facebook_dynamic_ads_travel',
                 'clubic',
@@ -197,6 +192,8 @@ class Rex_Product_Feed_Factory {
             'epoq',
             'google_local_inventory_ads',
             'google_manufacturer_center',
+            'bing_image',
+            'rss',
         );
         self::$facebook_format = array(
             'instagram',
@@ -205,9 +202,6 @@ class Rex_Product_Feed_Factory {
         );
         self::$bestprice_format = array(
             'Bestprice'
-        );
-        self::$ibud_format = array(
-            'ibud'
         );
         self::$mirakl_format = array(
             'mirakl'
@@ -228,9 +222,6 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$facebook_format )) {
             $className = 'Rex_Product_Feed_Facebook';
         }
-        elseif (in_array( $config['merchant'], self::$ibud_format )) {
-            $className = 'Rex_Product_Feed_Ibud';
-        }
         elseif (in_array( $config['merchant'], self::$mirakl_format )) {
             $className = 'Rex_Product_Feed_Mirakl';
         }
@@ -243,7 +234,7 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$spartooFr )) {
             $className = 'Rex_Product_Feed_SpartooFr';
         }
-        elseif ($config['merchant'] === 'admitad') {
+        elseif ( $config['merchant'] === 'admitad' || $config['merchant'] === 'ibud' ) {
             $className = 'Rex_Product_Feed_Yandex';
         }
         elseif ($config['merchant'] === 'pinterest') {

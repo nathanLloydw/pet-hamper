@@ -12,14 +12,15 @@ class Rex_Feed_System_Status {
                 self::get_wpfm_version(), // Product Feed Manager for WooCommerce Version
                 self::get_wpfm_pro_version(), // Product Feed Manager for WooCommerce - Pro Version
                 self::get_woocommerce_version(), // WooCommerce Version
-                self::get_available_product_types(), // WooCommerce Product Types
-                self::get_total_wc_products(), // Total WooCommerce Product by Types
                 self::get_wordpress_cron_status(), //WordPress Cron Status
                 self::get_feed_file_directory(),
+                //self::get_available_product_types(), // WooCommerce Product Types
+                self::get_total_wc_products(), // Total WooCommerce Product by Types
             ];
+            $status = array_merge( $status, self::get_server_info() );
             wpfm_set_cached_data( 'system_status', $status );
         }
-        return array_merge( $status, self::get_server_info() );
+        return $status;
     }
 
     /**
@@ -154,7 +155,7 @@ class Rex_Feed_System_Status {
         $installed_version = ( function_exists('WC' ) ) ? WC()->version : '1.0.0';
         $latest_version = self::get_plugin_info('woocommerce' );
 
-        if ( version_compare($latest_version->version,$installed_version,'>') ) {
+        if ( version_compare( $latest_version->version, $installed_version,'>' ) ) {
             $message = $installed_version." - You are not using the latest version of WooCommerce. Update WooCommerce plugin to its latest version: ".$latest_version->version;
         } else {
             $message = $installed_version." - You are using the latest version of WooCommerce.";
@@ -164,7 +165,7 @@ class Rex_Feed_System_Status {
         return [
             'label'   => 'WooCommerce Version',
             'message' => $message,
-            'success' => $status
+            'status' => $status
         ];
     }
 
@@ -220,8 +221,8 @@ class Rex_Feed_System_Status {
 
         if ( ! empty($theme) ) {
             $new_version = "";
-            if ( version_compare($theme['version'],$theme['version_latest']) ) {
-                $new_version = ' (Latest:'.$theme['version_latest'].')';
+            if ( version_compare( $theme[ 'version' ], $theme[ 'version_latest' ], '<' ) ) {
+                $new_version = ' (Latest: '.$theme['version_latest'].')';
             }
 
             $info[] = [
@@ -238,14 +239,24 @@ class Rex_Feed_System_Status {
 
         if ( ! empty($active_plugins) ) {
             foreach ( $active_plugins as $key => $plugin ) {
-                $new_version = "";
-                if ( version_compare($plugin['version'],$plugin['version_latest']) ) {
-                    $new_version = ' (Latest:'.$plugin['version_latest'].')';
+                $slug = isset( $plugin[ 'plugin' ] ) ? $plugin[ 'plugin' ] : '';
+                $slug = explode( '/', $slug );
+                $version_latest = [];
+                if( isset( $slug[ 0 ] ) ) {
+                    $version_latest = self::get_plugin_info( $slug[ 0 ] );
+                }
+                $new_version = '';
+                $status = 'success';
+
+                if ( is_object( $version_latest ) && isset( $version_latest->version ) && version_compare( $plugin[ 'version' ], $version_latest->version, '<' ) ) {
+                    $new_version = ' (Latest: '.$version_latest->version.')';
+                    $status = 'error';
                 }
 
                 $info[] = [
                     'label'   => $plugin['name']. ' ('.$plugin['author_name'].')',
                     'message' => $plugin['version'].$new_version,
+                    'status' => $status
                 ];
             }
         }

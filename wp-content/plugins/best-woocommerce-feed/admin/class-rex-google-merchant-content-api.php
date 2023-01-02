@@ -93,32 +93,59 @@ class Rex_Google_Merchant_Settings_Api {
     }
 
     /**
+     * @desc Get markup for authentication message
      * @return string
      */
     public function get_access_token_html() {
         $client = self::get_client();
         $redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
-        $client->setClientId(self::$client_id);
-        $client->setClientSecret(self::$client_secret);
-        $client->setRedirectUri($redirect_uri);
+        $client->setClientId( self::$client_id );
+        $client->setClientSecret( self::$client_secret );
+        $client->setRedirectUri( $redirect_uri );
         $client->setScopes( 'https://www.googleapis.com/auth/content' );
         $loginUrl = $client->createAuthurl();
         $btn_html = '<a class="btn-default" href="'.$loginUrl.'" target="_blank">'.__('Authenticate', 'rex-product-feed').'</a>';
         $html = '<div class="single-merchant-area authorized">
                 <div class="single-merchant-block">
                     <header>
-                        <h2 class="title">'. __("You are not authorized.", "rex-product-feed") .'</h2>
+                        <h2 class="title">'. __("You Are Not Authorized", "rex-product-feed") .'</h2>
                         <img src="'. WPFM_PLUGIN_ASSETS_FOLDER . "/icon/danger.png" . '" class="title-icon" alt="bwf-documentation">
                     </header>
                     <div class="body">
                         <p>'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
-                        <p class="single-merchant-bold">'.  __('This session expiration is set by Google. You only need to authorize while submitting a new feed.', 'rex-product-feed').'</p>
-                        <p class="single-merchant-bold">'.  __('You can ignore this if you\'ve already submitted your feed to Google.', 'rex-product-feed').'</p>
+                        <p class="single-merchant-bold">'.  __('NB: This session expiration is set by Google. You only need to authorize while submitting a new feed. You can ignore this if you\'ve already submitted your feed to Google.', 'rex-product-feed').'</p>
                         '.$btn_html.'
                     </div>
                 </div>
             </div>';
         return $html;
+    }
+
+    public function get_new_user_authenticate_markups() {
+        ob_start();
+        ?>
+        <div class="single-merchant-area authorized">
+            <div class="single-merchant-block">
+                <header>
+                    <h2 class="title"><?php esc_html_e("Authorize with GMC to send a new feed for the first time with API Method", "rex-product-feed");?></h2>
+                </header>
+                <div class="body">
+                    <p>
+                        <?php
+                        esc_html_e( 'To send a feed to the Google Merchant Center, you need to authorize with Google Merchant Center. You can send the feed to Google Merchant Center through direct upload method or by using the Content API.', 'rex-product-feed' );
+                        ?>
+                    </p>
+                    <div class="single-merchant_pdf__link">
+                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/upload-woocomerce-product-feed-directly-to-google-merchant-center/?utm_source=plugin&utm_medium=google_form_direct_upload_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
+                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/?utm_source=plugin&utm_medium=get_started_auto_sync_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('API Method (Require authorization)', 'rex-product-feed')?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        $contents = ob_get_contents();
+        ob_end_clean();
+        return $contents;
     }
 
     /**
@@ -127,7 +154,7 @@ class Rex_Google_Merchant_Settings_Api {
     public function authorization_success_html() {
         return '<div id="card-alert" class="single-merchant-area authorized">
                   <div class="single-merchant-block">
-                    <span class="card-title rex-card-title">'. __('You are authorized.', 'rex-product-feed') .'</span>
+                    <span class="card-title rex-card-title">'. __('You Are Authorized.', 'rex-product-feed') .'</span>
                     <p class="rex-p">'.  __('You are now ready to send feed from Product Feed Manager for WooCommerce to your Google Merchant Center. ', 'rex-product-feed').'🚀 </p>
                   </div>              
                 </div>';
@@ -158,8 +185,9 @@ class Rex_Google_Merchant_Settings_Api {
             'html'  => '<div class="col s12 merchant-action">
                     <div id="card-alert" class="card rex-card">
                         <div class="card-content">
-                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .' <i class="fa fa-exclamation-triangle"></i></span>
-                            <p class="rex-p">'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
+                            <span class="card-title rex-card-title">'. __('You Are Not Authorized.', 'rex-product-feed') .' <i class="fa fa-exclamation-triangle"></i></span>
+                            <p>'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
+                            <p class="single-merchant-bold">'.  __('NB: This session expiration is set by Google. You only need to authorize while submitting a new feed. You can ignore this if you\'ve already submitted your feed to Google.', 'rex-product-feed').'</p>
                         </div>
                         <div class="card-action">'.$btn_html.'</div>
                     </div>
@@ -193,9 +221,10 @@ class Rex_Google_Merchant_Settings_Api {
     public function feed_exists($feed_id) {
         $client = $this->init_client();
         $service = new RexFeed\Google\Service\ShoppingContent( $client );
-        if(get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true)) {
+        $data_feed_id = get_post_meta($feed_id, '_rex_feed_google_data_feed_id', true) ?: get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true);
+        if( $data_feed_id ) {
             try {
-                $feed = $service->datafeeds->get(self::$merchant_id, get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true));
+                $feed = $service->datafeeds->get( self::$merchant_id, $data_feed_id );
                 return true;
             }
             catch(Exception $e) {

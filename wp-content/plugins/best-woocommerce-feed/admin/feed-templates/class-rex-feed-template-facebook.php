@@ -152,7 +152,7 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'st_value' => '',
             'prefix'   => '',
             'suffix'   => '',
-            'escape'   => 'default',
+            'escape'   => [ 'strip_tags', 'remove_shortcodes' ],
             'limit'    => 0,
         ),
         array(
@@ -187,9 +187,9 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
         ),
         array(
             'attr'     => 'brand',
-            'type'     => 'meta',
+            'type'     => 'static',
             'meta_key' => '',
-            'st_value' => '',
+            'st_value' => wpfm_get_woocommerce_shop_name(),
             'prefix'   => '',
             'suffix'   => '',
             'escape'   => 'default',

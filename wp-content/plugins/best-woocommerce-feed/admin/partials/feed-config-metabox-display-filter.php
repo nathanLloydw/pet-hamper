@@ -1,3 +1,4 @@
+<?php $icon_question = 'icon/icon-svg/icon-question.php'; ?>
 <?php
 
 /**
@@ -30,7 +31,20 @@ if ( wpfm_pro_compatibility() ) {
 	do_action( 'wpfm_pro_filter_rules' );
 }
 ?>
-<h2 class="filer-rules-header"><?php echo esc_html__('Custom Filter', 'rex-product-feed') ?></h2>
+    <div class="filer-rules-header">
+        <label for="<?php echo esc_attr( $this->prefix ) . 'cats';?>">
+            <?php echo esc_html__('Custom Filter', 'rex-product-feed') ?>
+            <span class="rex_feed-tooltip">
+                <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+                <p>
+                    <?php esc_html_e( 'Filter your feed products with your preferred condition', 'rex-product-feed' ); ?>
+                </p>
+            </span>
+        </label>
+        <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-custom-filter-generating-product-feed/?utm_source=plugin&utm_medium=custom_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
+        <?php esc_html_e('Learn How', 'rex-product-feed')?></a>
+    </div>
+
 <div class="rex__filter-table">
     <table id="config-table" class="filter-config-table responsive-table">
         <thead>

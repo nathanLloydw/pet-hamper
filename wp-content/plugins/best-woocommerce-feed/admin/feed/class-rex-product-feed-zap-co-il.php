@@ -46,11 +46,13 @@ class Rex_Product_Feed_Zap_co_il extends Rex_Product_Feed_Other {
      */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $total_products = get_post_meta( $this->id, '_rex_feed_total_products', true );
+        $total_products = $total_products ?: get_post_meta( $this->id, 'rex_feed_total_products', true );
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -134,7 +136,7 @@ class Rex_Product_Feed_Zap_co_il extends Rex_Product_Feed_Other {
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
     }
 
 

@@ -143,9 +143,9 @@ class Rex_Product_Feed_Idealo_de extends Rex_Product_Feed_Abstract_Generator {
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
         if ( $this->tbatch === $this->batch ) {
-            update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+            update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
         }
     }
 

@@ -107,6 +107,7 @@
                 scrollTo: { behavior: 'smooth', block: 'center' }
             }
         });
+        let current_step = 1;
 
         $.each( tour_steps, function( _index, item ) {
             let buttons = [];
@@ -133,7 +134,7 @@
 
             if ( 'length' !== _index ) {
                 tour.addStep( {
-                    title: item['title'],
+                    title: item['title'] + ' [ ' + current_step++ + '/' + Object.keys( tour_steps ).length + ' ]',
                     text: item['desc'],
                     attachTo: {
                         element: item['attach_element'],
@@ -157,86 +158,86 @@
     function get_tour_steps() {
         let next_button = 'Next';
         let prev_button = 'Previous';
-        return  {
-            'feed_title': {
-                title : 'Give A Name To This Feed',
-                desc : 'You may give any name. It\'s just to help you save settings for this feed generation and help you distinguish between other feeds you generate in the future.',
-                attach_element : '.post-type-product-feed #post-body-content',
-                attach_element_on : 'bottom',
-                next_button : next_button,
-                prev_button : '',
+        return {
+            feed_title: {
+                title: 'Give A Name To This Feed',
+                desc: 'You may give any name. It\'s just to help you save settings for this feed generation and help you distinguish between other feeds you generate in the future.',
+                attach_element: '.post-type-product-feed #post-body-content',
+                attach_element_on: 'bottom',
+                next_button: next_button,
+                prev_button: '',
             },
-            'merchant_name_type': {
-                title : 'Select Merchant And Feed Type',
-                desc : 'Here, you can change the merchant/marketplace and choose the file type when the product feed is generated.',
-                attach_element : '.post-type-product-feed #rex_feed_conf',
-                attach_element_on : 'top',
-                next_button : next_button,
-                prev_button : prev_button,
+            merchant_name_type: {
+                title: 'Select Merchant And Feed Type',
+                desc: 'Here, you can change the merchant/marketplace and choose the file type when the product feed is generated.',
+                attach_element: '.post-type-product-feed #rex_feed_conf',
+                attach_element_on: 'top',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'config_table': {
-                title : 'Feed Attributes & Product Data Mapping',
-                desc : 'These are the list of attributes that you are supposed to include for your products in the product feed. We will be mapping your store product data as the values of the attributes in this section.<br><br>However, most of these are already mapped, and you do not need to make any changes to them.',
-                attach_element : ".post-type-product-feed #rex_feed_config_heading table#config-table",
-                attach_element_on : 'top',
-                next_button : next_button,
-                prev_button : prev_button,
+            config_table: {
+                title: 'Feed Attributes & Product Data Mapping',
+                desc: 'These are the list of attributes that you are supposed to include for your products in the product feed. We will be mapping your store product data as the values of the attributes in this section.<br><br>However, most of these are already mapped, and you do not need to make any changes to them.',
+                attach_element: ".post-type-product-feed #rex_feed_config_heading table#config-table",
+                attach_element_on: 'top',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'feed_publish': {
-                title : 'Publish To Generate The Product Feed',
-                desc : 'Once you have mapped the attribute values, you can click on Publish and the feed will be generated.<br><br><em><b>**This tour will end if you click on the Publish button and the feed will start generating.</b><br><br>- You can view the generated feed once the feed generation is completed.<br>- Click on the Next to skip feed generation for now and  to learn more options to configure the feed.</em>',
-                attach_element : '.post-type-product-feed #rex-bottom-publish-btn',
-                attach_element_on : 'left',
-                next_button : next_button,
-                prev_button : prev_button,
+            feed_publish: {
+                title: 'Publish To Generate The Product Feed',
+                desc: 'Once you have mapped the attribute values, you can click on Publish and the feed will be generated.<br><br><em><b>**This tour will end if you click on the Publish button and the feed will start generating.</b><br><br>- You can view the generated feed once the feed generation is completed.<br>- Click on the Next to skip feed generation for now and  to learn more options to configure the feed.</em>',
+                attach_element: '.post-type-product-feed #rex-bottom-publish-btn',
+                attach_element_on: 'left',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'additional_feed_attr': {
-                title : 'Add More Attributes To Your Feed',
-                desc : 'You can also include more attributes for your products using these buttons.<br><br>The "Add New Attribute" will let you choose from other available attributes for your selected merchant and then you can map the value with a product data.<br><br>The "Add New Custom Attribute" will let you name an attribute title yourself and then map the value with a product data.',
-                attach_element : '.post-type-product-feed .rex-feed-attr-btn-area',
-                attach_element_on : 'top',
-                next_button : next_button,
-                prev_button : prev_button,
+            additional_feed_attr: {
+                title: 'Add More Attributes To Your Feed',
+                desc: 'You can also include more attributes for your products using these buttons.<br><br>The "Add New Attribute" will let you choose from other available attributes for your selected merchant and then you can map the value with a product data.<br><br>The "Add New Custom Attribute" will let you name an attribute title yourself and then map the value with a product data.',
+                attach_element: '.post-type-product-feed .rex-feed-attr-btn-area',
+                attach_element_on: 'top',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'product_filter': {
-                title : 'Use Advanced Filters',
-                desc : 'Click on this Product Filter button to: <br><br>- Use All Featured Products Filter<br>- Category Filter<br>- Tag Filter<br>- Custom Filter<br>- Product Filter (Pro)<br>- Product Rule (Pro)',
-                attach_element : '.post-type-product-feed #rex-pr-filter-btn',
-                attach_element_on : 'bottom',
-                next_button : next_button,
-                prev_button : prev_button,
+            product_filter: {
+                title: 'Use Advanced Filters',
+                desc: 'Click on this Product Filter button to: <br><br>- Use All Featured Products Filter<br>- Category Filter<br>- Tag Filter<br>- Custom Filter<br>- Product Filter (Pro)<br>- Product Rule (Pro)',
+                attach_element: '.post-type-product-feed #rex-pr-filter-btn',
+                attach_element_on: 'bottom',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'filter_tab_close': {
-                title : 'Product Filter Close Button',
-                desc : 'Once you make any changes, click on the Close button to get back to the Attributes section.',
-                attach_element : '.post-type-product-feed #rex_feed_filter_modal_close_btn',
-                attach_element_on : 'bottom',
-                next_button : next_button,
-                prev_button : prev_button,
+            filter_tab_close: {
+                title: 'Product Filter Close Button',
+                desc: 'Once you make any changes, click on the Close button to get back to the Attributes section.',
+                attach_element: '.post-type-product-feed #rex_feed_filter_modal_close_btn',
+                attach_element_on: 'bottom',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'feed_settings': {
-                title : 'Feed Settings Option',
-                desc : 'Click on the Feed Settings button to: <br><br>- Schedule Feed Update<br>- Include Out of Stock Products<br>- Include Product with No Price<br>- Include/ Exclude Product Type<br>- Skip Products/ Attributes With Empty Values<br>- Track Campaign With UTM Parameters',
-                attach_element : '.post-type-product-feed #rex-feed-settings-btn',
-                attach_element_on : 'bottom',
-                next_button : next_button,
-                prev_button : prev_button,
+            feed_settings: {
+                title: 'Feed Settings Option',
+                desc: 'Click on the Feed Settings button to: <br><br>- Schedule Feed Update<br>- Include Out of Stock Products<br>- Include Product with No Price<br>- Include/ Exclude Product Type<br>- Skip Products/ Attributes With Empty Values<br>- Track Campaign With UTM Parameters',
+                attach_element: '.post-type-product-feed #rex-feed-settings-btn',
+                attach_element_on: 'bottom',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'settings_tab_close': {
-                title : 'Close The Settings Drawer',
-                desc : 'Once you make any changes, click on the Close button to get back to the Attributes section.',
-                attach_element : '.post-type-product-feed span.rex-contnet-setting__close-icon',
-                attach_element_on : 'bottom',
-                next_button : next_button,
-                prev_button : prev_button,
+            settings_tab_close: {
+                title: 'Close The Settings Drawer',
+                desc: 'Once you make any changes, click on the Close button to get back to the Attributes section.',
+                attach_element: '.post-type-product-feed span.rex-contnet-setting__close-icon',
+                attach_element_on: 'bottom',
+                next_button: next_button,
+                prev_button: prev_button,
             },
-            'tour_end_feed_publish': {
-                title : 'Publish Feed',
-                desc : 'Click on the publish button to start generating the feed.<br><br>- Once you click on the Publish button, this tour will end.<br>- You will see a feed loading bar once the feed generation starts.<br>- Once the feed generation is completed, you can view or download the generated feed.<br>- Once the feed is generated, you can click on the View/ Download button to view the feed or to download the generated feed',
-                attach_element : '.post-type-product-feed #publish',
-                attach_element_on : 'bottom',
-                next_button : 'Finish Tour',
-                prev_button : prev_button,
+            tour_end_feed_publish: {
+                title: 'Publish Feed',
+                desc: 'Click on the publish button to start generating the feed.<br><br>- Once you click on the Publish button, this tour will end.<br>- You will see a feed loading bar once the feed generation starts.<br>- Once the feed generation is completed, you can view or download the generated feed.<br>- Once the feed is generated, you can click on the View/ Download button to view the feed or to download the generated feed',
+                attach_element: '.post-type-product-feed #publish',
+                attach_element_on: 'bottom',
+                next_button: 'Finish Tour',
+                prev_button: prev_button,
             },
         };
     }

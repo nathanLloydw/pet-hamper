@@ -246,31 +246,33 @@ abstract class Rex_Feed_Abstract_Template {
      * @since    1.0.0
      */
     protected function init_sanitization_options(){
-	    $this->sanitization_options = array(
-		    '' => array(
-			    'default'                    => 'Default',
-			    'strip_tags'                 => 'Strip Tags',
-			    'utf_8_encode'               => 'UTF-8 Encode',
-			    'htmlentities'               => 'htmlentities',
-			    'integer'                    => 'Integer',
-			    'price'                      => 'Price',
-			    'remove_space'               => 'Remove Space',
-			    'first_word_uppercase'       => 'First Word Uppercase Only',
-			    'remove_shortcodes'          => 'Remove ShortCodes',
-			    'remove_shortcodes_and_tags' => 'Remove ShortCodes and Strip Tags',
-			    'remove_special character'   => 'Remove Special Character',
-			    'cdata'                      => 'CDATA',
-			    'cdata_without_space'        => 'CDATA without space',
-			    'remove_underscore'          => 'Remove underscore',
-			    'decode_url'                 => 'Decode url',
-			    'remove_decimal'             => 'Remove decimal points (Marktplaats only)',
-			    'add_two_decimal'            => 'Two decimal points',
-			    'comma_decimal'              => 'Decimal Separator - Comma (,)',
-			    'remove_hyphen'              => 'Remove hyphen',
-			    'remove_hyphen_space'        => 'Remove hyphen(space)',
-			    'replace_space_with_hyphen'  => 'Replace Space With Hyphen',
-		    )
-	    );
+        $this->sanitization_options = array(
+            '' => array(
+                'default'                      => 'Default',
+                'strip_tags'                   => 'Strip Tags',
+                'utf_8_encode'                 => 'UTF-8 Encode',
+                'htmlentities'                 => 'htmlentities',
+                'integer'                      => 'Integer',
+                'price'                        => 'Price',
+                'remove_space'                 => 'Remove Space',
+                'remove_tab'                   => 'Remove Tab',
+                'first_word_uppercase'         => 'First Word Uppercase Only',
+                'remove_shortcodes'            => 'Remove ShortCodes',
+                'remove_shortcodes_and_tags'   => 'Remove ShortCodes and Strip Tags',
+                'remove_special character'     => 'Remove Special Character',
+                'cdata'                        => 'CDATA',
+                'cdata_without_space'          => 'CDATA without space',
+                'remove_underscore'            => 'Remove underscore',
+                'decode_url'                   => 'Decode url',
+                'remove_decimal'               => 'Remove decimal points (Marktplaats only)',
+                'add_two_decimal'              => 'Two decimal points',
+                'comma_decimal'                => 'Decimal Separator - Comma (,)',
+                'remove_hyphen'                => 'Remove hyphen',
+                'remove_hyphen_space'          => 'Remove hyphen(space)',
+                'replace_space_with_hyphen'    => 'Replace space ( ) with hyphen (-)',
+                'replace_comma_with_backslash' => 'Replace comma (,) with backslash (/)',
+            )
+        );
     }
 
 
@@ -303,6 +305,4 @@ abstract class Rex_Feed_Abstract_Template {
      * @since    1.0.0
      */
     abstract protected function init_default_template_mappings();
-
-
 }

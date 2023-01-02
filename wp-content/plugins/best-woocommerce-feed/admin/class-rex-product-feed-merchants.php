@@ -18,12 +18,12 @@ class Rex_Feed_Merchants {
             'custom'    => array(
                 'free'   => true,
                 'name'   => 'Custom',
-                'formats' => [ 'xml', 'yml', 'csv', 'text', 'tsv', 'json' ]
+                'formats' => [ 'xml', 'csv', 'text', 'tsv' ]
             ),
             'google'    => array(
                 'free'   => true,
                 'name'   => 'Google Shopping',
-                'formats' => [ 'xml' ]
+                'formats' => [ 'xml', 'text' ]
             ),
             'facebook'  => array(
                 'free'   => true,
@@ -39,7 +39,7 @@ class Rex_Feed_Merchants {
             'pinterest' => array(
                 'free'   => true,
                 'name'   => 'Pinterest',
-                'formats' => [ 'csv', 'tsv', 'xml' ]
+                'formats' => [ 'xml', 'csv', 'tsv' ]
             ),
             'snapchat'  => array(
                 'free'   => true,
@@ -54,17 +54,17 @@ class Rex_Feed_Merchants {
             'yandex'    => array(
                 'free'   => true,
                 'name'   => 'Yandex',
-                'formats' => [ 'xml', 'yml' ]
+                'formats' => [ 'xml' ]
             ),
             'rakuten'   => array(
                 'free'   => true,
                 'name'   => 'Rakuten',
-                'formats' => [ 'csv', 'tsv', 'xml' ]
+                'formats' => [  'xml', 'csv', 'tsv' ]
             ),
             'vivino'    => array(
                 'free'   => true,
                 'name'   => 'Vivino',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
         );
         $pro     = array(
@@ -100,7 +100,7 @@ class Rex_Feed_Merchants {
             'google_Ad'                       => array(
                 'free'   => true,
                 'name'   => 'Google Dynamic Display Ads',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'google_local_products'           => array(
                 'free'   => true,
@@ -135,12 +135,12 @@ class Rex_Feed_Merchants {
             'nextag'                          => array(
                 'free'   => true,
                 'name'   => 'Nextag',
-                'formats' => []
+                'formats' => [ 'xml', 'text' ]
             ),
             'pricegrabber'                    => array(
                 'free'   => true,
-                'name'   => 'Pricegrabber',
-                'formats' => []
+                'name'   => 'PriceGrabber',
+                'formats' => [ 'xml', 'csv', 'tsv' ]
             ),
             'cercavino'                       => array(
                 'free'   => true,
@@ -157,7 +157,7 @@ class Rex_Feed_Merchants {
             'bing_image'                      => array(
                 'free'   => true,
                 'name'   => 'Bing Image',
-                'formats' => [ 'json' ]
+                'formats' => [ 'xml' ]
             ),
             'kelkoo'                          => array(
                 'free'   => true,
@@ -177,22 +177,22 @@ class Rex_Feed_Merchants {
             'shopping'                        => array(
                 'free'   => true,
                 'name'   => 'Shopping',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'tsv', 'text' ]
             ),
             'pricerunner'                     => array(
                 'free'   => true,
                 'name'   => 'PriceRunner',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'billiger'                        => array(
                 'free'   => true,
                 'name'   => 'Billiger',
-                'formats' => []
+                'formats' => [ 'csv', 'text' ]
             ),
             'vergelijk'                       => array(
                 'free'   => true,
                 'name'   => 'Vergelijk',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'marktplaats'                     => array(
                 'free'   => true,
@@ -202,27 +202,27 @@ class Rex_Feed_Merchants {
             'beslist'                         => array(
                 'free'   => true,
                 'name'   => 'Beslist',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'daisycon'                        => array(
                 'free'   => true,
                 'name'   => 'Daisycon',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'twenga'                          => array(
                 'free'   => true,
                 'name'   => 'Twenga',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'kieskeurig'                      => array(
                 'free'   => true,
                 'name'   => 'Kieskeurig.nl',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'spartoo'                         => array(
                 'free'   => true,
                 'name'   => 'Spartoo.nl',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'spartooFr'                       => array(
                 'free'   => true,
@@ -232,22 +232,22 @@ class Rex_Feed_Merchants {
             'tweakers'                        => array(
                 'free'   => true,
                 'name'   => 'Tweakers.nl',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'sooqr'                           => array(
                 'free'   => true,
                 'name'   => 'Sooqr',
-                'formats' => []
+                'formats' => [  'xml', 'csv' ]
             ),
             'koopkeus'                        => array(
                 'free'   => true,
                 'name'   => 'Koopkeus',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'scoupz'                          => array(
                 'free'   => true,
                 'name'   => 'Scoupz',
-                'formats' => []
+                'formats' => [  'xml', 'csv' ]
             ),
             'cdiscount'                       => array(
                 'free'   => true,
@@ -272,7 +272,7 @@ class Rex_Feed_Merchants {
             'pricesearcher'                   => array(
                 'free'   => true,
                 'name'   => 'Pricesearcher',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'pricemasher'                     => array(
                 'free'   => true,
@@ -282,22 +282,22 @@ class Rex_Feed_Merchants {
             'fashionchick'                    => array(
                 'free'   => true,
                 'name'   => 'Fashionchick',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'ceneo'                           => array(
                 'free'   => true,
                 'name'   => 'Ceneo',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'choozen'                         => array(
                 'free'   => true,
                 'name'   => 'Choozen',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'rss'                             => array(
                 'free'   => true,
                 'name'   => 'RSS',
-                'formats' => []
+                'formats' => [ 'rss' ]
             ),
             'ciao'                            => array(
                 'free'   => true,
@@ -307,17 +307,17 @@ class Rex_Feed_Merchants {
             'prisjkat'                        => array(
                 'free'   => true,
                 'name'   => 'Pricespy/Prisjkat',
-                'formats' => []
+                'formats' => [ 'xml', 'tsv' ]
             ),
             'crowdfox'                        => array(
                 'free'   => true,
                 'name'   => 'Crowdfox',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'powerreviews'                    => array(
                 'free'   => true,
                 'name'   => 'PowerReviews',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'trovaprezzi'                     => array(
                 'free'   => true,
@@ -327,7 +327,7 @@ class Rex_Feed_Merchants {
             'zbozi'                           => array(
                 'free'   => true,
                 'name'   => 'Zbozi',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'liveintent'                      => array(
                 'free'   => true,
@@ -337,7 +337,7 @@ class Rex_Feed_Merchants {
             'skroutz'                         => array(
                 'free'   => true,
                 'name'   => 'Skroutz',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'otto'                            => array(
                 'free'   => true,
@@ -347,22 +347,22 @@ class Rex_Feed_Merchants {
             'sears'                           => array(
                 'free'   => true,
                 'name'   => 'Sears',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'ammoseek'                        => array(
                 'free'   => true,
                 'name'   => 'AmmoSeek',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'fnac'                            => array(
                 'free'   => true,
                 'name'   => 'Fnac',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'zalando'                         => array(
                 'free'   => true,
                 'name'   => 'Zalando',
-                'formats' => [ 'json', 'csv' ]
+                'formats' => [ 'csv' ]
             ),
             'zalando_stock_update'            => array(
                 'free'   => true,
@@ -382,7 +382,7 @@ class Rex_Feed_Merchants {
             'shopmania'                       => array(
                 'free'   => true,
                 'name'   => 'ShopMania',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'kleding'                         => array(
                 'free'   => true,
@@ -397,27 +397,27 @@ class Rex_Feed_Merchants {
             'preis'                           => array(
                 'free'   => true,
                 'name'   => 'Preis',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'winesearcher'                    => array(
                 'free'   => true,
                 'name'   => 'Winesearcher',
-                'formats' => []
+                'formats' => [ 'xml', 'text' ]
             ),
             'walmart'                         => array(
                 'free'   => true,
                 'name'   => 'Walmart',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'verizon'                         => array(
                 'free'   => true,
                 'name'   => 'Yahoo/Verizon Dynamic Product Ads',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'kelkoo_group'                    => array(
                 'free'   => true,
                 'name'   => 'Kelkoo Group',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'target'                          => array(
                 'free'   => true,
@@ -427,7 +427,7 @@ class Rex_Feed_Merchants {
             'pepperjam'                       => array(
                 'free'   => true,
                 'name'   => 'Pepperjam',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'cj_affiliate'                    => array(
                 'free'   => true,
@@ -437,7 +437,7 @@ class Rex_Feed_Merchants {
             'guenstiger'                      => array(
                 'free'   => true,
                 'name'   => 'Guenstiger',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'hood'                            => array(
                 'free'   => true,
@@ -482,7 +482,7 @@ class Rex_Feed_Merchants {
             'moebel'                          => array(
                 'free'   => true,
                 'name'   => 'Moebel',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'restposten'                      => array(
                 'free'   => true,
@@ -502,17 +502,17 @@ class Rex_Feed_Merchants {
             'newegg'                          => array(
                 'free'   => true,
                 'name'   => 'NewEgg',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             '123i'                            => array(
                 'free'   => true,
-                'name'   => '123I',
+                'name'   => '123i',
                 'formats' => []
             ),
             'adcrowd'                         => array(
                 'free'   => true,
                 'name'   => 'Adcrowd',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'bikeexchange'                    => array(
                 'free'   => true,
@@ -522,7 +522,7 @@ class Rex_Feed_Merchants {
             'cenowarka'                       => array(
                 'free'   => true,
                 'name'   => 'Cenowarka',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'cezigue'                         => array(
                 'free'   => true,
@@ -552,7 +552,7 @@ class Rex_Feed_Merchants {
             'comparer'                        => array(
                 'free'   => true,
                 'name'   => 'Comparer',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'converto'                        => array(
                 'free'   => true,
@@ -567,7 +567,7 @@ class Rex_Feed_Merchants {
             'commerce_connector'              => array(
                 'free'   => true,
                 'name'   => 'Commerce Connector',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'everysize'                       => array(
                 'free'   => true,
@@ -582,7 +582,7 @@ class Rex_Feed_Merchants {
             'geizhals'                        => array(
                 'free'   => true,
                 'name'   => 'Geizhals',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'geizkragen'                      => array(
                 'free'   => true,
@@ -612,7 +612,7 @@ class Rex_Feed_Merchants {
             'hardware'                        => array(
                 'free'   => true,
                 'name'   => 'Hardware.info',
-                'formats' => []
+                'formats' => [  'csv' ]
             ),
             'hatch'                           => array(
                 'free'   => true,
@@ -627,7 +627,7 @@ class Rex_Feed_Merchants {
             'fyndiq'                          => array(
                 'free'   => true,
                 'name'   => 'Fyndiq.se',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'fasha'                           => array(
                 'free'   => true,
@@ -662,7 +662,7 @@ class Rex_Feed_Merchants {
             'get_price'                       => array(
                 'free'   => true,
                 'name'   => 'GetPrice.com.au',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'home_tiger'                      => array(
                 'free'   => true,
@@ -682,7 +682,7 @@ class Rex_Feed_Merchants {
             'kiyoh'                           => array(
                 'free'   => true,
                 'name'   => 'Kiyoh',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'kompario'                        => array(
                 'free'   => true,
@@ -697,7 +697,7 @@ class Rex_Feed_Merchants {
             'ledenicheur'                     => array(
                 'free'   => true,
                 'name'   => 'Le Dénicheur',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'les_bonnes_bouilles'             => array(
                 'free'   => true,
@@ -722,7 +722,7 @@ class Rex_Feed_Merchants {
             'google_manufacturer_center'      => array(
                 'free'   => true,
                 'name'   => 'Google Manufacturer Center',
-                'formats' => []
+                'formats' => [ 'xml', 'tsv' ]
             ),
             'google_express'      => array(
                 'free'   => true,
@@ -737,7 +737,7 @@ class Rex_Feed_Merchants {
             'awin'                            => array(
                 'free'   => true,
                 'name'   => 'Awin',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'tsv' ]
             ),
             'indeed'                          => array(
                 'free'   => true,
@@ -777,12 +777,12 @@ class Rex_Feed_Merchants {
             'rakuten_advertising'             => array(
                 'free'   => true,
                 'name'   => 'Rakuten Advertising',
-                'formats' => []
+                'formats' => [ 'csv', 'tsv', 'text' ]
             ),
             'pricefalls'                      => array(
                 'free'   => true,
                 'name'   => 'Pricefalls Feed',
-                'formats' => []
+                'formats' => [ 'csv', 'text' ]
             ),
             'clubic'                          => array(
                 'free'   => true,
@@ -792,7 +792,7 @@ class Rex_Feed_Merchants {
             'criteo'                          => array(
                 'free'   => true,
                 'name'   => 'Criteo',
-                'formats' => [ 'xml' ]
+                'formats' => [ 'xml', 'csv', 'tsv' ]
             ),
             'shopalike'                       => array(
                 'free'   => true,
@@ -812,7 +812,7 @@ class Rex_Feed_Merchants {
             'admitad'                         => array(
                 'free'   => true,
                 'name'   => 'Admitad',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'bloomville'                      => array(
                 'free'   => true,
@@ -837,7 +837,7 @@ class Rex_Feed_Merchants {
             'domodi'                          => array(
                 'free'   => true,
                 'name'   => 'Domodi',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'doofinder'                       => array(
                 'free'   => true,
@@ -857,7 +857,7 @@ class Rex_Feed_Merchants {
             'glami'                           => array(
                 'free'   => true,
                 'name'   => 'Glami',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'fashiola'                        => array(
                 'free'   => true,
@@ -877,7 +877,7 @@ class Rex_Feed_Merchants {
             'grupo_zap'                       => array(
                 'free'   => true,
                 'name'   => 'Grupo Zap',
-                'formats' => []
+                'formats' => [ 'xml' ]
             ),
             'emag'                            => array(
                 'free'   => true,
@@ -902,12 +902,12 @@ class Rex_Feed_Merchants {
             'webgains'                        => array(
                 'free'   => true,
                 'name'   => ' Webgains',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'vidaXL'                          => array(
                 'free'   => true,
                 'name'   => 'VidaXL',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'mydeal'                          => array(
                 'free'   => true,
@@ -972,7 +972,7 @@ class Rex_Feed_Merchants {
             'ebay_seller_tickets'             => array(
                 'free'   => true,
                 'name'   => 'eBay Seller Center (Event tickets)',
-                'formats' => []
+                'formats' => [ 'csv' ]
             ),
             'fruugo'                          => array(
                 'free'   => true,
@@ -992,7 +992,12 @@ class Rex_Feed_Merchants {
             'heureka'                         => array(
                 'free'   => true,
                 'name'   => 'Heureka',
-                'formats' => []
+                'formats' => [ 'xml' ]
+            ),
+            'heureka_availability'            => array(
+                'free'   => true,
+                'name'   => 'Heureka (Availability)',
+                'formats' => [ 'xml' ]
             ),
             'wish'                            => array(
                 'free'   => true,
@@ -1042,7 +1047,7 @@ class Rex_Feed_Merchants {
         elseif( isset( $merchants[ 'free_merchants' ][ $merchant ][ 'formats' ] ) && !empty( $merchants[ 'free_merchants' ][ $merchant ][ 'formats' ] ) ) {
             return $merchants[ 'free_merchants' ][ $merchant ][ 'formats' ];
         }
-        return [ 'xml', 'yml', 'csv', 'text', 'tsv', 'json' ];
+        return [ 'xml', 'csv', 'text', 'tsv' ];
     }
 
     /**

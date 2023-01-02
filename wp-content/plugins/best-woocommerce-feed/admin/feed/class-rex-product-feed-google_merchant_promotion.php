@@ -165,7 +165,7 @@ class Rex_Product_Feed_Google_merchant_promotion {
         $feed_configs       = array();
         parse_str( $info, $feed_configs );
         $this->feed_config = isset( $feed_configs['fc'] ) ? $feed_configs['fc'] : array();
-        update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_config );
+        update_post_meta( $this->id, '_rex_feed_feed_config', $this->feed_config );
     }
 
 

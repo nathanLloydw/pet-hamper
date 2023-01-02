@@ -5,12 +5,29 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 
 <div id="rex-feed-product-taxonomies-contents">
 	<div id="rex-feed-product-cats" style="display: none">
-		<label for="<?php echo esc_attr($prefix) . 'cats';?>"><?php esc_html_e('Product Categories', 'rex-product-feed')?>
-			<span class="rex_feed-tooltip">
+        <div class="rex-feed-product-cats">
+            <label for="<?php echo esc_attr($prefix) . 'cats';?>">
+                <?php esc_html_e('Product Categories', 'rex-product-feed')?>
+                <span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php esc_html_e('Product Categories', 'rex-product-feed')?></p>
+                    <p>
+                        <?php esc_html_e('Filter feed by WooCommerce product categories', 'rex-product-feed')?>
+                    </p>
                 </span>
-		</label>
+                <?php
+                $saved_val = get_post_meta( $feed_id, '_rex_feed_cats_check_all_btn', true );
+                $checked = $saved_val ? ' checked' : '';
+                ?>
+                <input id="rex_feed_cats_check_all_btn" name="rex_feed_cats_check_all_btn" type="checkbox" <?php echo $checked?>>
+                <label for="rex_feed_cats_check_all_btn"><?php esc_html_e('Check All', 'rex-product-feed')?></label>
+            </label>
+
+            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-category-filter-generating-product-feed/?utm_source=plugin&utm_medium=category_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
+                <?php esc_html_e('Learn How', 'rex-product-feed')?>
+            </a>
+
+        </div>
+
 		<ul id="<?php echo esc_attr($prefix) . 'cats';?>">
 			<?php
 			$terms      = get_terms( array( 'taxonomy' => 'product_cat' ) );
@@ -28,7 +45,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
                 foreach( $terms as $term ) {
                     $checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
                     echo '<li>';
-                    echo '<input type="checkbox" id="'. esc_attr($prefix) . 'cats' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'cats[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
+                    echo '<input type="checkbox" class="' . esc_attr($prefix) . 'cats' . '" id="'. esc_attr($prefix) . 'cats' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'cats[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
                     echo '<label for="'. esc_attr($prefix) . 'cats' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
                     echo '</li>';
                 }
@@ -37,12 +54,28 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 		</ul>
 	</div>
 	<div id="rex-feed-product-tags" style="display: none">
-		<label for="<?php echo esc_attr($prefix) . 'tags';?>"><?php esc_html_e('Product Tags', 'rex-product-feed')?>
-			<span class="rex_feed-tooltip">
+        <div class="rex-feed-product-tags">
+            <label for="<?php echo esc_attr($prefix) . 'tags';?>"><?php esc_html_e('Product Tags', 'rex-product-feed')?>
+                <span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php esc_html_e('Product Tags', 'rex-product-feed')?></p>
+                    <p>
+                        <?php esc_html_e('Filter feed by WooCommerce tags ', 'rex-product-feed')?>
+                    </p>
                 </span>
-		</label>
+                <?php
+                $saved_val = get_post_meta( $feed_id, '_rex_feed_tags_check_all_btn', true );
+                $checked = $saved_val ? ' checked' : '';
+                ?>
+                <input id="rex_feed_tags_check_all_btn" name="rex_feed_tags_check_all_btn" type="checkbox" <?php echo $checked?>>
+                <label for="rex_feed_tags_check_all_btn"><?php esc_html_e('Check All', 'rex-product-feed')?></label>
+            </label>
+
+            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-tag-filter-generating-product-feed/?utm_source=plugin&utm_medium=tag_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
+                <?php esc_html_e('Learn How', 'rex-product-feed')?>
+            </a>
+
+        </div>
+
 		<ul id="<?php echo esc_attr($prefix) . 'tags';?>">
 			<?php
 			$terms      = get_terms( array( 'taxonomy' => 'product_tag' ) );
@@ -58,9 +91,9 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
             }
             else {
                 foreach( $terms as $term ) {
-                    $checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
+                    $checked = isset( $term->slug ) && in_array( $term->slug, $post_terms) ? ' checked' : '';
                     echo '<li>';
-                    echo '<input type="checkbox" id="'. esc_attr($prefix) . 'tags' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'tags[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
+                    echo '<input type="checkbox" class="' . esc_attr($prefix) . 'tags' . '" id="'. esc_attr($prefix) . 'tags' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'tags[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
                     echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
                     echo '</li>';
                 }

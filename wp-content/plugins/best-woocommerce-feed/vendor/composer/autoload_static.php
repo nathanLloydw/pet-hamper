@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
+class ComposerStaticInit6e261485aba99505c9db915804651950
 {
     public static $files = array (
         'db1766888a4f96ab813d6f6a38125eb9' => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/functions.php',
@@ -837,6 +837,10 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'RexTheme\\RexFruggoFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/fruugo/Feed.php',
         'RexTheme\\RexFruggoFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/fruugo/Item.php',
         'RexTheme\\RexFruggoFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/fruugo/Node.php',
+        'RexTheme\\RexHeurekaAvailability\\Containers\\RexHeurekaAvailability' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-heureka-availability/Containers/RexHeurekaAvailability.php',
+        'RexTheme\\RexHeurekaAvailability\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-heureka-availability/Feed.php',
+        'RexTheme\\RexHeurekaAvailability\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-heureka-availability/Item.php',
+        'RexTheme\\RexHeurekaAvailability\\Node' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-heureka-availability/Node.php',
         'RexTheme\\RexShoppingBestprice\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-bestprice/Containers/RexShopping.php',
         'RexTheme\\RexShoppingBestprice\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-bestprice/Feed.php',
         'RexTheme\\RexShoppingBestprice\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-bestprice/Item.php',
@@ -929,6 +933,7 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'Rex\\Pinterest\\Node' => __DIR__ . '/../..' . '/admin/feed/pinterest/Node.php',
         'Rex_Feed_Abstract_Template' => __DIR__ . '/../..' . '/admin/feed-templates/abstract-rex-feed-template.php',
         'Rex_Feed_Attributes' => __DIR__ . '/../..' . '/admin/class-rex-feed-attributes.php',
+        'Rex_Feed_Discount_Rules_Asana_Plugins' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-discount-rules-asana-plugins.php',
         'Rex_Feed_Exception' => __DIR__ . '/../..' . '/admin/class-rex-feed-exception.php',
         'Rex_Feed_Merchants' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-merchants.php',
         'Rex_Feed_Rollback' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-rollback.php',
@@ -1035,6 +1040,7 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'Rex_Feed_Template_Hatch' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hatch.php',
         'Rex_Feed_Template_Hertie' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hertie.php',
         'Rex_Feed_Template_Heureka' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-heureka.php',
+        'Rex_Feed_Template_Heureka_availability' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-heureka-availability.php',
         'Rex_Feed_Template_Hintaopas' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hintaopas.php',
         'Rex_Feed_Template_Hintaseuranta' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hintaseuranta.php',
         'Rex_Feed_Template_Hitmeister' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hitmeister.php',
@@ -1174,6 +1180,7 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'Rex_Product_Feed_Grupo_zap' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-grupo_zap.php',
         'Rex_Product_Feed_Gulog_gratis' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-gulog-gratis.php',
         'Rex_Product_Feed_Heureka' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_heureka.php',
+        'Rex_Product_Feed_Heureka_availability' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-heureka-availability.php',
         'Rex_Product_Feed_Hotline' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-hotline.php',
         'Rex_Product_Feed_Ibud' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_ibud.php',
         'Rex_Product_Feed_Idealo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed_idealo.php',
@@ -1191,7 +1198,6 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'Rex_Product_Feed_Sooqr' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-sooqr.php',
         'Rex_Product_Feed_Spartoo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-spartoo.php',
         'Rex_Product_Feed_SpartooFr' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_spartoofr.php',
-        'Rex_Product_Feed_Vergelijk' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-verjelijk.php',
         'Rex_Product_Feed_Vivino' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-vivino.php',
         'Rex_Product_Feed_Wish' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_wish.php',
         'Rex_Product_Feed_Yandex' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-yandex.php',
@@ -1200,7 +1206,7 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
         'Rex_Product_Feed_Zap_co_il' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zap-co-il.php',
         'Rex_Product_Feed_Zbozi' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zbozi.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
-        'Rex_Product_Glami_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/glami/glami-data-retriever.php',
+        'Rex_Product_Glami_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/glami/class-free-glami-data-retriever.php',
         'Rex_Product_Marktplaats_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/marktplaats/marktplaats-data-retriever.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',
         'Rex_Product_Verjelijk_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/vergelijk/class-rex-product-feed-pro-verjelijk-data-retriever.php',
@@ -1215,9 +1221,9 @@ class ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf7f0fc1e17c69b04edebd46a60926ec6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6e261485aba99505c9db915804651950::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6e261485aba99505c9db915804651950::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6e261485aba99505c9db915804651950::$classMap;
 
         }, null, ClassLoader::class);
     }

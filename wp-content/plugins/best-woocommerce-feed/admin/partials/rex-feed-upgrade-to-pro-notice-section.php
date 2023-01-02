@@ -29,7 +29,7 @@ if ( is_array( $active_plugins ) && !in_array('best-woocommerce-feed-pro/rex-pro
 
 
     echo '<div class="features-btn-area">';
-    echo '<a class="btn" target="_blank" href="' . esc_url( 'https://rextheme.com/best-woocommerce-product-feed/#pricing' ) . '">' . esc_html__('Upgrade to Pro', 'rex-product-feed') . '</a>';
+    echo '<a class="btn" target="_blank" href="' . esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' ) . '">' . esc_html__('Upgrade to Pro', 'rex-product-feed') . '</a>';
     echo '</div>';
     echo '</div>';
 

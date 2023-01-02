@@ -159,9 +159,14 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      */
-    protected function init_product_meta_keys(){
-        $this->product_meta_keys  = $this->getFilterAttribute();
-        $this->product_rule_meta_keys  = Rex_Feed_Attributes::get_attributes();
+    protected function init_product_meta_keys() {
+        $this->product_meta_keys   = $this->getFilterAttribute();
+        $product_attributes        = self::get_product_attributes();
+        //$product_custom_attributes = self::get_product_custom_attributes();
+
+        $this->product_meta_keys = array_merge( $this->product_meta_keys, $product_attributes );
+
+        $this->product_rule_meta_keys = Rex_Feed_Attributes::get_attributes();
     }
 
 
@@ -236,19 +241,13 @@ class Rex_Product_Filter {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '', $style = '', $merchant_name = '' ){
+    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '', $style = '' ){
 
         if ( $name === 'if' ) {
             $items = $this->product_meta_keys;
         }
         elseif ( $name === 'rules_if' || $name === 'rules_then' ) {
-            if ( '' !== $merchant_name ) {
-                $feed_template = Rex_Feed_Template_Factory::build( $merchant_name, [] );
-                $items = array_merge( $this->product_rule_meta_keys, $feed_template->getAttributes() );
-            }
-            else {
-                $items = $this->product_rule_meta_keys;
-            }
+            $items = $this->product_rule_meta_keys;
         }
         elseif ( $name === 'rules_replace' ) {
             $items = $this->product_rule_meta_keys;
@@ -586,16 +585,15 @@ class Rex_Product_Filter {
 
 
     public static function createFilterQueryParams($filter_mappings) {
-
         global $wpdb;
-        $prefix = $wpdb->prefix;
-        $filter_args = array();
-        $sql = '';
-        $tax_query = array();
-        $cats_in = array();
-        $cats_not_in = array();
-        $tags_in = array();
-        $tags_not_in = array();
+        $filter_args          = [];
+        $cats_in              = [];
+        $cats_not_in          = [];
+        $tags_in              = [];
+        $tags_not_in          = [];
+        $pr_attributes_in     = [];
+        $pr_attributes_not_in = [];
+
         foreach ($filter_mappings as $key => $filter) {
 
             $if = $filter['if'];
@@ -2554,86 +2552,31 @@ class Rex_Product_Filter {
                 case 'product_cats':
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
-                            $inc_tax_contain_query[] = $value;
                             $cats_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tax_contain_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                         elseif ($condition == 'dn_contain') {
-                            $inc_tax_not_contain_query[] = $value;
                             $cats_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tax_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'equal_to') {
-                            $inc_tax_equal_query[] = $value;
                             $cats_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tax_equal_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                         elseif ($condition == 'nequal_to') {
-                            $inc_tax_not_equal_query[] = $value;
                             $cats_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy' => 'product_cat',
-                                'field' => 'name',
-                                'terms' => $inc_tax_not_equal_query,
-                                'operator' => 'NOT IN',
-                            );*/
                         }
                     }
                     elseif ($then == 'exc') {
                         if($condition == 'contain' ) {
-                            $exc_tax_not_contain_query[] = $value;
                             $cats_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tax_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'dn_contain') {
-                            $exc_tax_contain_query[] = $value;
                             $cats_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tax_contain_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                         elseif ($condition == 'equal_to') {
                             $exc_tax_not_equal_query[] = $value;
                             $cats_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tax_not_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'nequal_to') {
-                            $exc_tax_equal_query[] = $value;
                             $cats_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tax_equal_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                     }
                     break;
@@ -2642,59 +2585,23 @@ class Rex_Product_Filter {
                 case 'product_tags':
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
-                            $inc_tag_contain_query[] = $value;
                             $tags_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tag_contain_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                         elseif ($condition == 'dn_contain') {
-                            $inc_tag_not_contain_query[] = $value;
                             $tags_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tag_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'equal_to') {
-                            $inc_tag_equal_query[] = $value;
                             $tags_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tag_equal_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                         elseif ($condition == 'nequal_to') {
-                            $inc_tag_not_equal_query[] = $value;
                             $tags_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $inc_tag_not_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                     }
                     elseif ($then == 'exc') {
                         if($condition == 'contain' ) {
-                            $exc_tag_not_contain_query[] = $value;
                             $tags_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tag_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'dn_contain') {
-                            $exc_tag_contain_query[] = $value;
                             $tags_in[] = $value;
                             /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
@@ -2704,24 +2611,10 @@ class Rex_Product_Filter {
                             );*/
                         }
                         elseif ($condition == 'equal_to') {
-                            $exc_tag_equal_query[] = $value;
                             $tags_not_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tag_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );*/
                         }
                         elseif ($condition == 'nequal_to') {
-                            $exc_tag_not_equal_query[] = $value;
                             $tags_in[] = $value;
-                            /*$filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $exc_tag_not_equal_query,
-                                'operator'       =>   'IN',
-                            );*/
                         }
                     }
                     break;
@@ -2847,8 +2740,27 @@ class Rex_Product_Filter {
                 default:
                     break;
             }
+            if( preg_match( "/^pa_*/i", $if ) ) {
+                if( $then == 'inc' ) {
+                    if( 'contain' === $condition || 'equal_to' === $condition ) {
+                        $pr_attributes_in[ $if ][] = $value;
+                    }
+                    elseif( 'dn_contain' === $condition || 'nequal_to' === $condition ) {
+                        $pr_attributes_not_in[ $if ][] = $value;
+                    }
+                }
+                elseif( $then == 'exc' ) {
+                    if( 'contain' === $condition || 'equal_to' === $condition ) {
+                        $pr_attributes_not_in[ $if ][] = $value;
+                    }
+                    elseif( 'dn_contain' === $condition || 'nequal_to' === $condition ) {
+                        $pr_attributes_in[ $if ][] = $value;
+                    }
+                }
+            }
         }
-        if ( !empty($cats_in) ) {
+
+        if ( is_array( $cats_in ) && !empty ($cats_in ) ) {
             $filter_args['tax_query'][] = array(
                 'taxonomy'       =>  'product_cat',
                 'field'          =>  'name',
@@ -2856,7 +2768,7 @@ class Rex_Product_Filter {
                 'operator'       =>   'IN',
             );
         }
-        if ( !empty( $cats_not_in ) ) {
+        if ( is_array( $cats_not_in ) && !empty( $cats_not_in ) ) {
             $filter_args['tax_query'][] = array(
                 'taxonomy'       =>  'product_cat',
                 'field'          =>  'name',
@@ -2864,7 +2776,7 @@ class Rex_Product_Filter {
                 'operator'       =>   'NOT IN',
             );
         }
-        if ( !empty( $tags_in ) ) {
+        if ( is_array( $tags_in ) && !empty( $tags_in ) ) {
             $filter_args['tax_query'][] = array(
                 'taxonomy'       =>  'product_tag',
                 'field'          =>  'name',
@@ -2872,7 +2784,7 @@ class Rex_Product_Filter {
                 'operator'       =>   'IN',
             );
         }
-        if ( !empty( $tags_not_in ) ) {
+        if ( is_array( $tags_not_in ) && !empty( $tags_not_in ) ) {
             $filter_args['tax_query'][] = array(
                 'taxonomy'       =>  'product_tag',
                 'field'          =>  'name',
@@ -2880,6 +2792,37 @@ class Rex_Product_Filter {
                 'operator'       =>   'NOT IN',
             );
         }
+        if ( is_array( $pr_attributes_in ) && !empty( $pr_attributes_in ) ) {
+            foreach( $pr_attributes_in as $taxonomy => $attr_in ) {
+                $filter_args[ 'tax_query' ][] = array(
+                    'taxonomy' => $taxonomy,
+                    'field'    => 'slug',
+                    'terms'    => $attr_in,
+                    'operator' => 'IN',
+                );
+                $filter_args[ 'meta_query' ][] = array(
+                    'key'     => 'attribute_' . $taxonomy,
+                    'value'   => $attr_in,
+                    'compare' => 'IN',
+                );
+            }
+        }
+        if( is_array( $pr_attributes_not_in ) && !empty( $pr_attributes_not_in ) ) {
+            foreach( $pr_attributes_not_in as $taxonomy => $attr_not_in ) {
+                $filter_args[ 'tax_query' ][] = array(
+                    'taxonomy' => $taxonomy,
+                    'field'    => 'slug',
+                    'terms'    => $attr_not_in,
+                    'operator' => 'NOT IN',
+                );
+                $filter_args[ 'meta_query' ][] = array(
+                    'key'     => 'attribute_' . $taxonomy,
+                    'value'   => $attr_not_in,
+                    'compare' => 'NOT IN',
+                );
+            }
+        }
+
         return array(
             'args' => $filter_args
         );
@@ -3048,4 +2991,60 @@ class Rex_Product_Filter {
         }
     }
 
+
+    /**
+     * @desc Gets WooCommerce product attributes [Global]
+     * @since 7.2.18
+     * @return array
+     */
+    protected static function get_product_attributes() {
+        $taxonomies = wpfm_get_cached_data( 'product_attributes_custom_filter' );
+        if( !is_array( $taxonomies ) && empty( $taxonomies ) ) {
+            $taxonomies = [];
+            $product_attributes = wc_get_attribute_taxonomies();
+
+            if( is_array( $product_attributes ) && !empty( $product_attributes ) ) {
+                foreach( $product_attributes as $attribute ) {
+                    if( isset( $attribute->attribute_name, $attribute->attribute_label ) && $attribute->attribute_name && $attribute->attribute_label ) {
+                        $taxonomies[ 'Product Attributes' ][ 'pa_' . $attribute->attribute_name ] = $attribute->attribute_label;
+                    }
+                }
+            }
+            wpfm_set_cached_data( 'product_attributes_custom_filter', $taxonomies );
+        }
+        return $taxonomies;
+    }
+
+
+    /**
+     * @desc Gets WooCommerce product custom attributes [Global]
+     * @since 7.2.18
+     * @return array
+     */
+    protected static function get_product_custom_attributes() {
+        $custom_attributes = wpfm_get_cached_data( 'product_custom_attributes_custom_filter' );
+        if( !is_array( $custom_attributes ) && empty( $custom_attributes ) ) {
+            global $wpdb;
+            $sql               = "SELECT `meta_value` FROM {$wpdb->postmeta} WHERE `meta_key` = %s";
+            $sql               = $wpdb->prepare( $sql, '_product_attributes' );
+            $attributes        = $wpdb->get_results( $sql );
+            $custom_attributes = [];
+            if( is_array( $attributes ) && !empty( $attributes ) ) {
+                $attributes = array_column( $attributes, 'meta_value' );
+                foreach( $attributes as $attribute ) {
+                    $attribute = unserialize( $attribute );
+
+                    if( is_array( $attribute ) && !empty( $attribute ) ) {
+                        foreach( $attribute as $key => $value ) {
+                            if( !preg_match( "/^pa_*/i", $key ) ) {
+                                $custom_attributes[ 'Product Custom Attributes' ][ 'pca_' . $key ] = ucwords( str_replace( '-', ' ', $key ) );
+                            }
+                        }
+                    }
+                }
+            }
+            wpfm_set_cached_data( 'product_custom_attributes_custom_filter', $custom_attributes );
+        }
+        return $custom_attributes;
+    }
 }

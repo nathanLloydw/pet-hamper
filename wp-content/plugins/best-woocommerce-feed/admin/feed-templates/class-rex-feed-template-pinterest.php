@@ -172,7 +172,7 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => [ 'remove_tab', 'strip_tags', 'remove_shortcodes' ],
                 'limit'    => 0,
             ),
             array(

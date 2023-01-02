@@ -160,7 +160,6 @@ class Rex_Product_Feed {
         global $rex_product_feed_database_update;
 	    $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
 	    $plugin_admin                     = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
-	    $scheduler                        = new Rex_Feed_Scheduler();
         $ajax                             = new Rex_Product_Feed_Ajax();
 
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -204,6 +203,8 @@ class Rex_Product_Feed {
         $this->loader->add_action('rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update');
         $this->loader->add_action('rex_feed_daily_update', $plugin_admin, 'activate_daily_update');
         $this->loader->add_action('rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update');
+        $this->loader->add_action('rex_feed_schedule_update', $plugin_admin, 'register_single_cron_schedule');
+        $this->loader->add_action('rex_feed_update_wc_abandoned_child', 'Rex_Product_Feed_Ajax', 'rex_feed_update_abandoned_child_list');
 
 	    /**
 	     * Trigger review request on new feed publish
@@ -214,7 +215,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'wp_ajax_nopriv_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
         $this->loader->add_action( 'wp_ajax_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
 
-        $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files', 10, 2 );
+        $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files' );
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $plugin_admin, 'post_rex_feed_rollback' );
 
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
@@ -222,6 +223,10 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_init', $plugin_admin, 'remove_wpfm_logs' );
 
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_xml_error_message' );
+
+        //$this->loader->add_action( 'admin_notices', $plugin_admin, 'render_new_feature_notices' );
+
+        $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $plugin_admin, 'send_merchant_info' );
     }
 
 

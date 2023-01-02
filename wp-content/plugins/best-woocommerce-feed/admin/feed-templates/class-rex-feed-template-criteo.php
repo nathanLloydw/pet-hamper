@@ -150,11 +150,11 @@ class Rex_Feed_Template_Criteo extends Rex_Feed_Abstract_Template {
             array(
                 'attr'     => 'image_link',
                 'type'     => 'meta',
-                'meta_key' => 'link',
+                'meta_key' => 'main_image',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'cdata',
+                'escape'   => 'default',
                 'limit'    => 0,
             ),
             array(

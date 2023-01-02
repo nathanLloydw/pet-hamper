@@ -91,7 +91,6 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
-
         $this->ebaySellerInit($this->config['feed_config']);
 
         // Generate feed for both simple and variable products.
@@ -140,7 +139,9 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = get_post_meta( $this->id, '_rex_feed_total_products', true );
+        $total_products = $total_products ?: get_post_meta( $this->id, 'rex_feed_total_products', true );
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -204,14 +205,17 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
                     $_variation_atts = $variable_product->get_variation_attributes();
                     end($_variation_atts);
                     $_key = key($_variation_atts);
+
                     foreach( $_variation_atts as $attr_name => $attr ){
                         $relationshipDetails .= wc_attribute_label( $attr_name ).'='.implode(';', $attr);
                         if($attr_name !== $_key) $relationshipDetails .= '|';
                     }
+
                     $attributes['Relationship'] = '';
                     $attributes['RelationshipDetails'] = $relationshipDetails;
 
                     $item = RexShoppingCustom::createItem();
+
                     // add all attributes for each product.
                     $variable_common_fields = array(
                         '*Quantity',
@@ -264,6 +268,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
                                 $_key = key($_variation_atts);
 
                                 $item = RexShoppingCustom::createItem();
+
                                 foreach( $_variation_atts as $attr_name => $attr ){
                                     $vrelationshipDetails .= wc_attribute_label( $attr_name ).'='.$attr;
                                     if($attr_name !== $_key) $vrelationshipDetails .= '|';
@@ -312,9 +317,9 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
 
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
         if ( $this->tbatch === $this->batch ) {
-            update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+            update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
         }
     }
 
@@ -362,28 +367,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
      * @return array
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
-
         $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this, $product_meta_keys, $this->ebay_seller_config );
-        return $data->get_all_data();
-
-        $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
-
-        if($include_analytics_params == 'on') {
-            $analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params', true);
-        }else {
-            $analytics_params = null;
-        }
-
-        if ( function_exists('icl_object_id') ) {
-            global $sitepress;
-            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
-            if($wpml) {
-                $sitepress->switch_lang($wpml);
-                $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_config, $product_meta_keys, $this->ebay_seller_config, $analytics_params, $this->append_variation);
-            }
-        }else{
-            $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_config, $product_meta_keys, $analytics_params, $this->ebay_seller_config, $this->append_variation);
-        }
         return $data->get_all_data();
     }
 
@@ -396,7 +380,5 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
         return RexShoppingCustom::asCsv();
     }
 
-    public function footer_replace() {
-
-    }
+    public function footer_replace() {}
 }

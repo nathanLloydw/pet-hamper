@@ -101,7 +101,7 @@ class Rex_Product_Feed_Database_Update extends WP_Background_Process {
         $feed_ids = get_posts($args);
         if($feed_ids) {
             foreach ($feed_ids as $feed_id) {
-                $feed_config = get_post_meta($feed_id, 'rex_feed_feed_config', true);
+                $feed_config = get_post_meta($feed_id, '_rex_feed_feed_config', true) ?: get_post_meta($feed_id, 'rex_feed_feed_config', true);
                 foreach ($feed_config as $key => $config) {
                     if(is_array($config)) {
                         if(array_key_exists('attr', $config)) {
@@ -116,7 +116,7 @@ class Rex_Product_Feed_Database_Update extends WP_Background_Process {
                     }
                     $feed_config[$key] = $config;
                 }
-                update_post_meta($feed_id, 'rex_feed_feed_config', $feed_config);
+                update_post_meta($feed_id, '_rex_feed_feed_config', $feed_config);
             }
         }
 

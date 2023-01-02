@@ -58,8 +58,7 @@ class Rex_Feed_Template_Yandex extends Rex_Feed_Abstract_Template
                 'dimensions' => 'Dimensions',
                 'downloadable' => 'Downloadable',
                 'item_group_id' => 'Group id'
-            )
-
+            ),
         );
     }
 

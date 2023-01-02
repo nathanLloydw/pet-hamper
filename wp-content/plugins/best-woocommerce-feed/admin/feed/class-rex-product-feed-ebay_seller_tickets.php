@@ -72,12 +72,14 @@ class Rex_Product_Feed_Ebay_seller_tickets extends Rex_Product_Feed_Abstract_Gen
 
 
     private function generate_product_feed(){
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -170,9 +172,9 @@ class Rex_Product_Feed_Ebay_seller_tickets extends Rex_Product_Feed_Abstract_Gen
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
 
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 	    }
     }
 
@@ -221,17 +223,17 @@ class Rex_Product_Feed_Ebay_seller_tickets extends Rex_Product_Feed_Abstract_Gen
         return $data->get_all_data();
 
 
-        $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
+        $include_analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params_options', true);
 
         if($include_analytics_params == 'on') {
-            $analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params', true);
+            $analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params', true);
         }else {
             $analytics_params = null;
         }
 
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
-            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            $wpml = get_post_meta($this->id, '_rex_feed_wpml_language', true);
             if($wpml) {
                 $sitepress->switch_lang($wpml);
                 $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_config, $product_meta_keys, $this->ebay_seller_config, $analytics_params, $this->append_variation, 'ebay_seller_tickets');

@@ -848,6 +848,21 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         ),
     );
 
+    public function __construct( $config, $bypass = false, $product_ids = array() ) {
+        parent::__construct( $config, $bypass, $product_ids );
+
+        if( isset( $this->feed_merchants[ 'custom' ] ) ) {
+            if( $this->custom_wrapper ) {
+                $this->feed_merchants[ 'custom' ][ 'item_wrapper' ] = $this->custom_wrapper;
+            }
+            if( $this->custom_items_wrapper ) {
+                $this->feed_merchants[ 'custom' ][ 'items_wrapper' ] = $this->custom_items_wrapper;
+            }
+            if( $this->custom_wrapper_el ) {
+                $this->feed_merchants[ 'custom' ][ 'wrapper_el' ] = $this->custom_wrapper_el;
+            }
+        }
+    }
 
     /**
      * Check if the merchants is valid or not
@@ -937,14 +952,20 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
-        RexShopping::$container = null;
-        RexShopping::init($this->get_wrapper(), $this->get_item_wrapper(), $this->get_namespace(),  $this->get_version(), $this->get_items_wrapper(), $this->get_stand_alone(), $this->get_wrapper_el(), $this->get_namespace_prefix() );
-        RexShopping::title($this->title);
-        RexShopping::link($this->link);
-        RexShopping::description($this->desc);
+        $items_wrapper = $this->get_items_wrapper();
+        $wrapper_el = $this->get_wrapper_el();
+        $item_wrapper = $this->get_item_wrapper();
 
-        if($this->is_datetime()) {
-            RexShopping::datetime(date("Y-m-d h:i:s"));
+        RexShopping::$container = null;
+        RexShopping::init($this->get_wrapper(), $item_wrapper, $this->get_namespace(),  $this->get_version(), $items_wrapper, $this->get_stand_alone(), $wrapper_el, $this->get_namespace_prefix() );
+
+        if( 'include' === $this->custom_xml_header ) {
+            RexShopping::title( $this->title );
+            RexShopping::link( $this->link );
+            RexShopping::description( $this->desc );
+            if( $this->is_datetime() ) {
+                RexShopping::datetime( date( "Y-m-d h:i:s" ) );
+            }
         }
 
         // Generate feed for both simple and variable products.
@@ -971,7 +992,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -1072,9 +1095,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 	    }
     }
 
@@ -1132,10 +1155,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'zbozi' ) {
 			$this->feed = str_replace( '</SHOP>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'skroutz' ) {
-			$this->feed = str_replace( '</products></mywebstore>', '', $this->feed );
-		}
-		else if ( $this->merchant === 'datatrics' || $this->merchant === 'homedeco' || $this->merchant === 'listupp' ) {
+        else if( $this->merchant === 'skroutz' ) {
+            $this->feed = str_replace( '</products></mywebstore>', '', $this->feed );
+        }
+		else if ( $this->merchant === 'datatrics'
+            || $this->merchant === 'homedeco'
+            || $this->merchant === 'listupp'
+            || $this->merchant === 'whiskymarketplace'
+        ) {
 			$this->feed = str_replace( '</items>', '', $this->feed );
 		}
 		else if ( $this->merchant === 'domodi' ) {
@@ -1156,24 +1183,36 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'hertie' ) {
 			$this->feed = str_replace( '</Katalog>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'beslist' || $this->merchant === 'cdiscount'
-		          || $this->merchant === 'kieskeurig' || $this->merchant === 'kauftipp'
-		          || $this->merchant === 'kuantokusta' || $this->merchant === 'kelkoonl'
-		          || $this->merchant === 'mydeal' || $this->merchant === 'prisjkat'
-		          || $this->merchant === 'pricefalls' || $this->merchant === 'pricerunner'
-		          || $this->merchant === 'nextag' || $this->merchant === 'rakuten_advertising'
-		          || $this->merchant === 'shopee' || $this->merchant === 'vidaXL'
-		          || $this->merchant === 'rss' || $this->merchant === 'pricegrabber'
-		          || $this->merchant === 'google_dsa' || $this->merchant === 'google_Ad'
-		          || $this->merchant === 'shopmania' || $this->merchant === 'favi'
-		          || $this->merchant === 'custom' || $this->merchant === 'deltaprojects'
-		          || $this->merchant === 'kelkoo' || $this->merchant === 'billiger'
-		          || $this->merchant === 'bonanza' || $this->merchant === 'become'
-		          || $this->merchant === 'adroll' || $this->merchant === 'awin'
-		          || $this->merchant === 'leguide'
-		) {
-			$this->feed = str_replace( '</products>', '', $this->feed );
-		}
+        else if(
+            $this->merchant === 'beslist' || $this->merchant === 'cdiscount'
+            || $this->merchant === 'kieskeurig' || $this->merchant === 'kauftipp'
+            || $this->merchant === 'kuantokusta' || $this->merchant === 'kelkoonl'
+            || $this->merchant === 'mydeal' || $this->merchant === 'prisjkat'
+            || $this->merchant === 'pricefalls' || $this->merchant === 'pricerunner'
+            || $this->merchant === 'nextag' || $this->merchant === 'rakuten_advertising'
+            || $this->merchant === 'shopee' || $this->merchant === 'vidaXL'
+            || $this->merchant === 'rss' || $this->merchant === 'pricegrabber'
+            || $this->merchant === 'google_dsa' || $this->merchant === 'google_Ad'
+            || $this->merchant === 'shopmania' || $this->merchant === 'favi'
+            || $this->merchant === 'deltaprojects'
+            || $this->merchant === 'kelkoo' || $this->merchant === 'billiger'
+            || $this->merchant === 'bonanza' || $this->merchant === 'become'
+            || $this->merchant === 'adroll' || $this->merchant === 'awin'
+            || $this->merchant === 'leguide' || $this->merchant === 'vergelijk'
+            || $this->merchant === 'twenga' || $this->merchant === 'tweakers'
+            || $this->merchant === 'koopkeus' || $this->merchant === 'scoupz'
+            || $this->merchant === 'uvinum' || $this->merchant === 'pricesearcher'
+            || $this->merchant === 'pricemasher' || $this->merchant === 'fashionchick'
+            || $this->merchant === 'choozen' || $this->merchant === 'powerreviews'
+            || $this->merchant === 'otto' || $this->merchant === 'sears'
+            || $this->merchant === 'ammoseek' || $this->merchant === 'fnac'
+            || $this->merchant === 'pixmania' || $this->merchant === 'coolblue'
+            || $this->merchant === 'verizon' || $this->merchant === 'kelkoo_group'
+            || $this->merchant === 'target' || $this->merchant === 'pepperjam'
+            || $this->merchant === 'cj_affiliate'
+        ) {
+            $this->feed = str_replace( '</products>', '', $this->feed );
+        }
 		else if ( $this->merchant === '123i' ) {
 			$this->feed = str_replace( '</Imoveis></Carga>', '', $this->feed );
 		}
@@ -1189,12 +1228,13 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'bloomville' ) {
 			$this->feed = str_replace( '</CourseTemplates>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'drm' || $this->merchant === 'job_board_io'
-		          || $this->merchant === 'ladenzeile' || $this->merchant === 'shopalike'
-		          || $this->merchant === 'whiskymarketplace'
-		) {
-			$this->feed = str_replace( '</items>', '', $this->feed );
-		}
+        else if(
+            $this->merchant === 'drm' || $this->merchant === 'job_board_io'
+            || $this->merchant === 'ladenzeile' || $this->merchant === 'shopalike'
+            || $this->merchant === 'whiskymarketplace'
+        ) {
+            $this->feed = str_replace( '</items>', '', $this->feed );
+        }
 		else if ( $this->merchant === 'domodi' ) {
 			$this->feed = str_replace( '</SHOPITEM>', '', $this->feed );
 		}
@@ -1213,17 +1253,21 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'kleding' || $this->merchant === 'winesearcher' ) {
 			$this->feed = str_replace( '</items>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'skroutz' ) {
-			$this->feed = str_replace( '</product>', '', $this->feed );
-		}
 		else if ( $this->merchant === 'vivino' ) {
 			$this->feed = str_replace( '</vivino-product-list>', '', $this->feed );
 		}
 		else if ( $this->merchant === 'gulog_gratis' ) {
 			$this->feed = str_replace( '</ads>', '', $this->feed );
 		}
+		else if ( $this->merchant === 'custom' ) {
+            $search = '</' . $this->get_items_wrapper() . '>';
+            if( $this->custom_wrapper_el ) {
+                $search = '</' . $this->get_wrapper_el() . '>' . $search;
+            }
+			$this->feed = str_replace( $search, '', $this->feed );
+		}
 		else {
-			$this->feed = str_replace( '</channel></rss>', '', $this->feed );
+			$this->feed = str_replace( '</products>', '', $this->feed );
 		}
 	}
 }

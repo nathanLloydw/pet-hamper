@@ -152,9 +152,9 @@ class Rex_Product_Feed_Pinterest extends Rex_Product_Feed_Abstract_Generator {
 			'group' => (int) $total_products['group'] + (int) count($group_products),
 		);
 
-		update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+		update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 		if ( $this->tbatch === $this->batch ) {
-			update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+			update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 		}
 	}
 

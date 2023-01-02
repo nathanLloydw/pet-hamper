@@ -20,9 +20,15 @@ class Rex_Product_Metabox
 	 */
 	public function register()
 	{
+        $data      = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data      = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+        $post_id   = isset( $data[ 'post' ] ) ? sanitize_text_field( $data[ 'post' ] ) : '';
+        $post_type = $post_id !== '' ? get_post_type( $post_id ) : '';
+
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_filter_settings_section' ) );
 
-        if ( $this->rex_feed_is_google_merchant() ) {
+        $feed_url = get_post_meta( $post_id, '_rex_feed_xml_file', true ) || get_post_meta( $post_id, 'rex_feed_xml_file', true );
+        if ( $this->rex_feed_is_google_merchant() && $feed_url ) {
             add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
         }
 
@@ -30,26 +36,11 @@ class Rex_Product_Metabox
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_settings_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_filters_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_file_section' ) );
-        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
-        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
-
-		$post_id   = isset( $data[ 'post' ] ) ? sanitize_text_field($data[ 'post' ]) : '';
-		$post_type = $post_id !== '' ? get_post_type( $post_id ) : '';
 
 		if ( $post_type === 'product-feed' ) {
 			$this->rex_feed_trigger_based_review_helper();
         }
 
-        /*if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
-            $post_type = sanitize_text_field($data[ 'post_type' ]);
-        }
-        if ( $post_type === 'product-feed' ) {
-            $this->rex_feed_new_changes_message();
-        }*/
-
-		if ( $this->rex_feed_is_google_merchant() ) {
-			add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
-		}
         add_action('add_meta_boxes', array($this, 'rex_feed_upgrade_notice_section'));
         add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_how_to_guide_section' ) );
 	}
@@ -63,7 +54,7 @@ class Rex_Product_Metabox
         $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
         $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
 		$feed_id = isset( $data['post'] ) ? sanitize_text_field($data['post']) : '';
-		$merchant = get_post_meta( $feed_id, 'rex_feed_merchant', true );
+		$merchant = get_post_meta( $feed_id, '_rex_feed_merchant', true ) ?: get_post_meta( $feed_id, 'rex_feed_merchant', true );
 		return 'google' === $merchant;
 	}
 
@@ -133,12 +124,35 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_generate_merchant_dropdown_section()
 	{
-		$saved_merchant   = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
-		$file_format      = get_post_meta( get_the_ID(), 'rex_feed_feed_format', true );
+		$saved_merchant   = get_post_meta( get_the_ID(), '_rex_feed_merchant', true ) ?: get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
+		$file_format      = get_post_meta( get_the_ID(), '_rex_feed_feed_format', true ) ?: get_post_meta( get_the_ID(), 'rex_feed_feed_format', true );
 
 		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-merchant-dropdown-section.php';
 
-		if ( wpfm_pro_compatibility() ) {
+        $countries = array(
+            'AT' => 'Austria',
+            'AU' => 'Australia',
+            'CH' => 'Switzerland',
+            'DE' => 'Germany',
+            'CA' => 'Canada',
+            'ES' => 'Spain',
+            'FR' => 'France',
+            'BE' => 'Belgium',
+            'GB' => 'UK',
+            'HK' => 'Hong Kong',
+            'IE' => 'Ireland',
+            'IN' => 'India',
+            'IT' => 'Italy',
+            'MY' => 'Malaysia',
+            'NL' => 'Netherlands',
+            'PH' => 'Philippines',
+            'PL' => 'Poland',
+            'SG' => 'Singapore',
+            'US' => 'United States',
+        );
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-ebay-seller-sections.php';
+
+        if ( wpfm_pro_compatibility() ) {
 			do_action( 'wpfm_merchant_settings_fields', $this->prefix );
         }
 	}
@@ -219,10 +233,12 @@ class Rex_Product_Metabox
 			$options = apply_filters( 'wpfm_product_filter_options', $options );
 		}
 
-		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-filter-header-section.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-filter-header-section.php';
         // rex-contnet-filter__header end
 
-		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
+
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-description-body.php';
 
         $this->rex_feed_custom_filter_section();
 
@@ -240,7 +256,7 @@ class Rex_Product_Metabox
 	 **/
 	public function rex_feed_custom_filter_section()
 	{
-		$feed_filter_rules = get_post_meta( get_the_ID(), $this->prefix . 'feed_config_filter', true );
+		$feed_filter_rules = get_post_meta( get_the_ID(), '_' . $this->prefix . 'feed_config_filter', true ) ?: get_post_meta( get_the_ID(), $this->prefix . 'feed_config_filter', true );
 		$feed_filter       = new Rex_Product_Filter( $feed_filter_rules );
 		?>
         <div id="rex-feed-config-filter" class="rex-feed-config-filter">
@@ -251,6 +267,7 @@ class Rex_Product_Metabox
 				<?php echo esc_attr__( 'Add New Filter', 'rex-product-feed' ) ?>
             </a>
         </div>
+
 		<?php
 	}
 
@@ -263,6 +280,9 @@ class Rex_Product_Metabox
 //		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . esc_url( WPFM_PLUGIN_ASSETS_FOLDER ) . 'icon/loader.gif" alt="spinner" /></div>';
         require plugin_dir_path(__FILE__) . 'partials/loading-spinner.php';
         echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
+				echo '<div class="fil">';
+						
+				echo '</div>';
 		echo '</div>';
 	}
 
@@ -272,7 +292,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_feed_file_section()
 	{
-		$feed_url = get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
+		$feed_url = get_post_meta( get_the_ID(), '_' . $this->prefix . 'xml_file', true ) ?: get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
 
 		if ( strlen( $feed_url ) > 0 ) {
 			add_meta_box(
@@ -289,7 +309,8 @@ class Rex_Product_Metabox
 
 	/**
 	 * Adding metaboxes for How To Guide Section
-	 */
+	*/
+
 	public function rex_feed_feed_how_to_guide_section()
 	{
         add_meta_box(
@@ -308,7 +329,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_generate_feed_file_section()
 	{
-		$feed_url = get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
+		$feed_url = get_post_meta( get_the_ID(), '_' . $this->prefix . 'xml_file', true ) ?: get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
 		$feed_url = esc_url( $feed_url );
 
         require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-feed-file-section-content.php';
@@ -384,7 +405,6 @@ class Rex_Product_Metabox
 		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-new-changes-message-body-content.php';
 	}
 
-
 	/**
 	 * Adding metaboxe for google merchant section
 	 */
@@ -398,7 +418,6 @@ class Rex_Product_Metabox
 			'core'
 		);
 	}
-
 
 	/**
 	 * Generates google merchant section
@@ -432,10 +451,6 @@ class Rex_Product_Metabox
 	}
 
 
-
-	
-
-
 	/**
 	 * Adding metaboxe for upgrade notice for pro section
 	 */
@@ -450,7 +465,6 @@ class Rex_Product_Metabox
 			'core'
 		);
 	}
-
 
 	/**
 	 * Generates upgrade notice for pro section

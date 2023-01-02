@@ -58,7 +58,7 @@ class Rex_Product_Feed_Deactivator {
 
         $feeds = get_posts($args);
         foreach($feeds as $feedID) {
-            update_post_meta($feedID, 'rex_feed_status', 'completed');
+            update_post_meta($feedID, '_rex_feed_status', 'completed');
         }
 
         /**

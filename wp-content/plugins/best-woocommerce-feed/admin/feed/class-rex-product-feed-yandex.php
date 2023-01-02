@@ -25,11 +25,10 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
         RexShopping::$container = null;
-        RexShopping::init(true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'shop');
-        RexShopping::title($this->title);
-        RexShopping::company(get_option('blogname'));
-        RexShopping::link($this->link);
-        RexShopping::description($this->desc);
+        RexShopping::init( true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'shop' );
+        RexShopping::title( get_option( 'blogname' ) );
+        RexShopping::company( $this->yandex_company_name ?: get_option( 'blogname' ) );
+        RexShopping::link( $this->link );
 
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
@@ -46,13 +45,21 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
+    /**
+     * @desc Process product meta data
+     * @since 7.2.21
+     * @return void
+     * @throws Exception
+     */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -149,9 +156,9 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
 
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 	    }
     }
 
@@ -166,10 +173,26 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
 
-        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+        if( ( $this->rex_feed_skip_product && is_array( $attributes ) && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = RexShopping::createItem();
 
             foreach ($attributes as $key => $value) {
+                if( 'picture' === $key ) {
+                    $value = array_slice( $value, 0, 10 );
+                }
+                elseif( 'oldprice' === $key ) {
+                    $regular_price = 0;
+                    if( isset( $attributes[ 'woo_discount_rules_price' ] ) ) {
+                        $regular_price = $attributes[ 'woo_discount_rules_price' ];
+                    }
+                    elseif( isset( $attributes[ 'price' ] ) ) {
+                        $regular_price = $attributes[ 'price' ];
+                    }
+
+                    if( !$this->yandex_old_price && $regular_price && $regular_price >= $value ) {
+                        continue;
+                    }
+                }
                 if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
                     if ( $value != '' ) {
                         $item->$key($value); // invoke $key as method of $item object.
@@ -226,17 +249,17 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
         $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         return $data->get_all_data();
 
-        $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
+        $include_analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params_options', true);
 
         if($include_analytics_params == 'on') {
-            $analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params', true);
+            $analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params', true);
         }else {
             $analytics_params = null;
         }
 
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
-            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            $wpml = get_post_meta($this->id, '_rex_feed_wpml_language', true) ?: $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
                 $data = new Rex_Yandex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params);

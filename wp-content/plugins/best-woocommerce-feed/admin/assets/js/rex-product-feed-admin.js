@@ -1,10 +1,11 @@
 (function ( $ ) {
     'use strict';
-   
+
     var progressWidth = 0;
     var deferred = $.Deferred();
     var promise = deferred.promise();
-    var config_btn = rex_wpfm_admin_translate_strings.google_cat_map_btn;
+    let config_btn = rex_wpfm_admin_translate_strings.google_cat_map_btn;
+    let optimize_pr_title_btn = rex_wpfm_admin_translate_strings.optimize_pr_title_btn;
 
     $( function () {
         $( ".meter > span" ).each( function () {
@@ -71,6 +72,8 @@
         $( '#rex-bottom-publish-btn' ).text( publish_btn_txt );
 
         rex_feed_hide_all_admin_notices();
+
+        rex_feed_delete_publish_btn_id();
     } );
 
     /**
@@ -103,6 +106,8 @@
         $( 'select#sanitize-dropdown-' + rowId ).select2({
             closeOnSelect: false,
         });
+
+        $( 'select[name="fc[' + rowId + '][meta_key]"]' ).select2();
     } );
 
     /**
@@ -179,6 +184,8 @@
         $( 'select#sanitize-dropdown-' + rowId ).select2({
             closeOnSelect: false,
         });
+
+        $( 'select[name="fc[' + rowId + '][meta_key]"]' ).select2();
     } );
 
     /**
@@ -247,7 +254,13 @@
 
     $( document ).on( "click", "#wpfm-log-copy", wpfm_copy_log );
 
-    $( document ).on( 'click', '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn', get_product_number );
+    $( document ).on( 'click', '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn', rex_feed_is_google_attribute_missing );
+
+    $( document ).on( 'click', 'a#rex_google_missing_attr_okay_btn', get_product_number );
+
+    $( document ).on( 'click', 'a#rex_google_missing_attr_cancel_btn, #rex_google_missing_attr_cross_btn', function () {
+        $( 'section#rex_feed_google_req_attr_warning_popup' ).hide();
+    } );
 
     $( document ).on( 'click', '#send-to-google', send_to_google );
 
@@ -256,6 +269,8 @@
     $( document ).on( "click", "#wpfm-purge-cache", purge_transient_cache );
 
     $( document ).on( "click", "#btn_on_feed", purge_transient_cache_on_feed );
+
+    $( document ).on( "click", "#rex_feed_abandoned_child_list_update_button", rex_feed_update_abandoned_child_list );
 
     // Trigger Based Review Request
     $( document ).on( 'click', '#rex_rate_now, #rex_rate_not_now, #rex_rated_already', function ( e ) {
@@ -283,7 +298,7 @@
 
         wpAjaxHelperRequest( 'trigger-review-request', payload )
             .success( function ( response ) {
-                $( '#rex_feed_review_request_body_content' ).fadeOut();
+                $( '.rex-feed-review' ).fadeOut();
                 console.log( 'Woohoo! Awesome!!' );
             } )
             .error( function ( response ) {
@@ -381,6 +396,32 @@
         rex_feed_ebay_seller_fields();
     } );
 
+    $( document ).on( 'change', '#rex_feed_merchant', function () {
+        let feed_merchant = $( this ).find( ':selected' ).val();
+
+        if ( feed_merchant === 'custom' ) {
+            if ( 'xml' === $( '#rex_feed_feed_format' ).find( ':selected' ).val() ) {
+                $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeIn();
+            }
+        }
+        else {
+            $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeOut();
+        }
+    } );
+
+    // Event listener on feed merchant option change
+    // to hide/show yandex old price dropdown field
+    $( document ).on( 'change', '#rex_feed_merchant', function () {
+        let feed_merchant = $( this ).find( ':selected' ).val();
+
+        if ( 'yandex' === feed_merchant ) {
+            $( '.rex_feed_yandex_old_price, .rex_feed_yandex_company_name' ).fadeIn();
+        }
+        else {
+            $( '.rex_feed_yandex_old_price, .rex_feed_yandex_company_name' ).fadeOut();
+        }
+    } );
+
     /**
      * Event listener for Google schedule change change functionality.
      */
@@ -406,17 +447,27 @@
      * Event listener for Feed format change for CSV functionality.
      */
     $( document ).on( 'change', '#rex_feed_feed_format', function () {
-        var feed_format = $( this ).find( ':selected' ).val();
+        let feed_format = $( this ).find( ':selected' ).val();
 
         if ( feed_format === 'csv' ) {
             $( '.rex-feed-feed-separator' ).show();
         } else {
             $( '.rex-feed-feed-separator' ).hide();
         }
-
     } );
 
-    // $( document ).on( 'change', '.merchant-change', product_feed_change_merchant_status );
+    $( document ).on( 'change', '#rex_feed_feed_format', function () {
+        let feed_format = $( this ).find( ':selected' ).val();
+
+        if ( feed_format === 'xml' ) {
+            if ( 'custom' === $( '#rex_feed_merchant' ).find( ':selected' ).val() ) {
+                $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeIn();
+            }
+        }
+        else {
+            $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeOut();
+        }
+    } );
 
     $( document ).on( 'change', '#wpfm_fb_pixel', enable_fb_pixel );
 
@@ -428,11 +479,17 @@
 
     $( document ).on( 'change', 'input[name="rex_feed_schedule"]', rex_feed_manage_custom_cron_schedule_fields );
 
-    $( document ).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
+    $( document ).on( 'change', '.attr-val-dropdown', render_custom_buttons_on_change );
 
     $( document ).on( 'change', 'select#wpfm_rollback_options', rex_feed_process_rollback_button ).trigger('change');
 
+    $( document ).on( 'change', 'input#wpfm_hide_char', rex_feed_save_character_limit_option );
+
     $( document ).on( 'change', 'select.sanitize-dropdown', rex_feed_update_multiple_filter_counter );
+
+    $( document ).on( 'change', '#rex_feed_cats_check_all_btn, #rex_feed_tags_check_all_btn', rex_feed_check_uncheck_all_tax );
+
+    $( document ).on( 'change', 'select.attr-dropdown, select.attr-val-dropdown', rex_feed_auto_select_google_shipping_tax );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -579,22 +636,20 @@
                     $( '#rex_feed_conf .rex-feed-config-heading' ).css( 'display', 'block' );
                     $( '#rex-new-attr, #rex-new-custom-attr' ).css( 'display', 'inline-block' );
 
+                    rex_feed_hide_char_limit_col();
                     dynamic_pricing( event );
-
-                    category_mapping_button( event );
-
+                    render_custom_buttons( event );
                     rex_feed_hide_separators_group( event );
-
                     $( '.sanitize-dropdown' ).select2({
                         closeOnSelect: false,
                     });
-
+                    $( '.select2-attr-dropdown' ).select2();
                     rex_feed_render_multiple_filter_counter();
                 } )
                 .fail( function ( response ) {
                     $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
                     console.log( 'Uh, oh! Merchant change returned error!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
         else {
@@ -609,7 +664,6 @@
         }
 
         $( '#rex-feed-product-taxonomies' ).hide();
-        // $( '#rex-feed-config-filter' ).hide();
         $( '.rex-feed-tags-wrapper' ).hide();
         $( '.rex-feed-product-filter-ids__area' ).hide();
         $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeIn();
@@ -620,30 +674,39 @@
                     if ( response.success ) {
                         var selected = $( '#rex_feed_products' ).find( ':selected' ).val();
 
-                        if ( selected === 'all' || selected === 'featured' ) {
+                        if ( 'all' === selected || 'featured' === selected ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
-                            // $( '#rex-feed-config-filter' ).hide();
                             $( '.rex-feed-tags-wrapper' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
+                            if ( 'all' === selected ) {
+                                $( 'div#rex-feed-featured-product' ).hide();
+                                $( 'div#rex-feed-published-product' ).show();
+                            }
+                            else {
+                                $( 'div#rex-feed-published-product' ).hide();
+                                $( 'div#rex-feed-featured-product' ).show();
+                            }
                         }
                         else if ( selected === 'filter' ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            // $( '#rex-feed-config-filter' ).show();
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '#rex-feed-config-rules' ).show();
                         }
                         else if ( selected === 'product_cat' || selected === 'product_tag' ) {
-                            var tax_contents = $( '#rex-feed-product-taxonomies-contents' );
+                            let tax_contents = $( '#rex-feed-product-taxonomies-contents' );
                             if ( tax_contents.length === 0 ) {
                                 $( '#rex-feed-product-taxonomies' ).append( response.html_content );
                             }
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            // $( '#rex-feed-config-filter' ).hide();
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '#rex-feed-product-taxonomies' ).show();
                             if ( selected === 'product_cat' ) {
                                 $( '#rex-feed-product-tags' ).hide();
@@ -655,14 +718,12 @@
                         }
                         else if ( selected === 'product_filter' ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
-                            // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
-                            $( '.select2-search__field' ).removeAttr('style')
+                            $( '.select2-search__field' ).removeAttr('style');
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).show();
-
-                            /*var excluede_variable = $('#rex_feed_variable_product1').attr('checked');
-                            console.log(excluede_variable);*/
                         }
 
                         $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeOut();
@@ -674,12 +735,11 @@
 
                 $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                 $( '#rex-feed-product-taxonomies' ).hide();
-                // $( '#rex-feed-config-filter' ).hide();
                 $( '.rex-feed-tags-wrapper' ).hide();
                 $( '.rex-feed-product-filter-ids__area' ).hide();
 
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -731,38 +791,67 @@
      * Category mapping button
      * @param event
      */
-    function category_mapping_button( event ) {
-        var rows = $('.attr-dropdown').length - 1;
-        for ( var rowId = 0; rowId <= rows; rowId++ ) {
-            var opt_group_label = $( 'select[name="fc[' + rowId + '][meta_key]"] :selected' ).parent().attr('label');
-            var meta_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+    function render_custom_buttons( event ) {
+        let attr_tr = $( 'div#rex_feed_config_heading' ).children( 'div.inside' ).children( 'table#config-table' ).children( 'tbody' ).children( 'tr' );
 
-            if ( 'Category Map' === opt_group_label ) {
-                var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
-                $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+        attr_tr.each( function ( index, _element ) {
+            if ( index ) {
+                let row_id = $( this ).attr( 'data-row-id' );
+                let opt_group_label = $( 'select[name="fc[' + row_id + '][meta_key]"] :selected' ).parent().attr('label');
+                let meta_val = $( 'select[name="fc[' + row_id + '][meta_key]"]' ).val();
+
+                if ( 'Category Map' === opt_group_label ) {
+                    let url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
+                    $('select[name="fc[' + row_id + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+row_id+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                }
+
+                if ( 'title' === meta_val ) {
+                    let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=plugin&utm_medium=combined_attributes_link&utm_campaign=pfm_plugin\n';
+                    $('select[name="fc[' + row_id + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + row_id + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+                }
             }
-        }
+        } );
         // Google category mapping button ENDS
     }
 
-    function category_mapping_button_on_change() {
-        var rowId = $(this).parent().parent().parent().attr('data-row-id');
-        var selected_val = $( this ).val();
-        var opt_group_label = $("option:selected", this).parent().attr( 'label' );
+
+    /**
+     * @desc Render custom button on attribute value change
+     * @since 7.2.19
+     */
+    function render_custom_buttons_on_change() {
+        let rowId = $(this).parent().parent().parent().attr('data-row-id');
+        let selected_val = $( this ).val();
+        let opt_group_label = $("option:selected", this).parent().attr( 'label' );
 
         if ( 'Category Map' === opt_group_label ) {
-            var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
+            let url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
 
             if ( $( '#rex_cat_map_' + rowId ).length === 0 ) {
                 $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
             else {
-                $( '#rex_cat_map_'+rowId ).remove();
+                $( '#rex_cat_map_' + rowId ).remove();
                 $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
         }
         else {
-            $( '#rex_cat_map_'+rowId ).remove();
+            $( '#rex_cat_map_' + rowId ).remove();
+        }
+
+        if ( 'title' === selected_val ) {
+            let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=plugin&utm_medium=combined_attributes_link&utm_campaign=pfm_plugin\n';
+
+            if ( $( '#rex_opt_title_btn_' + rowId ).length === 0 ) {
+                $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + rowId + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+            }
+            else {
+                $( '#rex_opt_title_btn_' + rowId ).remove();
+                $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + rowId + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+            }
+        }
+        else {
+            $( '#rex_opt_title_btn_'+rowId ).remove();
         }
     }
 
@@ -793,76 +882,117 @@
     }
 
     /**
+     * @desc Check if any required attribute(s) is/are missing
+     * @since 7.2.19
+     * @param event
+     */
+    function rex_feed_is_google_attribute_missing( event ) {
+        let is_trusted_event = true;
+        let is_attr_missing;
+
+        try {
+            is_trusted_event = event.originalEvent.isTrusted;
+        }
+        catch (e) {
+            is_trusted_event = false;
+            is_attr_missing = true;
+        }
+
+        if ( is_trusted_event ) {
+            event.preventDefault();
+            is_attr_missing = rex_feed_render_missing_attr_popup();
+            if ( 'rex-bottom-preview-btn' === $(this).attr('id') ) {
+                $( '#rex_google_missing_attr_okay_btn' ).addClass( 'bottom-preview-btn' )
+            }
+        }
+
+        if ( !is_attr_missing ) {
+            get_product_number( $( this ) );
+        }
+    }
+
+    /**
      * Start the feed processing
      * @param event
      */
-    function get_product_number( event ) {
-        event.preventDefault();
+    function get_product_number( $this ) {
+        $( 'section#rex_feed_google_req_attr_warning_popup' ).hide();
+        let merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+        let feed_title = $( '.post-type-product-feed input#title' ).val();
+        let submit_button = '';
+        let is_preview = '';
+        
+        try {
+            submit_button = $this.attr( 'id' );
+            is_preview = $this.hasClass( 'bottom-preview-btn' );
+        }
+        catch (e) {
+            submit_button = $( this ).attr( 'id' );
+            is_preview = $( this ).hasClass( 'bottom-preview-btn' );
+        }
+        
+        if ( '-1' === merchant_name ) {
+            alert( 'Please choose a merchant!' );
+            return;
+        }
 
-        if ( rex_feed_is_req_attr_missing() ) {
-            let merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
-            let is_preview = $( this ).hasClass( 'bottom-preview-btn' );
-            let feed_title = $( '.post-type-product-feed input#title' ).val();
+        if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
+            $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
+        }
 
-            if ( '-1' === merchant_name ) {
-                alert( 'Please choose a merchant!' );
-                return;
-            }
+        $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
 
-            if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
-                $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
-            }
+        if ( is_preview && ( 'rex_google_missing_attr_okay_btn' === submit_button ) ) {
+            submit_button = 'rex-bottom-preview-btn';
+        }
 
-            $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
+        let $payload = {
+            feed_id: rex_wpfm_ajax.feed_id,
+            feed_config: $( 'form' ).serialize(),
+            button_id: submit_button,
+            feed_title: feed_title
+        };
 
-            let $payload = {
-                feed_id: rex_wpfm_ajax.feed_id,
-                feed_config: $( 'form' ).serialize(),
-                button_id: $( this ).attr( 'id' ),
-                feed_title: feed_title
-            };
+        wpAjaxHelperRequest( 'my-handle', $payload )
+            .done( function ( response ) {
+                if ( 'duplicate' === response.feed_title ) {
+                    $( '.post-type-product-feed input#title' ).css( 'border', '1px solid red' );
+                    alert( 'Please set an unique feed title!' );
+                }
+                else {
+                    $( '#publishing-action span.spinner' ).addClass( 'is-active' );
+                    $( '.post-type-product-feed input#publish' ).addClass( 'disabled' );
 
-            wpAjaxHelperRequest( 'my-handle', $payload )
-                .done( function ( response ) {
-                    if ( 'duplicate' === response.feed_title ) {
-                        $( '.post-type-product-feed input#title' ).css( 'border', '1px solid red' );
-                        alert( 'Please set an unique feed title!' );
+                    $( '.rex-feed-publish-btn span.spinner' ).addClass( 'is-active' );
+
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'cursor', 'not-allowed' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'background-color', '#f6f7f7' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'border', '1px solid #e9e9ea' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'color', '#a7aaad' );
+
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
+                    $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
+                    $( '.progress-msg span' ).html( 'Calculating products.....' );
+
+                    $( '.post-type-product-feed input#title' ).css( 'border', 'unset' );
+
+                    let per_batch = 0;
+                    if ( is_preview ) {
+                        per_batch = 10;
+                        generate_feed( response.products, 0, 1, per_batch, 1 );
                     }
                     else {
-                        $( '#publishing-action span.spinner' ).addClass( 'is-active' );
-                        $( '.post-type-product-feed input#publish' ).addClass( 'disabled' );
-
-                        $( '.rex-feed-publish-btn span.spinner' ).addClass( 'is-active' );
-
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'cursor', 'not-allowed' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'background-color', '#f6f7f7' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'border', '1px solid #e9e9ea' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'color', '#a7aaad' );
-
-                        $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
-                        $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
-                        $( '.progress-msg span' ).html( 'Calculating products.....' );
-
-                        $( '.post-type-product-feed input#title' ).css( 'border', 'unset' );
-
-                        let per_batch = 0;
-                        if ( is_preview ) {
-                            per_batch = 10;
-                            generate_feed( response.products, 0, 1, per_batch, 1 );
-                        }
-                        else {
-                            per_batch = response.per_batch ? parseInt( response.per_batch ) : 200;
-                            generate_feed( response.products, 0, 1, per_batch, response.total_batch );
-                        }
+                        per_batch = response.per_batch ? parseInt( response.per_batch ) : 200;
+                        generate_feed( response.products, 0, 1, per_batch, response.total_batch );
                     }
-                } )
-                .fail( function ( response ) {
-                    $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
-                    $( '#publish' ).removeClass( 'disabled' );
-                    $( '.rex-feed-publish-btn span.spinner' ).removeClass( 'is-active' );
-                    console.log( 'Uh, oh!' );
-                } );
-        }
+                }
+            } )
+            .fail( function ( response ) {
+                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                $( '#publish' ).removeClass( 'disabled' );
+                $( '.rex-feed-publish-btn span.spinner' ).removeClass( 'is-active' );
+                console.log( 'Uh, oh!' );
+            } );
     }
 
     /**
@@ -982,7 +1112,7 @@
                 $( '#publish' ).removeClass( 'disabled' );
                 $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1020,14 +1150,13 @@
                 console.log( 'Woohoo!' );
                 $( '.merchant-action' ).html( response.html );
                 $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
+                location.reload();
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
                 $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
-                console.log( response.statusText );
+                
             } );
-
-
     }
 
     /*
@@ -1037,14 +1166,10 @@
     function send_to_google( event ) {
         event.preventDefault();
         $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'flex' );
-        // var selected = [];
-        /*$('.rex-feed-google-destination input:checked').each(function() {
-            selected.push($(this).val());
-        });*/
-        var payload = {
+
+        let payload = {
             feed_id: $( '#post_ID' ).val(),
             schedule: $( '#rex_feed_google_schedule option:selected' ).val(),
-            /*destination: selected,*/
             hour: $( '#rex_feed_google_schedule_time option:selected' ).val(),
             country: $( '#rex_feed_google_target_country' ).val(),
             language: $( '#rex_feed_google_target_language' ).val()
@@ -1100,7 +1225,7 @@
                 $( '.rex-google-status' ).html( '<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>' );
                 console.log( 'Uh, oh!' );
                 console.log( response );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1141,7 +1266,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1171,7 +1296,7 @@
                     $form.find( "button.save-batch span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1208,7 +1333,7 @@
                     $form.find( "button.save-wpfm-fields-show span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1228,7 +1353,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1279,7 +1404,7 @@
                 .error( function ( response ) {
 
                     console.log( 'uh, oh!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
 
@@ -1336,7 +1461,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1359,11 +1484,11 @@
         wpAjaxHelperRequest( 'wpfm-remove-plugin-data', payload )
             .success( function ( response ) {
                 console.log( 'Saved' );
-                console.log( response.statusText );
+                
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1393,7 +1518,7 @@
                     $form.find( "button.save-fb-pixel span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1417,7 +1542,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1450,7 +1575,6 @@
                     $form.find( "button.save-fb-pixel span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
             } );
     }
 
@@ -1475,7 +1599,6 @@
             .error( function ( response ) {
                 $el.find( "i" ).hide();
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
             } );
     }
 
@@ -1499,7 +1622,7 @@
                     .error( function ( response ) {
                         $el.find( "i" ).hide();
                         console.log( 'uh, oh!' );
-                        console.log( response.statusText );
+                        
                     } );
             }
         } else {
@@ -1516,7 +1639,7 @@
                 .error( function ( response ) {
                     $el.find( "i" ).hide();
                     console.log( 'uh, oh!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
     }
@@ -1541,7 +1664,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1549,7 +1672,7 @@
      * Manage fields for cron custom scheduling
      */
     function rex_feed_manage_custom_cron_schedule_fields() {
-        var selected_cron = $('input[name="rex_feed_schedule"]:checked').val();
+        let selected_cron = $('input[name="rex_feed_schedule"]:checked').val();
 
         if ( selected_cron === 'custom' ) {
             $( '.rex_feed_custom_time_fields' ).slideDown();
@@ -1557,12 +1680,27 @@
         else {
             $( '.rex_feed_custom_time_fields' ).slideUp();
         }
+
+        if ( 'no' === selected_cron ) {
+            $( 'input#rex_feed_update_on_product_change' ).prop( 'disabled', true );
+            $( 'input#rex_feed_update_on_product_change' ).css( {
+                'border-color': '#c3c4cf',
+                'cursor': 'not-allowed'
+            } );
+        }
+        else {
+            $( 'input#rex_feed_update_on_product_change' ).prop( 'disabled', false );
+            $( 'input#rex_feed_update_on_product_change' ).css( {
+                'border-color': '#1db2fb',
+                'cursor': 'pointer'
+            } );
+        }
     }
 
     function rex_feed_show_review_request( e ) {
         var is_published = $( '#publish' ).val();
         if ( is_published !== 'Publish' ){
-            $( '#rex_feed_review_request_body_content' ).fadeIn();
+            $( '.rex-feed-review' ).fadeIn();
         }
     }
 
@@ -1583,13 +1721,19 @@
         }
     }
 
-    function rex_feed_is_req_attr_missing() {
-        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-        var status = true;
+    /**
+     * @desc Renders missing attributes warning popup
+     * for Google Shopping Feed
+     * @since 7.2.19
+     * @returns {boolean}
+     */
+    function rex_feed_render_missing_attr_popup() {
+        let merchant_name = $('#rex_feed_merchant').find(':selected').val();
+        let status = false;
 
         if (merchant_name === 'google') {
-            var missing_attr = [];
-            var payload = {
+            let missing_attr = [];
+            let payload = {
                 feed_config: $('form[id=post]').serialize()
             };
 
@@ -1605,14 +1749,14 @@
                 async: false,
 
                 success: function (response) {
-                    var attr_inx = 0;
+                    let attr_inx = 0;
 
-                    var req_attr = response.data.req_attr;
-                    var feed_attr = response.data.feed_attr;
-                    var feed_config = response.data.feed_config;
-                    var labels = response.data.labels;
+                    let req_attr = response.data.req_attr;
+                    let feed_attr = response.data.feed_attr;
+                    let feed_config = response.data.feed_config;
+                    let labels = response.data.labels;
 
-                    for (var i = 0; i < req_attr.length; i++) {
+                    for (let i = 0; i < req_attr.length; i++) {
                         if (!feed_attr.includes(req_attr[i])) {
                             if ((req_attr[i] === 'gtin' && !feed_attr.includes('mpn')) || (req_attr[i] === 'mpn' && !feed_attr.includes('gtin'))) {
                                 missing_attr[attr_inx++] = labels[req_attr[i]];
@@ -1636,9 +1780,20 @@
                     }
 
                     if ( missing_attr.length > 0 ) {
-                        missing_attr = missing_attr.join("\n  - ");
-                        missing_attr = '  - ' + missing_attr;
-                        status = confirm('Some required attributes are not configured properly.\n'+ missing_attr +'\nDo you still want to continue?');
+                        let html = '';
+                        missing_attr.forEach( ( attribute ) => {
+                            html += '<li class="rex-google-shopping__list">';
+                            html += '<p>' + attribute + '</p>';
+                            html += '<a href="https://rextheme.com/docs/google-shopping-product-feed-specification-attributes-list/" target="_blank">Learn more</a>';
+                            html += '</li>';
+                        })
+                        if ( '' !== html ) {
+                            $( 'ul.rex-google-shopping__lists-area li' ).remove();
+                            $( 'ul.rex-google-shopping__lists-area' ).append( html );
+
+                            $( 'section#rex_feed_google_req_attr_warning_popup' ).show();
+                            status = true;
+                        }
                     }
                 },
                 error: function (response) {
@@ -1667,7 +1822,7 @@
             })
             .error( function( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             });
     }
 
@@ -1675,6 +1830,13 @@
         let aria_controls = $('input.select2-search__field').attr( 'aria-controls' );
         if ( 'select2-rex_feed_merchant-results' === aria_controls ) {
             $( 'input.select2-search__field' ).get( 0 ).focus()
+        }
+        else {
+            // reg expression that starts with `select2-fc[any 3 digits numbers]meta_key-`
+            const regex = new RegExp('^select2-fc[0-9]|[0-9][0-9]|[0-9][0-9][0-9]meta_key-');
+            if ( regex.test(aria_controls) ) {
+                $( 'input.select2-search__field' ).get( 0 ).focus()
+            }
         }
     }
 
@@ -1728,10 +1890,21 @@
                 if ( 'added' === response.data.button_text ) {
                     $( '#rex_feed_custom_filter_button' ).text( 'Remove Custom Filter' );
                     $( '#rex-feed-config-filter' ).show();
+                    $( 'div#rex-feed-published-product' ).hide();
+                    $( 'div#rex-feed-featured-product' ).hide();
                 }
                 else {
                     $( '#rex_feed_custom_filter_button' ).text( 'Add Custom Filter' );
                     $( '#rex-feed-config-filter' ).hide();
+                    let pr_filter = $( 'select#rex_feed_products' ).find( 'option:selected' ).val();
+                    if ( 'all' === pr_filter ) {
+                        $( 'div#rex-feed-featured-product' ).hide();
+                        $( 'div#rex-feed-published-product' ).show();
+                    }
+                    else if ( 'featured' === pr_filter ) {
+                        $( 'div#rex-feed-published-product' ).hide();
+                        $( 'div#rex-feed-featured-product' ).show();
+                    }
                 }
                 $( 'input[name=rex_feed_custom_filter_option_btn]' ).val( response.data.button_text )
             } )
@@ -1834,12 +2007,28 @@
         let selected = $this.find( 'option:selected' ).length;
 
         if ( 1 < selected ) {
-            selected = selected - 1;
-            $this.siblings( 'span.rex-product-picker-count' ).show();
-            $this.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+            let is_def_selected = $this.children('option[value=default]').attr( 'selected' );
+            if ( 'selected' === is_def_selected ) {
+                $this.children('option[value=default]').removeAttr( 'selected' );
+                $this.trigger( 'change.select2' );
+                selected = selected - 1;
+            }
+            if ( 1 < selected ) {
+                selected = selected - 1;
+                $this.siblings('span.rex-product-picker-count').show();
+                $this.siblings('span.rex-product-picker-count').html('+' + selected + '..');
+            }
         }
         else {
             $this.siblings( 'span.rex-product-picker-count' ).hide();
+        }
+        if (0 == selected) {
+            $this.find('option:eq(1)').prop( 'selected', true );
+            $this.trigger( 'change.select2' );
+        }
+        else {
+            $this.find('option:eq(1)').prop( 'selected', false );
+            $this.trigger( 'change.select2' );
         }
     }
 
@@ -1849,19 +2038,169 @@
      * @since 7.2.12
      */
     function rex_feed_render_multiple_filter_counter() {
-        let output_filter = $( 'select.sanitize-dropdown' ).length - 1;
+        let output_filter = $( 'div#rex_feed_config_heading' ).children( 'div.inside' ).children( 'table#config-table' ).children( 'tbody' ).children( 'tr' );
         let $select_field = '';
         let selected = 0;
 
-        for ( let i=0; i<output_filter; i++ ) {
-            $select_field = $( 'select[name="fc['+ i +'][escape][]"]' );
-            selected = $select_field.find( 'option:selected' ).length;
+        output_filter.each( function ( index, _element ) {
+            if ( index ) {
+                let row_id = $( this ).attr( 'data-row-id' );
 
-            if ( 1 < selected ) {
-                selected = selected - 1;
-                $select_field.siblings( 'span.rex-product-picker-count' ).show();
-                $select_field.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+                $select_field = $( 'select[name="fc['+ row_id +'][escape][]"]' );
+                selected = $select_field.find( 'option:selected' ).length;
+
+                if ( 1 < selected ) {
+                    selected = selected - 1;
+                    $select_field.siblings( 'span.rex-product-picker-count' ).show();
+                    $select_field.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * @desc Helper function to save option
+     * to hide/view character limit field
+     */
+    function rex_feed_save_character_limit_option() {
+        let opt_val = $( this ).is( ':checked' );
+        opt_val = opt_val ? 'on' : 'off';
+
+        wpAjaxHelperRequest( 'rex-feed-save-char-limit-option', opt_val )
+            .success( function ( response ) {
+                console.log( 'Woohoo! Awesome!!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+            } );
+    }
+
+
+    /**
+     * @desc Check/Uncheck All Categories/Tags
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_tax() {
+        let button_id = $( this ).attr( 'id' );
+        if ( 'rex_feed_cats_check_all_btn' === button_id ) {
+            rex_feed_check_uncheck_all_cats( button_id );
+        }
+        else if ( 'rex_feed_tags_check_all_btn' === button_id ) {
+            rex_feed_check_uncheck_all_tags( button_id );
+        }
+    }
+
+    /**
+     * @desc Check/Uncheck All Categories
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_cats( button_id ) {
+        if ( 1 <= $( 'input#' + button_id + ':checked' ).length ) {
+            $( 'input.rex_feed_cats' ).prop( 'checked', true )
+        }
+        else {
+            $( 'input.rex_feed_cats' ).prop( 'checked', false )
+        }
+    }
+
+    /**
+     * @desc Check/Uncheck All Tags
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_tags( button_id ) {
+        if ( 1 <= $( 'input#' + button_id + ':checked' ).length ) {
+            $( 'input.rex_feed_tags' ).prop( 'checked', true )
+        }
+        else {
+            $( 'input.rex_feed_tags' ).prop( 'checked', false )
+        }
+    }
+
+    /**
+     * @desc Deletes publish button id on document ready
+     * @since 7.2.18
+     */
+    function rex_feed_delete_publish_btn_id() {
+        let url = new URL( window.location.href );
+        let feed_id = url.searchParams.get( 'post' );
+
+        wpAjaxHelperRequest( 'rex-feed-delete-publish-btn-id', feed_id )
+            .success( function ( response ) {
+                console.log( 'Woohoo! Button id deleted!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+                console.log( 'response.statusText' );
+            } );
+    }
+
+    /**
+     * @desc hide character limit column
+     * after mapping table load
+     * @since 7.2.18
+     */
+    function rex_feed_hide_char_limit_col() {
+        wpAjaxHelperRequest( 'rex-feed-hide-char-limit-col' )
+            .success( function ( response ) {
+                if ( 'on' === response.hide_char ) {
+                    $( 'th#rex_feed_output_limit_head' ).hide();
+                    $( 'td[data-title="Output Limit : "]' ).hide();
+                }
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+            } );
+    }
+
+
+    /**
+     * @desc Update abandone child list ajax
+     */
+    function rex_feed_update_abandoned_child_list() {
+        let $el = $( this );
+        $el.find( "span" ).hide();
+        $el.find( "i" ).show();
+
+        wpAjaxHelperRequest( 'rex-feed-update-abandoned-child-list' )
+            .success( function ( response ) {
+                $el.find( "i" ).hide();
+                $el.find( "span" ).show();
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $el.find( "i" ).hide();
+                $el.find( "span" ).show();
+                console.log( 'uh, oh!' );
+            } );
+    }
+
+
+    /**
+     * @desc Auto select attribute/attribute value
+     * if user select shipping/tax attributes for google format
+     * @since 7.3.0
+     */
+    function rex_feed_auto_select_google_shipping_tax() {
+        let $this = $( this );
+        let selected_val = $this.val();
+
+        if ( $this.hasClass( 'attr-dropdown' ) ) {
+            if ( 'shipping' === selected_val || 'tax' === selected_val ) {
+                $this.parent().siblings(':first').children().val('meta');
+                $this.parent().siblings(':nth-child(3)').children().hide();
+                $this.parent().siblings(':nth-child(3)').children(':first').show();
+                $this.parent().siblings(':nth-child(3)').children(':first').children('select.attr-val-dropdown').val(selected_val).trigger('change');
+            }
+        }
+        else {
+            if ( 'shipping' === selected_val || 'tax' === selected_val ) {
+                $this.parent().parent().siblings( ':first' ).children( 'select.attr-dropdown' ).val( selected_val )
             }
         }
     }
+
 })( jQuery );

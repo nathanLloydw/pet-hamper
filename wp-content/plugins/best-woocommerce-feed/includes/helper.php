@@ -105,25 +105,30 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 				$terms_array   = array();
 
 				for ( $i = 1; $i <= $total_batches; $i++ ) {
-					if ( $i === 1 ) update_post_meta( $feed_id, 'rex_feed_status', 'processing' );
-					if ( $i === $total_batches ) update_post_meta( $feed_id, 'rex_feed_status', 'completed' );
+					if ( $i === 1 ) update_post_meta( $feed_id, '_rex_feed_status', 'processing' );
+					if ( $i === $total_batches ) update_post_meta( $feed_id, '_rex_feed_status', 'completed' );
 
-					$merchant                = get_post_meta( $feed_id, 'rex_feed_merchant', true );
-					$feed_config             = get_post_meta( $feed_id, 'rex_feed_feed_config', true );
-					$feed_filter             = get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
-					$product_scope           = get_post_meta( $feed_id, 'rex_feed_products', true );
-					$include_variations      = get_post_meta( $feed_id, 'rex_feed_variations', true ) === 'yes';
-					$variable_product        = get_post_meta( $feed_id, 'rex_feed_variable_product', true ) === 'yes';
-					$parent_product          = get_post_meta( $feed_id, 'rex_feed_parent_product', true ) === 'yes';
-					$exclude_hidden_products = get_post_meta( $feed_id, 'rex_feed_hidden_products', true ) === 'yes';
-					$append_variations       = get_post_meta( $feed_id, 'rex_feed_variation_product_name', true ) === 'yes';
-					$wpml                    = get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) ? get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) : '';
-					$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
-						get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
-					$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
-					$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
-					$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
-					$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
+					$merchant                = get_post_meta( $feed_id, '_rex_feed_merchant', true ) ?: get_post_meta( $feed_id, 'rex_feed_merchant', true );
+					$feed_config             = get_post_meta( $feed_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config', true );
+					$feed_filter             = get_post_meta( $feed_id, '_rex_feed_feed_config_filter', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
+					$product_scope           = get_post_meta( $feed_id, '_rex_feed_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_products', true );
+					$include_variations      = get_post_meta( $feed_id, '_rex_feed_variations', true ) ?: get_post_meta( $feed_id, 'rex_feed_variations', true );
+					$include_variations      = 'yes' === $include_variations;
+					$variable_product        = get_post_meta( $feed_id, '_rex_feed_variable_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_variable_product', true );
+					$variable_product        = $variable_product === 'yes';
+					$parent_product          = get_post_meta( $feed_id, '_rex_feed_parent_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_parent_product', true );
+					$parent_product          = $parent_product === 'yes';
+					$exclude_hidden_products = get_post_meta( $feed_id, '_rex_feed_hidden_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_hidden_products', true );
+					$exclude_hidden_products = $exclude_hidden_products === 'yes';
+					$append_variations       = get_post_meta( $feed_id, '_rex_feed_variation_product_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_variation_product_name', true );
+					$append_variations       = $append_variations === 'yes';
+					$wpml                    = get_post_meta( $feed_id, '_rex_feed_wpml_language', true ) ?: get_post_meta( $feed_id, 'rex_feed_wpml_language', true );
+					$feed_format             = get_post_meta( $feed_id, '_rex_feed_feed_format', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_format', true );
+					$feed_format             = $feed_format ?: 'xml';
+					$aelia_currency          = get_post_meta( $feed_id, '_rex_feed_aelia_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
+					$wmc_currency            = get_post_meta( $feed_id, '_rex_feed_wmc_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
+					$skip_row                = get_post_meta( $feed_id, '_rex_feed_skip_row', true ) ?: get_post_meta( $feed_id, 'rex_feed_skip_row', true );
+					$feed_separator          = get_post_meta( $feed_id, '_rex_feed_separator', true ) ?: get_post_meta( $feed_id, 'rex_feed_separator', true );
 
 					if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
 						$terms = wp_get_post_terms( $feed_id, $product_scope );
@@ -257,16 +262,18 @@ if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 	 * @return bool
      * @since 7.0.0
 	 */
-	function wpfm_is_wpml_active(){
-		$active_plugings             = get_option( 'active_plugins' );
-		$wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
-		$sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
-		$wpml_string_translation     = 'wpml-string-translation/plugin.php';
+    function wpfm_is_wpml_active(){
+        $active_plugings             = get_option( 'active_plugins' );
+        $wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
+        $sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
+        $wpml_string_translation     = 'wpml-string-translation/plugin.php';
 
-		return in_array( $wpml, $active_plugings )
-		       && in_array( $sitepress, $active_plugings )
-		       && in_array( $wpml_string_translation, $active_plugings );
-	}
+        $plugins_active = in_array( $wpml, $active_plugings )
+            && in_array( $sitepress, $active_plugings )
+            && in_array( $wpml_string_translation, $active_plugings );
+
+        return $plugins_active ?: is_plugin_active_for_network( $wpml ) && is_plugin_active_for_network( $sitepress ) && is_plugin_active_for_network( $wpml_string_translation );
+    }
 }
 
 if ( ! function_exists( 'wpfm_is_polylang_active' ) ) {
@@ -415,7 +422,8 @@ if ( ! function_exists( 'rex_feed_get_roll_back_versions' ) ) {
                 return [];
             }
 
-            krsort( $plugin_information->versions );
+            natsort( $plugin_information->versions );
+            $plugin_information->versions = array_reverse($plugin_information->versions);
 
             $rollback_versions = [];
 
@@ -469,12 +477,15 @@ if ( ! function_exists( 'rex_feed_get_default_variable_attributes' ) ) {
      */
     function rex_feed_get_default_variable_attributes( $product )
     {
-        if( method_exists( $product, 'get_default_attributes' ) ) {
-            return $product->get_default_attributes();
+        if( $product ) {
+            if( method_exists( $product, 'get_default_attributes' ) ) {
+                return $product->get_default_attributes();
+            }
+            else {
+                return $product->get_variation_default_attributes();
+            }
         }
-        else {
-            return $product->get_variation_default_attributes();
-        }
+        return [];
     }
 }
 
@@ -518,30 +529,32 @@ if ( ! function_exists( 'rex_feed_get_product_price' ) ) {
      */
     function rex_feed_get_product_price( $product )
     {
-        if( $product->is_type( 'variable' ) ) {
-            $default_variations = rex_feed_get_default_variable_attributes( $product );
-            if( $default_variations ) {
-                $variation_id = rex_feed_find_matching_product_variation( $product, $default_variations );
-                if( $variation_id ) {
-                    $_variation_product = wc_get_product( $variation_id );
-                    return $_variation_product->get_regular_price();
+        if( $product && !is_wp_error( $product ) ) {
+            if( $product->is_type( 'variable' ) ) {
+                $default_variations = rex_feed_get_default_variable_attributes( $product );
+                if( $default_variations ) {
+                    $variation_id = rex_feed_find_matching_product_variation( $product, $default_variations );
+                    if( $variation_id ) {
+                        $_variation_product = wc_get_product( $variation_id );
+                        return $_variation_product->get_regular_price();
+                    }
+                }
+                else {
+                    return $product->get_variation_regular_price();
                 }
             }
-            else {
-                return $product->get_variation_regular_price();
+            elseif( $product->is_type( 'grouped' ) ) {
+                return rex_feed_get_grouped_price( $product, '_regular_price' );
             }
+            elseif( $product->is_type( 'composite' ) ) {
+                return $product->get_composite_regular_price();
+            }
+            elseif( $product->is_type( 'bundle' ) ) {
+                return $product->get_bundle_price();
+            }
+            return $product->get_regular_price();
         }
-        elseif( $product->is_type( 'grouped' ) ) {
-            return rex_feed_get_grouped_price( $product, '_regular_price' );
-        }
-        elseif( $product->is_type( 'composite' ) ) {
-            return $product->get_composite_regular_price();
-        }
-        elseif( $product->is_type( 'bundle' ) ) {
-            return $product->get_bundle_price();
-        }
-
-        return $product->get_regular_price();
+        return '';
     }
 }
 
@@ -554,20 +567,23 @@ if ( ! function_exists( 'rex_feed_get_grouped_price' ) ) {
      */
     function rex_feed_get_grouped_price( $product, $type )
     {
-        $groupProductIds = $product->get_children();
-        $price           = 99999999;
+        if( $product ) {
+            $groupProductIds = $product->get_children();
+            $price           = 99999999;
 
-        if( !empty( $groupProductIds ) ) {
-            foreach( $groupProductIds as $id ) {
-                if( get_post_meta( $id, $type, true ) !== '' ) {
-                    $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
+            if( !empty( $groupProductIds ) ) {
+                foreach( $groupProductIds as $id ) {
+                    if( get_post_meta( $id, $type, true ) !== '' ) {
+                        $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
+                    }
+                }
+                if( $price === 99999999 ) {
+                    $price = '';
                 }
             }
-            if( $price === 99999999 ) {
-                $price = '';
-            }
+            return $price;
         }
-        return $price;
+        return '';
     }
 }
 
@@ -611,5 +627,114 @@ if ( !function_exists( 'rex_feed_is_valid_xml' ) ) {
         $sxe = simplexml_load_file( $file_url, 'SimpleXMLElement', 0, $namespace  );
         $xml_errors = libxml_get_errors();
         return apply_filters( 'rex_feed_is_valid_xml', $sxe && empty( $xml_errors ), $sxe, $xml_errors, $feed_id );
+    }
+}
+
+
+if ( !function_exists( 'rex_feed_get_wc_shipping_state_country' ) ) {
+    /**
+     * @desc Check if a given xml file is valid.
+     * @since 7.2.9
+     * @param $file_url
+     * @return mixed|void
+     */
+    function rex_feed_get_wc_shipping_state_country()
+    {
+        global $wpdb;
+        $query = "SELECT DISTINCT `location_code`, `location_type` FROM {$wpdb->prefix}woocommerce_shipping_zone_locations WHERE `location_type` IN( 'country', 'state', 'continent' ) ORDER BY `location_code` ASC";
+        $wc_shipping_locations = $wpdb->get_results( $query,ARRAY_A );
+
+        if( !is_wp_error( $wc_shipping_locations ) && is_array( $wc_shipping_locations ) && !empty( $wc_shipping_locations ) ) {
+            return $wc_shipping_locations;
+        }
+        return [];
+    }
+}
+
+
+if ( !function_exists( 'rex_feed_is_wpfm_pro_active' ) ) {
+    /**
+     * @desc Check if WPFM Pro is activated
+     * @since 7.2.20
+     * @return bool
+     */
+    function rex_feed_is_wpfm_pro_active()
+    {
+        $active_plugings = get_option( 'active_plugins' );
+        $wpfm_pro        = 'best-woocommerce-feed-pro/rex-product-feed-pro.php';
+        return in_array( $wpfm_pro, $active_plugings ) || is_plugin_active_for_network( $wpfm_pro );
+    }
+}
+
+
+if ( ! function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) ) {
+    /**
+     * @desc check if Discount Rules and Dynamic Pricing for WooCommerce
+     * by Asana Plugins is active.
+     *
+     * @return bool
+     * @since 7.2.20
+     */
+    function wpfm_is_discount_rules_asana_plugins_active(){
+        $active_plugings             = get_option( 'active_plugins' );
+        $asana_plugin                = 'easy-woocommerce-discounts/easy-woocommerce-discounts.php';
+
+        return in_array( $asana_plugin, $active_plugings ) || is_plugin_active_for_network( $asana_plugin );
+    }
+}
+
+
+if ( ! function_exists( 'wpfm_get_abandoned_child' ) ) {
+    /**
+     * @desc Get abandoned WooCommerce variation product ids
+     * @param $skip
+     * @param $offset
+     * @param $current_batch
+     * @param $per_batch
+     * @param $total_batch
+     * @param $products
+     * @return array|int[]|WP_Post[]
+     * @since 7.2.0
+     */
+    function wpfm_get_abandoned_child( $skip = false, $offset = 0, $current_batch = 1, $per_batch = 0, $total_batch = 0, $products = [] ) {
+        if( !$skip ) {
+            $product_info = Rex_Product_Feed_Ajax::get_product_number( [] );
+            $total_batch  = $product_info[ 'total_batch' ];
+            $per_batch    = get_option( 'rex-wpfm-product-per-batch', $per_batch );
+        }
+
+        $args = [
+            'post_type'        => 'product_variation',
+            'fields'           => 'ids',
+            'post_parent'      => 0,
+            'post_status'      => 'publish',
+            'posts_per_page'   => $per_batch,
+            'offset'           => $offset,
+            'orderby'          => 'ID',
+            'order'            => 'ASC',
+            'cache_results'    => false,
+            'suppress_filters' => true,
+        ];
+
+        $products = array_merge( get_posts( $args ), $products );
+
+        if( $total_batch != $current_batch ) {
+            $current_batch = (int)$current_batch + 1;
+            $offset        = (int)$offset + (int)$per_batch;
+            return wpfm_get_abandoned_child( true, $offset, $current_batch, $per_batch, $total_batch, $products );
+        }
+        return $products;
+    }
+}
+
+if( !function_exists( 'wpfm_get_woocommerce_shop_name' ) ) {
+    /**
+     * @desc Get the WooCommerce shop name
+     * @return string
+     * @since 7.2.21
+     */
+    function wpfm_get_woocommerce_shop_name() {
+        $wc_shop_page_id = get_option( 'woocommerce_shop_page_id' );
+        return get_the_title( $wc_shop_page_id );
     }
 }

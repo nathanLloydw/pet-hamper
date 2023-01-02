@@ -276,6 +276,22 @@ class Rex_Product_Feed_Ajax {
 		wp_ajax_helper()->handle( 'rex-feed-custom-filters' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_custom_filter_option' ) )
 		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'rex-feed-save-char-limit-option' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_save_char_limit_option' ) )
+                        ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'rex-feed-delete-publish-btn-id' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_delete_publish_btn_id' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'rex-feed-hide-char-limit-col' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_hide_char_limit_col' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'rex-feed-update-abandoned-child-list' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_update_abandoned_child_list' ) )
+		                ->with_validation( $validations );
     }
 
 
@@ -315,7 +331,7 @@ class Rex_Product_Feed_Ajax {
         $per_page       = get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT );
         $posts_per_page = $is_premium ? ( int )$per_page : ( ( int )$per_page >= WPFM_FREE_MAX_PRODUCT_LIMIT ? WPFM_FREE_MAX_PRODUCT_LIMIT : ( int )$per_page );
 
-        update_post_meta( $feed_id, 'rex_feed_publish_btn', $btn_id );
+        update_post_meta( $feed_id, '_rex_feed_publish_btn', $btn_id );
 
         return array(
             'products'    => $products[ 'products' ],
@@ -361,10 +377,10 @@ class Rex_Product_Feed_Ajax {
     public static function show_feed_template( $merchant )
     {
 	    $post_id       = isset( $merchant[ 'post_id' ] ) ? $merchant[ 'post_id' ] : '';
-	    $feed_rules    = get_post_meta( $post_id, 'rex_feed_feed_config', true );
+	    $feed_rules    = get_post_meta( $post_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $post_id, 'rex_feed_feed_config', true );
 	    $merchant_name = isset( $merchant[ 'merchant' ] ) ? $merchant[ 'merchant' ] : '';
-
-        if ( $merchant_name != get_post_meta( $post_id, 'rex_feed_merchant', true ) ) {
+        $saved_merchant = get_post_meta( $post_id, '_rex_feed_merchant', true ) ?: get_post_meta( $post_id, 'rex_feed_merchant', true );
+        if ( $merchant_name !== $saved_merchant ) {
             $feed_rules = false;
         }
 
@@ -384,7 +400,7 @@ class Rex_Product_Feed_Ajax {
 
         ob_end_clean();
         ob_flush();
-        $selected_format = get_post_meta($merchant['post_id'], 'rex_feed_feed_format', true);
+        $selected_format = get_post_meta($merchant['post_id'], '_rex_feed_feed_format', true) ?: get_post_meta($merchant['post_id'], 'rex_feed_feed_format', true);
         if(!$selected_format) {
             $selected_format = $feed_format[0];
         }
@@ -528,7 +544,7 @@ class Rex_Product_Feed_Ajax {
 	    $feed_id             = $payload[ 'feed_id' ];
 	    $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 	    if ( $rex_google_merchant->is_authenticate() ) {
-		    $feed_url      = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
+		    $feed_url      = get_post_meta( $feed_id, '_rex_feed_xml_file', true ) ?: get_post_meta( $feed_id, 'rex_feed_xml_file', true );
 		    $feed_title    = get_the_title( $feed_id );
 		    $client        = $rex_google_merchant::get_client();
 		    $client_id     = $rex_google_merchant::$client_id;
@@ -567,7 +583,8 @@ class Rex_Product_Feed_Ajax {
 			    $datafeed->setFileName( $filename );
 		    }
 		    else {
-			    $datafeed->setFileName( get_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', true ) );
+                $data_feed_file = get_post_meta( $feed_id, '_rex_feed_google_data_feed_file_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', true );
+			    $datafeed->setFileName( $data_feed_file );
 		    }
 
 		    /*
@@ -593,7 +610,7 @@ class Rex_Product_Feed_Ajax {
 
 		    try {
 			    if ( $rex_google_merchant->feed_exists( $feed_id ) ) {
-				    $datafeedID = get_post_meta( $feed_id, 'rex_feed_google_data_feed_id', true );
+				    $datafeedID = get_post_meta( $feed_id, '_rex_feed_google_data_feed_id', true ) ?: get_post_meta( $feed_id, 'rex_feed_google_data_feed_id', true );
 				    $datafeed->setId( $datafeedID );
 				    $service->datafeeds->update( $merchant_id, $datafeedID, $datafeed );
 			    }
@@ -601,8 +618,8 @@ class Rex_Product_Feed_Ajax {
 				    $datafeed         = $service->datafeeds->insert( $merchant_id, $datafeed );
 				    $datafeedID       = $datafeed->getId();
 				    $datafeedFileName = $datafeed->getFileName();
-				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_id', $datafeedID );
-				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', $datafeedFileName );
+				    update_post_meta( $feed_id, '_rex_feed_google_data_feed_id', $datafeedID );
+				    update_post_meta( $feed_id, '_rex_feed_google_data_feed_file_name', $datafeedFileName );
 			    }
 			    $service->datafeeds->fetchnow( $merchant_id, $datafeedID );
 		    }
@@ -628,12 +645,12 @@ class Rex_Product_Feed_Ajax {
 		    }
 	    }
 
-	    update_post_meta( $feed_id, 'rex_feed_google_schedule', $payload[ 'schedule' ] );
-	    update_post_meta( $feed_id, 'rex_feed_google_schedule_time', $payload[ 'hour' ] );
-	    update_post_meta( $feed_id, 'rex_feed_google_schedule_month', $payload[ 'month' ] );
-	    update_post_meta( $feed_id, 'rex_feed_google_schedule_week_day', $payload[ 'day' ] );
-	    update_post_meta( $feed_id, 'rex_feed_google_target_country', $payload[ 'country' ] );
-	    update_post_meta( $feed_id, 'rex_feed_google_target_language', $payload[ 'language' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_schedule', $payload[ 'schedule' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_schedule_time', $payload[ 'hour' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_schedule_month', $payload[ 'month' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_schedule_week_day', $payload[ 'day' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_target_country', $payload[ 'country' ] );
+	    update_post_meta( $feed_id, '_rex_feed_google_target_language', $payload[ 'language' ] );
 	    return array( 'success' => true );
     }
 
@@ -688,7 +705,7 @@ class Rex_Product_Feed_Ajax {
 
         $feeds = get_posts($args);
         foreach($feeds as $feedID) {
-            update_post_meta($feedID, 'rex_feed_status', 'completed');
+            update_post_meta($feedID, '_rex_feed_status', 'completed');
         }
 
         /**
@@ -1080,10 +1097,10 @@ class Rex_Product_Feed_Ajax {
         $event = isset( $payload[ 'button_event' ] ) ? $payload[ 'button_event' ] : 'on_load';
 
         if ( '' !== $feed_id ) {
-            $prev_product_filter_option = get_post_meta( $feed_id, 'rex_feed_products', true );
+            $prev_product_filter_option = get_post_meta( $feed_id, '_rex_feed_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_products', true );
             if ( 'filter' === $prev_product_filter_option ) {
-                update_post_meta( $feed_id, 'rex_feed_custom_filter_option', 'added' );
-                update_post_meta( $feed_id, 'rex_feed_products', 'all' );
+                update_post_meta( $feed_id, '_rex_feed_custom_filter_option', 'added' );
+                update_post_meta( $feed_id, '_rex_feed_products', 'all' );
                 wp_send_json_success(
                         array(
                                 'button_text' => 'added'
@@ -1092,7 +1109,7 @@ class Rex_Product_Feed_Ajax {
                 wp_die();
             }
             elseif( 'on_load' === $event ) {
-                $option = get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
+                $option = get_post_meta( $feed_id, '_rex_feed_custom_filter_option', true ) ?: get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
                 $option = '' !== $option ? $option : 'removed';
             }
             else {
@@ -1105,5 +1122,66 @@ class Rex_Product_Feed_Ajax {
             );
             wp_die();
         }
+    }
+
+
+    /**
+     * @desc Save option value to show/hide character
+     * limit field in the field mapping table
+     * @since 7.2.18
+     * @param $opt_val
+     * @return void
+     */
+    public static function rex_feed_save_char_limit_option( $opt_val ) {
+        if( $opt_val ) {
+            update_option( 'rex_feed_hide_character_limit_field', $opt_val );
+            wp_send_json_success();
+        }
+        wp_send_json_error();
+        wp_die();
+    }
+
+    /**
+     * @desc Delete publish button id on page load
+     * @since 7.2.18
+     * @param $feed_id
+     * @return void
+     */
+    public static function rex_feed_delete_publish_btn_id( $feed_id ) {
+        if( $feed_id ) {
+            delete_post_meta( $feed_id, '_rex_feed_publish_btn' );
+            delete_post_meta( $feed_id, 'rex_feed_publish_btn' );
+        }
+        wp_send_json_success();
+        wp_die();
+    }
+
+
+    /**
+     * @desc Get the plugin global option status
+     * for hiding character limit column
+     * @since 7.2.18
+     * @return void
+     */
+    public static function rex_feed_hide_char_limit_col() {
+        wp_send_json( [ 'hide_char' => get_option( 'rex_feed_hide_character_limit_field', 'on' ) ] );
+    }
+
+
+    /**
+     * @desc Get abandoned child list
+     * and save them in database option table
+     * @since 7.2.20
+     * @return string[]
+     */
+    public static function rex_feed_update_abandoned_child_list() {
+        $abandoned_childs = wpfm_get_abandoned_child();
+        if( !is_wp_error( $abandoned_childs ) && !empty( $abandoned_childs ) ) {
+            update_option( 'rex_feed_abandoned_child_list', $abandoned_childs );
+        }
+        if( is_wp_error( $abandoned_childs ) ) {
+            return [ 'status' => 'error' ];
+        }
+        return [ 'status' => 'success' ];
     }
 }

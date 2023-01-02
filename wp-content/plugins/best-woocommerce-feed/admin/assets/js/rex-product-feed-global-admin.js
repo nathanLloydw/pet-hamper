@@ -156,10 +156,20 @@
             });
 
         if ( !$( '#appsero_new_assistance' ).length && !$( '#appsero_required' ).length ) {
-            $( '.wd-dr-modal-body' ).append( '<p id="appsero_new_assistance">Need Support/Assistance? <a href="https://rextheme.com/support/" target="_blank">Click Here!</a></p>' );
+            $( '.wd-dr-modal-body' ).append( '<p id="appsero_new_assistance">Need Support/Assistance? <a href="https://rextheme.com/support/?utm_source=plugin&utm_medium=support_link&utm_campaign=pfm_plugin" target="_blank">Click Here!</a></p>' );
             $( '.wd-dr-modal-body' ).append( '<p id="appsero_required"><span style="color: red">*</span>Please, select one reason and submit.</p>' );
         }
     });
+
+
+    $( document ).on( 'click', '.best-woocommerce-feed-insights-data-we-collect', function () {
+        let desc = $( this ).parents( '.updated' ).find( 'p.description' ).html();
+        desc = desc.split( '. ' );
+        if ( -1 === desc[ 0 ].indexOf( ', Feed merchant lists, Feed title lists' ) ) {
+            desc[0] = desc[0] + ', Feed merchant lists, Feed title lists';
+            $(this).parents('.updated').find('p.description').html(desc.join('. '));
+        }
+    } );
 
     $( document ).ready( function ( e ) {
         if ( window.location.href.includes('edit.php') ) {
