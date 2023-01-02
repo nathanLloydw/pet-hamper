@@ -64,8 +64,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 
 			add_filter('vg_sheet_editor/allowed_post_types', array($this, 'allow_product_post_type'));
 			add_filter('vg_sheet_editor/add_new_posts/create_new_posts', array($this, 'create_new_products'), 10, 3);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 15);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'filter_columns_settings'), 60);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'), 15);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'filter_columns_settings'), 60);
 			add_filter('vg_sheet_editor/custom_columns/teaser/allow_to_lock_column', array($this, 'dont_lock_allowed_columns'), 10, 2);
 			add_action('woocommerce_variable_product_before_variations', array($this, 'render_variations_metabox_teaser'));
 			add_action('vg_sheet_editor/editor_page/after_console_text', array($this, 'notify_variations_arent_allowed'), 30, 1);
@@ -133,7 +133,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 
 				// Set variation titles
 				if ($args['add_variation_title_prefix']) {
-					$rows[$row_index]['post_title'] = sprintf(__('Variation: %s', VGSE()->textname), esc_html($post_obj->post_title));
+					$rows[$row_index]['post_title'] = sprintf(__('Variation: %s', 'vg_sheet_editor' ), esc_html($post_obj->post_title));
 					// WC doesn't add the attribute names to some variation titles, so we'll add them ourselves when loading the rows
 					if (!isset($parent_titles[$post_obj->post_parent])) {
 						$parent_titles[$post_obj->post_parent] = get_post_field('post_title', $post_obj->post_parent);
@@ -170,8 +170,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 			if (VGSE()->helpers->get_provider_from_query_string() !== $this->post_type || empty($posts) || !is_array($posts) || VGSE()->helpers->is_plain_text_request()) {
 				return $posts;
 			}
-			if (function_exists('WPSE_Profiler')) {
-				WPSE_Profiler()->record('Before ' . __FUNCTION__);
+			if (function_exists('WPSE_Profiler_Obj')) {
+				WPSE_Profiler_Obj()->record('Before ' . __FUNCTION__);
 			}
 
 			$products = wp_list_filter($posts, array(
@@ -230,8 +230,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				}
 			}
 
-			if (function_exists('WPSE_Profiler')) {
-				WPSE_Profiler()->record('After ' . __FUNCTION__);
+			if (function_exists('WPSE_Profiler_Obj')) {
+				WPSE_Profiler_Obj()->record('After ' . __FUNCTION__);
 			}
 			return $posts;
 		}
@@ -351,7 +351,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 		function notify_variations_arent_allowed($post_type) {
 			if ($post_type === $this->post_type) {
 				echo '<span class="wpse-lite-version-message">';
-				_e('. <b>Lite version.</b> Showing all products and all fields as columns, 15 columns are editable and the rest are read only. <br><b>Upgrade:</b> Edit in Excel/Google Sheets, export, import, bulk edit thousands of products at once.', VGSE()->textname);
+				_e('. <b>Lite version.</b> Showing all products and all fields as columns, 15 columns are editable and the rest are read only. <br><b>Upgrade:</b> Edit in Excel/Google Sheets, export, import, bulk edit thousands of products at once.', 'vg_sheet_editor' );
 				echo '</span>';
 			}
 		}
@@ -364,7 +364,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				}
 			</style>
 			<div class="notice-success is-dismissible wpse-variation-metabox-teaser">
-				<?php printf(__('<b>Tip from WP Sheet Editor:</b> You can view and edit Product Variations in a spreadsheet, bulk edit, make advanced searches, edit hundreds of variations at once, copy variations to multiple products, etc. <a href="%s" class="" target="_blank">Download Plugin</a>', VGSE()->textname), 'https://wpsheeteditor.com/extensions/woocommerce-spreadsheet/?utm_source=wp-admin&utm_medium=variations-metabox&utm_campaign=products'); ?>
+				<?php printf(__('<b>Tip from WP Sheet Editor:</b> You can view and edit Product Variations in a spreadsheet, bulk edit, make advanced searches, edit hundreds of variations at once, copy variations to multiple products, etc. <a href="%s" class="" target="_blank">Download Plugin</a>', 'vg_sheet_editor' ), 'https://wpsheeteditor.com/extensions/woocommerce-spreadsheet/?utm_source=wp-admin&utm_medium=variations-metabox&utm_campaign=products'); ?>
 			</div>
 			<?php
 		}
@@ -402,16 +402,16 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 
 			// Adapt core columns to woocommerce format
 			$editor->args['columns']->register_item('post_excerpt', $post_type, array(
-				'title' => __('Short description', VGSE()->textname),
-				'default_title' => __('Short description', VGSE()->textname),
+				'title' => __('Short description', 'vg_sheet_editor' ),
+				'default_title' => __('Short description', 'vg_sheet_editor' ),
 				'column_width' => 150
 					), true);
 			$editor->args['columns']->register_item('comment_status', $post_type, array(
-				'title' => __('Enable reviews', VGSE()->textname),
-				'default_title' => __('Enable reviews', VGSE()->textname),
+				'title' => __('Enable reviews', 'vg_sheet_editor' ),
+				'default_title' => __('Enable reviews', 'vg_sheet_editor' ),
 					), true);
 
-			$spreadsheet_columns = $editor->args['columns']->get_provider_items($post_type);
+			$spreadsheet_columns = $editor->get_provider_items($post_type);
 			// Increase column width for disabled columns, so the "premium" message fits
 			foreach ($spreadsheet_columns as $key => $column) {
 				if (!in_array($key, $this->allowed_columns)) {
@@ -439,7 +439,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'post_terms',
 				'unformatted' => array('data' => $product_type_tax),
 				'column_width' => 150,
-				'title' => __('Type', VGSE()->textname),
+				'title' => __('Type', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => $product_type_tax, 'type' => 'autocomplete', 'source' => 'loadTaxonomyTerms'),
@@ -450,7 +450,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_sku'),
 				'column_width' => 150,
-				'title' => __('SKU', VGSE()->textname),
+				'title' => __('SKU', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_sku', 'renderer' => 'html'),
@@ -462,7 +462,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_regular_price'),
 				'column_width' => 150,
-				'title' => __('Regular Price', VGSE()->textname),
+				'title' => __('Regular Price', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_regular_price'),
@@ -476,7 +476,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_sale_price'),
 				'column_width' => 150,
-				'title' => __('Sale Price', VGSE()->textname),
+				'title' => __('Sale Price', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_sale_price', 'renderer' => 'html'),
@@ -488,7 +488,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_weight'),
 				'column_width' => 100,
-				'title' => __('Weight', VGSE()->textname),
+				'title' => __('Weight', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_weight', 'renderer' => 'html'),
@@ -500,7 +500,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_width'),
 				'column_width' => 100,
-				'title' => __('Width', VGSE()->textname),
+				'title' => __('Width', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_width', 'renderer' => 'html'),
@@ -512,7 +512,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_height'),
 				'column_width' => 100,
-				'title' => __('Height', VGSE()->textname),
+				'title' => __('Height', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_height', 'renderer' => 'html'),
@@ -524,7 +524,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_length'),
 				'column_width' => 100,
-				'title' => __('Length', VGSE()->textname),
+				'title' => __('Length', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_length', 'renderer' => 'html'),
@@ -535,7 +535,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_manage_stock'),
 				'column_width' => 150,
-				'title' => __('Manage stock', VGSE()->textname),
+				'title' => __('Manage stock', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array(
@@ -553,7 +553,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_stock_status'),
 				'column_width' => 150,
-				'title' => __('Stock status', VGSE()->textname),
+				'title' => __('Stock status', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array(
@@ -571,7 +571,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_stock'),
 				'column_width' => 75,
-				'title' => __('Stock', VGSE()->textname),
+				'title' => __('Stock', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_stock'),
@@ -583,7 +583,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_visibility'),
 				'column_width' => 150,
-				'title' => __('Visibility', VGSE()->textname),
+				'title' => __('Visibility', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_visibility', 'editor' => 'select', 'selectOptions' => array('visible', 'catalog', 'search', 'hidden')),
@@ -596,7 +596,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'unformatted' => array('data' => '_product_image_gallery', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 300,
 				'supports_formulas' => true,
-				'title' => __('Gallery', VGSE()->textname),
+				'title' => __('Gallery', 'vg_sheet_editor' ),
 				'type' => 'boton_gallery_multiple',
 				'formatted' => array('data' => '_product_image_gallery', 'renderer' => 'html', 'readOnly' => true),
 				'allow_to_hide' => true,
@@ -608,7 +608,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_downloadable'),
 				'column_width' => 150,
-				'title' => __('Downloadable', VGSE()->textname),
+				'title' => __('Downloadable', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_downloadable',
@@ -625,7 +625,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_virtual'),
 				'column_width' => 150,
-				'title' => __('Virtual', VGSE()->textname),
+				'title' => __('Virtual', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_virtual',
@@ -642,7 +642,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_sale_price_dates_from'),
 				'column_width' => 150,
-				'title' => __('Sales price date from', VGSE()->textname),
+				'title' => __('Sales price date from', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_sale_price_dates_from', 'type' => 'date', 'dateFormat' => 'YYYY-MM-DD', 'correctFormat' => true, 'defaultDate' => '', 'datePickerConfig' => array('firstDay' => 0, 'showWeekNumber' => true, 'numberOfMonths' => 1)),
@@ -654,7 +654,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_sale_price_dates_to'),
 				'column_width' => 150,
-				'title' => __('Sales price date to', VGSE()->textname),
+				'title' => __('Sales price date to', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_sale_price_dates_to', 'type' => 'date', 'dateFormat' => 'YYYY-MM-DD', 'correctFormat' => true, 'defaultDate' => '', 'datePickerConfig' => array('firstDay' => 0, 'showWeekNumber' => true, 'numberOfMonths' => 1)),
@@ -665,7 +665,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_sold_individually'),
 				'column_width' => 150,
-				'title' => __('Sold individually', VGSE()->textname),
+				'title' => __('Sold individually', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_sold_individually',
@@ -681,7 +681,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_featured'),
 				'column_width' => 150,
-				'title' => __('is featured?', VGSE()->textname),
+				'title' => __('is featured?', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_featured',
@@ -697,7 +697,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_backorders'),
 				'column_width' => 150,
-				'title' => __('Allow backorders', VGSE()->textname),
+				'title' => __('Allow backorders', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_backorders',
@@ -717,7 +717,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_purchase_note'),
 				'column_width' => 250,
-				'title' => __('Purchase note', VGSE()->textname),
+				'title' => __('Purchase note', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_purchase_note',),
@@ -730,7 +730,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'post_terms',
 				'unformatted' => array('data' => $shipping_tax_name),
 				'column_width' => 150,
-				'title' => __('Shipping class', VGSE()->textname),
+				'title' => __('Shipping class', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => $shipping_tax_name, 'type' => 'autocomplete', 'source' => 'loadTaxonomyTerms'),
@@ -742,7 +742,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_download_limit'),
 				'column_width' => 150,
-				'title' => __('Download limit', VGSE()->textname),
+				'title' => __('Download limit', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_download_limit',),
@@ -754,7 +754,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_download_expiry'),
 				'column_width' => 150,
-				'title' => __('Download expiry', VGSE()->textname),
+				'title' => __('Download expiry', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_download_expiry',),
@@ -766,7 +766,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => 'meta_data',
 				'unformatted' => array('data' => '_download_type'),
 				'column_width' => 250,
-				'title' => __('Download type', VGSE()->textname),
+				'title' => __('Download type', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => true,
 				'formatted' => array('data' => '_download_type', 'editor' => 'select', 'selectOptions' => array(
@@ -781,12 +781,12 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => null,
 				'unformatted' => array('data' => '_downloadable_files', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 120,
-				'title' => __('Download files', VGSE()->textname),
+				'title' => __('Download files', 'vg_sheet_editor' ),
 				'type' => 'handsontable',
-				'edit_button_label' => __('Edit files', VGSE()->textname),
+				'edit_button_label' => __('Edit files', 'vg_sheet_editor' ),
 				'edit_modal_id' => 'vgse-download-files',
-				'edit_modal_title' => __('Download files', VGSE()->textname),
-				'edit_modal_description' => '<div class="vgse-copy-files-from-product-wrapper"><label>' . __('Copy files from this product: (You need to save the changes afterwards.)', VGSE()->textname) . ' </label><br/><select name="copy_from_product" data-remote="true" data-min-input-length="4" data-action="vgse_find_post_by_name" data-post-type="' . $this->post_type . '" data-nonce="' . wp_create_nonce('bep-nonce') . '" data-placeholder="' . __('Select product...', VGSE()->textname) . '" class="select2 vgse-copy-files-from-product">
+				'edit_modal_title' => __('Download files', 'vg_sheet_editor' ),
+				'edit_modal_description' => '<div class="vgse-copy-files-from-product-wrapper"><label>' . __('Copy files from this product: (You need to save the changes afterwards.)', 'vg_sheet_editor' ) . ' </label><br/><select name="copy_from_product" data-remote="true" data-min-input-length="4" data-action="vgse_find_post_by_name" data-post-type="' . $this->post_type . '" data-nonce="' . wp_create_nonce('bep-nonce') . '" data-placeholder="' . __('Select product...', 'vg_sheet_editor' ) . '" class="select2 vgse-copy-files-from-product">
 									<option></option>
 								</select><a href="#" class="button vgse-copy-files-from-product-trigger">Copy</a></div>',
 				'edit_modal_local_cache' => true,
@@ -809,8 +809,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 						),
 					)),
 				'handsontable_column_names' => array(
-					$this->post_type => array(__('Name', VGSE()->textname), __('File (url or path)', VGSE()->textname)),
-					'product_variation' => array(__('Name', VGSE()->textname), __('File (url or path)', VGSE()->textname)),
+					$this->post_type => array(__('Name', 'vg_sheet_editor' ), __('File (url or path)', 'vg_sheet_editor' )),
+					'product_variation' => array(__('Name', 'vg_sheet_editor' ), __('File (url or path)', 'vg_sheet_editor' )),
 				),
 				'handsontable_column_widths' => array(
 					$this->post_type => array(160, 300),
@@ -830,7 +830,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 					'data' => '_variation_description'
 				),
 				'column_width' => 175,
-				'title' => __('Variation description', VGSE()->textname),
+				'title' => __('Variation description', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => false,
 				'formatted' => array(
@@ -848,7 +848,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 					'data' => '_vgse_variation_enabled'
 				),
 				'column_width' => 140,
-				'title' => __('Variation enabled?', VGSE()->textname),
+				'title' => __('Variation enabled?', 'vg_sheet_editor' ),
 				'type' => '',
 				'supports_formulas' => false,
 				'formatted' => array(
@@ -867,11 +867,11 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'data_type' => null,
 				'unformatted' => array('data' => 'default_attributes', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 160,
-				'title' => __('Default attributes', VGSE()->textname),
+				'title' => __('Default attributes', 'vg_sheet_editor' ),
 				'type' => 'handsontable',
-				'edit_button_label' => __('Default attributes', VGSE()->textname),
+				'edit_button_label' => __('Default attributes', 'vg_sheet_editor' ),
 				'edit_modal_id' => 'vgse-default-attributes',
-				'edit_modal_title' => __('Default attributes', VGSE()->textname),
+				'edit_modal_title' => __('Default attributes', 'vg_sheet_editor' ),
 				'edit_modal_description' => sprintf(__('Note: Separate values with the character %s<br/>The product must be variable and have existing variations for this to work, otherwise the default attributes won\'t be saved.'), WC_DELIMITER),
 				'edit_modal_save_action' => 'vgse_save_default_attributes',
 				'edit_modal_get_action' => 'vgse_save_default_attributes',
@@ -887,8 +887,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 					)),
 				'handsontable_column_names' => array(
 					$this->post_type => array(
-						__('Name', VGSE()->textname),
-						__('Value', VGSE()->textname)
+						__('Name', 'vg_sheet_editor' ),
+						__('Value', 'vg_sheet_editor' )
 					)
 				),
 				'handsontable_column_widths' => array(
@@ -917,7 +917,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 
 			for ($i = 0; $i < $number; $i++) {
 				$api_response = VGSE()->helpers->create_rest_request('POST', '/wc/v1/products', array(
-					'name' => __('...', VGSE()->textname),
+					'name' => __('...', 'vg_sheet_editor' ),
 					'status' => 'draft'
 				));
 

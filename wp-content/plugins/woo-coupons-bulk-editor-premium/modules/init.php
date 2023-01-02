@@ -33,6 +33,12 @@ if (!class_exists('WP_Sheet_Editor_CORE_Modules_Init')) {
 			if ($current_editor_key && is_object($this->freemius_instance) && !empty($package_settings) && !empty($package_settings['vgEditorKeys']) && in_array($current_editor_key, $package_settings['vgEditorKeys'], true)) {
 
 				$directories = $this->freemius_instance->can_use_premium_code__premium_only() ? array_merge($package_settings['sheetEditorModules']['free'], $package_settings['sheetEditorModules']['pro']) : $package_settings['sheetEditorModules']['free'];
+
+				
+				if( !empty($package_settings['sheetEditorModules']['dev'])){
+					$directories = defined('VGSE_DEBUG') && VGSE_DEBUG ? array_merge($directories, $package_settings['sheetEditorModules']['dev']) : array_diff($directories, $package_settings['sheetEditorModules']['dev']);
+				}
+
 			}
 
 			return $directories;
@@ -66,6 +72,10 @@ if (!class_exists('WP_Sheet_Editor_CORE_Modules_Init')) {
 				// If we're developing locally and the package.json file exists, only load the allowed modules according to the freemius license
 				if (is_object($this->freemius_instance) && !$this->freemius_instance->can_use_premium_code__premium_only()) {
 					$directories = array_intersect($directories, $package_settings['sheetEditorModules']['free']);
+				}
+
+				if( !empty($package_settings['sheetEditorModules']['dev'])){
+					$directories = defined('VGSE_DEBUG') && VGSE_DEBUG ? array_merge($directories, $package_settings['sheetEditorModules']['dev']) : array_diff($directories, $package_settings['sheetEditorModules']['dev']);
 				}
 			}
 

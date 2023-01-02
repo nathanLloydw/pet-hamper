@@ -48,7 +48,7 @@ if (!class_exists('WPSE_Google_Sheets')) {
 			</style>
 			<script>
 				jQuery(window).on('load', function () {
-					jQuery('.page-title-action').last().after('<a href="#" class="page-title-action wpse-quick-access-link"><?php echo esc_html(__('Edit in Google Sheets', VGSE()->textname)); ?></a><div class="wpsegs-quick-access"><p><?php echo __('1. <a href="http://sheets.new" target="_blank">Open Google Sheets</a>.<br>2. Click on "wp sheet editor" in the menu<br>3. Enter this link in the "quick access" option in the Google Sheet sidebar.', VGSE()->textname); ?></p><input readonly onFocus="this.select()" class="access-link-visible">				<small class="access-link-visible"><?php echo esc_html(__('Use this link privately for security reasons, this link expires after one usage.', VGSE()->textname)); ?></small></div>');
+					jQuery('.page-title-action').last().after('<a href="#" class="page-title-action wpse-quick-access-link"><?php echo esc_html(__('Edit in Google Sheets', 'vg_sheet_editor' )); ?></a><div class="wpsegs-quick-access"><p><?php echo __('1. <a href="http://sheets.new" target="_blank">Open Google Sheets</a>.<br>2. Click on "wp sheet editor" in the menu<br>3. Enter this link in the "quick access" option in the Google Sheet sidebar.', 'vg_sheet_editor' ); ?></p><input readonly onFocus="this.select()" class="access-link-visible">				<small class="access-link-visible"><?php echo esc_html(__('Use this link privately for security reasons, this link expires after one usage.', 'vg_sheet_editor' )); ?></small></div>');
 				});
 			</script>
 			<?php
@@ -62,7 +62,7 @@ if (!class_exists('WPSE_Google_Sheets')) {
 		function register_toolbar_items($editor) {
 			$editor->args['toolbars']->register_item('edit_google_sheets', array(
 				'type' => 'button', // html | switch | button
-				'content' => __('Edit in Google Sheets', VGSE()->textname),
+				'content' => __('Edit in Google Sheets', 'vg_sheet_editor' ),
 				'id' => 'edit_google_sheets',
 				'toolbar_key' => 'primary',
 				'extra_html_attributes' => 'data-remodal-target="edit-google-sheets-modal"',

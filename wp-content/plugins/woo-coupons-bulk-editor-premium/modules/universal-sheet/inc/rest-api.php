@@ -1,29 +1,32 @@
 <?php
 
 // Exit early if the rest api is not enabled
-$wpse_options = get_option(VGSE()->options_key);
-if (empty($wpse_options['be_enable_rest_api'])) {
+$wpse_options = get_option( 'vg_sheet_editor' );
+if ( empty( $wpse_options['be_enable_rest_api'] ) ) {
 	return;
 }
 // If the wp rest api is not available, exit
-if (!class_exists('WP_REST_Controller')) {
+if ( ! class_exists( 'WP_REST_Controller' ) ) {
 	return;
 }
 
-if (!class_exists('WPSE_REST_API')) {
+if ( ! class_exists( 'WPSE_REST_API' ) ) {
 
 	class WPSE_REST_API extends WP_REST_Controller {
 
-		function _validate_string($param, $request, $key) {
-			return is_string($param) && !empty($param);
+		public function _validate_string( $param, $request, $key ) {
+			return is_string( $param ) && ! empty( $param );
 		}
 
-		function _validate_int($param, $request, $key) {
-			return intval($param) && !empty($param);
+		public function _validate_int( $param, $request, $key ) {
+			return intval( $param ) && ! empty( $param );
+		}
+		public function _validate_json_string( $param, $request, $key ) {
+			return is_string( $param ) && strpos($param, '{') === 0;
 		}
 
-		function get_route_namespace() {
-			$version = '1';
+		public static function get_route_namespace() {
+			$version   = '1';
 			$namespace = 'sheet-editor/v' . $version;
 			return $namespace;
 		}
@@ -32,188 +35,578 @@ if (!class_exists('WPSE_REST_API')) {
 		 * Register the routes for the objects of the controller.
 		 */
 		public function register_routes() {
-			$namespace = $this->get_route_namespace();
-			register_rest_route($namespace, '/settings', array(
+			$namespace = self::get_route_namespace();
+			register_rest_route(
+				$namespace,
+				'/settings',
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array($this, 'get_settings'),
-					'permission_callback' => array($this, 'get_general_settings_permissions_check'),
-				),
-			));
-			register_rest_route($namespace, '/sheet/settings', array(
+					array(
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => array( $this, 'get_settings' ),
+						'permission_callback' => array( $this, 'get_general_settings_permissions_check' ),
+					),
+				)
+			);
+			register_rest_route(
+				$namespace,
+				'/sheet/settings',
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array($this, 'get_sheet_settings'),
-					'permission_callback' => array($this, 'get_items_permissions_check'),
-					'args' => array(
-						'sheet_key' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'validate_callback' => array($this, '_validate_string')
+					array(
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => array( $this, 'get_sheet_settings' ),
+						'permission_callback' => array( $this, 'get_items_permissions_check' ),
+						'args'                => array(
+							'sheet_key' => array(
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
 						),
 					),
+				)
+			);
+			$load_rows_args = array(
+				'sheet_key'                 => array(
+					'type'              => 'string',
+					'sanitize_callback' => function ( $param ) {
+						return VGSE()->helpers->sanitize_table_key( $param );
+					},
+					'validate_callback' => array( $this, '_validate_string' ),
+					'required'          => true,
 				),
-			));
-			register_rest_route($namespace, '/sheet/generate-quick-access', array(
+				'page'                      => array(
+					'type'     => 'integer',
+					'required' => true,
+					'minimum'  => 1,
+				),
+				'custom_enabled_columns'    => array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'type'              => 'string',
+					'required'          => false,
+				),
+				'wpse_source_suffix'        => array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'type'              => 'string',
+					'required'          => false,
+				),
+				'wpse_source'               => array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'type'              => 'string',
+					'required'          => false,
+				),
+				'filters'                   => array(
+					'validate_callback' => array( $this, '_validate_json_string'),
+					'sanitize_callback' => 'wp_kses_post',
+					'type'              => 'string',
+					'required'          => false,
+				),
+				'wpse_job_id'               => array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => array( $this, '_validate_string' ),
+					'required'          => false,
+				),
+				'wpse_reset_posts_per_page' => array(
+					'type'     => 'boolean',
+					'required' => false,
+				),
+				'posts_per_page'            => array(
+					'required' => false,
+					'type'     => 'integer',
+					'minimum'  => 1,
+					'maximum'  => ! empty( VGSE()->options['be_posts_per_page'] ) ? (int) VGSE()->options['be_posts_per_page'] : 20,
+				),
+			);
+			register_rest_route(
+				$namespace,
+				'/sheet/rows',
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array($this, 'generate_quick_access_link'),
-					'permission_callback' => array($this, 'get_items_permissions_check'),
-					'args' => array(
-						'sheet_key' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'validate_callback' => array($this, '_validate_string')
+					array(
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => array( $this, 'get_sheet_rows' ),
+						'permission_callback' => array( $this, 'get_items_permissions_check' ),
+						'args'                => $load_rows_args,
+					),
+					array(
+						'methods'             => WP_REST_Server::CREATABLE,
+						'callback'            => array( $this, 'update_sheet_rows' ),
+						'permission_callback' => array( $this, 'update_items_permissions_check' ),
+						'args'                => array(
+							'sheet_key'           => array(
+								'type'              => 'string',
+								'sanitize_callback' => function ( $param ) {
+									return VGSE()->helpers->sanitize_table_key( $param );
+								},
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
+							'data'                => array(
+								'type'     => 'array',
+								'minItems' => 1,
+								'required' => true,
+								'items'    => array(
+									'type' => 'object',
+								),
+							),
+							'allow_to_create_new' => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
+							'wpse_source'         => array(
+								'sanitize_callback' => 'sanitize_text_field',
+								'type'              => 'string',
+								'required'          => false,
+							),
+							'filters'             => array(
+								'validate_callback' => array( $this, '_validate_json_string'),
+								'sanitize_callback' => 'wp_kses_post',
+								'type'              => 'string',
+								'required'          => false,
+							),
+
 						),
 					),
-				),
-			));
-			register_rest_route($namespace, '/sheet/quick-access', array(
+				)
+			);
+
+			register_rest_route(
+				$namespace,
+				'/sheet/export-rows',
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array($this, 'get_quick_access_settings'),
-					'args' => array(
-						'session_id' => array(
-							'validate_callback' => array($this, '_validate_int'),
-							'required' => true
+					array(
+						'methods'             => WP_REST_Server::CREATABLE,
+						'callback'            => array( $this, 'get_rows_for_export' ),
+						'permission_callback' => array( $this, 'get_items_permissions_check' ),
+						'args'                => apply_filters(
+							'vg_sheet_editor/rest/export_rows_args',
+							array_merge(
+								$load_rows_args,
+								array(
+									'posts_per_page'      => array(
+										'required' => false,
+										'type'     => 'integer',
+										'minimum'  => 1,
+										'maximum'  => ! empty( VGSE()->options['export_page_size'] ) ? (int) VGSE()->options['export_page_size'] : 100,
+									),
+									'wpse_job_id'         => array(
+										'sanitize_callback' => 'sanitize_text_field',
+										'validate_callback' => array( $this, '_validate_string' ),
+										'required' => true,
+										'type'     => 'string',
+									),
+									'custom_enabled_columns' => array(
+										'sanitize_callback' => 'sanitize_text_field',
+										'type'     => 'string',
+										'required' => true,
+									),
+									'line_items_separate_rows' => array(
+										'type'     => 'boolean',
+										'required' => true,
+									),
+									'add_excel_separator_flag' => array(
+										'type'     => 'boolean',
+										'required' => true,
+									),
+									'save_for_later_name' => array(
+										'sanitize_callback' => 'sanitize_text_field',
+										'type'     => 'string',
+										'required' => true,
+									),
+								)
+							)
 						),
 					),
-				),
-			));
-			register_rest_route($namespace, '/sheet/rows', array(
+				)
+			);
+			register_rest_route(
+				$namespace,
+				'/sheet/bulk-edit',
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array($this, 'get_sheet_rows'),
-					'permission_callback' => array($this, 'get_items_permissions_check'),
-					'args' => array(
-						'sheet_key' => array(
-							'type' => 'string',
-							'sanitize_callback' => 'sanitize_text_field',
-							'validate_callback' => array($this, '_validate_string'),
-							'required' => true
-						),
-						'custom_enabled_columns' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => false
-						),
-						'sheet_filters' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => false
-						),
-						'sheet_export_id' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'validate_callback' => array($this, '_validate_string'),
-							'required' => true
-						),
-						'sheet_export_page' => array(
-							'validate_callback' => array($this, '_validate_int'),
-							'required' => true
+					array(
+						'methods'             => WP_REST_Server::CREATABLE,
+						'callback'            => array( $this, 'execute_bulk_edit' ),
+						'permission_callback' => array( $this, 'update_items_permissions_check' ),
+						'args'                => array(
+							'column'               => array(
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'type'              => 'string',
+							),
+							'formula'              => array(
+								'sanitize_callback' => array( $this, 'sanitize_bulk_edit_formula' ),
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'type'              => 'string',
+							),
+							'formula_data'         => array(
+								'type'     => 'array',
+								'required' => true,
+								'items'    => array(
+									'type' => 'string',
+								),
+							),
+							'sheet_key'            => array(
+								'type'              => 'string',
+								'sanitize_callback' => function ( $param ) {
+									return VGSE()->helpers->sanitize_table_key( $param );
+								},
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
+							'page'                 => array(
+								'type'     => 'integer',
+								'minimum'  => 1,
+								'required' => true,
+							),
+							'wpse_job_id'          => array(
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'type'              => 'string',
+							),
+							// @todo Use enum to only accept registered actions
+							'action_name'          => array(
+								'sanitize_callback' => array( $this, 'sanitize_bulk_edit_formula' ),
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'type'              => 'string',
+							),
+							'filters'              => array(
+								'validate_callback' => array( $this, '_validate_json_string'),
+								'sanitize_callback' => 'wp_kses_post',
+								'type'              => 'string',
+								'required'          => false,
+							),
+							'use_slower_execution' => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
 						),
 					),
-				),
+				)
+			);
+			register_rest_route(
+				$namespace,
+				'/sheet/import-rows',
 				array(
-					'methods' => WP_REST_Server::CREATABLE,
-					'callback' => array($this, 'update_sheet_rows'),
-					'permission_callback' => array($this, 'update_items_permissions_check'),
-					'args' => array(
-						'sheet_key' => array(
-							'type' => 'string',
-							'sanitize_callback' => 'sanitize_text_field',
-							'validate_callback' => array($this, '_validate_string'),
-							'required' => true
-						),
-						'sheet_import_page' => array(
-							'validate_callback' => array($this, '_validate_int'),
-							'required' => true
-						),
-						'sheet_total_rows' => array(
-							'validate_callback' => array($this, '_validate_int'),
-							'required' => true
-						),
-						'sheet_wp_columns' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => true
-						),
-						'sheet_source_column' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => true
-						),
-						'sheet_existing_check_wp_field' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => false
-						),
-						'sheet_writing_type' => array(
-							'sanitize_callback' => 'sanitize_text_field',
-							'type' => 'string',
-							'required' => true,
-							'enum' => array('both', 'all_new', 'only_new', 'only_update'),
+					array(
+						'methods'             => WP_REST_Server::CREATABLE,
+						'callback'            => array( $this, 'import_rows' ),
+						'permission_callback' => array( $this, 'update_items_permissions_check' ),
+						'args'                => array(
+							'sheet_key'                    => array(
+								'type'              => 'string',
+								'sanitize_callback' => function ( $param ) {
+									return VGSE()->helpers->sanitize_table_key( $param );
+								},
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
+							'wpse_job_id'                  => array(
+								'type'              => 'string',
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
+							'page'                         => array(
+								'type'     => 'integer',
+								'minimum'  => 1,
+								'required' => true,
+							),
+							'total_rows'                   => array(
+								'type'     => 'integer',
+								'minimum'  => 1,
+								'required' => true,
+							),
+							'sheet_editor_column'          => array(
+								'type'     => 'array',
+								'minItems' => 1,
+								'required' => true,
+								'items'    => array(
+									'type' => 'string',
+								),
+							),
+							'source_column'                => array(
+								'type'     => 'array',
+								'minItems' => 1,
+								'required' => true,
+								'items'    => array(
+									'type' => 'string',
+								),
+							),
+							'writing_type'                 => array(
+								'type'              => 'string',
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'enum'              => array( 'both', 'all_new', 'only_new', 'only_update' ),
+							),
+							'import_type'                  => array(
+								'type'              => 'string',
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+								'enum'              => array( 'csv', 'json' ),
+							),
+							'per_page'                     => array(
+								'type'     => 'integer',
+								'minimum'  => 1,
+								'maximum'  => ! empty( VGSE()->options['be_posts_per_page_save'] ) ? (int) VGSE()->options['be_posts_per_page_save'] : 10,
+								'required' => false,
+							),
+							'start_row'                    => array(
+								'type'     => 'integer',
+								'minimum'  => 0,
+								'required' => false,
+							),
+							'decode_quotes'                => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
+							'remember_column_mapping'      => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
+							'pending_post_if_image_failed' => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
+							'skip_broken_images'           => array(
+								'type'     => 'boolean',
+								'required' => false,
+							),
+							'separator'                    => array(
+								'type'              => 'string',
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+							),
+							'existing_check_csv_field'     => array(
+								'type'     => 'array',
+								'minItems' => 1,
+								'required' => false,
+								'items'    => array(
+									'type' => 'string',
+								),
+							),
+							'existing_check_wp_field'      => array(
+								'type'     => 'array',
+								'minItems' => 1,
+								'required' => false,
+								'items'    => array(
+									'type' => 'string',
+								),
+							),
+							'import_file'                  => array(
+								'type'              => 'string',
+								'sanitize_callback' => 'sanitize_text_field',
+								'validate_callback' => array( $this, '_validate_string' ),
+								'required'          => true,
+							),
+							'file_position'                => array(
+								'type'     => 'integer',
+								'minimum'  => 0,
+								'required' => true,
+							),
+							'wpse_source_suffix'           => array(
+								'sanitize_callback' => 'sanitize_text_field',
+								'type'              => 'string',
+								'required'          => false,
+							),
 						),
 					),
-				),
-			));
+				)
+			);
 		}
 
-		function update_sheet_rows($request) {
-			$settings = array();
-			$settings['post_type'] = $request->get_param('sheet_key');
-			$settings['page'] = $request->get_param('sheet_import_page');
-			$settings['per_page'] = $request->get_param('sheet_import_per_page');
-			$settings['sheet_editor_column'] = explode(',', $request->get_param('sheet_wp_columns'));
-			$settings['source_column'] = explode(',', $request->get_param('sheet_source_column'));
-			$settings['writing_type'] = $request->get_param('sheet_writing_type');
-			$settings['import_type'] = 'json';
-			$settings['total_rows'] = $request->get_param('sheet_total_rows');
-			$settings['existing_check_wp_field'] = explode(',', $request->get_param('sheet_existing_check_wp_field'));
-			$settings['vgse_plain_mode'] = 'yes';
-			$settings['vgse_import'] = 'yes';
-			$settings['data'] = VGSE()->helpers->safe_html($request->get_param('sheet_data'));
+		public function sanitize_bulk_edit_formula( $value, $request, $param ) {
+			$value = strpos( $request['formula'], WP_Sheet_Editor_Formulas::$regex_flag ) !== false ? strval( $request['formula'] ) : wp_kses_post( wp_unslash( $request['formula'] ) );
+			return $value;
+		}
 
-			$out = WPSE_CSV_API_Obj()->import_data($settings);
+		public function execute_bulk_edit( $request ) {
+			$settings = $request->get_params();
+			$params   = array(
+				'column'        => $settings['column'],
+				'formula'       => $settings['formula'],
+				'post_type'     => $settings['sheet_key'],
+				'page'          => $settings['page'],
+				'wpse_job_id'   => $settings['wpse_job_id'],
+				'nonce'         => wp_create_nonce( 'bep-nonce' ),
+				'raw_form_data' => array(
+					'columns'              => array( $settings['column'] ),
+					'formula_data'         => $settings['formula_data'],
+					'action_name'          => $settings['action_name'],
+					'use_slower_execution' => ! empty( $settings['use_slower_execution'] ),
+				),
+				'filters'       => vgse_filters_init()->_get_raw_filters( isset( $settings['filters'] ) ? $settings['filters'] : '' ),
+			);
+			if ( isset( $settings['filters'] ) ) {
+				$_REQUEST['filters'] = $settings['filters'];
+			}
+			// Important. $_REQUEST['sheet_key'] is used in many places to detect the current sheet and used in many modules
+			$_REQUEST['sheet_key'] = $settings['sheet_key'];
 
-			if (is_wp_error($out)) {
-				return new WP_Error('wpse', $out->get_error_message(), array('status' => 400));
+			$out = vgse_formulas_init()->bulk_execute_formula( $params );
+
+			if ( is_wp_error( $out ) ) {
+				return new WP_Error( 'wpse', $out->get_error_message(), array( 'status' => 400 ) );
+			}
+
+			return $out;
+		}
+		public function import_rows( $request ) {
+
+			$settings = $request->get_params();
+			$params   = array(
+				'nonce'                        => wp_create_nonce( 'bep-nonce' ),
+				'post_type'                    => $settings['sheet_key'],
+				'page'                         => $settings['page'],
+				'sheet_editor_column'          => $settings['sheet_editor_column'],
+				'source_column'                => $settings['source_column'],
+				'writing_type'                 => $settings['writing_type'],
+				'import_type'                  => $settings['import_type'],
+				'total_rows'                   => $settings['total_rows'],
+				'wpse_job_id'                  => $settings['wpse_job_id'],
+				'import_file'                  => wp_unslash( $settings['import_file'] ),
+				'file_position'                => $settings['file_position'],
+				'vgse_plain_mode'              => 'yes',
+				'vgse_import'                  => 'yes',
+				'wpse_source_suffix'           => isset( $settings['wpse_source_suffix'] ) ? $settings['wpse_source_suffix'] : '',
+				'per_page'                     => ! empty( $settings['per_page'] ) ? $settings['per_page'] : 0,
+				'start_row'                    => ! empty( $settings['start_row'] ) ? $settings['start_row'] : 0,
+				'decode_quotes'                => ! empty( $settings['decode_quotes'] ),
+				'remember_column_mapping'      => ! empty( $settings['remember_column_mapping'] ),
+				'pending_post_if_image_failed' => ! empty( $settings['pending_post_if_image_failed'] ),
+				'skip_broken_images'           => ! empty( $settings['skip_broken_images'] ),
+				'separator'                    => ! empty( $settings['separator'] ) ? $settings['separator'] : '',
+				'existing_check_csv_field'     => isset( $settings['existing_check_csv_field'] ) ? $settings['existing_check_csv_field'] : array(),
+				'existing_check_wp_field'      => isset( $settings['existing_check_wp_field'] ) ? $settings['existing_check_wp_field'] : array(),
+			);
+			// Important. $_REQUEST['sheet_key'] is used in many places to detect the current sheet and used in many modules
+			$_REQUEST['sheet_key'] = $settings['sheet_key'];
+
+			$out = WPSE_CSV_API_Obj()->import_data( $params );
+
+			if ( is_wp_error( $out ) ) {
+				return new WP_Error( 'wpse', $out->get_error_message(), array( 'status' => 400 ) );
 			}
 
 			return $out;
 		}
 
-		function get_sheet_rows($request) {
+		public function update_sheet_rows( $request ) {
+
 			$settings = $request->get_params();
-
-			$settings['wpse_source'] = 'load_rows';
-			$settings['vgse_plain_mode'] = 'yes';
-			$settings['vgse_csv_export'] = 'yes';
-			$settings['post_type'] = $request->get_param('sheet_key');
-			$settings['filters'] = $request->get_param('sheet_filters');
-
-			// Required by the advanced filters module
-			if (!empty($settings['filters'])) {
-				$original_filters = ( isset($_REQUEST['filters'])) ? $_REQUEST['filters'] : '';
+			$params   = array(
+				'nonce'               => wp_create_nonce( 'bep-nonce' ),
+				'post_type'           => $settings['sheet_key'],
+				'data'                => VGSE()->helpers->sanitize_data_for_db( $settings['data'], $settings['sheet_key'] ),
+				'allow_to_create_new' => ! empty( $settings['allow_to_create_new'] ),
+				'wpse_source'         => isset( $settings['wpse_source'] ) ? $settings['wpse_source'] : null,
+				'filters'             => vgse_filters_init()->_get_raw_filters( isset( $settings['filters'] ) ? $settings['filters'] : '' ),
+			);
+			if ( isset( $settings['filters'] ) ) {
 				$_REQUEST['filters'] = $settings['filters'];
 			}
+			// Important. $_REQUEST['sheet_key'] is used in many places to detect the current sheet and used in many modules
+			$_REQUEST['sheet_key'] = $settings['sheet_key'];
 
-			if (empty($settings['custom_enabled_columns'])) {
-				$request->set_param('custom_enabled_columns', implode(',', array_keys(vgse_universal_sheet()->get_export_options($settings['post_type']))));
-			}
-			$_REQUEST['custom_enabled_columns'] = $request->get_param('custom_enabled_columns');
-			$settings['custom_enabled_columns'] = $request->get_param('custom_enabled_columns');
+			$result = VGSE()->helpers->save_rows( $params );
 
-			$settings['export_key'] = $request->get_param('sheet_export_id');
-			$settings['paged'] = $request->get_param('sheet_export_page');
-
-			$rows = VGSE()->helpers->get_rows($settings);
-
-			if (!empty($settings['filters'])) {
-				$_REQUEST['filters'] = $original_filters;
-			}
-			if (is_wp_error($rows)) {
-				return new WP_Error('wpse', $rows->get_error_message(), array('status' => 400));
+			if ( is_wp_error( $result ) ) {
+				return new WP_Error( 'wpse', $result->get_error_message(), array( 'status' => 400 ) );
 			}
 
-			$rows['rows'] = array_values($rows['rows']);
+			$out = array(
+				'message' => __( 'Changes saved successfully', 'vg_sheet_editor' ),
+				'deleted' => array_unique( VGSE()->deleted_rows_ids ),
+			);
+			return $out;
+		}
+
+		public function _get_rows_params( $settings ) {
+
+			$request_data = array(
+				'nonce'              => wp_create_nonce( 'bep-nonce' ),
+				'post_type'          => $settings['sheet_key'],
+				'paged'              => $settings['page'],
+				'posts_per_page'     => isset( $settings['posts_per_page'] ) ? $settings['posts_per_page'] : 0,
+				'wpse_source_suffix' => isset( $settings['wpse_source_suffix'] ) ? $settings['wpse_source_suffix'] : '',
+				'wpse_source'        => isset( $settings['wpse_source'] ) ? $settings['wpse_source'] : '',
+				'filters'            => vgse_filters_init()->_get_raw_filters( isset( $settings['filters'] ) ? $settings['filters'] : '' ),
+			);
+			if ( isset( $settings['filters'] ) ) {
+				$_REQUEST['filters'] = $settings['filters'];
+			}
+			if ( isset( $settings['custom_enabled_columns'] ) ) {
+				$_REQUEST['custom_enabled_columns']     = $settings['custom_enabled_columns'];
+				$request_data['custom_enabled_columns'] = $settings['custom_enabled_columns'];
+			}
+			if ( isset( $settings['wpse_job_id'] ) ) {
+				$_REQUEST['wpse_job_id']     = $settings['wpse_job_id'];
+				$request_data['wpse_job_id'] = $settings['wpse_job_id'];
+			}
+			// Important. $_REQUEST['sheet_key'] is used in many places to detect the current sheet and used in many modules
+			$_REQUEST['sheet_key'] = $settings['sheet_key'];
+
+			// Reset the number of rows per page, we receive this parameter from the client when
+			// the current rows per page > 300 and the request failed
+			if ( ! empty( $settings['wpse_reset_posts_per_page'] ) ) {
+				VGSE()->update_option('be_posts_per_page', 10);
+			}
+
+			$source_prefix               = ( ! empty( $request_data['wpse_source_suffix'] ) ) ? (string) $request_data['wpse_source_suffix'] : '';
+			$request_data['wpse_source'] = 'load_rows' . $source_prefix;
+			return $request_data;
+		}
+		public function get_rows_for_export( $request ) {
+
+			$settings     = $request->get_params();
+			$request_data = $this->_get_rows_params( $settings );
+
+			$request_data['vgse_csv_export'] = 'yes';
+			if ( empty( $request_data['wpse_source'] ) ) {
+				$request_data['wpse_source'] = 'rest_export';
+			}
+			$request_data['wpse_job_id']              = $settings['wpse_job_id'];
+			$request_data['line_items_separate_rows'] = ! empty( $settings['line_items_separate_rows'] );
+			$request_data['add_excel_separator_flag'] = ! empty( $settings['add_excel_separator_flag'] );
+			if ( ! empty( $settings['save_for_later_name'] ) && VGSE()->helpers->user_can_manage_options() ) {
+				$request_data['save_for_later'] = array(
+					'name'                     => $settings['save_for_later_name'],
+					'columns'                  => $request_data['custom_enabled_columns'],
+					'add_excel_separator_flag' => $request_data['add_excel_separator_flag'],
+					'filters'                  => $request_data['filters'],
+					'post_type'                => $request_data['post_type'],
+				);
+			}
+			$_REQUEST['vgse_plain_mode'] = 'yes';
+
+			$early_response = apply_filters( 'vg_sheet_editor/rest/export_rows_early_response', null, $request_data, $request );
+			if ( ! is_null( $early_response ) ) {
+				return $early_response;
+			}
+
+			$rows = VGSE()->helpers->get_rows( $request_data );
+
+			if ( is_wp_error( $rows ) ) {
+				return new WP_Error( 'wpse', $rows->get_error_message(), array( 'status' => 400 ) );
+			}
+
+			$rows['rows'] = array_values( $rows['rows'] );
+			return $rows;
+		}
+		public function get_sheet_rows( $request ) {
+
+			$settings     = $request->get_params();
+			$request_data = $this->_get_rows_params( $settings );
+			$rows         = VGSE()->helpers->get_rows( $request_data );
+
+			if ( is_wp_error( $rows ) ) {
+				return new WP_Error( 'wpse', $rows->get_error_message(), array( 'status' => 400 ) );
+			}
+
+			$rows['rows'] = array_values( $rows['rows'] );
 			return $rows;
 		}
 
@@ -222,64 +615,17 @@ if (!class_exists('WPSE_REST_API')) {
 		 * @param WP_REST_Request $request Full data about the request.
 		 * @return WP_Error|WP_REST_Response
 		 */
-		function get_sheet_settings($request) {
-			$editor = VGSE()->helpers->get_provider_editor($request['sheet_key']);
-			$out = $editor->get_editor_settings($request['sheet_key']);
+		public function get_sheet_settings( $request ) {
+			// Important. $_REQUEST['sheet_key'] is used in many places to detect the current sheet and used in many modules
+			$_REQUEST['sheet_key'] = $request['sheet_key'];
+			$editor                = VGSE()->helpers->get_provider_editor( $request['sheet_key'] );
+			$out                   = $editor->get_editor_settings( $request['sheet_key'] );
 
-			$out['export_columns'] = vgse_universal_sheet()->get_export_options($request['sheet_key']);
-			$out['import_columns'] = vgse_universal_sheet()->get_import_options($request['sheet_key']);
-
-			$unnecessary_keys = array('colWidths', 'colHeaders', 'columnsUnformat', 'columnsFormat', 'final_spreadsheet_columns_settings', 'export_keys_mapping');
-			foreach ($unnecessary_keys as $key_to_remove) {
-				if (isset($out[$key_to_remove])) {
-					unset($out[$key_to_remove]);
-				}
-			}
-			return $out;
-		}
-
-		function _generate_token($user_id) {
-			// @todo
-			return null;
-		}
-
-		function get_quick_access_settings($request) {
-			$transient_key = 'vgse_quick_access' . $request['session_id'];
-			$data = get_transient($transient_key);
-
-			if (empty($data)) {
-				return new WP_Error(
-						'wpse', __('The quick access link has expired or it does not exist'), array(
-					'status' => 403,
-						)
-				);
+			if ( function_exists( 'vgse_universal_sheet' ) ) {
+				$out['export_columns'] = wp_list_pluck( vgse_universal_sheet()->get_export_options( $request['sheet_key'] ), 'title', 'key' );
+				$out['import_columns'] = wp_list_pluck( vgse_universal_sheet()->get_import_options( $request['sheet_key'] ), 'title', 'key' );
 			}
 
-			delete_transient($transient_key);
-			return $data;
-		}
-
-		function generate_quick_access_link($request) {
-			VGSE()->current_provider = VGSE()->helpers->get_data_provider($request['sheet_key']);
-			$spreadsheet_columns = VGSE()->helpers->get_provider_columns($request['sheet_key']);
-
-			$data = array(
-				'sheet_key' => $request['sheet_key'],
-				'user_session' => $this->_generate_token(get_current_user_id()),
-				'custom_enabled_columns' => array_unique(array_values(wp_list_pluck($spreadsheet_columns, 'export_key'))),
-			);
-			$data = WP_Sheet_Editor_Filters::get_instance()->include_previous_session_filters($data, $request['sheet_key']);
-			$data['sheet_filters'] = $data['last_session_filters'];
-			unset($data['last_session_filters']);
-
-			$session_id = crc32($request['sheet_key'] . get_current_user_id());
-			$transient_key = 'vgse_quick_access' . $session_id;
-			set_transient($transient_key, $data, DAY_IN_SECONDS);
-
-			$out = array(
-				'session_id' => $session_id,
-				'quick_access_url' => rest_url($this->get_route_namespace() . '/sheet/quick-access?session_id=' . $session_id)
-			);
 			return $out;
 		}
 
@@ -288,60 +634,66 @@ if (!class_exists('WPSE_REST_API')) {
 		 * @param WP_REST_Request $request Full data about the request.
 		 * @return WP_Error|WP_REST_Response
 		 */
-		function get_settings($request) {
+		public function get_settings( $request ) {
 
 			$enabled_post_types = VGSE()->helpers->get_enabled_post_types();
-			$user = get_userdata(get_current_user_id());
+			$user               = get_userdata( get_current_user_id() );
+			$sheets             = VGSE()->helpers->get_prepared_post_types();
+			if ( ! WP_Sheet_Editor_Helpers::current_user_can( 'activate_plugins' ) ) {
+				foreach ( $sheets as $index => $sheet ) {
+					if ( ! in_array( $sheet['key'], $enabled_post_types, true ) ) {
+						unset( $sheets[ $index ] );
+					}
+				}
+			}
 			$out = array(
-				'sheets' => VGSE()->helpers->get_prepared_post_types(),
-				'active_sheets' => $enabled_post_types,
-				'rest_base' => rest_url(),
-				'current_user_id' => get_current_user_id(),
-				'current_user_email' => $user->user_email,
-				'current_user_first_name' => $user->first_name,
-				'current_user_last_name' => $user->last_name,
-				'current_user_role' => current($user->roles),
-				'woocommerce_product_post_type_key' => apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product'),
+				'sheets'                            => $sheets,
+				'active_sheets'                     => $enabled_post_types,
+				'rest_base'                         => rest_url(),
+				'current_user_id'                   => get_current_user_id(),
+				'current_user_email'                => $user->user_email,
+				'current_user_first_name'           => $user->first_name,
+				'current_user_last_name'            => $user->last_name,
+				'current_user_role'                 => current( $user->roles ),
+				'woocommerce_product_post_type_key' => apply_filters( 'vg_sheet_editor/woocommerce/product_post_type_key', 'product' ),
 			);
 
 			return $out;
 		}
 
 		/**
-		 * Get a collection of items
-		 *
-		 * @param WP_REST_Request $request Full data about the request.
-		 * @return WP_Error|WP_REST_Response
-		 */
-		public function get_items($request) {
-			return new WP_REST_Response($data, 200);
-		}
-
-		/**
-		 * Check if a given request has access to get items
+		 * Check if the user is logged in and has permissions to edit at least one spreadsheet
 		 *
 		 * @param WP_REST_Request $request Full data about the request.
 		 * @return WP_Error|bool
 		 */
-		public function get_general_settings_permissions_check($request) {
-			return is_user_logged_in() && current_user_can('edit_posts');
+		public function get_general_settings_permissions_check( $request ) {
+			return is_user_logged_in() && VGSE()->helpers->get_enabled_post_types();
 		}
 
-		public function get_items_permissions_check($request) {
-			return is_user_logged_in() && VGSE()->helpers->user_can_view_post_type($request['sheet_key']);
+		public function get_items_permissions_check( $request ) {
+			return is_user_logged_in() && VGSE()->helpers->user_can_view_post_type( $request['sheet_key'] ) || wp_doing_cron();
 		}
 
-		public function update_items_permissions_check($request) {
-			return is_user_logged_in() && VGSE()->helpers->user_can_edit_post_type($request['sheet_key']);
+		public function update_items_permissions_check( $request ) {
+			return is_user_logged_in() && VGSE()->helpers->user_can_edit_post_type( $request['sheet_key'] ) || wp_doing_cron();
 		}
 
-		function register_hooks() {
-			add_filter('vg_sheet_editor/allowed_on_frontend', array($this, 'allow_core_on_frontend'));
+		public function register_hooks() {
+			add_filter( 'vg_sheet_editor/allowed_on_frontend', array( $this, 'allow_core_on_frontend' ) );
+			add_filter( 'rest_authentication_errors', array( $this, 'init_wpse_after_rest_authentication' ), 9999 );
 		}
 
-		function allow_core_on_frontend($allow) {
+		public function init_wpse_after_rest_authentication( $result ) {
+			if ( is_user_logged_in() ) {
+				vgse_init();
+			}
+			return $result;
+		}
+
+		public function allow_core_on_frontend( $allow ) {
 			global $wp;
-			if (strpos(home_url($wp->request), rest_url()) !== false) {
+			if ( strpos( home_url( $wp->request ), rest_url() ) === 0 ) {
 				$allow = true;
 			}
 			return $allow;
@@ -351,25 +703,15 @@ if (!class_exists('WPSE_REST_API')) {
 
 }
 
-if (!function_exists('wpse_init_rest_api')) {
-	$GLOBALS['wpse_rest_api'] = new WPSE_REST_API();
-
+if ( ! function_exists( 'wpse_init_rest_api' ) ) {
 	//Load this only for REST API requests
-	add_action('rest_api_init', 'wpse_init_rest_api');
+	add_action( 'rest_api_init', 'wpse_init_rest_api' );
 
 	function wpse_init_rest_api() {
-
-		if (!WP_Sheet_Editor_Helpers::get_instance()->is_rest_request()) {
-			return;
-		}
+		$GLOBALS['wpse_rest_api'] = new WPSE_REST_API();
 		$GLOBALS['wpse_rest_api']->register_hooks();
-
-		// Init WPSE core
-		vgse_init();
-
 		$GLOBALS['wpse_rest_api']->register_routes();
 
 		return $GLOBALS['wpse_rest_api'];
 	}
-
 }

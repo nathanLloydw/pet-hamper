@@ -38,11 +38,11 @@ if (!class_exists('WP_Sheet_Editor_Columns_Renaming')) {
 		}
 
 		function render_rename_button($column, $post_type) {
-			if (!current_user_can('manage_options') || empty($column['allow_to_rename'])) {
+			if (!VGSE()->helpers->user_can_manage_options() || empty($column['allow_to_rename'])) {
 				return;
 			}
 			?>
-			<button class="rename-column column-action" title="<?php echo esc_attr(__('Rename column', VGSE()->textname)); ?>"><i class="fa fa-edit"></i></button>
+			<button class="rename-column column-action" title="<?php echo esc_attr(__('Rename column', 'vg_sheet_editor' )); ?>"><i class="fa fa-edit"></i></button>
 			<?php
 		}
 
@@ -55,22 +55,21 @@ if (!class_exists('WP_Sheet_Editor_Columns_Renaming')) {
 		}
 
 		function rename_column() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || empty($_REQUEST['column_key'])) {
-				wp_send_json_error(array('message' => __('Missing parameters.', VGSE()->textname)));
+			if (empty($_REQUEST['post_type']) || empty($_REQUEST['column_key'])) {
+				wp_send_json_error(array('message' => __('Missing parameters.', 'vg_sheet_editor' )));
 			}
 
-			if (!wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
-				wp_send_json_error(array('message' => __('You dont have enough permissions to execute this action.', VGSE()->textname)));
+			if (!VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to execute this action.', 'vg_sheet_editor' )));
 			}
 			$post_type = VGSE()->helpers->sanitize_table_key($_REQUEST['post_type']);
 			$column_key = sanitize_text_field($_REQUEST['column_key']);
 			$new_title = sanitize_text_field($_REQUEST['new_title']);
 
-			$options = get_option(VGSE()->options_key);
+			
 			$option_key = ( taxonomy_exists($column_key)) ? 'be_tax_txt_' . $column_key . '_' . $post_type : 'be_' . $column_key . '_txt_' . $post_type;
 
-			$options[$option_key] = $new_title;
-			update_option(VGSE()->options_key, $options, false);
+			VGSE()->update_option($option_key, $new_title);
 			wp_send_json_success();
 		}
 

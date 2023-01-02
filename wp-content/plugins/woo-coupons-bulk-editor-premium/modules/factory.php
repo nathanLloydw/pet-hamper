@@ -8,7 +8,7 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 	 */
 	class WPSE_Sheet_Factory {
 
-		var $args = array();
+		public $args = array();
 		var $sheets_bootstrap = null;
 
 		function __construct($args = array()) {
@@ -36,6 +36,13 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 		}
 
 		function after_full_core_init() {
+			// Exit in case the init() method didn't run.
+			// $this->get_prop('post_type') contains a callable initially, which
+			// is converted into the real post types with the init() method
+			// but the init() method might not run under some conditions
+			if( is_callable($this->get_prop('post_type'))){
+				return;
+			}
 			// Set up spreadsheet.
 			// Allow to bootstrap editor manually, later.
 			if (!apply_filters('vg_sheet_editor/bootstrap/manual_init', false)) {
@@ -59,8 +66,15 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 		}
 
 		function init() {
-			if (!is_admin() && !apply_filters('vg_sheet_editor/allowed_on_frontend', false)) {
-				return;
+			
+			if( method_exists('WP_Sheet_Editor', 'allow_to_initialize')){				
+				if (!WP_Sheet_Editor::allow_to_initialize()) {
+					return;
+				}
+			} else {
+				if (!is_admin() && !apply_filters('vg_sheet_editor/allowed_on_frontend', false)) {
+					return;
+				}
 			}
 
 			if (is_callable($this->args['post_type'])) {
@@ -68,9 +82,9 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 				$this->args['post_type'] = $post_types['post_types'];
 				$this->args['post_type_label'] = $post_types['labels'];
 			}
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 60);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'lock_disallowed_columns'), 90);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'remove_columns'), 90);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'), 60);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'lock_disallowed_columns'), 90);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'remove_columns'), 90);
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbars'), 10);
 			add_filter('vg_sheet_editor/custom_columns/teaser/allow_to_lock_column', array($this, 'dont_lock_allowed_columns'), 99, 2);
 			add_filter('vg_sheet_editor/custom_post_types/get_all_post_types', array($this, 'disable_from_custom_post_types_addon_object'));
@@ -83,7 +97,7 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 			// We only need it for the "add custom columns" page, if we activate it globally it causes issues in the front end sheet
 			// i.e. the taxonomies sheet shows columns as a post type (title, slug, etc.)
 			$is_page_allowed = !empty($_GET['page']) && in_array($_GET['page'], array('vg_sheet_editor_custom_columns', 'vg_sheet_editor_post_type_setup'), true);
-			$is_uri_allowed = strpos($_SERVER['REQUEST_URI'], '/profile.php') !== false || strpos($_SERVER['REQUEST_URI'], '/user-edit.php') !== false;
+			$is_uri_allowed = preg_match('/(\/profile.php|\/user-edit.php|vg_sheet_editor_print_data)/', $_SERVER['REQUEST_URI']);
 			if ($is_page_allowed || $is_uri_allowed) {
 				add_filter('vg_sheet_editor/allowed_post_types', array($this, 'allow_post_types'));
 			}
@@ -132,7 +146,6 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 		}
 
 		function append_post_type_to_post_types_list($post_types, $args, $output) {
-			// @todo Test
 			$labels = $this->get_prop('post_type_label');
 			foreach ($this->args['post_type'] as $index => $post_type) {
 
@@ -189,11 +202,11 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 				}
 			}
 
-			if (current_user_can('manage_options')) {
+			if (WP_Sheet_Editor_Helpers::current_user_can('install_plugins')) {
 				foreach ($post_types as $post_type) {
 					$editor->args['toolbars']->register_item('wpse_license', array(
 						'type' => 'button',
-						'content' => __('My license', VGSE()->textname),
+						'content' => __('My license', 'vg_sheet_editor' ),
 						'url' => $this->args['fs_object']->get_account_url(),
 						'toolbar_key' => 'secondary',
 						'extra_html_attributes' => ' target="_blank" ',
@@ -254,7 +267,7 @@ if (!class_exists('WPSE_Sheet_Factory')) {
 
 				if (!empty($this->args['allowed_columns'])) {
 					// Increase column width for disabled columns, so the "premium" message fits
-					$spreadsheet_columns = $editor->args['columns']->get_provider_items($post_type);
+					$spreadsheet_columns = $editor->get_provider_items($post_type);
 					foreach ($spreadsheet_columns as $key => $column) {
 						if (!$this->is_column_allowed($key)) {
 							$editor->args['columns']->register_item($key, $post_type, array(

@@ -971,7 +971,7 @@
 				foreach(rows, addItem);
 			};
 
-			$filterNested($self.find('[data-repeater-create]'), fig.repeaters).click(function () {
+			$filterNested($self.find('[data-repeater-create]'), fig.repeaters).on('click', function () {
 				addItem();
 			});
 

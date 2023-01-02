@@ -12,8 +12,11 @@ if (!class_exists('WPSE_Column_Groups')) {
 
 		function init() {
 
+			if (!apply_filters('vg_sheet_editor/column_groups_feature_allowed', true)) {
+				return;
+			}
 			// Column groups
-			if (current_user_can('manage_options')) {
+			if (VGSE()->helpers->user_can_manage_options()) {
 				add_action('vg_sheet_editor/columns_visibility/after_fields', array($this, 'render_save_columns_view_option'));
 				add_action('vg_sheet_editor/columns_visibility/after_options_saved', array($this, 'save_column_group'), 11, 2);
 			} else {
@@ -43,7 +46,7 @@ if (!class_exists('WPSE_Column_Groups')) {
 				}
 				$editor->args['toolbars']->register_item('columns_manager', array(
 					'type' => 'button',
-					'content' => __('Spreadsheet views', VGSE()->textname),
+					'content' => __('Spreadsheet views', 'vg_sheet_editor' ),
 					'url' => 'javascript:void(0)',
 					'toolbar_key' => 'secondary',
 					'allow_in_frontend' => false,
@@ -55,7 +58,7 @@ if (!class_exists('WPSE_Column_Groups')) {
 			if (empty(VGSE()->options['enable_spreadsheet_views_restrictions'])) {
 				return;
 			}
-			if (!current_user_can('edit_user', $user_id) || !current_user_can('manage_options') || !isset($_REQUEST['wpse_allowed_column_groups'])) {
+			if (!WP_Sheet_Editor_Helpers::current_user_can('edit_user', $user_id) || !VGSE()->helpers->user_can_manage_options() || !isset($_REQUEST['wpse_allowed_column_groups'])) {
 				return false;
 			}
 
@@ -67,7 +70,7 @@ if (!class_exists('WPSE_Column_Groups')) {
 			if (empty(VGSE()->options['enable_spreadsheet_views_restrictions'])) {
 				return;
 			}
-			if (!current_user_can('manage_options')) {
+			if (!VGSE()->helpers->user_can_manage_options()) {
 				return;
 			}
 			$sheets = VGSE()->helpers->get_prepared_post_types();
@@ -76,8 +79,8 @@ if (!class_exists('WPSE_Column_Groups')) {
 				$all_allowed_groups = array();
 			}
 			?>
-			<h3><?php _e("WP Sheet Editor", VGSE()->textname); ?></h3>
-			<p><?php _e("Note. This is not a security feature, the user can edit all the fields in the normal editor based on the role. This option is for convenience, so they only see the columns they need when they open the spreadsheet editor. If you leave these fields empty they can switch between all the existing views", VGSE()->textname); ?></p>
+			<h3><?php _e("WP Sheet Editor", 'vg_sheet_editor' ); ?></h3>
+			<p><?php _e("Note. This is not a security feature, the user can edit all the fields in the normal editor based on the role. This option is for convenience, so they only see the columns they need when they open the spreadsheet editor. If you leave these fields empty they can switch between all the existing views", 'vg_sheet_editor' ); ?></p>
 
 			<table class="form-table">
 				<?php
@@ -94,10 +97,10 @@ if (!class_exists('WPSE_Column_Groups')) {
 					}
 					?>
 					<tr>
-						<th><label for="wpse-allowed-column-groups<?php echo esc_attr($key); ?>"><?php printf(__("%s: Allowed spreadsheet views", VGSE()->textname), esc_html($name)); ?></label></th>
+						<th><label for="wpse-allowed-column-groups<?php echo esc_attr($key); ?>"><?php printf(__("%s: Allowed spreadsheet views", 'vg_sheet_editor' ), esc_html($name)); ?></label></th>
 						<td>
 							<input type="text" name="wpse_allowed_column_groups[<?php echo esc_attr($key); ?>]" id="wpse-allowed-column-groups<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($all_allowed_groups[$key]); ?>" class="regular-text" /><br />
-							<span class="description"><?php _e("Please enter the name of the spreadsheet views separated by commas.", VGSE()->textname); ?></span>
+							<span class="description"><?php _e("Please enter the name of the spreadsheet views separated by commas.", 'vg_sheet_editor' ); ?></span>
 						</td>
 					</tr>
 				<?php } ?>
@@ -220,12 +223,12 @@ if (!class_exists('WPSE_Column_Groups')) {
 		}
 
 		function maybe_switch_to_group() {
-			if (empty($_REQUEST['wpse_cmg'])) {
+			if (empty($_GET['wpse_cmg'])) {
 				return;
 			}
 
 			$post_type = VGSE()->helpers->get_provider_from_query_string();
-			$group_key = sanitize_title($_REQUEST['wpse_cmg']);
+			$group_key = sanitize_title($_GET['wpse_cmg']);
 
 			if ($this->is_group_usage_allowed($group_key, $post_type)) {
 				$this->save_last_columns_group($group_key, $post_type);
@@ -249,6 +252,7 @@ if (!class_exists('WPSE_Column_Groups')) {
 					continue;
 				}
 
+				ksort($existing[$post_type]);
 				foreach ($existing[$post_type] as $group_key => $group) {
 					if (!$this->is_group_usage_allowed($group_key, $post_type)) {
 						continue;
@@ -273,8 +277,8 @@ if (!class_exists('WPSE_Column_Groups')) {
 		}
 
 		function delete_saved_group() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
-				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', VGSE()->textname)));
+			if (empty($_REQUEST['post_type']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', 'vg_sheet_editor' )));
 			}
 
 			$post_type = VGSE()->helpers->sanitize_table_key($_REQUEST['post_type']);
@@ -325,7 +329,7 @@ if (!class_exists('WPSE_Column_Groups')) {
 			$name = ( $active_group_key && isset($groups[$post_type][$active_group_key])) ? $groups[$post_type][$active_group_key]['name'] : '';
 			?>
 			<li class="vgse-save-preset">
-				<label><?php _e('Add a name for this group of columns', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php esc_attr_e('We will save this group of columns as a spreadsheet view and you can switch between spreadsheets in the toolbar', VGSE()->textname); ?>">( ? )</a></label>
+				<label><?php _e('Add a name for this group of columns', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php esc_attr_e('We will save this group of columns as a spreadsheet view and you can switch between spreadsheets in the toolbar', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 				<input required name="wpse_group_name" type="text" value="<?php echo esc_attr($name); ?>"/>
 			</li>
 			<?php

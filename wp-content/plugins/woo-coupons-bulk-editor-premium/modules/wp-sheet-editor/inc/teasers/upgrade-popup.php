@@ -48,7 +48,7 @@ if (!class_exists('WP_Sheet_Editor_Popup_Teaser')) {
 				return;
 			}
 
-			printf(__('. <b>Upgrade:</b> Export, import, edit in Excel or Google Sheets; <a href="" data-remodal-target="modal-formula">bulk edit thousands of rows</a> at once, edit all the fields from other plugins, and more. <a href="%s" target="_blank" class="upgrade-link">Upgrade and Save Days of Work</a>', VGSE()->textname), VGSE()->get_buy_link('sheet-console-upgrade-{post_type}'));
+			printf(__('. <b>Upgrade:</b> Export, import, edit in Excel or Google Sheets; <a href="" data-remodal-target="modal-formula">bulk edit thousands of rows</a> at once, edit all the fields from other plugins, and more. <a href="%s" target="_blank" class="upgrade-link">Upgrade and Save Days of Work</a>', 'vg_sheet_editor' ), VGSE()->get_buy_link('sheet-console-upgrade-{post_type}'));
 		}
 
 		function render_teaser($post_type) {
@@ -66,8 +66,8 @@ if (!class_exists('WP_Sheet_Editor_Popup_Teaser')) {
 							$message = 'Edit Variable Products, Variations, Attributes, Download Files, Make Advanced searches, Update hundreds of rows with Formulas';
 						}
 
-						_e($message, VGSE()->textname);
-						?> </b> . <a href="#" class="button button-primary button-primary" data-remodal-target="modal-extensions"><?php _e('View Extensions', VGSE()->textname); ?></a></div>
+						_e($message, 'vg_sheet_editor' );
+						?> </b> . <a href="#" class="button button-primary button-primary" data-remodal-target="modal-extensions"><?php _e('View Extensions', 'vg_sheet_editor' ); ?></a></div>
 						<?php
 						$this->auto_open_extensions_popup_once();
 					}

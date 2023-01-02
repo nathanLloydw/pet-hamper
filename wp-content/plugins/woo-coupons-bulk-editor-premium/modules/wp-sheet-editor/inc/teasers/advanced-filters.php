@@ -36,14 +36,14 @@ if (!class_exists('WP_Sheet_Editor_Advanced_Filters_Teaser')) {
 
 				$labels[count($labels) - 1] = ' or ' . end($labels);
 				?>">
-					<label><?php printf(__('Enter %s', VGSE()->textname), implode(', ', $labels)); ?> - <a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', VGSE()->textname); ?></a><a href="#" class="tipso" data-tipso="<?php _e('Enter the names of ' . implode(', ', $labels)); ?>">( ? )</a></label>
-					<select readonly data-placeholder="<?php _e('Category name...', VGSE()->textname); ?>" name="apply_to[]" class="select2"  multiple data-remote="true" data-action="vgse_search_taxonomy_terms" data-min-input-length="4">
+					<label><?php printf(__('Enter %s', 'vg_sheet_editor' ), implode(', ', $labels)); ?> - <a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', 'vg_sheet_editor' ); ?></a><a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Enter the names of ' . implode(', ', $labels)); ?>">( ? )</a></label>
+					<select readonly data-placeholder="<?php _e('Category name...', 'vg_sheet_editor' ); ?>" name="apply_to[]" class="select2"  multiple data-remote="true" data-action="vgse_search_taxonomy_terms" data-min-input-length="4">
 
 					</select>
 				</li>
 
 				<li>
-					<label><?php _e('Date range from', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('Show items published between these dates'); ?>">( ? )</a></label><input type="date" name="date_from" readonly /> <?php _e('to', VGSE()->textname); ?> <input type="date" name="date_to" readonly/>  - <a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', VGSE()->textname); ?></a>
+					<label><?php _e('Date range from', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Show items published between these dates'); ?>">( ? )</a></label><input type="date" name="date_from" readonly /> <?php _e('to', 'vg_sheet_editor' ); ?> <input type="date" name="date_to" readonly/>  - <a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', 'vg_sheet_editor' ); ?></a>
 				</li>
 				<?php
 			}
@@ -51,7 +51,7 @@ if (!class_exists('WP_Sheet_Editor_Advanced_Filters_Teaser')) {
 			if (!empty($post_type_columns)) {
 				?>
 				<li>
-					<h3><?php _e('Advanced search', VGSE()->textname); ?> <small><a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', VGSE()->textname); ?></a></small></h3>
+					<h3><?php _e('Advanced search', 'vg_sheet_editor' ); ?> <small><a href="<?php echo esc_url(VGSE()->get_buy_link('advanced-filters-teaser')); ?>" target="_blank"><?php _e('Go Premium', 'vg_sheet_editor' ); ?></a></small></h3>
 					<ul class="advanced-search-teaser">
 						<?php
 						foreach ($post_type_columns as $column_label => $column_key) {

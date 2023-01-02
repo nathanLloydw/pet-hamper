@@ -1,8 +1,8 @@
 {
     "name": "wp-sheet-editor-woocommerce-coupons",
-    "version": "1.3.32",
+    "version": "1.3.37",
     "vgDistName": "woo-coupons-bulk-editor",
-    "vgPreviousVersion": "1.3.31.2",
+    "vgPreviousVersion": "1.3.37-beta.2",
     "sheetEditorModules": {
         "free": [
             "autofill-cells",

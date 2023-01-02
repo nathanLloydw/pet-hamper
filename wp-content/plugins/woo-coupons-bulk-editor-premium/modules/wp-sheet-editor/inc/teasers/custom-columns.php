@@ -24,7 +24,7 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns_Teaser')) {
 				return;
 			}
 
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'));
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'));
 		}
 
 		function _convert_key_to_label($input) {

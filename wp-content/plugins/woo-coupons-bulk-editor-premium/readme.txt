@@ -1,9 +1,9 @@
 === WooCommerce Bulk Edit Coupons - WP Sheet Editor ===
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: woocommerce, bulk edit, coupons, spreadsheet, wp sheet editor
-Stable tag: 1.3.32
+Stable tag: 1.3.37
 Requires at least: 4.7
-Tested up to: 6.0
+Tested up to: 6.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,26 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 1. bulk editor
 
 == Changelog ==
+= V 1.3.37 - 2022-12-15 =
+* Updated to CORE v2.25.0
+
+
+= V 1.3.36 - 2022-11-11 =
+* Updated to CORE v2.24.21
+
+
+= V 1.3.35 - 2022-09-29 =
+* Updated to CORE v2.24.20
+
+
+= V 1.3.34 - 2022-08-19 =
+* Updated to CORE v2.24.19
+
+
+= V 1.3.33 - 2022-07-31 =
+* Updated to CORE v2.24.18
+
+
 = V 1.3.32 - 2022-06-23 =
 * Updated to CORE v2.24.17
 

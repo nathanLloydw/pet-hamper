@@ -7,12 +7,12 @@ $nonce = wp_create_nonce('bep-nonce');
 <div class="remodal-bg quick-setup-page-content" id="vgse-wrapper" data-nonce="<?php echo esc_attr($nonce); ?>">
 	<div class="">
 		<div class="">
-			<h2 class="hidden"><?php _e('Sheet Editor', VGSE()->textname); ?></h2>
+			<h2 class="hidden"><?php _e('Sheet Editor', 'vg_sheet_editor' ); ?></h2>
 			<img src="<?php echo esc_url(VGSE()->logo_url); ?>" class="vg-logo"> 
 		</div>
-		<h2><?php _e('What\'s new on WP Sheet Editor', VGSE()->textname); ?></h2>
+		<h2><?php _e('What\'s new on WP Sheet Editor', 'vg_sheet_editor' ); ?></h2>
 		<div class="setup-screen whats-new-content">
-			<p><?php _e('Thank you for updating to the new version of the plugin.', VGSE()->textname); ?></p>
+			<p><?php _e('Thank you for updating to the new version of the plugin.', 'vg_sheet_editor' ); ?></p>
 
 			<?php
 			$version = VGSE()->version;
@@ -40,7 +40,7 @@ $nonce = wp_create_nonce('bep-nonce');
 
 		<div class="clear"></div>
 		<hr>
-		<h2><?php _e('Extensions', VGSE()->textname); ?></h2>
+		<h2><?php _e('Extensions', 'vg_sheet_editor' ); ?></h2>
 
 		<?php VGSE()->render_extensions_list();
 		?>		

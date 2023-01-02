@@ -19,9 +19,6 @@ if (!class_exists('VGSE_Columns_Resizing')) {
 
 			// CORE >= v2.0.0
 			add_filter('vg_sheet_editor/columns/provider_items', array($this, 'filter_columns_settings'), 20, 2);
-
-			// CORE < v2.0.0
-			add_filter('vg_sheet_editor/columns/post_type_items', array($this, 'filter_columns_settings'), 20, 2);
 		}
 
 		/**
@@ -58,8 +55,8 @@ if (!class_exists('VGSE_Columns_Resizing')) {
 
 		function save_manual_column_resize() {
 
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !is_array($_REQUEST['sizes']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !VGSE()->helpers->user_can_view_post_type($_REQUEST['post_type'])) {
-				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', VGSE()->textname)));
+			if (empty($_REQUEST['post_type']) || !is_array($_REQUEST['sizes']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_view_post_type($_REQUEST['post_type'])) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', 'vg_sheet_editor' )));
 			}
 
 			$option = get_user_meta(get_current_user_id(), $this->db_key, true);

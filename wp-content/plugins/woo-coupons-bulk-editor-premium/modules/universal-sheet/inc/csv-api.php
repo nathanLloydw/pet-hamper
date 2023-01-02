@@ -66,7 +66,7 @@ if (!class_exists('WPSE_CSV_API')) {
 		function _get_ftp_file_id($ftp_path, $post_id = null) {
 			global $wpdb;
 			$out = null;
-			if (!current_user_can('manage_options')) {
+			if (!VGSE()->helpers->user_can_manage_options()) {
 				return $out;
 			}
 
@@ -157,7 +157,7 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function disable_floating_columns_on_export() {
-			if (!empty($_REQUEST['vgse_csv_export']) && !defined('WPSE_ONLY_EXPLICITLY_ENABLED_COLUMNS')) {
+			if (!empty($_POST['vgse_csv_export']) && !defined('WPSE_ONLY_EXPLICITLY_ENABLED_COLUMNS')) {
 				define('WPSE_ONLY_EXPLICITLY_ENABLED_COLUMNS', true);
 			}
 		}
@@ -171,15 +171,15 @@ if (!class_exists('WPSE_CSV_API')) {
 			$sections['customize_features']['fields'][] = array(
 				'id' => 'allow_ftp_images_support',
 				'type' => 'switch',
-				'title' => __('Allow to import images from FTP servers?', VGSE()->textname),
-				'desc' => __('By default, the importer allows to save images using full internal URLs, external URLs, file name (from the media library), and file ID. If you activate this option, it will support FTP urls like this: ftp://user:password@host:port/path/to/image.png. This will make the import slower', VGSE()->textname),
+				'title' => __('Allow to import images from FTP servers?', 'vg_sheet_editor' ),
+				'desc' => __('By default, the importer allows to save images using full internal URLs, external URLs, file name (from the media library), and file ID. If you activate this option, it will support FTP urls like this: ftp://user:password@host:port/path/to/image.png. This will make the import slower', 'vg_sheet_editor' ),
 				'default' => false,
 			);
 			$sections['customize_features']['fields'][] = array(
 				'id' => 'allow_ftp_images_duplication',
 				'type' => 'switch',
-				'title' => __('FTP Images: Skip images with same file name?', VGSE()->textname),
-				'desc' => __('When you import an image using FTP urls, the image is imported every time and you might end up with duplicates in the media library. Activate this option to reuse images in the media library with same file name and avoid downloading the FTP image again on future imports. Deactivate this option if you want to keep the images updated on future imports.', VGSE()->textname),
+				'title' => __('FTP Images: Skip images with same file name?', 'vg_sheet_editor' ),
+				'desc' => __('When you import an image using FTP urls, the image is imported every time and you might end up with duplicates in the media library. Activate this option to reuse images in the media library with same file name and avoid downloading the FTP image again on future imports. Deactivate this option if you want to keep the images updated on future imports.', 'vg_sheet_editor' ),
 				'default' => false,
 			);
 			return $sections;
@@ -199,10 +199,10 @@ if (!class_exists('WPSE_CSV_API')) {
 			if (!file_exists($path)) {
 				?>
 				<h3>WP Sheet Editor</h3>
-				<p><?php _e('The exported file does not exist. This could happen for the following reasons:', VGSE()->textname); ?></p>
+				<p><?php _e('The exported file does not exist. This could happen for the following reasons:', 'vg_sheet_editor' ); ?></p>
 				<ol>
-					<li><?php printf(__('If you are trying to download something that was exported several hours ago, the file might have expired. Files expire after %s hours.', VGSE()->textname), $this->file_expiration_hours()); ?></li>
-					<li><?php printf(__('Maybe your server did not allow us to create the file. It happens if your server is not configured correctly and our folder %s does not have write permissions, so we\'re not able to create the file. You should request help from your hosting provider.', VGSE()->textname), $this->exports_dir); ?></li>
+					<li><?php printf(__('If you are trying to download something that was exported several hours ago, the file might have expired. Files expire after %s hours.', 'vg_sheet_editor' ), $this->file_expiration_hours()); ?></li>
+					<li><?php printf(__('Maybe your server did not allow us to create the file. It happens if your server is not configured correctly and our folder %s does not have write permissions, so we\'re not able to create the file. You should request help from your hosting provider.', 'vg_sheet_editor' ), $this->exports_dir); ?></li>
 				</ol>
 				<?php
 				die();
@@ -367,7 +367,7 @@ if (!class_exists('WPSE_CSV_API')) {
 		function prepare_json_import($settings) {
 
 			if (!isset($settings['data'])) {
-				return new WP_Error('wpse', __('Missing required field "data".', VGSE()->textname));
+				return new WP_Error('wpse', __('Missing required field "data".', 'vg_sheet_editor' ));
 			}
 
 			$out = array(
@@ -456,19 +456,19 @@ if (!class_exists('WPSE_CSV_API')) {
 			);
 
 			foreach ($required_fields as $required_field) {
-				if (empty($_REQUEST[$required_field])) {
-					wp_send_json_error(array('message' => __('Missing required field. Please start the process again.', VGSE()->textname)));
+				if (empty($_POST[$required_field])) {
+					wp_send_json_error(array('message' => __('Missing required field. Please start the process again.', 'vg_sheet_editor' )));
 				}
 			}
-			if (!in_array($_REQUEST['writing_type'], array('both', 'all_new', 'only_new', 'only_update'))) {
-				wp_send_json_error(array('message' => __('Writing type not allowed.', VGSE()->textname)));
+			if (!in_array($_POST['writing_type'], array('both', 'all_new', 'only_new', 'only_update'))) {
+				wp_send_json_error(array('message' => __('Writing type not allowed.', 'vg_sheet_editor' )));
 			}
 
-			if (!wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !VGSE()->helpers->user_can_edit_post_type($_REQUEST['post_type'])) {
-				wp_send_json_error(array('message' => __('Not allowed.', VGSE()->textname)));
+			if (!VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->verify_sheet_permissions_from_request('edit')) {
+				wp_send_json_error(array('message' => __('Not allowed.', 'vg_sheet_editor' )));
 			}
 			$settings = array(
-				'nonce' => sanitize_text_field($_REQUEST['nonce']),
+				'nonce' => sanitize_text_field(VGSE()->helpers->get_nonce_from_request()),
 				'post_type' => VGSE()->helpers->sanitize_table_key($_REQUEST['post_type']),
 				'page' => intval($_REQUEST['page']),
 				'total_rows' => intval($_REQUEST['total_rows']),
@@ -487,7 +487,7 @@ if (!class_exists('WPSE_CSV_API')) {
 				'import_file' => sanitize_file_name($_REQUEST['import_file']),
 				'vgse_plain_mode' => sanitize_text_field($_REQUEST['vgse_plain_mode']),
 				'import_type' => sanitize_text_field($_REQUEST['import_type']),
-				'wpse_job_id' => sanitize_text_field($_REQUEST['wpse_job_id']),
+				'wpse_job_id' => sanitize_text_field(VGSE()->helpers->get_job_id_from_request()),
 				'wpse_source_suffix' => sanitize_text_field($_REQUEST['wpse_source_suffix']),
 				'file_position' => isset($_REQUEST['file_position']) ? intval($_REQUEST['file_position']) : 0
 			);
@@ -536,18 +536,30 @@ if (!class_exists('WPSE_CSV_API')) {
 			}
 
 			$total = $prepared_rows['total'];
+			$processed = ( $per_page >= $total || ($per_page * $settings['page'] ) >= $total ) ? $total : $per_page * $settings['page'];
 			$check_wp_fields = apply_filters('vg_sheet_editor/import/existing_check_wp_field', array_filter($settings['existing_check_wp_field']), $settings, $prepared_rows);
 
 			if (function_exists('WPSE_Logger_Obj') && !empty($settings['wpse_job_id'])) {
 				WPSE_Logger_Obj()->entry(sprintf('We found %d rows for this batch', count($rows)), sanitize_text_field($settings['wpse_job_id']));
 			}
 
+			$out = array(
+				'message' => null,
+				'updated' => 0,
+				'created' => 0,
+				'total' => (int) $total,
+				'processed' => (int) $processed,
+				'file_position' => $prepared_rows['file_position'],
+				// For the automation plugin
+				'processed_rows' => (int) $processed,
+			);
 			if (empty($rows)) {
 				if (function_exists('WPSE_Logger_Obj') && !empty($settings['wpse_job_id'])) {
 					WPSE_Logger_Obj()->entry('The import is complete.', sanitize_text_field($settings['wpse_job_id']));
 				}
-				return new WP_Error('wpse', __('<p>Complete</p>.', VGSE()->textname), array('code' => 400,
-					'force_complete' => true));
+				$out['message'] = __('The import is completed.', 'vg_sheet_editor');
+				$out['force_complete'] = true;
+				return $out;
 			}
 			if (is_wp_error($prepared_rows)) {
 				if (function_exists('WPSE_Logger_Obj') && !empty($settings['wpse_job_id'])) {
@@ -728,7 +740,7 @@ if (!class_exists('WPSE_CSV_API')) {
 				WPSE_Logger_Obj()->entry('Start saving', sanitize_text_field($settings['wpse_job_id']));
 			}
 			$save_result = VGSE()->helpers->save_rows(apply_filters('vg_sheet_editor/import/save_rows_args', array(
-				'data' => $rows,
+				'data' => VGSE()->helpers->sanitize_data_for_db( $rows, $post_type ),
 				'post_type' => $post_type,
 				'allow_to_create_new' => true,
 				'wpse_source' => 'import',
@@ -741,15 +753,11 @@ if (!class_exists('WPSE_CSV_API')) {
 				return $save_result;
 			}
 
-			$processed = ( $per_page >= $total || ($per_page * $settings['page'] ) >= $total ) ? $total : $per_page * $settings['page'];
-			$out = array(
-				'message' => '<p>' . sprintf(__('%d of %d items have been processed from the file. {total_updated} items updated and {total_created} items created.', VGSE()->textname), $processed, $total, $total_updated, $created) . '</p>',
-				'total' => (int) $total,
-				'processed' => (int) $processed,
+			$out = array_merge($out, array(
+				'message' => '<p>' . sprintf(__('%d of %d items have been processed from the file. {total_updated} items updated and {total_created} items created.', 'vg_sheet_editor' ), $processed, $total, $total_updated, $created) . '</p>',
 				'updated' => (int) $total_updated,
 				'created' => (int) $created,
-				'file_position' => $prepared_rows['file_position'],
-			);
+			));
 
 			if (function_exists('WPSE_Logger_Obj') && !empty($settings['wpse_job_id'])) {
 				$out['log_url'] = WPSE_Logger_Obj()->get_log_download_url($settings['wpse_job_id']);
@@ -765,8 +773,8 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function upload_data_for_import() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !isset($_REQUEST['data']) || empty($_REQUEST['data_type']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !VGSE()->helpers->user_can_edit_post_type($_REQUEST['post_type'])) {
-				wp_send_json_error(array('message' => __('Not allowed. Please start the process again.', VGSE()->textname)));
+			if (empty($_REQUEST['post_type']) || !isset($_REQUEST['data']) || empty($_REQUEST['data_type']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->verify_sheet_permissions_from_request('edit')) {
+				wp_send_json_error(array('message' => __('Not allowed. Please start the process again.', 'vg_sheet_editor' )));
 			}
 
 			$data_type = sanitize_text_field($_REQUEST['data_type']);
@@ -775,18 +783,18 @@ if (!class_exists('WPSE_CSV_API')) {
 			$decode_quotes = ( empty($_REQUEST['decode_quotes'])) ? false : true;
 			$data = $_REQUEST['data'];
 
-			$base_dir = $this->imports_dir;
+			$base_dir = wp_normalize_path($this->imports_dir);
 
 			$file_path = $base_dir . sanitize_file_name($post_type . '-' . date('Y-m-d-H-i-s') . '-' . wp_generate_password(10, false)) . '.csv';
 
 			$allowed_input_type = array('csv', 'json');
 			if ($data_type === 'url') {
 				if (filter_var($data, FILTER_VALIDATE_URL) === FALSE) {
-					wp_send_json_error(array('message' => __('Wrong file url', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('Wrong file url', 'vg_sheet_editor' )));
 				}
 				$file_type = pathinfo(basename(strtok($data, "?")), PATHINFO_EXTENSION);
 				if (!in_array($file_type, $allowed_input_type)) {
-					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', 'vg_sheet_editor' )));
 				}
 				$tmp_file = download_url($data);
 
@@ -796,12 +804,12 @@ if (!class_exists('WPSE_CSV_API')) {
 			} elseif ($data_type === 'local') {
 
 				if (empty($_FILES)) {
-					wp_send_json_error(array('message' => __('File could not be uploaded. Please start the process again.', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('File could not be uploaded. Please start the process again.', 'vg_sheet_editor' )));
 				}
 				$file_type = pathinfo(basename(strtok($_FILES["file"]["name"], "?")), PATHINFO_EXTENSION);
 
 				if (!in_array($file_type, $allowed_input_type)) {
-					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', 'vg_sheet_editor' )));
 				}
 
 				if (file_exists($_FILES["file"]["tmp_name"])) {
@@ -809,7 +817,7 @@ if (!class_exists('WPSE_CSV_API')) {
 				}
 			} elseif ($data_type === 'json') {
 				if (!is_array($data)) {
-					wp_send_json_error(array('message' => __('Wrong data format', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('Wrong data format', 'vg_sheet_editor' )));
 				}
 				$headers = $data[0];
 				unset($data[0]);
@@ -825,15 +833,20 @@ if (!class_exists('WPSE_CSV_API')) {
 
 				$this->_array_to_csv($filtered, $file_path, $this->_str_putcsv($headers, $separator), $separator);
 			} elseif ($data_type === 'server_file') {
-				$file_path = str_replace('"', '', wp_unslash($data));
-				$file_type = pathinfo(basename($file_path), PATHINFO_EXTENSION);
+				$file_name = basename( $data );
+				$file_path = $base_dir . $file_name;
+
+				if (! file_exists($file_path)) {
+					wp_send_json_error(array('message' => sprintf(__('The file doesn\'t exist. Invalid path: %s', 'vg_sheet_editor' ), $file_path)));
+				}
+				$file_type = pathinfo($file_name, PATHINFO_EXTENSION);
 				if (!in_array($file_type, $allowed_input_type)) {
-					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', VGSE()->textname)));
+					wp_send_json_error(array('message' => __('Wrong file extension. We accept CSV only', 'vg_sheet_editor' )));
 				}
 			}
 
 			if (!file_exists($file_path)) {
-				wp_send_json_error(array('message' => __('File could not be uploaded. Please start the process again.', VGSE()->textname)));
+				wp_send_json_error(array('message' => __('File could not be uploaded. Please start the process again.', 'vg_sheet_editor' )));
 			}
 
 
@@ -843,7 +856,7 @@ if (!class_exists('WPSE_CSV_API')) {
 			$first_rows = $file_content['rows'];
 
 			if (empty($first_rows)) {
-				wp_send_json_error(array('message' => __('File uploaded succesfully but it\'s not a valid CSV file or it uses the wrong encoding. If you edited the file in Excel, verify it was saved as UTF-8 and keep in mind that, sometimes copy pasting from external places adds invalid characters. So make sure you paste only the values and not paste the formatting to avoid pasting invalid characters.', VGSE()->textname)));
+				wp_send_json_error(array('message' => __('File uploaded succesfully but it\'s not a valid CSV file or it uses the wrong encoding. If you edited the file in Excel, verify it was saved as UTF-8 and keep in mind that, sometimes copy pasting from external places adds invalid characters. So make sure you paste only the values and not paste the formatting to avoid pasting invalid characters.', 'vg_sheet_editor' )));
 			}
 
 			$row_headers = array_map('strval', array_keys(current($first_rows)));
@@ -883,6 +896,8 @@ if (!class_exists('WPSE_CSV_API')) {
 			if (!isset($saved_exports[$post_type])) {
 				$saved_exports[$post_type] = array();
 			}
+			usort($saved_exports[$post_type], function($a, $b){ return strcmp($a["name"], $b["name"]); });
+			
 			return $saved_exports[$post_type];
 		}
 
@@ -909,15 +924,15 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function register_export_data_fields($settings) {
-			if (empty($_REQUEST['export_key'])) {
+			if (empty($_REQUEST['vgse_csv_export'])) {
 				return $settings;
 			}
-			$settings['export_key'] = sanitize_text_field($_REQUEST['export_key']);
+			$settings['wpse_job_id'] = sanitize_text_field(VGSE()->helpers->get_job_id_from_request());
 			$settings['vgse_csv_export'] = sanitize_text_field($_REQUEST['vgse_csv_export']);
 			$settings['custom_enabled_columns'] = sanitize_text_field($_REQUEST['custom_enabled_columns']);
 			$settings['line_items_separate_rows'] = !empty($_REQUEST['line_items_separate_rows']);
 			$settings['add_excel_separator_flag'] = !empty($_REQUEST['add_excel_separator_flag']);
-			if (!empty($_REQUEST['save_for_later']) && current_user_can('manage_options')) {
+			if (!empty($_REQUEST['save_for_later']) && VGSE()->helpers->user_can_manage_options()) {
 				$settings['save_for_later'] = array(
 					'name' => sanitize_text_field($_REQUEST['save_for_later']['name']),
 					'columns' => $settings['custom_enabled_columns'],
@@ -930,16 +945,16 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function export_csv($out, $wp_query_args, $spreadsheet_columns, $clean_data) {
-			if (empty($clean_data['export_key'])) {
+			if (empty($clean_data['vgse_csv_export'])) {
 				return $out;
 			}
 
-			if (!empty($clean_data['save_for_later']) && current_user_can('manage_options')) {
+			if (!empty($clean_data['save_for_later']) && VGSE()->helpers->user_can_manage_options()) {
 				$this->save_export($clean_data['save_for_later']);
 			}
 
 			$base_dir = $this->exports_dir;
-			$csv_file = $base_dir . sanitize_file_name($clean_data['export_key']) . '.csv';
+			$csv_file = $base_dir . sanitize_file_name($clean_data['wpse_job_id']) . '.csv';
 
 			$cleaned_rows = apply_filters('vg_sheet_editor/export/pre_cleanup', array_values($out['rows']), $clean_data, $wp_query_args, $spreadsheet_columns);
 			$allowed_column_keys = apply_filters('vg_sheet_editor/export/allowed_column_keys', array_keys($spreadsheet_columns), $cleaned_rows, $clean_data, $wp_query_args);
@@ -1022,11 +1037,15 @@ if (!class_exists('WPSE_CSV_API')) {
 			$final_headers = apply_filters('vg_sheet_editor/export/final_headers', array_filter($headers), $clean_data, $wp_query_args);
 			$this->_array_to_csv($final_rows, $csv_file, $this->_str_putcsv($final_headers));
 			$out['rows'] = $cleaned_rows;
+			$out['final_headers'] = $final_headers;
 
-			$out['message'] = sprintf(__('Processing: %d of %d rows have been exported.', VGSE()->textname), ($out['total'] > ( $wp_query_args['posts_per_page'] * $wp_query_args['paged'] ) ) ? $wp_query_args['posts_per_page'] * $wp_query_args['paged'] : $out['total'], $out['total']);
+			$processed_rows = ($out['total'] > ( $wp_query_args['posts_per_page'] * $wp_query_args['paged'] ) ) ? $wp_query_args['posts_per_page'] * $wp_query_args['paged'] : $out['total'];
+			$out['processed_rows'] = $processed_rows;
+			$out['message'] = sprintf(__('Processing: %d of %d rows have been exported.', 'vg_sheet_editor' ), $processed_rows, $out['total']);
 
+			$out['force_complete'] = false;
 			$out['export_complete'] = false;
-			$out['export_file_name'] = sanitize_file_name($clean_data['export_key']);
+			$out['export_file_name'] = sanitize_file_name($clean_data['wpse_job_id']);
 			if (($wp_query_args['posts_per_page'] * $wp_query_args['paged']) >= $out['total']) {
 				if ((bool) $clean_data['add_excel_separator_flag']) {
 					$csv_contents = file_get_contents($csv_file);
@@ -1035,12 +1054,13 @@ if (!class_exists('WPSE_CSV_API')) {
 				if (empty(VGSE()->options['allow_line_breaks_export_import'])) {
 					$this->remove_duplicates_from_file($csv_file);
 				}
-				$out['export_file_url'] = esc_url(add_query_arg('wpseefn', sanitize_file_name($clean_data['export_key']), admin_url('index.php')));
+				$out['export_file_url'] = esc_url(add_query_arg('wpseefn', sanitize_file_name($clean_data['wpse_job_id']), admin_url('index.php')));
 				$expiration_hours = (int) $this->file_expiration_hours();
-				$out['message'] .= __('<br><br>The export finished.<br><br>The download should start automatically.', VGSE()->textname);
-				if (current_user_can('manage_options')) {
-					$out['message'] .= sprintf(__(' If it doesn\'t start automatically you can find the file in the folder /wp-content/uploads/wp-sheet-editor-universal-sheet/exports/ on your server.<br><br>The export files are deleted automatically after %d hours.', VGSE()->textname), $expiration_hours);
+				$out['message'] .= __('<br><br>The export finished.<br><br>The download should start automatically.', 'vg_sheet_editor' );
+				if (VGSE()->helpers->user_can_manage_options()) {
+					$out['message'] .= sprintf(__(' If it doesn\'t start automatically you can find the file in the folder /wp-content/uploads/wp-sheet-editor-universal-sheet/exports/ on your server.<br><br>The export files are deleted automatically after %d hours.', 'vg_sheet_editor' ), $expiration_hours);
 				}
+				$out['force_complete'] = true;
 				$out['export_complete'] = true;
 			}
 

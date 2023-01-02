@@ -11,9 +11,9 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 	class WP_Sheet_Editor_Post_Templates {
 
 		static private $instance = false;
-		var $plugin_url = null;
-		var $plugin_dir = null;
-		var $textname = 'wpsept';
+		public $plugin_url = null;
+		public $plugin_dir = null;
+		public $textname = 'wpsept';
 
 		private function __construct() {
 			
@@ -62,29 +62,29 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 			<div class="remodal remodal-duplicate" data-remodal-id="modal-duplicate">
 
 				<div class="modal-content">
-					<h3><?php _e('Duplicate items in bulk', VGSE()->textname); ?></h3>
+					<h3><?php _e('Duplicate items in bulk', 'vg_sheet_editor' ); ?></h3>
 
 					<?php do_action('vg_sheet_editor/duplicate/above_form_fields', $current_post_type); ?>
 
 					<ul class="unstyled-list">
 						<li>
-							<label><?php _e('Duplicate this item:', VGSE()->textname); ?></label>									
-							<select name="duplicate_this[]" multiple data-remote="true" data-min-input-length="4" data-action="vgse_find_post_by_name" data-post-type="<?php echo esc_attr($current_post_type); ?>" data-nonce="<?php echo esc_attr($nonce); ?>" class="duplicate-modal-post-selector select2" data-placeholder="<?php _e('Enter item name...', VGSE()->textname); ?>" required>
+							<label><?php _e('Duplicate this item:', 'vg_sheet_editor' ); ?></label>									
+							<select name="duplicate_this[]" multiple data-remote="true" data-min-input-length="4" data-action="vgse_find_post_by_name" data-post-type="<?php echo esc_attr($current_post_type); ?>" data-nonce="<?php echo esc_attr($nonce); ?>" class="duplicate-modal-post-selector select2" data-placeholder="<?php _e('Enter item name...', 'vg_sheet_editor' ); ?>" required>
 								<option></option>
 							</select>
 						</li>
 						<li>
-							<label><?php _e('How many copies do you want?', VGSE()->textname); ?></label>
+							<label><?php _e('How many copies do you want?', 'vg_sheet_editor' ); ?></label>
 							<input type="number" name="number_of_copies" value="1">
-							<p class="posts-templates-small-batches-message hidden"><?php _e('Note. More than 75 copies at once might overload the server. Do it in small batches.<br>You can continue if you think your server can handle it.', VGSE()->textname); ?></p>
+							<p class="posts-templates-small-batches-message hidden"><?php _e('Note. More than 75 copies at once might overload the server. Do it in small batches.<br>You can continue if you think your server can handle it.', 'vg_sheet_editor' ); ?></p>
 						</li>
 						<?php
 						do_action('vg_sheet_editor/duplicate/after_fields', $current_post_type);
 						?>
 					</ul>
 
-					<button class="remodal-confirm wpse-duplicate-trigger"><?php _e('Execute', VGSE()->textname); ?></button>
-					<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Cancel', VGSE()->textname); ?></button>
+					<button class="remodal-confirm wpse-duplicate-trigger"><?php _e('Execute', 'vg_sheet_editor' ); ?></button>
+					<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Cancel', 'vg_sheet_editor' ); ?></button>
 				</div>
 				<br>
 			</div>
@@ -99,8 +99,8 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 			foreach ($post_types as $post_type) {
 				$editor->args['toolbars']->register_item('duplicate', array(
 					'type' => 'button',
-					'help_tooltip' => __('Duplicate items in bulk.', VGSE()->textname),
-					'content' => __('Duplicate', VGSE()->textname),
+					'help_tooltip' => __('Duplicate items in bulk.', 'vg_sheet_editor' ),
+					'content' => __('Duplicate', 'vg_sheet_editor' ),
 					'icon' => 'fa fa-copy',
 					'extra_html_attributes' => 'data-remodal-target="modal-duplicate"',
 					'footer_callback' => array($this, 'render_form')
@@ -140,6 +140,10 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 					continue;
 				}
 				foreach ($values as $value) {
+					if( $key === '_elementor_data'){
+						$value = wp_slash($value);
+					}
+
 					add_post_meta($new_post_id, $key, maybe_unserialize($value));
 				}
 			}
@@ -167,7 +171,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 				$template_id = VGSE()->helpers->_get_post_id_from_search($template_title);
 
 				if (empty($template_id) || get_post_type($template_id) !== $post_type || !VGSE()->helpers->user_can_edit_post_type($post_type)) {
-					return new WP_Error('wpse', sprintf(__('Template item with ID %d was not found or is not allowed to be duplicated.', VGSE()->textname), $template_id));
+					return new WP_Error('wpse', sprintf(__('Template item with ID %d was not found or is not allowed to be duplicated.', 'vg_sheet_editor' ), $template_id));
 				}
 
 				for ($i = 0; $i < $rows; $i++) {
@@ -190,7 +194,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 		}
 
 		function duplicate_woocommerce_product($new_post_id, $template_id, $post_type) {
-			if ($post_type === apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product') && function_exists('WC') && empty($new_post_id)) {
+			if ($post_type === apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product') && class_exists('WooCommerce') && empty($new_post_id)) {
 
 				if (!class_exists('WC_Admin_Duplicate_Product')) {
 					include_once( WC_ABSPATH . 'includes/admin/class-wc-admin-duplicate-product.php' );

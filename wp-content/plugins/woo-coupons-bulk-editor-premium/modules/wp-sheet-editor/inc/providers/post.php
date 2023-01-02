@@ -30,7 +30,7 @@ class VGSE_Provider_Post extends VGSE_Provider_Abstract {
 
 	function filter_rows_before_edit($data, $post_type) {
 		$post_type_object = get_post_type_object($post_type);
-		if (!$post_type_object || current_user_can($post_type_object->cap->edit_others_posts) || empty($data)) {
+		if (!$post_type_object || WP_Sheet_Editor_Helpers::current_user_can($post_type_object->cap->edit_others_posts) || empty($data)) {
 			return $data;
 		}
 		$first_row = current($data);
@@ -66,7 +66,7 @@ class VGSE_Provider_Post extends VGSE_Provider_Abstract {
 		$meta_table_name = $this->get_meta_table_name($post_type);
 
 		$wc_product_post_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
-		if ($post_type === $wc_product_post_type && function_exists('WC')) {
+		if ($post_type === $wc_product_post_type && class_exists('WooCommerce')) {
 			$post_type = array($wc_product_post_type, 'product_variation');
 		}
 		if (is_string($post_type)) {
@@ -87,7 +87,7 @@ AND pm.meta_key = %s", array_merge($post_type, array($old_key)));
 		global $wpdb;
 		$meta_table_name = $this->get_meta_table_name($post_type);
 		$wc_product_post_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
-		if ($post_type === $wc_product_post_type && function_exists('WC')) {
+		if ($post_type === $wc_product_post_type && class_exists('WooCommerce')) {
 			$post_type = array($wc_product_post_type, 'product_variation');
 		}
 		if (is_string($post_type)) {
@@ -236,9 +236,7 @@ m1.$post_meta_post_id_key IN ($post_ids_in_query_placeholders)  AND
 			// If any DB error happened during the prefetch, skip the prefetch and disable it for future sessions
 			// If we don't skip, we set all the meta fields as empty at the end of this function so we must avoid that
 			if ($wpdb->last_error) {
-				$options = get_option(VGSE()->options_key);
-				$options['be_disable_data_prefetch'] = true;
-				update_option(VGSE()->options_key, $options, false);
+				VGSE()->update_option('be_disable_data_prefetch', 1);
 				return $post_meta;
 			}
 			$post_meta_raw = array_merge($post_meta_raw, $post_meta_raw_group);
@@ -359,10 +357,10 @@ ORDER BY t.name ASC", $prepared_data);
 			}
 			$post_statuses[$status_key] = $status->label;
 		}
-		if (( $post_type === 'page' && !current_user_can('publish_pages') ) || ( $post_type !== 'page' && !current_user_can('publish_posts'))) {
+		if (( $post_type === 'page' && !WP_Sheet_Editor_Helpers::current_user_can('publish_pages') ) || ( $post_type !== 'page' && !WP_Sheet_Editor_Helpers::current_user_can('publish_posts'))) {
 			unset($post_statuses['publish']);
 		}
-		if (($post_type === 'page' && !current_user_can('delete_pages')) || ($post_type !== 'page' && !current_user_can('delete_posts'))) {
+		if (($post_type === 'page' && !WP_Sheet_Editor_Helpers::current_user_can('delete_pages')) || ($post_type !== 'page' && !WP_Sheet_Editor_Helpers::current_user_can('delete_posts'))) {
 			unset($post_statuses['trash']);
 		}
 
@@ -384,8 +382,8 @@ ORDER BY t.name ASC", $prepared_data);
 			set_transient($cache_key, $has_duplicate_dates, DAY_IN_SECONDS);
 		}
 
-		if ($has_duplicate_dates === 'yes') {
-			$wp_query_args['orderby'] = 'post_date ID';
+		if ($has_duplicate_dates === 'yes') { 
+			$wp_query_args['orderby'] = array( 'post_date' => 'DESC', 'ID' => 'DESC' );
 		}
 		return $wp_query_args;
 	}
@@ -462,28 +460,41 @@ ORDER BY t.name ASC", $prepared_data);
 			throw new Exception(json_encode(array(
 								'post_id' => $values['ID'],
 								'code' => 'wpse_invalid_post_type',
-								'message' => sprintf(__("Row ID: %d, Post type: %s does not exist in WordPress. Make sure your CSV uses the right name in the post type column.", VGSE()->textname), $values['ID'], sanitize_text_field($values['post_type'])),
+								'message' => sprintf(__("Row ID: %d, Post type: %s does not exist in WordPress. Make sure your CSV uses the right name in the post type column.", 'vg_sheet_editor' ), $values['ID'], sanitize_text_field($values['post_type'])),
 							)), E_USER_ERROR);
 		}
 		if (isset($values['post_type']) && empty($values['post_type'])) {
 			throw new Exception(json_encode(array(
 								'post_id' => $values['ID'],
 								'code' => 'wpse_invalid_post_type',
-								'message' => sprintf(__("Row ID: %d. You are trying to save an empty post type. Make sure your CSV uses the right name in the post type column.", VGSE()->textname), $values['ID']),
+								'message' => sprintf(__("Row ID: %d. You are trying to save an empty post type. Make sure your CSV uses the right name in the post type column.", 'vg_sheet_editor' ), $values['ID']),
 							)), E_USER_ERROR);
 		}
 		if (isset($values['post_status']) && empty($values['post_status'])) {
 			$values['post_status'] = 'draft';
 		}
 
+		if( ! empty($values['post_date']) && $values['post_date'] > current_time('mysql')){
+			$values['post_status'] = 'future';
+		}
+
 		$post_id = $values['ID'];
 		if (isset($values['post_date'])) {
-			$values['edit_date'] = true;
+			$values['edit_date'] = true; 
+		}
+
+		if( ! empty($values['post_date'])){
+			$values['post_date_gmt'] = '';
+		}
+		
+		// If the post type hasn't changed, don't save it again
+		if (!empty($values['post_type']) && $values['post_type'] === get_post_type($post_id)) {
+			unset($values['post_type']);
 		}
 
 		// If converting from post to product, migrate the tags and categories too
 		$product_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
-		if (function_exists('WC') && !empty($values['post_type']) && $values['post_type'] === $product_type && get_post_type($post_id) === 'post') {
+		if (class_exists('WooCommerce') && !empty($values['post_type']) && $values['post_type'] === $product_type && get_post_type($post_id) === 'post') {
 			$post_tags = $this->get_item_terms($post_id, 'post_tag');
 			$categories = $this->get_item_terms($post_id, 'category');
 			// @todo wpml is not working
@@ -546,14 +557,14 @@ ORDER BY t.name ASC", $prepared_data);
 				}
 			}
 
-			if (current_user_can('delete_post', $post_id)) {
+			if (WP_Sheet_Editor_Helpers::current_user_can('delete_post', $post_id)) {
 				wp_delete_post($post_id, true);
 			} else {
-				throw new Exception(sprintf(__("Row ID: %d, You do not have permission to delete this post.", VGSE()->textname), $post_id), E_USER_ERROR);
+				throw new Exception(sprintf(__("Row ID: %d, You do not have permission to delete this post.", 'vg_sheet_editor' ), $post_id), E_USER_ERROR);
 			}
 		} else {
 			if (count($values) === 1 && isset($post_id)) {
-				$out = true;
+				$out = $post_id;
 			} else {
 				$out = wp_update_post($values, $wp_error);
 

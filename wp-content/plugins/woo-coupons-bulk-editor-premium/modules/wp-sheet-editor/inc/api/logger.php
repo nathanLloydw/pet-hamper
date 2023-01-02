@@ -18,7 +18,7 @@ if (!class_exists('WPSE_Logger')) {
 		}
 
 		function maybe_download_log_file() {
-			if (empty($_GET['wpseelf']) || !current_user_can('manage_options')) {
+			if (empty($_GET['wpseelf']) || !VGSE()->helpers->user_can_manage_options()) {
 				return;
 			}
 
@@ -30,7 +30,7 @@ if (!class_exists('WPSE_Logger')) {
 			$file_name = current(explode('.', basename($path)));
 
 			if (!file_exists($path)) {
-				die(__('The log file does not exist.', VGSE()->textname));
+				die(__('The log file does not exist.', 'vg_sheet_editor' ));
 			}
 
 			// output headers so that the file is downloaded rather than displayed
@@ -89,7 +89,7 @@ if (!class_exists('WPSE_Logger')) {
 			$time = $d->format("Y-m-d H:i:s.u"); // note at point on "u"
 
 			$fp = fopen($file_path, 'a'); //opens file in append mode  
-			fwrite($fp, $time . ' - ' . esc_html($message) . PHP_EOL . PHP_EOL);
+			fwrite($fp, $time . ' - ' . wp_kses_post($message) . PHP_EOL . PHP_EOL);
 			fclose($fp);
 			return $this;
 		}
@@ -101,7 +101,7 @@ if (!class_exists('WPSE_Logger')) {
 			do_action('wpse_delete_old_csvs', array($this, 'delete_old_files'));
 			if (is_admin()) {
 				$this->maybe_create_directories();
-				add_action('init', array($this, 'maybe_download_log_file'));
+				add_action('vg_sheet_editor/initialized', array($this, 'maybe_download_log_file'));
 				add_action('admin_init', array($this, 'delete_old_files'));
 			}
 		}

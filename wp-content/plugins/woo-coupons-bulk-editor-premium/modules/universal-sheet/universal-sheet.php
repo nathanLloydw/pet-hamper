@@ -7,11 +7,11 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 	class WP_Sheet_Editor_Universal_Sheet {
 
 		static private $instance = false;
-		var $plugin_url = null;
-		var $plugin_dir = null;
-		var $buy_link = null;
+		public $plugin_url = null;
+		public $plugin_dir = null;
+		public $buy_link = null;
 		var $settings = null;
-		var $args = null;
+		public $args = null;
 		var $vg_plugin_sdk = null;
 
 		private function __construct() {
@@ -97,7 +97,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 		function render_wp_fields_import_options($post_type) {
 			$columns = $this->get_import_options($post_type);
 			?>
-			<option value=""><?php _e('Ignore this column', VGSE()->textname); ?></option>
+			<option value=""><?php _e('Ignore this column', 'vg_sheet_editor' ); ?></option>
 			<?php
 			do_action('vg_sheet_editor/import/before_available_columns_options', $post_type);
 			foreach ($columns as $key => $column) {
@@ -105,19 +105,19 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 			}
 
 			if (post_type_exists($post_type)) {
-				echo '<option value="post_name__in">' . __('Full URL', VGSE()->textname) . '</option>';
+				echo '<option value="post_name__in">' . __('Full URL', 'vg_sheet_editor' ) . '</option>';
 			}
 			do_action('vg_sheet_editor/import/after_available_columns_options', $post_type);
 		}
 
 		function delete_saved_export() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || empty($_REQUEST['search_name'])) {
-				wp_send_json_error(array('message' => __('Missing parameters.', VGSE()->textname)));
+			if (empty($_REQUEST['post_type']) || empty($_REQUEST['search_name'])) {
+				wp_send_json_error(array('message' => __('Missing parameters.', 'vg_sheet_editor' )));
 			}
 
 
-			if (!wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
-				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', VGSE()->textname)));
+			if (!VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', 'vg_sheet_editor' )));
 			}
 
 			$post_type = VGSE()->helpers->sanitize_table_key($_REQUEST['post_type']);
@@ -145,7 +145,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 			foreach ($post_types as $post_type) {
 				$editor->args['toolbars']->register_item('export_csv', array(
 					'type' => 'button', // html | switch | button
-					'content' => __('Export', VGSE()->textname),
+					'content' => __('Export', 'vg_sheet_editor' ),
 					'id' => 'export_csv',
 					'allow_in_frontend' => true,
 					'toolbar_key' => 'secondary',
@@ -153,7 +153,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 					'footer_callback' => array($this, 'render_export_csv_modal')
 						), $post_type);
 
-				if (current_user_can('manage_options')) {
+				if (VGSE()->helpers->user_can_manage_options()) {
 					$saved_exports = WPSE_CSV_API_Obj()->get_saved_exports($post_type);
 					foreach ($saved_exports as $index => $saved_export) {
 						$editor->args['toolbars']->register_item('save_export' . $index, array(
@@ -170,7 +170,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 
 				$editor->args['toolbars']->register_item('share_export', array(
 					'type' => 'button',
-					'content' => __('Download CSV file', VGSE()->textname),
+					'content' => __('Download CSV file', 'vg_sheet_editor' ),
 					'extra_html_attributes' => 'data-remodal-target="export-csv-modal"',
 					'toolbar_key' => 'primary',
 					'allow_in_frontend' => false,
@@ -178,7 +178,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 						), $post_type);
 				$editor->args['toolbars']->register_item('import_csv', array(
 					'type' => 'button', // html | switch | button
-					'content' => __('Import', VGSE()->textname),
+					'content' => __('Import', 'vg_sheet_editor' ),
 					'id' => 'import_csv',
 					'allow_in_frontend' => true,
 					'toolbar_key' => 'secondary',

@@ -7,7 +7,7 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 	var $is_post_type = false;
 	var $last_request = null;
 	static $data_store = array();
-	var $args = array();
+	public $args = array();
 	var $table_columns_cache = array();
 	var $post_data_table_id_cache = array();
 
@@ -19,16 +19,25 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 		$columns_transient_key = 'vgse_custom_tables_columns';
 		$params_transient_key = 'vgse_custom_tables_params';
 		$id_columns_transient_key = 'vgse_custom_tables_id_columns';
+		$force_rescan = false;
 
 		$current_post_type = VGSE()->helpers->get_provider_from_query_string();
 		if (method_exists(VGSE()->helpers, 'can_rescan_db_fields') && VGSE()->helpers->can_rescan_db_fields($current_post_type)) {
 			$cached_columns = array();
 			$cached_params = array();
 			$cached_id_columns = array();
+			$force_rescan = true;
 		} else {
 			$cached_columns = get_transient($columns_transient_key);
 			$cached_params = get_transient($params_transient_key);
 			$cached_id_columns = get_transient($id_columns_transient_key);
+
+			if (!empty($cached_columns)) {
+				$cached_columns = json_decode($cached_columns, true);
+			}
+			if (!empty($cached_params)) {
+				$cached_params = json_decode($cached_params, true);
+			}
 		}
 		if (empty($cached_columns)) {
 			$cached_columns = array();
@@ -54,7 +63,7 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 			$this->maybe_build_table_schema($table_name);
 			$this->get_post_data_table_id_key($table_name);
 		}
-		if ($this->args !== $cached_schema) {
+		if ($this->args !== $cached_schema || $force_rescan) {
 			$params = array();
 			$columns = array();
 			foreach ($this->args as $table_name => $args) {
@@ -65,10 +74,26 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 				$params[$table_name] = $args;
 			}
 
-			set_transient($columns_transient_key, $columns, WEEK_IN_SECONDS);
-			set_transient($params_transient_key, $params, WEEK_IN_SECONDS);
+			set_transient($columns_transient_key, json_encode($this->utf8ize($columns)), WEEK_IN_SECONDS);
+			set_transient($params_transient_key, json_encode($params), WEEK_IN_SECONDS);
 			set_transient($id_columns_transient_key, $this->post_data_table_id_cache, WEEK_IN_SECONDS);
 		}
+	}
+
+	/* Use it for json_encode some corrupt UTF-8 chars
+	 * useful for = malformed utf-8 characters possibly incorrectly encoded by json_encode
+	 * https://stackoverflow.com/a/52641198
+	 */
+
+	function utf8ize($mixed) {
+		if (is_array($mixed)) {
+			foreach ($mixed as $key => $value) {
+				$mixed[$key] = $this->utf8ize($value);
+			}
+		} elseif (is_string($mixed)) {
+			return mb_convert_encoding($mixed, "UTF-8", "UTF-8");
+		}
+		return $mixed;
 	}
 
 	function get_arg($key, $post_type) {
@@ -385,7 +410,10 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 		}
 
 		foreach ($this->get_arg('columns', $args['post_type']) as $column_key => $column) {
-
+			// We don't support filter by post_type column because it conflicts with the spreadsheet key
+			if( $column_key === 'post_type'){
+				continue;
+			}
 			if (!isset($args[$column_key])) {
 				continue;
 			}
@@ -702,7 +730,7 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 	function update_item_data($values, $wp_error = false) {
 		$post_type = VGSE()->helpers->get_provider_from_query_string();
 		$edit_capability = $this->get_provider_edit_capability($post_type);
-		if (!current_user_can($edit_capability)) {
+		if (!WP_Sheet_Editor_Helpers::current_user_can($edit_capability)) {
 			return false;
 		}
 
@@ -761,7 +789,7 @@ class VGSE_Provider_Custom_table extends VGSE_Provider_Abstract {
 	function create_item($values) {
 		$post_type = VGSE()->helpers->get_provider_from_query_string();
 		$edit_capability = $this->get_provider_edit_capability($post_type);
-		if (!current_user_can($edit_capability)) {
+		if (!WP_Sheet_Editor_Helpers::current_user_can($edit_capability)) {
 			return false;
 		}
 

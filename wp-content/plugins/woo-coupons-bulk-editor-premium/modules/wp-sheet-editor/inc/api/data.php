@@ -192,7 +192,7 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 			} else {
 				$names = $this->format_term_ids($term_ids, $first_term->taxonomy, $separator);
 			}
-			return $names;
+			return html_entity_decode($names);
 		}
 
 		function get_hierarchy_for_single_term($term) {
@@ -236,8 +236,11 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 		 * @param string $taxonomy
 		 * @return array|bool
 		 */
-		function get_taxonomy_terms($taxonomy, $source = '') {
-			$cache_key = apply_filters('vg_sheet_editor/data/taxonomy_terms/cache_key', 'wpse_terms_' . $taxonomy, $taxonomy, $source);
+		function get_taxonomy_terms($taxonomy, $source = '', $output = 'name') {
+			if( ! in_array( $output, array('name', 'slug'), true)) {
+				$output = 'name';
+			}
+			$cache_key = apply_filters('vg_sheet_editor/data/taxonomy_terms/cache_key', 'wpse_terms_' . $taxonomy . $output, $taxonomy, $source);
 			$terms = get_transient($cache_key);
 			if (empty($terms)) {
 
@@ -246,16 +249,21 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 				} else {
 					// Building the hierarchy tree is expensive so we do it only for taxonomies with < 2500 terms
 					// taxonomies with > 2500 terms get the list of names without hierarchy
-					$terms_count = wp_count_terms($taxonomy, array(
-						'hide_empty' => false,
-					));
-					$get_hierarchy = $terms_count < 2500;
+					// $terms_count = wp_count_terms($taxonomy, array(
+					// 	'hide_empty' => false,
+					// ));
+					// $get_hierarchy = $terms_count < 2500;
+					// 
+					// Now we always get the hierarchy because if we dont' get hierarchy for big taxonomies,
+					// We might get duplicate term names (child categories of different parent categories) which
+					// will certainly save the incorrect term
+					$get_hierarchy = true;
 				}
 
 				if ($get_hierarchy) {
-					$terms = wp_list_pluck($this->get_taxonomy_hierarchy($taxonomy), 'name');
+					$terms = wp_list_pluck($this->get_taxonomy_hierarchy($taxonomy), $output);
 				} else {
-					$terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false, 'fields' => 'names', 'update_term_meta_cache' => false));
+					$terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false, 'fields' => $output . 's', 'update_term_meta_cache' => false));
 				}
 				set_transient($cache_key, $terms, WEEK_IN_SECONDS);
 			}
@@ -333,7 +341,7 @@ ORDER BY user_login ASC", OBJECT);
 			// note, we had some logic related to product dates. I removed it because it seemed unnecessary.
 			// Keep in mind a possible rollback in case users report issues.
 			// The date must always come in Y-m-d format, so we can easily change the format here.
-			$date_timestamp = ( empty($date)) ? time() : strtotime($date);
+			$date_timestamp = ( empty($date)) ? current_time('timestamp') : strtotime($date);
 			$savedate = date('Y-m-d H:i:s', $date_timestamp);
 			return $savedate;
 		}
@@ -417,7 +425,13 @@ ORDER BY user_login ASC", OBJECT);
 			if (is_null($separator)) {
 				$separator = VGSE()->helpers->get_term_separator();
 			}
-			$row_terms = array_filter(array_map('trim', explode("$separator", $value)));
+			$row_terms = array_map('trim', explode("$separator", $value));
+			// We can't use array_filter because real terms containing '0' would be removed
+			foreach ($row_terms as $index => $row_term) {
+				if (is_string($row_term) && $row_term === '') {
+					unset($row_terms[$index]);
+				}
+			}
 
 			// Save using ids
 			if (!empty(VGSE()->options['manage_taxonomy_columns_term_ids'])) {
@@ -453,7 +467,7 @@ ORDER BY user_login ASC", OBJECT);
 				foreach ($_terms as $index => $_term) {
 					// Check if category exists. Parent must be empty string or null if doesn't exists.
 					// We can't use term_exists() because it converts the name to slug and it 
-					// always returns the term D for term D+
+					// always returns the term "D" for term "D+"
 					$term_exists_args = array(
 						'taxonomy' => $taxonomy,
 						'name' => $_term,
@@ -471,7 +485,7 @@ ORDER BY user_login ASC", OBJECT);
 					if ($term) {
 						$term_id = (int) $term;
 						// Don't allow users without capabilities to create new product categories or tags
-					} elseif (in_array($taxonomy, $woocommerce_taxonomies) && !current_user_can('manage_product_terms')) {
+					} elseif (in_array($taxonomy, $woocommerce_taxonomies) && !WP_Sheet_Editor_Helpers::current_user_can('manage_product_terms')) {
 						break;
 					} else {
 						$term = wp_insert_term($_term, $taxonomy, array('parent' => intval($parent)));
@@ -517,8 +531,11 @@ ORDER BY user_login ASC", OBJECT);
 			if (is_null($separator)) {
 				$separator = VGSE()->helpers->get_term_separator();
 			}
-			// Convert | to the real separator
-			$categories = str_replace('|', $separator, $categories);
+			// Convert | to the real separator when moving WC product attributes
+			$post_type = VGSE()->helpers->get_provider_from_query_string();
+			if( $post_type && $post_type === 'product' ){
+				$categories = str_replace('|', $separator, $categories);
+			}
 
 			$row_terms = explode($separator, $categories);
 			$all_row_terms = implode('', $row_terms);
@@ -532,12 +549,15 @@ ORDER BY user_login ASC", OBJECT);
 			}
 
 			// If this is one term and it doesn't contain any spaces, try to find by slug first
-			if (!empty($categories) && strpos($categories, $separator) === false && strpos($categories, ' ') === false) {
-				$term = get_term_by('slug', $categories, $taxonomy);
-				if ($term) {
-					return array($term->term_id);
-				}
-			}
+			// Disabled because it causes conflict when they want to save a new term by name but the name matches the slug of another term
+			// Also, we already have the option "Manage taxonomy column values as term slugs?" which can be activated if they want to use slugs for terms
+			// So this was a little redundant
+			/* if (!empty($categories) && strpos($categories, $separator) === false && strpos($categories, ' ') === false) {
+			  $term = get_term_by('slug', trim($categories), $taxonomy);
+			  if ($term && $term->slug === trim($categories)) {
+			  return array($term->term_id);
+			  }
+			  } */
 
 			if (!is_taxonomy_hierarchical($taxonomy)) {
 				// Allow to save > symbol when the taxonomy is not hierarchical and the symbol appears at the beginning and there's only one term
@@ -625,7 +645,7 @@ ORDER BY user_login ASC", OBJECT);
 			if (!$post_type) {
 				$post_type = (isset($_REQUEST['post_type'])) ? sanitize_text_field($_REQUEST['post_type']) : 'post';
 			}
-			$sql = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type= %s", wp_unslash($page_title), esc_sql($post_type));
+			$sql = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type= %s", wp_unslash(html_entity_decode($page_title)), esc_sql($post_type));
 			$post_id = $wpdb->get_var($sql);
 			if ($post_id) {
 				return $post_id;

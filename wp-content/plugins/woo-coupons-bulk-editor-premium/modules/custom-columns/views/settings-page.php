@@ -7,14 +7,14 @@ $nonce = wp_create_nonce('bep-nonce');
 <div class="remodal-bg custom-columns-page-content" id="vgse-wrapper" data-nonce="<?php echo esc_attr($nonce); ?>">
 	<div class="">
 		<div class="">
-			<h2 class="hidden"><?php _e('Sheet Editor', VGSE()->textname); ?></h2>
+			<h2 class="hidden"><?php _e('Sheet Editor', 'vg_sheet_editor' ); ?></h2>
 			<a href="https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=custom-columns-logo" target="_blank"><img src="<?php echo esc_url(VGSE()->logo_url); ?>" class="vg-logo"></a>
 		</div>
-		<h2><?php _e('Add New Columns to the Spreadsheet', VGSE()->textname); ?></h2>
+		<h2><?php _e('Add New Columns to the Spreadsheet', 'vg_sheet_editor' ); ?></h2>
 
-		<p><?php printf(__('Enter the column name (anything you want), and select the field key from the dropdown. If you dont find it you can type it in the dropdown. <a href="%s" target="_blank">View Tutorial</a>', VGSE()->textname), 'https://www.youtube.com/watch?v=fxzVgzjhdR0'); ?></p>
-		<p><?php _e('Enable the advanced mode at the bottom of the page to customize the column width, format (editor, file upload, taxonomies), etc.', VGSE()->textname); ?></p>
-		<p><a class="button help-button" href="<?php echo esc_url(VGSE()->get_support_links('contact_us', 'url', 'custom-columns-help')); ?>" target="_blank" ><i class="fa fa-envelope"></i> <?php _e('Need help? Contact us', VGSE()->textname); ?></a></p>
+		<p><?php printf(__('Enter the column name (anything you want), and select the field key from the dropdown. If you dont find it you can type it in the dropdown. <a href="%s" target="_blank">View Tutorial</a>', 'vg_sheet_editor' ), 'https://www.youtube.com/watch?v=fxzVgzjhdR0'); ?></p>
+		<p><?php _e('Enable the advanced mode at the bottom of the page to customize the column width, format (editor, file upload, taxonomies), etc.', 'vg_sheet_editor' ); ?></p>
+		<p><a class="button help-button" href="<?php echo esc_url(VGSE()->get_support_links('contact_us', 'url', 'custom-columns-help')); ?>" target="_blank" ><i class="fa fa-envelope"></i> <?php _e('Need help? Contact us', 'vg_sheet_editor' ); ?></a></p>
 
 		<?php do_action('vg_sheet_editor/custom_columns/settings_page/before_form'); ?>
 		<form class="repeater custom-columns-form" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
@@ -34,11 +34,11 @@ $nonce = wp_create_nonce('bep-nonce');
 						<div class="column-fields-wrapper">
 							<?php do_action('vg_sheet_editor/custom_columns/settings_page/before_template_fields', $columns); ?>
 							<div class="field-container field-container-name">
-								<label><?php _e('Column name', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('The column name displayed in the spreadsheet', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Column name', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('The column name displayed in the spreadsheet', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<input type="text" name="name" value="<?php echo esc_attr($column_settings['name']); ?>" class="name-field"/>
 							</div>
 							<div class="field-container field-container-key">
-								<label><?php _e('Column key', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('The key that will be used for saving the information in the database. This must be unique, only letters and underscores.', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Column key', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('The key that will be used for saving the information in the database. This must be unique, only letters and underscores.', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<select name="key" class="key-field select2"><?php
 									$custom_columns = WP_Sheet_Editor_Custom_Columns::get_instance();
 									$all_keys = VGSE()->helpers->get_all_meta_keys('', 1000);
@@ -58,15 +58,15 @@ $nonce = wp_create_nonce('bep-nonce');
 									?></select>
 							</div>
 							<div class="field-container field-container-data-source">
-								<label><?php _e('Data source', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('Select the kind of information used in the cells of this column.', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Data source', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Select the kind of information used in the cells of this column.', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<select name="data_source">
-									<option value="post_data" <?php selected($column_settings['data_source'], 'post_data'); ?>><?php _e('Post data', VGSE()->textname); ?></option>
-									<option value="post_meta" <?php selected($column_settings['data_source'], 'post_meta'); ?>><?php _e('Post meta (i.e. metaboxes)', VGSE()->textname); ?></option>
-									<option value="post_terms" <?php selected($column_settings['data_source'], 'post_terms'); ?>><?php _e('Post terms (i.e. categories)', VGSE()->textname); ?></option>
+									<option value="post_data" <?php selected($column_settings['data_source'], 'post_data'); ?>><?php _e('Post data', 'vg_sheet_editor' ); ?></option>
+									<option value="post_meta" <?php selected($column_settings['data_source'], 'post_meta'); ?>><?php _e('Post meta (i.e. metaboxes)', 'vg_sheet_editor' ); ?></option>
+									<option value="post_terms" <?php selected($column_settings['data_source'], 'post_terms'); ?>><?php _e('Post terms (i.e. categories)', 'vg_sheet_editor' ); ?></option>
 								</select>
 							</div>
 							<div class="field-container field-container-post-types">
-								<label><?php _e('Post type(s)', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('What kind of posts require this column in the spreadsheet?', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Post type(s)', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('What kind of posts require this column in the spreadsheet?', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 
 								<?php
 								$post_types = VGSE()->helpers->get_allowed_post_types();
@@ -87,68 +87,68 @@ $nonce = wp_create_nonce('bep-nonce');
 								?>
 							</div>
 							<div class="field-container field-container-read-only">
-								<label><?php _e('Is read only?', VGSE()->textname); ?></label>
+								<label><?php _e('Is read only?', 'vg_sheet_editor' ); ?></label>
 								<input type="checkbox" name="read_only" value="yes"  <?php checked('yes', $column_settings['read_only']); ?>/>
 							</div>
 							<div class="field-container field-container-formulas">
-								<label><?php _e('Allow to edit using formulas?', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('If you disable this option, this column will be edited manually only.', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Allow to edit using formulas?', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('If you disable this option, this column will be edited manually only.', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<input type="checkbox" name="allow_formulas" value="yes" <?php checked('yes', $column_settings['allow_formulas']); ?>/>
 							</div>
 							<div class="field-container field-container-hide">
-								<label><?php _e('Allow to hide column?', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('Allow to hide this column on the settings page?', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Allow to hide column?', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Allow to hide this column on the settings page?', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<input type="checkbox" name="allow_hide" value="yes" <?php checked('yes', $column_settings['allow_hide']); ?>/>
 							</div>
 							<div class="field-container field-container-rename">
-								<label><?php _e('Allow to rename column?', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('Allow to rename column on the settings page?', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Allow to rename column?', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Allow to rename column on the settings page?', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 								<input type="checkbox" name="allow_rename" value="yes" <?php checked('yes', $column_settings['allow_rename']); ?>/>
 							</div>
 							<div class="field-container field-container-cell-type">
-								<label><?php _e('Cell type', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('Select the format of the cells, if the cells should be normal text, a file uploader, or text editor.', VGSE()->textname); ?>">( ? )</a></label>
+								<label><?php _e('Cell type', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="<?php _e('Select the format of the cells, if the cells should be normal text, a file uploader, or text editor.', 'vg_sheet_editor' ); ?>">( ? )</a></label>
 
 								<select name="cell_type" >
-									<option value=""><?php _e('Normal cell', VGSE()->textname); ?></option>
-									<option value="boton_tiny" <?php selected($column_settings['cell_type'], 'boton_tiny'); ?>/><?php _e('TinyMCE Editor', VGSE()->textname); ?></option>
-									<option value="boton_gallery" <?php selected($column_settings['cell_type'], 'boton_gallery'); ?>/><?php _e('File upload (single)', VGSE()->textname); ?></option>
-									<option value="boton_gallery_multiple" <?php selected($column_settings['cell_type'], 'boton_gallery_multiple'); ?>/><?php _e('File upload (multiple)', VGSE()->textname); ?></option>
+									<option value=""><?php _e('Normal cell', 'vg_sheet_editor' ); ?></option>
+									<option value="boton_tiny" <?php selected($column_settings['cell_type'], 'boton_tiny'); ?>/><?php _e('TinyMCE Editor', 'vg_sheet_editor' ); ?></option>
+									<option value="boton_gallery" <?php selected($column_settings['cell_type'], 'boton_gallery'); ?>/><?php _e('File upload (single)', 'vg_sheet_editor' ); ?></option>
+									<option value="boton_gallery_multiple" <?php selected($column_settings['cell_type'], 'boton_gallery_multiple'); ?>/><?php _e('File upload (multiple)', 'vg_sheet_editor' ); ?></option>
 								</select>
 							</div>
 							<div class="field-container field-container-plain-renderer">
-								<label><?php _e('Plain text mode: Render as: (Use only if cell type is empty)', VGSE()->textname); ?></label>
+								<label><?php _e('Plain text mode: Render as: (Use only if cell type is empty)', 'vg_sheet_editor' ); ?></label>
 								<select name="plain_renderer" >
-									<option value="text" <?php selected($column_settings['plain_renderer'], 'text'); ?>/><?php _e('Simple text', VGSE()->textname); ?></option>
-									<option value="date" <?php selected($column_settings['plain_renderer'], 'date'); ?>/><?php _e('Calendar', VGSE()->textname); ?></option>
-									<option value="taxonomy_dropdown" <?php selected($column_settings['plain_renderer'], 'taxonomy_dropdown'); ?>/><?php _e('Taxonomy dropdown. Only if data source = post terms.', VGSE()->textname); ?></option>
-									<option value="html" <?php selected($column_settings['plain_renderer'], 'html'); ?>/><?php _e('Unfiltered HTML', VGSE()->textname); ?></option>
+									<option value="text" <?php selected($column_settings['plain_renderer'], 'text'); ?>/><?php _e('Simple text', 'vg_sheet_editor' ); ?></option>
+									<option value="date" <?php selected($column_settings['plain_renderer'], 'date'); ?>/><?php _e('Calendar', 'vg_sheet_editor' ); ?></option>
+									<option value="taxonomy_dropdown" <?php selected($column_settings['plain_renderer'], 'taxonomy_dropdown'); ?>/><?php _e('Taxonomy dropdown. Only if data source = post terms.', 'vg_sheet_editor' ); ?></option>
+									<option value="html" <?php selected($column_settings['plain_renderer'], 'html'); ?>/><?php _e('Unfiltered HTML', 'vg_sheet_editor' ); ?></option>
 								</select>
 							</div>
 							<div class="field-container field-container-formatted-renderer">
-								<label><?php _e('Formatted cell mode: Render as: (Use only if cell type is empty)', VGSE()->textname); ?></label>
+								<label><?php _e('Formatted cell mode: Render as: (Use only if cell type is empty)', 'vg_sheet_editor' ); ?></label>
 								<select name="formatted_renderer" >
-									<option value="text" <?php selected($column_settings['formatted_renderer'], 'text'); ?>/><?php _e('Simple text', VGSE()->textname); ?></option>
-									<option value="date" <?php selected($column_settings['formatted_renderer'], 'date'); ?>/><?php _e('Calendar', VGSE()->textname); ?></option>
-									<option value="taxonomy_dropdown" <?php selected($column_settings['formatted_renderer'], 'taxonomy_dropdown'); ?>/><?php _e('Taxonomy dropdown', VGSE()->textname); ?></option>
-									<option value="html" <?php selected($column_settings['formatted_renderer'], 'html'); ?>/><?php _e('Unfiltered HTML', VGSE()->textname); ?></option>
+									<option value="text" <?php selected($column_settings['formatted_renderer'], 'text'); ?>/><?php _e('Simple text', 'vg_sheet_editor' ); ?></option>
+									<option value="date" <?php selected($column_settings['formatted_renderer'], 'date'); ?>/><?php _e('Calendar', 'vg_sheet_editor' ); ?></option>
+									<option value="taxonomy_dropdown" <?php selected($column_settings['formatted_renderer'], 'taxonomy_dropdown'); ?>/><?php _e('Taxonomy dropdown', 'vg_sheet_editor' ); ?></option>
+									<option value="html" <?php selected($column_settings['formatted_renderer'], 'html'); ?>/><?php _e('Unfiltered HTML', 'vg_sheet_editor' ); ?></option>
 								</select>
 							</div>
 							<div class="field-container field-container-width">
-								<label><?php _e('Column width (pixels)', VGSE()->textname); ?></label>
+								<label><?php _e('Column width (pixels)', 'vg_sheet_editor' ); ?></label>
 								<input type="text" name="width" value="<?php echo (int) $column_settings['width']; ?>" min="50" max="350"/>
 							</div>
 
 							<?php do_action('vg_sheet_editor/custom_columns/settings_page/after_template_fields', $columns); ?>
 							<div class="field-container field-container-delete">
-								<input data-repeater-delete type="button" value="<?php _e('Delete', VGSE()->textname); ?>" class="button"/>
+								<input data-repeater-delete type="button" value="<?php _e('Delete', 'vg_sheet_editor' ); ?>" class="button"/>
 							</div>
 						</div>
 					</div>
 				<?php } ?>
 			</div>
 			<?php do_action('vg_sheet_editor/custom_columns/settings_page/before_form_submit'); ?>
-			<input data-repeater-create type="button" value="<?php esc_attr_e('Add new column', VGSE()->textname); ?>" class="button add-column"/>
-			<button class="button button-primary button-primary save"><?php _e('Save', VGSE()->textname); ?></button>
+			<input data-repeater-create type="button" value="<?php esc_attr_e('Add new column', 'vg_sheet_editor' ); ?>" class="button add-column"/>
+			<button class="button button-primary button-primary save"><?php _e('Save', 'vg_sheet_editor' ); ?></button>
 
 
-			<div class="mode"><input type="checkbox" class="mode-field" id="mode-field" value="yes"/> <label for="mode-field"><?php _e('Advanced mode', VGSE()->textname); ?></label></div>
+			<div class="mode"><input type="checkbox" class="mode-field" id="mode-field" value="yes"/> <label for="mode-field"><?php _e('Advanced mode', 'vg_sheet_editor' ); ?></label></div>
 		</form>
 
 		<?php do_action('vg_sheet_editor/custom_columns/settings_page/after_content'); ?>

@@ -21,7 +21,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 			$this->column_keys = array_keys($this->get_column_keys());
 
 			// Priority 20 to allow to instantiate from another editor/before_init function
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 20);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'), 20);
 			if (!empty($this->settings['allow_in_wc_product_variations'])) {
 				add_filter('vg_sheet_editor/woocommerce/variation_columns', array($this, 'allow_in_variations'));
 			}
@@ -94,6 +94,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 						'allow_to_hide' => true,
 						'allow_to_rename' => true,
 						'infinite_serialized_handler' => true,
+						'serialized_field_type' => 'infinite',
 						'allow_direct_search' => false,
 						'allow_search_during_import' => false,
 						'allow_for_variations' => !empty($this->settings['allow_in_wc_product_variations']),

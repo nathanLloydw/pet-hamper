@@ -12,7 +12,7 @@ if (empty($post_types)) {
 
 <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="POST" class="post-types-form">
 
-	<p><?php _e('Available spreadsheets', VGSE()->textname); ?></p>
+	<p><?php _e('Available spreadsheets', 'vg_sheet_editor' ); ?></p>
 
 	<?php
 	foreach ($sheets as $sheet) {
@@ -26,7 +26,7 @@ if (empty($post_types)) {
 	<input type="hidden" name="action" value="vgse_save_post_types_setting">
 	<input type="hidden" name="append" value="no">
 	<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('bep-nonce'); ?>">
-	<button class="button button-primary hidden save-trigger button-primary"><?php _e('Save', VGSE()->textname); ?></button>
+	<button class="button button-primary hidden save-trigger button-primary"><?php _e('Save', 'vg_sheet_editor' ); ?></button>
 </form>
 <script>
 	jQuery(document).ready(function () {

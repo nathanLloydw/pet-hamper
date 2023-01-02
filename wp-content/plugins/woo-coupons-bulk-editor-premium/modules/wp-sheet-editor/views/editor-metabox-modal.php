@@ -66,14 +66,14 @@
 <div  class="vgca-iframe-wrapper">
 	<!--Loading indicator-->
 	<div class="lds-ring vgca-loading-indicator"><div></div><div></div><div></div><div></div></div>
-	<iframe id="vgca-iframe-<?php echo esc_attr($editor->provider->key); ?>" data-src="<?php
+	<div class="iframe-template" id="vgca-iframe-<?php echo esc_attr($editor->provider->key); ?>" data-src="<?php
 			if ($editor->provider->key === 'user') {
-				$base_url = 'user-edit.php?wpse_source=1&user_id=';
+				$base_url = 'user-edit.php?wpse_source=1&wpse_metabox_iframe=1&wpse_post_type=' . $current_post_type . '&user_id=';
 			} elseif ($editor->provider->key === 'term') {
-				$base_url = 'term.php?wpse_source=1&taxonomy=' . $current_post_type . '&tag_ID=';
+				$base_url = 'term.php?wpse_source=1&wpse_metabox_iframe=1&wpse_post_type=' . $current_post_type . '&taxonomy=' . $current_post_type . '&tag_ID=';
 			} else {
-				$base_url = 'post.php?wpse_source=1&action=edit&post=';
+				$base_url = 'post.php?wpse_source=1&wpse_metabox_iframe=1&wpse_post_type=' . $current_post_type . '&action=edit&post=';
 			}
 			echo esc_url(admin_url($base_url));
-			?>"></iframe>
+			?>"></div>
 </div>

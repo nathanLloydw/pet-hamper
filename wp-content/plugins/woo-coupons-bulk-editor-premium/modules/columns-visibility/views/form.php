@@ -5,27 +5,27 @@
 		<?php if (!$partial_form) { ?>
 			<form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="POST" class="vgse-modal-form" data-nonce="<?php echo wp_create_nonce('bep-nonce'); ?>" id="columns-manager-form">
 			<?php } ?>
-			<h3><?php _e('Columns manager', VGSE()->textname); ?></h3>
+			<h3><?php _e('Columns manager', 'vg_sheet_editor' ); ?></h3>
 			<ul class="unstyled-list">
 				<li>
-					<p><?php _e('Drag the columns to the left or right side to enable/disable them, drag them to the top or bottom to sort them, click on the "edit" button to rename them, click on the "x" button to delete them completely (only when they are disabled previously).', VGSE()->textname); ?><?php do_action('vg_sheet_editor/columns_visibility/after_instructions', $post_type, $visible_columns, $options[$post_type], $editor); ?></p> 
+					<p><?php _e('Drag the columns to the left or right side to enable/disable them, drag them to the top or bottom to sort them, click on the "edit" button to rename them, click on the "x" button to delete them completely (only when they are disabled previously).', 'vg_sheet_editor' ); ?><?php do_action('vg_sheet_editor/columns_visibility/after_instructions', $post_type, $visible_columns, $options[$post_type], $editor); ?></p> 
 
 					<!--These options were replaced with the "bulk actions" added to each list-->
-					<!--<button class="button vgse-change-all-states" data-to="enabled"><?php _e('Enable all', VGSE()->textname); ?></button> ---> 
-					<!--<button class="button vgse-change-all-states" data-to="disabled"><?php _e('Disable all', VGSE()->textname); ?></button>-->
+					<!--<button class="button vgse-change-all-states" data-to="enabled"><?php _e('Enable all', 'vg_sheet_editor' ); ?></button> ---> 
+					<!--<button class="button vgse-change-all-states" data-to="disabled"><?php _e('Disable all', 'vg_sheet_editor' ); ?></button>-->
 
 				</li>
 				<li>
 					<div class="vgse-sorter-section">
 
-						<h3><?php _e('Enabled', VGSE()->textname); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', VGSE()->textname); ?></button></h3>
+						<h3><?php _e('Enabled', 'vg_sheet_editor' ); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', 'vg_sheet_editor' ); ?></button></h3>
 						<div class="wpse-columns-bulk-actions">
-							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', VGSE()->textname); ?>">
+							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', 'vg_sheet_editor' ); ?>">
 							<select class="wpse-bulk-action">
-								<option value=""><?php _e('Bulk actions', VGSE()->textname); ?></option>
-								<option value="disable"><?php _e('Disable all', VGSE()->textname); ?></option>
-								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', VGSE()->textname); ?></option>
-								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', VGSE()->textname); ?></option>
+								<option value=""><?php _e('Bulk actions', 'vg_sheet_editor' ); ?></option>
+								<option value="disable"><?php _e('Disable all', 'vg_sheet_editor' ); ?></option>
+								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', 'vg_sheet_editor' ); ?></option>
+								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', 'vg_sheet_editor' ); ?></option>
 							</select>
 						</div>
 
@@ -51,11 +51,11 @@
 									<input type="hidden" name="columns[]" class="js-column-key" value="<?php echo esc_attr($column_key); ?>" />
 									<input type="hidden" name="columns_names[]" class="js-column-title" value="<?php echo esc_attr($title); ?>" />
 
-									<?php if (current_user_can('manage_options')) { ?>
-										<button class="remove-column column-action" title="<?php echo esc_attr(__('Remove column completely. If you want to use it later you can disable it by dragging and dropping to the right column', VGSE()->textname)); ?>"><i class="fa fa-remove"></i></button>
+									<?php if (VGSE()->helpers->user_can_manage_options()) { ?>
+										<button class="remove-column column-action" title="<?php echo esc_attr(__('Remove column completely. If you want to use it later you can disable it by dragging and dropping to the right column', 'vg_sheet_editor' )); ?>"><i class="fa fa-remove"></i></button>
 									<?php } ?>
-									<button class="deactivate-column column-action" title="<?php echo esc_attr(__('Disable column. You can enable it later.', VGSE()->textname)); ?>"><i class="fa fa-arrow-right"></i></button>
-									<button class="enable-column column-action" title="<?php echo esc_attr(__('Enable column', VGSE()->textname)); ?>"><i class="fa fa-arrow-left"></i></button>
+									<button class="deactivate-column column-action" title="<?php echo esc_attr(__('Disable column. You can enable it later.', 'vg_sheet_editor' )); ?>"><i class="fa fa-arrow-right"></i></button>
+									<button class="enable-column column-action" title="<?php echo esc_attr(__('Enable column', 'vg_sheet_editor' )); ?>"><i class="fa fa-arrow-left"></i></button>
 									<?php do_action('vg_sheet_editor/columns_visibility/enabled/after_column_action', $column, $post_type); ?>
 								</li>
 							<?php }
@@ -63,16 +63,16 @@
 						</ul>
 					</div>
 					<div class="vgse-sorter-section">
-						<h3><?php _e('Disabled', VGSE()->textname); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', VGSE()->textname); ?></button></h3>
+						<h3><?php _e('Disabled', 'vg_sheet_editor' ); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', 'vg_sheet_editor' ); ?></button></h3>
 
 						<div class="wpse-columns-bulk-actions">
-							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', VGSE()->textname); ?>">
+							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', 'vg_sheet_editor' ); ?>">
 							<select class="wpse-bulk-action">
-								<option value=""><?php _e('Bulk actions', VGSE()->textname); ?></option>
-								<option value="enable"><?php _e('Enable all', VGSE()->textname); ?></option>
-								<option value="delete"><?php _e('Delete all', VGSE()->textname); ?></option>
-								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', VGSE()->textname); ?></option>
-								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', VGSE()->textname); ?></option>
+								<option value=""><?php _e('Bulk actions', 'vg_sheet_editor' ); ?></option>
+								<option value="enable"><?php _e('Enable all', 'vg_sheet_editor' ); ?></option>
+								<option value="delete"><?php _e('Delete all', 'vg_sheet_editor' ); ?></option>
+								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', 'vg_sheet_editor' ); ?></option>
+								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', 'vg_sheet_editor' ); ?></option>
 							</select>
 						</div>
 						<ul class="vgse-sorter columns-disabled" id="vgse-columns-disabled"><?php
@@ -91,14 +91,14 @@
 										$column_title = $columns[$column_key]['title'];
 									}
 									?>
-									<li><span class="handle">::</span> <span class="column-title" title="<?php echo esc_attr($column_title); ?>"><?php echo esc_html($column_title); ?></span>  <i class="fa fa-refresh tipso tipso_style" data-tipso="<?php _e('Enabling this column requires a page reload', VGSE()->textname); ?>"></i>
+									<li><span class="handle">::</span> <span class="column-title" title="<?php echo esc_attr($column_title); ?>"><?php echo esc_html($column_title); ?></span>  <i class="fa fa-refresh"  data-wpse-tooltip="right" aria-label="<?php _e('Enabling this column requires a page reload', 'vg_sheet_editor' ); ?>">&#xf021;</i>
 										<input type="hidden" name="disallowed_columns[]" class="js-column-key" value="<?php echo esc_attr($column_key); ?>" />
 										<input type="hidden" name="disallowed_columns_names[]" class="js-column-title" value="<?php echo esc_attr($column_title); ?>" />
-										<?php if (current_user_can('manage_options')) { ?>
-											<button class="remove-column column-action" title="<?php echo esc_attr(__('Remove column completely. If you want to use it later you can disable it by dragging and dropping to the right column', VGSE()->textname)); ?>"><i class="fa fa-remove"></i></button>
+										<?php if (VGSE()->helpers->user_can_manage_options()) { ?>
+											<button class="remove-column column-action" title="<?php echo esc_attr(__('Remove column completely. If you want to use it later you can disable it by dragging and dropping to the right column', 'vg_sheet_editor' )); ?>"><i class="fa fa-remove"></i></button>
 										<?php } ?>
-										<button class="deactivate-column column-action" title="<?php echo esc_attr(__('Disable column. You can enable it later.', VGSE()->textname)); ?>"><i class="fa fa-arrow-right"></i></button>
-										<button class="enable-column column-action" title="<?php echo esc_attr(__('Enable column', VGSE()->textname)); ?>"><i class="fa fa-arrow-left"></i></button>
+										<button class="deactivate-column column-action" title="<?php echo esc_attr(__('Disable column. You can enable it later.', 'vg_sheet_editor' )); ?>"><i class="fa fa-arrow-right"></i></button>
+										<button class="enable-column column-action" title="<?php echo esc_attr(__('Enable column', 'vg_sheet_editor' )); ?>"><i class="fa fa-arrow-left"></i></button>
 										<?php do_action('vg_sheet_editor/columns_visibility/disabled/after_column_action', $column, $post_type); ?>
 									</li>
 									<?php
@@ -108,11 +108,11 @@
 					</div>
 					<div class="clear"></div>
 				</li>
-				<?php if (is_admin() && current_user_can('manage_options')) { ?>
+				<?php if (is_admin() && VGSE()->helpers->user_can_manage_options()) { ?>
 					<li class="missing-column-tips">					
-						<h3><?php _e('A column is missing?', VGSE()->textname); ?></h3>
+						<h3><?php _e('A column is missing?', 'vg_sheet_editor' ); ?></h3>
 						<ul>
-							<li><?php _e('- First, edit one item in the normal editor and fill all the fields manually.', VGSE()->textname); ?></li>
+							<li><?php _e('- First, edit one item in the normal editor and fill all the fields manually.', 'vg_sheet_editor' ); ?></li>
 							<?php
 							if (empty($options[$post_type]['enabled'])) {
 								$options[$post_type]['enabled'] = array();
@@ -121,24 +121,28 @@
 								$options[$post_type]['disabled'] = array();
 							}
 							?>
-							<li><?php _e('- We can scan the database, find new fields, and create columns automatically', VGSE()->textname); ?> <a class="tipso wpse-scan-db-link" href="<?php
-								$rescan_url = ( $current_url ) ? add_query_arg(array('wpse_rescan_db_fields' => $post_type), $current_url) : add_query_arg(array('wpse_rescan_db_fields' => $post_type));
+							<li><?php _e('- We can scan the database, find new fields, and create columns automatically', 'vg_sheet_editor' ); ?> <a class="wpse-scan-db-link" href="<?php 
+								if( wp_doing_ajax() ){
+									$rescan_url = add_query_arg(array('wpse_rescan_db_fields' => $post_type), wp_get_referer());
+								} else {
+									$rescan_url = ( $current_url ) ? add_query_arg(array('wpse_rescan_db_fields' => $post_type), $current_url) : add_query_arg(array('wpse_rescan_db_fields' => $post_type));
+								}
 								echo esc_url($rescan_url);
-								?>" data-tipso="<?php esc_attr_e('You can do this multiple times', VGSE()->textname); ?>"><?php _e('Scan Now', VGSE()->textname); ?></a></li>
+								?>"  data-wpse-tooltip="right" aria-label="<?php esc_attr_e('You can do this multiple times', 'vg_sheet_editor' ); ?>"><?php _e('Scan Now', 'vg_sheet_editor' ); ?></a></li>
 
-							<?php
+							<?php 
 							if (class_exists('WP_Sheet_Editor_Custom_Columns') && VGSE()->helpers->is_editor_page()) {
 								?>
-								<li><?php _e('- If the previous solution failed, you can create new columns manually.', VGSE()->textname); ?> <a class="" href="<?php echo esc_url(admin_url('admin.php?page=vg_sheet_editor_custom_columns')); ?>"><?php _e('Create column', VGSE()->textname); ?></a></li>
+								<li><?php _e('- If the previous solution failed, you can create new columns manually.', 'vg_sheet_editor' ); ?> <a class="" href="<?php echo esc_url(admin_url('admin.php?page=vg_sheet_editor_custom_columns')); ?>"><?php _e('Create column', 'vg_sheet_editor' ); ?></a></li>
 							<?php } ?>
-							<li><?php _e('- Maybe you deleted the columns from the list.', VGSE()->textname); ?> <a class="vgse-restore-removed-columns" href="javascript:void(0)"><?php _e('Restore deleted columns', VGSE()->textname); ?></a></li>	
-							<li><?php _e('- We can help you.', VGSE()->textname); ?> <a class="" target="_blank" href="<?php echo esc_url(VGSE()->get_support_links('contact_us', 'url', 'sheet-missing-column')); ?>"><?php _e('Contact us', VGSE()->textname); ?></a></li>	
+							<li><?php _e('- Maybe you deleted the columns from the list.', 'vg_sheet_editor' ); ?> <a class="vgse-restore-removed-columns" href="javascript:void(0)"><?php _e('Restore deleted columns', 'vg_sheet_editor' ); ?></a></li>	
+							<li><?php _e('- We can help you.', 'vg_sheet_editor' ); ?> <a class="" target="_blank" href="<?php echo esc_url(VGSE()->get_support_links('contact_us', 'url', 'sheet-missing-column')); ?>"><?php _e('Contact us', 'vg_sheet_editor' ); ?></a></li>	
 						</ul>
 						</p>	
 					</li>				
 				<?php } ?>
 				<li class="vgse-allow-save-settings">
-					<label><input type="checkbox" value="yes" name="save_post_type_settings" class="save_post_type_settings" /> <?php _e('Save these settings for future sessions?', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="If you enable this option, we will use these settings the next time you load the editor for this post type.">( ? )</a></label>
+					<label><input type="checkbox" value="yes" name="save_post_type_settings" class="save_post_type_settings" /> <?php _e('Save these settings for future sessions?', 'vg_sheet_editor' ); ?> <a href="#" data-wpse-tooltip="right" aria-label="If you enable this option, we will use these settings the next time you load the editor for this post type.">( ? )</a></label>
 
 				</li>
 
@@ -146,8 +150,8 @@
 
 				<li class="vgse-save-settings">
 					<?php if (!$partial_form) { ?>
-						<button type="submit" class="remodal-confirm"><?php _e('Apply settings', VGSE()->textname); ?></button>
-						<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Close', VGSE()->textname); ?></button>
+						<button type="submit" class="remodal-confirm"><?php _e('Apply settings', 'vg_sheet_editor' ); ?></button>
+						<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Close', 'vg_sheet_editor' ); ?></button>
 					<?php } ?>
 				</li>
 			</ul>

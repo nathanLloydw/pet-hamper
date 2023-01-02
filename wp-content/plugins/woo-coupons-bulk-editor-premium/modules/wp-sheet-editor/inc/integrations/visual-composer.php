@@ -12,7 +12,7 @@ if (!class_exists('VG_Visual_Composer_Integration')) {
 
 		function init() {
 
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'));
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'));
 		}
 
 		/**

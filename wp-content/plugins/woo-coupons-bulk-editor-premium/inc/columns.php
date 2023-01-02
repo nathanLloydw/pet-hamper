@@ -16,8 +16,14 @@ if (!class_exists('WPSE_WC_Coupons_Columns')) {
 		}
 
 		function init() {
-			if (!is_admin() && !apply_filters('vg_sheet_editor/allowed_on_frontend', false)) {
-				return;
+			if( method_exists('WP_Sheet_Editor', 'allow_to_initialize')){				
+				if (!WP_Sheet_Editor::allow_to_initialize()) {
+					return;
+				}
+			} else {
+				if (!is_admin() && !apply_filters('vg_sheet_editor/allowed_on_frontend', false)) {
+					return;
+				}
 			}
 
 			if (!wpsewcc_fs()->can_use_premium_code__premium_only()) {
@@ -36,7 +42,7 @@ if (!class_exists('WPSE_WC_Coupons_Columns')) {
 			}
 
 			add_filter('vg_sheet_editor/add_new_posts/create_new_posts', array($this, 'create_new_rows'), 10, 3);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 60);
+			add_action('vg_sheet_editor/editor/register_columns', array($this, 'register_columns'), 60);
 			add_filter('vg_sheet_editor/custom_columns/teaser/allow_to_lock_column', array($this, 'dont_lock_allowed_columns'), 99, 2);
 			add_filter('vg_sheet_editor/options_page/options', array($this, 'add_settings_page_options'));
 			add_filter('vg_sheet_editor/duplicate/new_post_data', array($this, 'set_new_code_when_duplicating_coupons'), 10, 2);
@@ -125,7 +131,7 @@ if (!class_exists('WPSE_WC_Coupons_Columns')) {
 			}
 			?>
 			<li>
-				<label><?php _e('Prefix for the coupon codes', VGSE()->textname); ?></label>
+				<label><?php _e('Prefix for the coupon codes', 'vg_sheet_editor' ); ?></label>
 				<input type="text" name="coupon_code_prefix" value="NEW - ">
 			</li>
 			<?php
@@ -172,8 +178,8 @@ if (!class_exists('WPSE_WC_Coupons_Columns')) {
 				$fields[] = array(
 					'id' => 'wc_coupons_use_product_ids',
 					'type' => 'switch',
-					'title' => __('Use product/variation IDs in the product restrictions?', VGSE()->textname),
-					'desc' => __('By default we allow to save using titles or skus. Activate this to only use IDs', VGSE()->textname),
+					'title' => __('Use product/variation IDs in the product restrictions?', 'vg_sheet_editor' ),
+					'desc' => __('By default we allow to save using titles or skus. Activate this to only use IDs', 'vg_sheet_editor' ),
 					'default' => false,
 				);
 			}
@@ -481,7 +487,7 @@ GROUP BY oi.order_item_name";
 			));
 			if (!empty($this->allowed_columns)) {
 				// Increase column width for disabled columns, so the "premium" message fits
-				$spreadsheet_columns = $editor->args['columns']->get_provider_items($post_type);
+				$spreadsheet_columns = $editor->get_provider_items($post_type);
 				foreach ($spreadsheet_columns as $key => $column) {
 					if (!in_array($key, $this->allowed_columns)) {
 						$editor->args['columns']->register_item($key, $post_type, array(
@@ -563,7 +569,7 @@ GROUP BY oi.order_item_name";
 
 		function prepare_expiration_date_for_database($post_id, $cell_key, $data_to_save, $post_type, $cell_args, $spreadsheet_columns) {
 			if (!empty($data_to_save)) {
-				$data_to_save = preg_match('/^\d{10}$/', $data_to_save) ? (int) $data_to_save : strtotime($data_to_save);
+				$data_to_save = preg_match('/^\d{9,10}$/', $data_to_save) ? (int) $data_to_save : strtotime($data_to_save);
 			}
 			return $data_to_save;
 		}

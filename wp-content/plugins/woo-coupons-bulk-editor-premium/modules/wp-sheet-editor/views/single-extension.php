@@ -12,7 +12,7 @@
 		</div></div>
 	<div class="addon-status"><?php
 		if ($is_active) {
-			echo '<p><i class="fa fa-check"></i>' . __('Active.', VGSE()->textname) . '</p>';
+			echo '<p><i class="fa fa-check"></i>' . __('Active.', 'vg_sheet_editor' ) . '</p>';
 		}
 
 		echo esc_html($extension['status']);

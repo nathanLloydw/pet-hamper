@@ -59,7 +59,7 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 					display: block !important;
 				}
 			</style>
-			<a class="button setup-button" href="<?php echo esc_url(admin_url('admin.php?page=' . $this->page_slug)); ?>"><i class="fa fa-cog"></i> <?php _e('Enable new spreadsheet', VGSE()->textname); ?></a>
+			<a class="button setup-button" href="<?php echo esc_url(admin_url('admin.php?page=' . $this->page_slug)); ?>"><i class="fa fa-cog"></i> <?php _e('Enable new spreadsheet', 'vg_sheet_editor' ); ?></a>
 			<?php
 		}
 
@@ -73,36 +73,36 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 		}
 
 		function save_column() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['current_post_type']) || empty($_REQUEST['label']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_option')) {
+			if (empty($_POST['current_post_type']) || empty($_POST['label']) || !VGSE()->helpers->verify_nonce_from_request() || !WP_Sheet_Editor_Helpers::current_user_can('manage_option')) {
 				wp_send_json_error();
 			}
 
-			if (empty($_REQUEST['key'])) {
-				$_REQUEST['key'] = VGSE()->helpers->sanitize_table_key($_REQUEST['label']);
+			if (empty($_POST['key'])) {
+				$_POST['key'] = VGSE()->helpers->sanitize_table_key($_POST['label']);
 			}
 
 			$columns = WP_Sheet_Editor_Custom_Columns::get_instance();
 
 			$columns->add_columns(array(array(
-					'name' => sanitize_text_field($_REQUEST['label']),
-					'key' => VGSE()->helpers->sanitize_table_key($_REQUEST['key']),
-					'post_types' => sanitize_text_field($_REQUEST['current_post_type']),
+					'name' => sanitize_text_field($_POST['label']),
+					'key' => VGSE()->helpers->sanitize_table_key($_POST['key']),
+					'post_types' => sanitize_text_field($_POST['current_post_type']),
 				)), array(
 				'append' => true,
 			));
 
 			wp_send_json_success(array(
-				'key' => VGSE()->helpers->sanitize_table_key($_REQUEST['key']),
-				'label' => sanitize_text_field($_REQUEST['label']),
+				'key' => VGSE()->helpers->sanitize_table_key($_POST['key']),
+				'label' => sanitize_text_field($_POST['label']),
 			));
 		}
 
 		function get_columns_visibility_html() {
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+			if (empty($_GET['post_type']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
 				wp_send_json_error();
 			}
 
-			$post_type = sanitize_text_field($_REQUEST['post_type']);
+			$post_type = sanitize_text_field($_GET['post_type']);
 			$editor = VGSE()->helpers->get_provider_editor($post_type);
 			$out = '';
 			// Columns visibility section
@@ -146,13 +146,13 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 			if (!class_exists('WP_Sheet_Editor_CPTs')) {
 				wp_send_json_error();
 			}
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+			if (empty($_POST['post_type']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
 				wp_send_json_error();
 			}
 
 			$existing_post_types = get_option($this->custom_post_types_key, array());
 			$existing_post_types_slugs = array_map('sanitize_title', $existing_post_types);
-			$new_post_type = sanitize_title($_REQUEST['post_type']);
+			$new_post_type = sanitize_title($_POST['post_type']);
 			$post_type_index = array_search($new_post_type, $existing_post_types_slugs);
 
 			if ($post_type_index !== false) {
@@ -172,7 +172,7 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 			}
 
 			wp_send_json_success(array(
-				'message' => __('Post type deleted', VGSE()->textname),
+				'message' => __('Post type deleted', 'vg_sheet_editor' ),
 			));
 		}
 
@@ -181,11 +181,11 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 			if (!class_exists('WP_Sheet_Editor_CPTs')) {
 				wp_send_json_error();
 			}
-			if (empty($_REQUEST['nonce']) || empty($_REQUEST['post_type']) || !wp_verify_nonce($_REQUEST['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+			if (empty($_POST['post_type']) || !VGSE()->helpers->verify_nonce_from_request() || !VGSE()->helpers->user_can_manage_options()) {
 				wp_send_json_error();
 			}
 
-			if ($this->is_protected_key($_REQUEST['post_type'])) {
+			if ($this->is_protected_key($_POST['post_type'])) {
 				wp_send_json_error();
 			}
 
@@ -194,13 +194,13 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 			if (empty($post_types) || !is_array($post_types)) {
 				$post_types = array();
 			}
-			$post_types[] = sanitize_title($_REQUEST['post_type']);
+			$post_types[] = sanitize_title($_POST['post_type']);
 
 			$post_types = array_unique($post_types);
 
 			$registered_post_type = current(VGSE()->helpers->get_all_post_types(array(
-						'name' => sanitize_text_field($_REQUEST['post_type']),
-						'label' => sanitize_text_field($_REQUEST['post_type']),
+						'name' => sanitize_text_field($_POST['post_type']),
+						'label' => sanitize_text_field($_POST['post_type']),
 			)));
 
 			if (!empty($registered_post_type)) {
@@ -213,8 +213,8 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 					update_option($this->custom_post_types_key, $post_types);
 				}
 				$out = array(
-					'slug' => sanitize_title($_REQUEST['post_type']),
-					'label' => sanitize_text_field($_REQUEST['post_type']),
+					'slug' => sanitize_title($_POST['post_type']),
+					'label' => sanitize_text_field($_POST['post_type']),
 				);
 			}
 
@@ -254,7 +254,7 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 				return;
 			}
 
-			if (isset($_GET['wpse_delete_all_post_types']) && current_user_can('manage_options')) {
+			if (isset($_GET['wpse_delete_all_post_types']) && VGSE()->helpers->user_can_manage_options()) {
 				update_option($this->custom_post_types_key, null);
 				return;
 			}
@@ -272,15 +272,15 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 		}
 
 		function register_menu() {
-			add_submenu_page('vg_sheet_editor_setup', __('Setup spreadsheet', VGSE()->textname), __('Setup spreadsheet', VGSE()->textname), 'manage_options', $this->page_slug, array($this, 'render_post_type_setup'));
+			add_submenu_page('vg_sheet_editor_setup', __('Setup spreadsheet', 'vg_sheet_editor' ), __('Setup spreadsheet', 'vg_sheet_editor' ), 'manage_options', $this->page_slug, array($this, 'render_post_type_setup'));
 		}
 
 		/**
 		 * Render post type setup page
 		 */
 		function render_post_type_setup() {
-			if (!current_user_can('manage_options')) {
-				wp_die(__('You dont have enough permissions to view this page.', VGSE()->textname));
+			if (!VGSE()->helpers->user_can_manage_options()) {
+				wp_die(__('You dont have enough permissions to view this page.', 'vg_sheet_editor' ));
 			}
 
 			$custom_post_types_raw = get_option($this->custom_post_types_key);

@@ -2,14 +2,15 @@
 /*
   Plugin Name: WP Sheet Editor - WooCommerce Coupons (Premium)
   Description: Edit WooCommerce Coupons in spreadsheet.
-  Version: 1.3.32
+  Version: 1.3.37
+  Update URI: https://api.freemius.com
   Author:      WP Sheet Editor
   Author URI:  https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=coupons
   Plugin URI: https://wpsheeteditor.com/extensions/woocommerce-coupons-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=coupons
   License:     GPL2
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   WC requires at least: 3.0
-  WC tested up to: 6.6
+  WC tested up to: 7.1
   Text Domain: vg_sheet_editor_wc_coupons
   Domain Path: /lang
   @fs_premium_only /modules/user-path/send-user-path.php, /modules/advanced-filters/, /modules/columns-renaming/, /modules/formulas/, /modules/custom-columns/, /modules/posts-templates/, /modules/spreadsheet-setup/, /modules/universal-sheet/, /modules/columns-manager/,  /modules/wp-sheet-editor/inc/integrations/notifier.php,/modules/wp-sheet-editor/inc/integrations/extensions.json,
@@ -42,13 +43,13 @@ if (!class_exists('WP_Sheet_Editor_WC_Coupons')) {
 	class WP_Sheet_Editor_WC_Coupons {
 
 		static private $instance = false;
-		var $plugin_url = null;
-		var $plugin_dir = null;
-		var $textname = 'vg_sheet_editor_wc_coupons';
-		var $buy_link = null;
-		var $version = '1.3.9';
+		public $plugin_url = null;
+		public $plugin_dir = null;
+		public $textname = 'vg_sheet_editor_wc_coupons';
+		public $buy_link = null;
+		public $version = '1.3.9';
 		var $settings = null;
-		var $args = null;
+		public $args = null;
 		var $vg_plugin_sdk = null;
 		var $post_type = 'shop_coupon';
 
@@ -77,7 +78,7 @@ if (!class_exists('WP_Sheet_Editor_WC_Coupons')) {
 			$plugin_data = get_plugin_data(__FILE__, false, false);
 			?>
 			<div class="notice notice-error">
-				<p><?php _e('Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled to prevent errors and they will be enabled automatically after you install the updates.', vgse_wc_coupons()->textname); ?></p>
+				<p><?php _e('Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled temporarily because it is the newest version and it conflicts with old versions of other WP Sheet Editor plugins. The features will be enabled automatically after you install the updates.', vgse_wc_coupons()->textname); ?></p>
 			</div>
 			<?php
 		}
@@ -120,7 +121,7 @@ if (!class_exists('WP_Sheet_Editor_WC_Coupons')) {
 		}
 
 		function after_core_init() {
-			if (version_compare(VGSE()->version, '2.24.15') < 0) {
+			if (version_compare(VGSE()->version, '2.24.22-beta.1') < 0) {
 				add_action('admin_notices', array($this, 'notify_wrong_core_version'));
 				return;
 			}
@@ -146,7 +147,7 @@ if (!class_exists('WP_Sheet_Editor_WC_Coupons')) {
 			if ($editor->args['provider'] !== $this->post_type) {
 				return;
 			}
-			if (!current_user_can('manage_options')) {
+			if (!WP_Sheet_Editor_Helpers::current_user_can('install_plugins')) {
 				return;
 			}
 			$editor->args['toolbars']->register_item('wpse_license', array(

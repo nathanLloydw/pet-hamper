@@ -12,8 +12,8 @@ foreach ($sheets as $sheet) {
 	}
 	?>
 
-	<p><?php printf(__('Spreadsheet for %s %s', VGSE()->textname), $sheet['label'], str_replace(array('<small>', '</small>'), '', $sheet['description'])); ?></p>
+	<p><?php printf(__('Spreadsheet for %s %s', 'vg_sheet_editor' ), $sheet['label'], str_replace(array('<small>', '</small>'), '', $sheet['description'])); ?></p>
 	<?php
 }
 $free_extensions = ob_get_clean();
-$free_extensions_html = __('<p>Free extensions</p>', VGSE()->textname) . $free_extensions;
+$free_extensions_html = __('<p>Free extensions</p>', 'vg_sheet_editor' ) . $free_extensions;
