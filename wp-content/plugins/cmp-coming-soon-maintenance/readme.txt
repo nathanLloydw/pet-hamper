@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KV2JF
 Tags: coming soon, coming soon page, launch page, maintenance mode, under construction
 Requires at least: 3.0
 Requires PHP: 5.6
-Tested up to: 6.0
-Stable tag: 4.1.2
+Tested up to: 6.1
+Stable tag: 4.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,26 @@ https://www.youtube.com/watch?v=uxuJfHzwdtE
 <p>Nothing is better than a good feedback! Please go to <a href="https://wordpress.org/support/plugin/cmp-coming-soon-maintenance/reviews/">Plugin reviews</a> and rate it! Alternatively you can click on a Donate button too!:)</p>
 
 == Changelog ==
+<h4>CMP 4.1.6 - 13-Dec-22</h4>
+<ul>
+	<li>Updated compatibility with translaction plugins./li>
+</ul>
+
+<h4>CMP 4.1.5 - 04-Nov-22</h4>
+<ul>
+	<li>Compatibility check with WP 6.1</li>
+</ul>
+
+<h4>CMP 4.1.4 - 11-Oct-22</h4>
+<ul>
+	<li>Resolve counter issue in Titan theme</li>
+</ul>
+
+<h4>CMP 4.1.3 - 01-Oct-22</h4>
+<ul>
+	<li>Small security update</li>
+</ul>
+
 <h4>CMP 4.1.2 - 17-May-22</h4>
 <ul>
 	<li>Added option to load font awesome from a local server. Requested by @blauemango</li>

@@ -3,7 +3,7 @@
  Plugin Name: 		CMP - Coming Soon & Maintenance Plugin
  Plugin URI: 		https://wordpress.org/plugins/cmp-coming-soon-maintenance/
  Description:       Display customizable landing page for Coming Soon, Maintenance & Under Construction page.
- Version:           4.1.2
+ Version:           4.1.6
  Author:            NiteoThemes
  Author URI:        https://www.niteothemes.com
  Text Domain:       cmp-coming-soon-maintenance
@@ -62,7 +62,7 @@ if ( ! class_exists( 'CMP_Coming_Soon_and_Maintenance' ) ) :
 
 		// define constants
 		private function constants() {
-			$this->define( 'CMP_VERSION', '4.1.2' );
+			$this->define( 'CMP_VERSION', '4.1.6' );
 			$this->define( 'CMP_DEBUG', FALSE );
 			$this->define( 'CMP_AUTHOR', 'NiteoThemes' );
 			$this->define( 'CMP_AUTHOR_HOMEPAGE', 'https://niteothemes.com' );
@@ -370,13 +370,17 @@ if ( ! class_exists( 'CMP_Coming_Soon_and_Maintenance' ) ) :
 		public function cmp_get_translated_id( $id ) {
 
 			if ( function_exists('pll_get_post') ) {
-				$id = pll_get_post( $id );
+				$updated_id = pll_get_post( $id );
 
 			} else if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-				$id = apply_filters( 'wpml_object_id', $id );
+				$updated_id = apply_filters( 'wpml_object_id', $id );
+			}
+			
+			if (!$updated_id) {
+				return $id;
 			}
 
-			return $id;
+			return $updated_id;
 		}
 
 		/**
