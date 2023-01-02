@@ -1,5 +1,59 @@
 *** WooCommerce Points and Rewards Changelog ***
 
+2022-12-23 - version 1.7.23
+* Add - Validate product meta fields.
+* Dev - Add node and npm version restrictions.
+* Dev - Adds support for wp-env as development environment.
+* Fix - Compatibility with block snackbar notices.
+* Fix - Redeem points not working on off-site payment gateways.
+
+2022-12-06 - version 1.7.22
+* Fix - Update schema callback to match what is returned by data callback in Blocks integration class.
+* Tweak - WC 7.2 compatibility.
+
+2022-11-16 - version 1.7.21
+* Fix - Zero conversion rate causing internal server error.
+
+2022-11-08 - version 1.7.20
+* Fix - Add HPOS compatibility for order management.
+* Fix - Add HPOS compatibility.
+* Tweak - WC 7.1 compatibility.
+* Tweak - WP 6.1 compatibility.
+
+2022-10-25 - version 1.7.19
+* Fix - Redirect to the cart page on removing and applying reward points on the checkout page.
+
+2022-10-18 - version 1.7.18
+* Fix - Duplication notifications during checkout.
+
+2022-10-13 - version 1.7.17
+* Tweak - WC 7.0 compatibility.
+
+2022-10-11 - version 1.7.16
+* Fix - Label fields not updated if only one of the fields is filled.
+
+2022-10-04 - version 1.7.15
+* Fix - Remove points to be earned message in single product page for external/affiliate products.
+* Fix - Secures apply points to previous orders with a nonce.
+
+2022-09-27 - version 1.7.14
+* Fix - earn points notice inconsistent visibility issue.
+
+2022-09-13 - version 1.7.13
+* Fix - Coupon notice in checkout appearing at the beginning of the page.
+
+2022-09-02 - version 1.7.12
+* Dev - Add branch-labels GH workflow.
+* Dev - GH release config and the new PR template.
+* Tweak - WC 6.9 compatibility.
+
+2022-07-27 - version 1.7.11
+* Tweak - WC 6.8 compatibility.
+
+2022-07-06 - version 1.7.10
+* Fix - Repeated earn points notices with subscriptions.
+* Tweak - WC 6.7 compatibility.
+
 2022-06-07 - version 1.7.9
 * Tweak - WC 6.6 compatibility.
 

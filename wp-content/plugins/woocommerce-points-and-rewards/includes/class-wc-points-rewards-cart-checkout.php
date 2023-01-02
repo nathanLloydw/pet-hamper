@@ -38,6 +38,9 @@ class WC_Points_Rewards_Cart_Checkout {
 		add_action( 'woocommerce_before_checkout_form', array( $this, 'render_earn_points_message' ), 5 );
 		add_action( 'woocommerce_before_checkout_form', array( $this, 'render_redeem_points_message' ), 6 );
 
+		// Add JavaScript used by apply discount button.
+		add_action( 'woocommerce_before_checkout_form', [ $this, 'render_apply_discount_javascript' ] );
+
 		// Add JavaScript used by apply discount button (when partial redeem is enabled).
 		add_action( 'woocommerce_before_cart', array( $this, 'render_discount_javascript' ) );
 		add_action( 'woocommerce_before_checkout_form', array( $this, 'render_discount_javascript' ) );
@@ -57,7 +60,7 @@ class WC_Points_Rewards_Cart_Checkout {
 
 		// Reshow messages on checkout if coupon was applied or removed.
 		add_action( 'woocommerce_applied_coupon', array( $this, 'discount_updated' ), 40 );
-		add_action( 'woocommerce_removed_coupon', array( $this, 'discount_updated' ), 40 );
+		add_action( 'woocommerce_removed_coupon', [ $this, 'coupon_removed' ], 40 );
 	}
 
 	/**
@@ -105,6 +108,29 @@ class WC_Points_Rewards_Cart_Checkout {
 		WC()->cart->calculate_totals();
 		$this->render_earn_points_message();
 		$this->render_redeem_points_message();
+	}
+
+	/**
+	 * Redisplays the redeem and earn messages after a discount has been removed.
+	 * Handles edge case where WC Subscriptions is installed and removes coupons from recurring products
+	 * on all asynchronous requests
+	 *
+	 * @since 1.7.10
+	 * @param string $coupon_code Coupon code which is removed.
+	 */
+	public function coupon_removed( $coupon_code ) {
+		// If WC Subscriptions isn't active, continue with normal discount_updated.
+		if ( ! class_exists( 'WC_Subscriptions' ) && ! class_exists( 'WC_Subscriptions_Core_Plugin' ) ) {
+			$this->discount_updated( $coupon_code );
+			return;
+		}
+
+		// If WC Subscriptions is active, only display notices for `?wc-ajax=remove_coupon` requests.
+		global $wp_query;
+		$action = $wp_query->get( 'wc-ajax' );
+		if ( $action === 'remove_coupon' ) {
+			$this->discount_updated( $coupon_code );
+		}
 	}
 
 	/**
@@ -338,10 +364,9 @@ class WC_Points_Rewards_Cart_Checkout {
 			return;
 		}
 
-		// Prepare for rendering by wrapping in div.
-		$message = '<div class="woocommerce-info wc_points_rewards_earn_points">' . $message . '</div>';
-
-		echo apply_filters( 'wc_points_rewards_earn_points_message', $message, $points_earned );
+		echo '<div class="wc_points_rewards_earn_points">';
+			wc_print_notice( apply_filters( 'wc_points_rewards_earn_points_message', $message, $points_earned ), 'notice' );
+		echo '</div>';
 
 		if ( is_checkout() ) {
 			wc_enqueue_js(
@@ -493,9 +518,14 @@ class WC_Points_Rewards_Cart_Checkout {
 		$message = '<div class="woocommerce-info wc_points_redeem_earn_points">' . $message . '</div>';
 
 		echo apply_filters( 'wc_points_rewards_redeem_points_message', $message, $discount_available );
+	}
 
-		// add AJAX submit for applying the discount on the checkout page
-
+	/**
+	 * Add AJAX submit for applying the discount on the checkout page footer.
+	 *
+	 * @return void
+	 */
+	public function render_apply_discount_javascript() {
 		if ( is_checkout() ) {
 			wc_enqueue_js( '
 			/* Points & Rewards AJAX Apply Points Discount */
