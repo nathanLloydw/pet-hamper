@@ -3,13 +3,13 @@
  * Plugin Name: WooCommerce Ship to Multiple Addresses
  * Plugin URI: https://woocommerce.com/products/shipping-multiple-addresses/
  * Description: Allow customers to ship orders with multiple products or quantities to separate addresses instead of forcing them to place multiple orders for different delivery addresses.
- * Version: 3.6.42
+ * Version: 3.8.1
  * Author: WooCommerce
  * Author URI: https://woocommerce.com
  * Text Domain: wc_shipping_multiple_address
  * Domain Path: /languages
- * Tested up to: 5.9
- * WC tested up to: 6.3
+ * Tested up to: 6.0.1
+ * WC tested up to: 6.7.0
  * WC requires at least: 3.2.3
  * Woo: 18741:aa0eb6f777846d329952d5b891d6f8cc
  *
@@ -33,7 +33,7 @@ function woocommerce_shipping_multiple_addresses_missing_wc_notice() {
 }
 
 if ( ! class_exists( 'WC_Ship_Multiple' ) ) :
-	define( 'WC_SHIPPING_MULTIPLE_ADDRESSES_VERSION', '3.6.42' ); // WRCS: DEFINED_VERSION.
+	define( 'WC_SHIPPING_MULTIPLE_ADDRESSES_VERSION', '3.8.1' ); // WRCS: DEFINED_VERSION.
 
 	class WC_Ship_Multiple {
 
@@ -601,31 +601,8 @@ if ( ! class_exists( 'WC_Ship_Multiple' ) ) :
 
 			?>
 			<tr class="multi_shipping">
-				<td style="vertical-align: top;" colspan="2">
-                    <div style="display:flex;justify-content: space-between;">
-                        <div><?php _e( 'Shipping Methods', 'wc_shipping_multiple_address' ); ?></div>
-                        <div>
-                            <?php
-                            $shipping_total = WC()->cart->shipping_total;
-                            $shipping_tax   = WC()->cart->shipping_tax_total;
-                            $inc_or_exc_tax = '';
-
-                            if ( $shipping_total > 0 && wc_tax_enabled() ) {
-
-                                // Append price to label using the correct tax settings
-                                if ( ! WC()->cart->display_totals_ex_tax ) {
-                                    $shipping_total += $shipping_tax;
-
-                                    if ( 0 < $shipping_tax ) {
-                                        $inc_or_exc_tax = WC()->countries->inc_tax_or_vat();
-                                    }
-                                }
-                            }
-
-                            echo wc_price( $shipping_total ) . ' ' . $inc_or_exc_tax;
-                            ?>
-                        </div>
-                    </div>
+				<td style="vertical-align: top;" colspan="<?php if ( version_compare( WOOCOMMERCE_VERSION, '2.0', '<' ) ) echo '2'; else echo '1'; ?>">
+					<?php _e( 'Shipping Methods', 'wc_shipping_multiple_address' ); ?>
 
 					<div id="shipping_addresses">
 						<?php
@@ -917,7 +894,27 @@ if ( ! class_exists( 'WC_Ship_Multiple' ) ) :
 					</div>
 
 				</td>
+				<td style="vertical-align: top;">
+					<?php
+					$shipping_total = WC()->cart->shipping_total;
+					$shipping_tax   = WC()->cart->shipping_tax_total;
+					$inc_or_exc_tax = '';
 
+					if ( $shipping_total > 0 && wc_tax_enabled() ) {
+
+						// Append price to label using the correct tax settings
+						if ( ! WC()->cart->display_totals_ex_tax ) {
+							$shipping_total += $shipping_tax;
+
+							if ( 0 < $shipping_tax ) {
+								$inc_or_exc_tax = WC()->countries->inc_tax_or_vat();
+							}
+						}
+					}
+
+					echo wc_price( $shipping_total ) . ' ' . $inc_or_exc_tax;
+					?>
+				</td>
 				<script type="text/javascript">
 					jQuery(document).ready(function() {
 						jQuery("tr.shipping").remove();
@@ -1422,3 +1419,9 @@ function woocommerce_shipping_multiple_addresses_init() {
 
 	$GLOBALS['wcms'] = new WC_Ship_Multiple();
 }
+
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', 'woocommerce-shipping-multiple-addresses/woocommerce-shipping-multiple-addresses.php', false );
+	}
+} );

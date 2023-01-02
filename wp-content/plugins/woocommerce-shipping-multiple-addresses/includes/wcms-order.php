@@ -385,7 +385,7 @@ class WC_MS_Order {
 
 		foreach ( $packages as $x => $package ) {
 			$products      = $package['contents'];
-            $method        = $this->get_shipping_method_name( $x, $methods, $available_methods );
+			$method        = $this->get_shipping_method_name( $x, $methods, $available_methods );
 			$address       = $this->get_package_shipping_address( $package );
 			$product_infos = $this->get_package_products( $products, $order );
 
