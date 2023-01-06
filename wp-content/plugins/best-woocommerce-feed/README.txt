@@ -8,7 +8,7 @@ Tags: product feed,woocommerce product feed,google feed,google shopping,facebook
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.24
+Stable tag:  7.2.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -756,12 +756,12 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.25 (2023-01-03) =
+* Fixed: Text feed format field value saving issue fixed
+
 = 7.2.24 (2022-12-29) =
 * Added: Support added to generate text format Google Shopping Feed
 * Fixed: Product URL encoding issue fixed
-* Fixed: Custom feed update scheduling issue fixed
-* Fixed: Product pricing issue with decimal points fixed
-* Fixed: eBay custom values not saving issue fixed
 
 = 7.2.23 (2022-12-19) =
 * Security: Update plugin’s libraries

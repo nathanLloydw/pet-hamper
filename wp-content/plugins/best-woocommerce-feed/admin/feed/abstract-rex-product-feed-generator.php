@@ -1833,10 +1833,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
 
+        update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
+        update_post_meta( $this->id, '_rex_feed_separator', $this->feed_separator );
+
         if ( 'xml' === $format || 'rss' === $format ) {
             $file = trailingslashit( $path ) . "temp-{$feed_file_name}." . $format;
-
-            update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
 
@@ -1928,7 +1929,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
 
             $file = trailingslashit( $path ) . "{$feed_file_name}.tsv";
-            update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
 
             if ( file_exists( $file ) ) {
                 if ( $this->batch == 1 ) {
@@ -1957,8 +1957,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         elseif ( $format === 'csv' ) {
             $file = trailingslashit( $path ) . "{$feed_file_name}.csv";
-            update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
-            update_post_meta( $this->id, '_rex_feed_separator', $this->feed_separator );
 
             if( $this->batch === $this->tbatch ) {
                 if( 'publish' === $publish_btn ) {
@@ -1972,7 +1970,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             $file = trailingslashit( $path ) . "{$feed_file_name}.xml";
             update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.xml" );
-            update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
 
