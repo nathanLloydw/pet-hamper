@@ -38,6 +38,8 @@ class DefaultFreeExtensions {
 				'plugins' => [
 					self::get_plugin( 'mailpoet' ),
 					self::get_plugin( 'google-listings-and-ads' ),
+					self::get_plugin( 'facebook-for-woocommerce' ),
+					self::get_plugin( 'tiktok-for-business:alt' ),
 				],
 			],
 			[
@@ -55,6 +57,7 @@ class DefaultFreeExtensions {
 				'plugins' => [
 					self::get_plugin( 'google-listings-and-ads:alt' ),
 					self::get_plugin( 'tiktok-for-business' ),
+					self::get_plugin( 'facebook-for-woocommerce:alt' ),
 					self::get_plugin( 'pinterest-for-woocommerce' ),
 				],
 			],
@@ -101,6 +104,20 @@ class DefaultFreeExtensions {
 				'image_url'      => plugins_url( '/assets/images/onboarding/google-listings-and-ads.png', WC_PLUGIN_FILE ),
 				'manage_url'     => 'admin.php?page=wc-admin&path=%2Fgoogle%2Fstart',
 				'is_built_by_wc' => true,
+			],
+			'facebook-for-woocommerce'          => [
+				'name'           => __( 'Facebook for WooCommerce', 'woocommerce' ),
+				'description'    => __( 'List products and create ads on Facebook and Instagram with <a href="https://woocommerce.com/products/facebook/">Facebook for WooCommerce</a>', 'woocommerce' ),
+				'image_url'      => plugins_url( '/assets/images/onboarding/facebook.png', WC_PLUGIN_FILE ),
+				'manage_url'     => 'admin.php?page=wc-facebook',
+				'is_built_by_wc' => false,
+			],
+			'facebook-for-woocommerce:alt'      => [
+				'name'           => __( 'Facebook for WooCommerce', 'woocommerce' ),
+				'description'    => __( 'List products and create ads on Facebook and Instagram.', 'woocommerce' ),
+				'image_url'      => plugins_url( '/assets/images/onboarding/facebook.png', WC_PLUGIN_FILE ),
+				'manage_url'     => 'admin.php?page=wc-facebook',
+				'is_built_by_wc' => false,
 			],
 			'pinterest-for-woocommerce'         => [
 				'name'           => __( 'Pinterest for WooCommerce', 'woocommerce' ),
@@ -651,6 +668,18 @@ class DefaultFreeExtensions {
 						],
 					],
 				],
+				'is_built_by_wc' => false,
+			],
+			'tiktok-for-business:alt'               => [
+				'name'           => __( 'TikTok for WooCommerce', 'woocommerce' ),
+				'image_url'      => plugins_url( '/assets/images/onboarding/tiktok.svg', WC_PLUGIN_FILE ),
+				'description'    => sprintf(
+					/* translators: 1: opening product link tag. 2: closing link tag */
+					__( 'Create ad campaigns and reach one billion global users with %1$sTikTok for WooCommerce%2$s', 'woocommerce' ),
+					'<a href="https://woocommerce.com/products/tiktok-for-woocommerce" target="_blank">',
+					'</a>'
+				),
+				'manage_url'     => 'admin.php?page=tiktok',
 				'is_built_by_wc' => false,
 			],
 		);
