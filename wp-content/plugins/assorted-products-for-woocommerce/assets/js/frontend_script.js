@@ -1,6 +1,6 @@
 (function($)
 {
-"use strict";
+	"use strict";
 
 	var abp_add_to_cart=[];
 	var abp_search_filters={};
@@ -223,7 +223,7 @@
 			var items=jQuery('#abp-assorted-add-to-cart').val().split(",");
 			if(items[0] && items.length){
 				jQuery.each(items, function(key,item) {
-				    qty= parseInt(qty) + (parseInt(jQuery('tr.abp-product-'+item).find('input[name="qty_'+item+'"]').val()));
+					qty= parseInt(qty) + (parseInt(jQuery('tr.abp-product-'+item).find('input[name="qty_'+item+'"]').val()));
 				});
 			}
 		}
@@ -295,18 +295,18 @@
 
 	function abp_show_msg(str){
 		jQuery('#abp-max-success').show();
-			document.getElementById('abp-max-success').innerHTML=str;
-			setTimeout(function() {
-	        $('#abp-max-success').fadeOut(1000);
-	    }, 1000);
+		document.getElementById('abp-max-success').innerHTML=str;
+		setTimeout(function() {
+			$('#abp-max-success').fadeOut(1000);
+		}, 1000);
 	}
 
 	function abp_show_error(str){
 		jQuery('#abp-max-error').show();
-			document.getElementById('abp-max-error').innerHTML=str;
-			setTimeout(function() {
-	        $('#abp-max-error').fadeOut(1000);
-	    }, 1000);
+		document.getElementById('abp-max-error').innerHTML=str;
+		setTimeout(function() {
+			$('#abp-max-error').fadeOut(1000);
+		}, 1000);
 	}
 
 	function abp_assorted_quick_view(product_id){
@@ -628,7 +628,7 @@
 			var items=jQuery('#abp-assorted-add-to-cart').val().split(",");
 			if(items.length){
 				items = jQuery.grep(items, function(value) {
-				  return value != prod_id;
+					return value != prod_id;
 				});
 				jQuery('#abp-assorted-add-to-cart').val(items.join(','));
 			}
@@ -647,7 +647,7 @@
 			jQuery('.abp-search-reset-btn').trigger('click');
 			abp_update_prices();
 			setTimeout(function(){
-			jQuery(document).trigger('abp_bundle_product_changed');
+				jQuery(document).trigger('abp_bundle_product_changed');
 			},300);
 		});
 
@@ -758,7 +758,7 @@
 				'paged' : paged,
 			};
 
-	
+
 			jQuery('.abp_assorted_products .apb_products_items .abp_loader').show();
 			jQuery.post(abpAssorted.ajaxurl, data, function(response) {
 				if(response.data.success){

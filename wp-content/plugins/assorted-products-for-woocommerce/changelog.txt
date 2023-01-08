@@ -1,5 +1,30 @@
-***  Assorted Products For WooCommerce ***
+*** Assorted Products For WooCommerce ***
 
+2022-11-19- version 1.1.0
+* Fixed update issue.
+
+2022-11-18- version 1.0.9
+* Added feature to enable product attributes as filters for the Assorted products.
+* Product attributes filters can be shown as radio/checkboxes buttons or select/multi-select dropdowns fields.
+* Added feature to enable the extra fees for the specific items for the Assorted bundle.
+* The admin can set the specific amount of extra fees for specific items added by the customers to the Assorted bundle.
+* The extra fee can be shown as separate fee or added to the bundle's total price.
+* Added feature to show the floating footer bar on the Assorted product page showing number of items added to bundle & total price.
+* The descriptive footer bar can be customized from plugin's setting page.
+* Added feature to restrict same items added more than once to bundle.
+* Customize error message with your desired text from plugin's setting page.
+* Added feature to hide the unpurchasable products from the bundle items.
+* Added feature to show the SKU for the items of the bundle.
+* Customize SKU with your desired text from plugin's setting page.
+* Added options to choose specific categories for the filters.
+* Added option to show count for the categories filters.
+* Added feature to enable multi-select dropdown field for the categories filters.
+* Added option to show the child categories for the categories filters.
+* Added feature to enable unlimited product tags fields as filters on the Assorted product page.
+* Added feature to show the count for the tags filters.
+* Added feature to enable multi-select dropdown field for the tags filters.
+* Fixed compatibility issue with the latest version of WordPress.
+* Fixed categories based discounts issue with percentage discounts.
 
 2021-12-09- version 1.0.8
 * Added hide remove link of items of Assorted bundle from subscription view.
@@ -47,3 +72,6 @@
 
 2019-10-22- version 1.0.1
 * Fixed - Ajax issue for load more products.
+
+2019-10-22- version 1.0.0
+* Initial release.

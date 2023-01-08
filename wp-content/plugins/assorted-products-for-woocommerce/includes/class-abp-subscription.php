@@ -40,7 +40,7 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 			$product = wc_get_product($product_id);
 			if ( !empty($subscriptions) ) {
 				foreach ( $subscriptions as $subscription ) {
-
+					
 					$flag = false;
 					$qty = 0;
 					$new_item_qty = 0;
@@ -210,7 +210,7 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 			$assorted_products = array();
 			$assorted_product_items = array();
 			$items = WC()->cart->get_cart();
-			foreach ( $items as $item => $cart_item ) {
+			foreach ( $items as $item => $cart_item ) { 
 				if ( isset( $cart_item['abp-assorted-add-to-cart'] ) && '' != ( $cart_item['abp-assorted-add-to-cart'] ) ) {
 					$abp_assorted_product_items = explode( ',', $cart_item['abp-assorted-add-to-cart'] );
 					array_push($assorted_products, $cart_item['product_id']);
@@ -237,7 +237,7 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 				}
 			}
 			$items = WC()->cart->get_cart();
-			foreach ( $items as $item => $cart_item ) {
+			foreach ( $items as $item => $cart_item ) { 
 				if ( !empty( $cart_item['abp_assorted_product_parent_id'] ) && in_array($cart_item['abp_assorted_product_parent_id'], $assorted_ids ) && 'yes' == get_post_meta($cart_item['abp_assorted_product_parent_id'], 'abp_assorted_subscription_enable', true) ) {
 					$subscription->add_product(
 						$cart_item['data'],
@@ -276,7 +276,7 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 		public static function subscription_actions( $actions, $subscription ) {
 			if ( user_can(get_current_user_id(), 'edit_shop_subscription_status', $subscription->get_id() )  ) {
 				$items = $subscription->get_items();
-				foreach ( $items as $items_key => $item ) {
+				foreach ( $items as $items_key => $item ) {  
 					$box = $item->get_product();
 					if ( $box->is_type('assorted_product') ) {
 						$actions['edit-assorted-subscription-' . $subscription->get_id()] = array(
@@ -307,11 +307,11 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 			return $name;
 		}
 		public static function submit_form_data() {
-            return 'test';
 			if ( !empty($_POST['edit-assorted-subscription']) && is_user_logged_in() && isset($_POST['abp_assorted_edit_subscription_nonce']) && wp_verify_nonce( wc_clean($_POST['abp_assorted_edit_subscription_nonce']), 'abp_assorted_edit_subscription_nonce' ) && !empty($_POST['abp-assorted-add-to-cart']) ) {
 				$subscription = self::get_subscription();
 				$product = self::get_product();
 				if ( $subscription && $product && $_POST['edit-assorted-subscription'] == $product->get_id() ) {
+					$product_id = $product->get_id();
 					// remove pre line items
 					$line_items = $subscription->get_items();
 					foreach ( $line_items as $key => $item ) {
@@ -322,6 +322,10 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 					//modify subscription price
 					$product_qty = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
 					$price = 0;
+					// extra fee
+					$extra_fee = 0;
+					$extra_fees = get_post_meta( $product_id, 'abp_per_item_extra_fees', true );
+
 					$pricing = get_post_meta($product->get_id(), 'abp_pricing_type', true);
 					if ( 'per_product_and_items' == $pricing || 'regular' == $pricing ) {
 						$price = $product->get_price();
@@ -352,9 +356,17 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 							if ( 'regular' != $pricing ) {
 								$price += $addon_price * $qty;
 							}
+							// extra fee
+							if ( isset($extra_fees[$addon_prod_id]) ) {
+								$extra_fee += $qty * $extra_fees[$addon_prod_id]['fee'];
+							}
 						}
 					}
 					$price = $price * $product_qty;
+					// extra fee
+					if ( 'yes' == get_post_meta( $product_id, 'abp_per_item_extra_fee_enable', true ) ) {
+						$price = $price + $extra_fee;
+					}
 					// update main assorted line item
 					foreach ( $line_items as $key => $item ) {
 						if ( $item['product_id'] == $product->get_id() ) {
@@ -445,7 +457,7 @@ if ( !class_exists('ABP_Assorted_Products_Subscription') ) {
 				return;
 			}
 			// if current user can't edit this post
-			if ( !current_user_can( 'edit_post' ) ) {
+			if ( !current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
 			if ( isset($_POST['product-type']) && 'assorted_product' == wc_clean($_POST['product-type']) ) {

@@ -1,55 +1,55 @@
 <?php
 if ( !defined('ABSPATH') ) {
-	exit; // Exit if accessed directly.
+    exit; // Exit if accessed directly.
 }
 if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
-	class ABP_Assorted_Product_Frontend {
-		public function __construct() {
-			add_filter('wc_get_template_part', array($this, 'abp_custom_product_template'), 100, 3);
-			add_filter('template_include', array($this, 'abp_template_loader' ), 999, 1 );
-			add_action('abp_assorted_products_layout', array($this, 'abp_product_page'), 10, 1 );
-			add_action('abp_assorted_product_filters_layout', array($this, 'abp_product_filters_layout'), 10, 1);
+    class ABP_Assorted_Product_Frontend {
+        public function __construct() {
+            add_filter('wc_get_template_part', array($this, 'abp_custom_product_template'), 100, 3);
+            add_filter('template_include', array($this, 'abp_template_loader' ), 999, 1 );
+            add_action('abp_assorted_products_layout', array($this, 'abp_product_page'), 10, 1 );
+            add_action('abp_assorted_product_filters_layout', array($this, 'abp_product_filters_layout'), 10, 1);
             add_action('abp_assorted_product_checkout_layout', array($this, 'abp_product_checkout_layout'), 10, 1);
-			add_action('abp_assorted_product_items_layout', array($this, 'abp_product_items_layout'), 10, 1 );
-			add_action('wp_enqueue_scripts', array($this, 'abp_enqueue_front_scripts'));
-			add_action('wp_footer', array($this, 'abp_error_message'));
-		}
-		public function abp_template_loader( $template ) {
-			if ( is_singular('product') ) {
-				$product = wc_get_product(get_the_ID());
-				if ( 'assorted_product' === $product->get_type() && 'yes' == get_option('abp_assorted_load_template') ) {
-					$template = WC()->plugin_path() . '/templates/single-product.php';
-				}
-			}
-			return $template;
-		}
+            add_action('abp_assorted_product_items_layout', array($this, 'abp_product_items_layout'), 10, 1 );
+            add_action('wp_enqueue_scripts', array($this, 'abp_enqueue_front_scripts'));
+            add_action('wp_footer', array($this, 'abp_error_message'));
+        }
+        public function abp_template_loader( $template ) {
+            if ( is_singular('product') ) {
+                $product = wc_get_product(get_the_ID());
+                if ( 'assorted_product' === $product->get_type() && 'yes' == get_option('abp_assorted_load_template') ) {
+                    $template = WC()->plugin_path() . '/templates/single-product.php';
+                }
+            }
+            return $template;
+        }
 
-		public function abp_custom_product_template( $template, $slug, $name ) {
-			global $product;
-			if ( is_singular('product') && ( 'single-product' === $name || 'single-product-custom' === $name ) && 'content' === $slug && 'assorted_product' === $product->get_type() ) {
-				$template = WC_ABP_DIR . '/templates/content-single-product.php';
-			}
-			return $template;
-		}
+        public function abp_custom_product_template( $template, $slug, $name ) {
+            global $product;
+            if ( is_singular('product') && ( 'single-product' === $name || 'single-product-custom' === $name ) && 'content' === $slug && 'assorted_product' === $product->get_type() ) {
+                $template = WC_ABP_DIR . '/templates/content-single-product.php';
+            }
+            return $template;
+        }
 
-		public function abp_product_page( $product_id ) {
-			$product=wc_get_product($product_id);
-			?>
-			<div id="abp_custom_assorted_product" class="abp_custom_assorted_product">
-				<?php
-				if ( 'before_title' == get_option('abp_assorted_products_description_position') ) {
-					wp_kses_post( $this->abp_print_short_description($product_id) );
-				}
-				echo '<div class="product_title"><h1>' . wp_kses_post(get_the_title($product_id)) . '</h1></div>';
-				if ( 'after_title' == get_option('abp_assorted_products_description_position') ) {
-					wp_kses_post( $this->abp_print_short_description($product_id) );
-				}
-				?>
-				<div class="abp_custom_assorted_product_content">
+        public function abp_product_page( $product_id ) {
+            $product=wc_get_product($product_id);
+            ?>
+            <div id="abp_custom_assorted_product" class="abp_custom_assorted_product">
+                <?php
+                if ( 'before_title' == get_option('abp_assorted_products_description_position') ) {
+                    wp_kses_post( $this->abp_print_short_description($product_id) );
+                }
+                echo '<div class="product_title"><h1>' . wp_kses_post(get_the_title($product_id)) . '</h1></div>';
+                if ( 'after_title' == get_option('abp_assorted_products_description_position') ) {
+                    wp_kses_post( $this->abp_print_short_description($product_id) );
+                }
+                ?>
+                <div class="abp_custom_assorted_product_content">
                     <div>
                         <?php do_action('abp_assorted_product_filters_layout', $product_id); ?>
                     </div>
-					<div class="abp_assorted_row">
+                    <div class="abp_assorted_row">
 
                         <div class="abp-col-9">
                             <div class="abp_assorted_products" data-product-id="<?php esc_attr_e($product_id); ?>">
@@ -67,73 +67,73 @@ if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
                             </div>
                         </div>
 
-					</div>
-				</div>
+                    </div>
+                </div>
 
                 <div id="mobile_view_hamper_button">
                     <div>View/Edit Hamper</div>
                 </div>
 
-				<?php
-				if ( 'after_layout' == get_option('abp_assorted_products_description_position') ) {
-					$this->abp_print_short_description($product_id);
-				}
-				?>
-			</div>
-			<?php
-		}
+                <?php
+                if ( 'after_layout' == get_option('abp_assorted_products_description_position') ) {
+                    $this->abp_print_short_description($product_id);
+                }
+                ?>
+            </div>
+            <?php
+        }
 
-		public function abp_filter_type_tag( $tags, $product_id ) {
-			if ( empty($tags) ) {
-				return;
-			}
-			$type = get_post_meta($product_id, 'abp_products_tags_filter_type', true);
-			$heading = get_post_meta($product_id, 'abp_assorted_tags_heading', true);
-			if ( !empty($heading) ) {
-				echo '<h3>' . esc_html__( $heading, 'wc-abp' ) . '</h3>';
-			}
-			if ( 'radio' == $type )
+        public function abp_filter_type_tag( $tags, $product_id ) {
+            if ( empty($tags) ) {
+                return;
+            }
+            $type = get_post_meta($product_id, 'abp_products_tags_filter_type', true);
+            $heading = get_post_meta($product_id, 'abp_assorted_tags_heading', true);
+            if ( !empty($heading) ) {
+                echo '<h3>' . esc_html__( $heading, 'wc-abp' ) . '</h3>';
+            }
+            if ( 'radio' == $type )
             {
-				echo '<div class="abp_products_filter_type_radio">';
-				echo '<span class="abp_filter_item"><label><input type="radio" name="filter-tag" value="">' . esc_html__('All Tags', 'wc-abp') . '</label></span>';
-				foreach ($tags as $key => $term) {
-					echo '<span class="abp_filter_item"><label><input type="radio" name="filter-tag" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</label></span>';
-				}
-				echo '</div>';
-			} elseif ( 'checkbox' == $type ) {
-				echo '<div class="abp_products_filter_type_checkbox">';
-				foreach ($tags as $key => $term) {
-					echo '<span class="abp_filter_item"><label><input type="checkbox" name="filter-tag[]" class="abp-search-filter-cat-btn" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</label></span>';
-				}
-				echo '</div>';
-			} else {
-				?>
-			<select name="filter-tag">
-				<option value=""><?php esc_html_e('All Tags', 'wc-abp'); ?></option>
-				<?php
-				foreach ($tags as $key => $term) {
-					echo '<option value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</option>';
-				}
-				?>
-			</select>
-				<?php
-			}
-		}
+                echo '<div class="abp_products_filter_type_radio">';
+                echo '<span class="abp_filter_item"><label><input type="radio" name="filter-tag" value="">' . esc_html__('All Tags', 'wc-abp') . '</label></span>';
+                foreach ($tags as $key => $term) {
+                    echo '<span class="abp_filter_item"><label><input type="radio" name="filter-tag" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</label></span>';
+                }
+                echo '</div>';
+            } elseif ( 'checkbox' == $type ) {
+                echo '<div class="abp_products_filter_type_checkbox">';
+                foreach ($tags as $key => $term) {
+                    echo '<span class="abp_filter_item"><label><input type="checkbox" name="filter-tag[]" class="abp-search-filter-cat-btn" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</label></span>';
+                }
+                echo '</div>';
+            } else {
+                ?>
+                <select name="filter-tag">
+                    <option value=""><?php esc_html_e('All Tags', 'wc-abp'); ?></option>
+                    <?php
+                    foreach ($tags as $key => $term) {
+                        echo '<option value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) . '</option>';
+                    }
+                    ?>
+                </select>
+                <?php
+            }
+        }
 
 
 
 
-		public function abp_filter_type( $categories, $product_id )
+        public function abp_filter_type( $categories, $product_id )
         {
-			if ( empty($categories) )
+            if ( empty($categories) )
             {
-				return;
-			}
+                return;
+            }
 
-			$type = get_post_meta($product_id, 'abp_products_filter_type', true);
-			$heading = get_post_meta($product_id, 'abp_assorted_cats_heading', true);
+            $type = get_post_meta($product_id, 'abp_products_filter_type', true);
+            $heading = get_post_meta($product_id, 'abp_assorted_cats_heading', true);
 
-			echo '<h2 class="linetitle">Step 1 & 2</h2><p style="text-align: center;border-bottom: 1px solid #56422b;padding-bottom: 2rem;">Choose Your hamper packaging, followed by adding all your contents.</p>';
+            echo '<h2 class="linetitle">Step 1 & 2</h2><p style="text-align: center;border-bottom: 1px solid #56422b;padding-bottom: 2rem;">Choose Your hamper packaging, followed by adding all your contents.</p>';
 
             ?>
 
@@ -142,28 +142,28 @@ if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
                 <h3 class="text-center">SEARCH BY</h3>
                 <div style="display:flex;">
 
-                <div class="abp_products_filter_type_checkbox">
+                    <div class="abp_products_filter_type_checkbox">
 
-            <?php
-            foreach ($categories as $key => $term)
-            {
-                echo '<span class="abp_filter_item abp-search-filter-cat-btn '.($term->term_id == 239 ? "active" : "").'"><label><input type="checkbox" name="filter-category[]" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) .' ('.$term->count.')</label></span>';
-            }
+                        <?php
+                        foreach ($categories as $key => $term)
+                        {
+                            echo '<span class="abp_filter_item abp-search-filter-cat-btn '.($term->term_id == 239 ? "active" : "").'"><label><input type="checkbox" name="filter-category[]" value="' . esc_attr($term->term_id) . '">' . esc_attr($term->name) .' ('.$term->count.')</label></span>';
+                        }
 
-            ?>
-                </div>
-                <div class="desktop-sort-filters">
-                    <h4 class="text-center cat-sort-btn">
-                        SORT BY
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 352c-4.094 0-8.188 1.562-11.31 4.688L144 425.4V48C144 39.16 136.8 32 128 32S112 39.16 112 48v377.4l-68.69-68.69c-6.25-6.25-16.38-6.25-22.62 0s-6.25 16.38 0 22.62l96 96c6.25 6.25 16.38 6.25 22.62 0l96-96c6.25-6.25 6.25-16.38 0-22.62C232.2 353.6 228.1 352 224 352zM427.3 132.7l-96-96c-6.25-6.25-16.38-6.25-22.62 0l-96 96c-6.25 6.25-6.25 16.38 0 22.62s16.38 6.25 22.62 0L304 86.63V464c0 8.844 7.156 16 16 16s16-7.156 16-16V86.63l68.69 68.69C407.8 158.4 411.9 160 416 160s8.188-1.562 11.31-4.688C433.6 149.1 433.6 138.9 427.3 132.7z"/></svg>
-                    </h4>
-                    <div class="content abp_products_sort_type_checkbox" style="display:none;">
-                        <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="meta_value_num DESC">Price High-Low</label></span>
-                        <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="meta_value_num ASC">Price Low-High</label></span>
-                        <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="title DESC">Name Z-A</label></span>
-                        <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="title ASC">Name A-Z</label></span>
+                        ?>
                     </div>
-                </div>
+                    <div class="desktop-sort-filters">
+                        <h4 class="text-center cat-sort-btn">
+                            SORT BY
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 352c-4.094 0-8.188 1.562-11.31 4.688L144 425.4V48C144 39.16 136.8 32 128 32S112 39.16 112 48v377.4l-68.69-68.69c-6.25-6.25-16.38-6.25-22.62 0s-6.25 16.38 0 22.62l96 96c6.25 6.25 16.38 6.25 22.62 0l96-96c6.25-6.25 6.25-16.38 0-22.62C232.2 353.6 228.1 352 224 352zM427.3 132.7l-96-96c-6.25-6.25-16.38-6.25-22.62 0l-96 96c-6.25 6.25-6.25 16.38 0 22.62s16.38 6.25 22.62 0L304 86.63V464c0 8.844 7.156 16 16 16s16-7.156 16-16V86.63l68.69 68.69C407.8 158.4 411.9 160 416 160s8.188-1.562 11.31-4.688C433.6 149.1 433.6 138.9 427.3 132.7z"/></svg>
+                        </h4>
+                        <div class="content abp_products_sort_type_checkbox" style="display:none;">
+                            <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="meta_value_num DESC">Price High-Low</label></span>
+                            <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="meta_value_num ASC">Price Low-High</label></span>
+                            <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="title DESC">Name Z-A</label></span>
+                            <span class="abp_filter_item abp-search-sort-cat-btn"><label><input type="checkbox" name="filter-category[]" value="title ASC">Name A-Z</label></span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -218,7 +218,7 @@ if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
 
             <?php
 
-		}
+        }
 
         public function abp_product_checkout_layout( $product_id )
         {
@@ -311,105 +311,105 @@ if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
             }
         }
 
-		public function abp_product_filters_layout( $product_id )
+        public function abp_product_filters_layout( $product_id )
         {
 
-			$all_products=get_post_meta($product_id, 'abp_complete_store_available', true);
-			$categories = get_post_meta($product_id, 'abp_products_categories_enabled', true);
-			$tags = get_post_meta($product_id, 'abp_products_tags_enabled', true);
-			$search_text=get_option('abp_assorted_products_search_btn_text');
-			$reset_text=get_option('abp_assorted_products_reset_btn_text');
+            $all_products=get_post_meta($product_id, 'abp_complete_store_available', true);
+            $categories = get_post_meta($product_id, 'abp_products_categories_enabled', true);
+            $tags = get_post_meta($product_id, 'abp_products_tags_enabled', true);
+            $search_text=get_option('abp_assorted_products_search_btn_text');
+            $reset_text=get_option('abp_assorted_products_reset_btn_text');
 
-			if ( 'yes' != get_option('abp_assorted_hide_search_filters') )
+            if ( 'yes' != get_option('abp_assorted_hide_search_filters') )
             {
-				?>
-				<div class="abp-filter-content">
-					<?php
+                ?>
+                <div class="abp-filter-content">
+                    <?php
                     do_action('abp_assorted_filter_form_start', $product_id);
-					do_action('abp_assorted_filter_after_search_field', $product_id);
+                    do_action('abp_assorted_filter_after_search_field', $product_id);
 
-					if ( ( 'yes' == $all_products || !empty($categories) ) && 'no' != get_post_meta($product_id, 'abp_enable_categories_filters', true) )
+                    if ( ( 'yes' == $all_products || !empty($categories) ) && 'no' != get_post_meta($product_id, 'abp_enable_categories_filters', true) )
                     {
-						if ( 'yes' == $all_products )
+                        if ( 'yes' == $all_products )
                         {
-							$args = array(
-								'taxonomy'   => 'product_cat',
-								'hide_empty' => true,
+                            $args = array(
+                                'taxonomy'   => 'product_cat',
+                                'hide_empty' => true,
                                 'order'    => 'DESC'
-							);
-							$categories = get_terms($args);
-						}
+                            );
+                            $categories = get_terms($args);
+                        }
                         else
                         {
-							$args = array(
-								'taxonomy'   => 'product_cat',
-								'hide_empty' => true,
-								'include'    => $categories,
+                            $args = array(
+                                'taxonomy'   => 'product_cat',
+                                'hide_empty' => true,
+                                'include'    => $categories,
                                 'order'    => 'DESC'
-							);
-							$categories = get_terms($args);
-						}
-						?>
-					<div class="filter-field abp-filter-cats">
-						<?php $this->abp_filter_type( $categories, $product_id ); ?>
-					</div>
-						<?php
-					}
-					if ( ( 'yes' == $all_products || !empty($tags) ) && 'yes' == get_post_meta($product_id, 'abp_enable_tags_filters', true) )
+                            );
+                            $categories = get_terms($args);
+                        }
+                        ?>
+                        <div class="filter-field abp-filter-cats">
+                            <?php $this->abp_filter_type( $categories, $product_id ); ?>
+                        </div>
+                        <?php
+                    }
+                    if ( ( 'yes' == $all_products || !empty($tags) ) && 'yes' == get_post_meta($product_id, 'abp_enable_tags_filters', true) )
                     {
-						if ( 'yes' == $all_products )
+                        if ( 'yes' == $all_products )
                         {
-							$args2 = array(
-								'taxonomy'   => 'product_tag',
-								'hide_empty' => true,
-							);
-							$tags = get_terms($args2);
-						}
+                            $args2 = array(
+                                'taxonomy'   => 'product_tag',
+                                'hide_empty' => true,
+                            );
+                            $tags = get_terms($args2);
+                        }
                         else
                         {
-							$args2 = array(
-								'taxonomy'   => 'product_tag',
-								'hide_empty' => true,
-								'include'    => $tags
-							);
-							$tags = get_terms($args2);
-						}
-						?>
-					<div class="filter-field abp-filter-tags">
-						<?php $this->abp_filter_type_tag( $tags, $product_id ); ?>
-					</div>
-						<?php
-					}
-					do_action('abp_assorted_filter_form_before_search', $product_id);
-					?>
+                            $args2 = array(
+                                'taxonomy'   => 'product_tag',
+                                'hide_empty' => true,
+                                'include'    => $tags
+                            );
+                            $tags = get_terms($args2);
+                        }
+                        ?>
+                        <div class="filter-field abp-filter-tags">
+                            <?php $this->abp_filter_type_tag( $tags, $product_id ); ?>
+                        </div>
+                        <?php
+                    }
+                    do_action('abp_assorted_filter_form_before_search', $product_id);
+                    ?>
 
-					<?php do_action('abp_assorted_filter_form_end', $product_id); ?>
-				</div>
+                    <?php do_action('abp_assorted_filter_form_end', $product_id); ?>
+                </div>
                 <div class="bundle_search">
                     <input type="text" placeholder="Search" name="search" value="">
                     <i class="fa-solid fa-magnifying-glass abp-search-filter-btn"></i>
                 </div>
-				<?php
-			}
+                <?php
+            }
 
-			if ( 'after_order' == get_option('abp_assorted_products_description_position') )
+            if ( 'after_order' == get_option('abp_assorted_products_description_position') )
             {
-				$this->abp_print_short_description($product_id);
-			}
-		}
+                $this->abp_print_short_description($product_id);
+            }
+        }
 
-		public function abp_product_items_layout( $product_id ) {
-			?>
-			<div class="apb_products_items">
-				<div class="apb_products_items_container">
+        public function abp_product_items_layout( $product_id ) {
+            ?>
+            <div class="apb_products_items">
+                <div class="apb_products_items_container">
 
-				</div>
-				<div class="abp_loader"><div></div><div></div><div></div><div></div></div>
-			</div>
-			<?php
-		}
+                </div>
+                <div class="abp_loader"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <?php
+        }
 
-		public function abp_extra_options( $product_id )
+        public function abp_extra_options( $product_id )
         {
             $type=get_post_meta($product_id, 'abp_enable_assorted_gift_field_type', true);
             $required=get_post_meta($product_id, 'abp_enable_assorted_gift_required', true);
@@ -424,92 +424,92 @@ if ( !class_exists('ABP_Assorted_Product_Frontend') ) {
                 echo '<span class="abp_field"><input type="text" name="abp_assorted_message_field" id="abp_assorted_message_field" value="" ' . esc_attr($required) . '></span>';
             }
             echo '</div>';
-		}
+        }
 
-		public function abp_error_message() {
-			$product_id = apply_filters( 'wc_abp_assorted_edit_subscription_product_id', get_the_id() );
-			$product = wc_get_product($product_id);
-			if ( 'product' == get_post_type($product_id) && $product->is_type('assorted_product') ) {
-				if ( $product->is_type('assorted_product') ) {
-					echo '<div id="abp-max-error" style="display:none;"></div>';
-					echo '<div id="abp-max-success" style="display:none;"></div>';
-				}
-				echo '<div class="abp_product_boxes_layer" style="display: none;"></div>
+        public function abp_error_message() {
+            $product_id = apply_filters( 'wc_abp_assorted_edit_subscription_product_id', get_the_id() );
+            $product = wc_get_product($product_id);
+            if ( 'product' == get_post_type($product_id) && $product->is_type('assorted_product') ) {
+                if ( $product->is_type('assorted_product') ) {
+                    echo '<div id="abp-max-error" style="display:none;"></div>';
+                    echo '<div id="abp-max-success" style="display:none;"></div>';
+                }
+                echo '<div class="abp_product_boxes_layer" style="display: none;"></div>
 				<div class="abp_product_quick_view" style="display: none;">
 					<div class="abp_product_quick_view_head"><span class="abp_product_quick_view_close dashicons dashicons-no-alt"></span></div>
 					<div class="abp_product_quick_view_content"></div>
 					<div class="abp_product_quick_view_footer"><div class="abp_loader"><div></div><div></div><div></div><div></div></div></div>
 				</div>';
-			}
-		}
+            }
+        }
 
-		public function abp_print_short_description( $product_id ) {
-			if ( 'yes' == get_option('abp_assorted_products_show_description') ) {
-				echo '<div class="abp-short-description">';
-				echo wp_kses_post( apply_filters( 'woocommerce_short_description', get_the_excerpt($product_id) ) );
-				echo '</div>';
-			}
-		}
+        public function abp_print_short_description( $product_id ) {
+            if ( 'yes' == get_option('abp_assorted_products_show_description') ) {
+                echo '<div class="abp-short-description">';
+                echo wp_kses_post( apply_filters( 'woocommerce_short_description', get_the_excerpt($product_id) ) );
+                echo '</div>';
+            }
+        }
 
-		public function abp_enqueue_front_scripts() {
-			$product_id = apply_filters( 'wc_abp_assorted_edit_subscription_product_id', get_the_id() );
-			$product = wc_get_product($product_id);
-			if ( 'product' == get_post_type($product_id) && $product->is_type('assorted_product') ) {
-				$min = get_post_meta($product_id, 'abp_assorted_min_products', true);
-				$min = !empty($min) ? absint( $min ) : 1 ;
-				$max = get_post_meta($product_id, 'abp_assorted_max_products', true);
-				$max = !empty($max) ? absint( $max ) : 1 ;
-				$price_type = get_post_meta($product_id, 'abp_pricing_type', true);
-				$msg_success = get_option('abp_assorted_products_item_added_text');
-				$msg_success = !empty($msg_success) ? esc_html__($msg_success, 'wc-abp') : esc_html__('Product has been added to bundle.', 'wc-abp');
-				$msg_error = get_option('abp_assorted_products_max_error_text');
-				$msg_error = !empty($msg_error) ? esc_html__($msg_error, 'wc-abp') : esc_html__('You can not add more products.', 'wc-abp');
-				$max_item_error = get_option('abp_assorted_products_item_max_error');
-				$max_item_error = !empty($max_item_error) ? esc_html__($max_item_error, 'wc-abp') : esc_html__('Maximum item quantity is added.', 'wc-abp');
+        public function abp_enqueue_front_scripts() {
+            $product_id = apply_filters( 'wc_abp_assorted_edit_subscription_product_id', get_the_id() );
+            $product = wc_get_product($product_id);
+            if ( 'product' == get_post_type($product_id) && $product->is_type('assorted_product') ) {
+                $min = get_post_meta($product_id, 'abp_assorted_min_products', true);
+                $min = !empty($min) ? absint( $min ) : 1 ;
+                $max = get_post_meta($product_id, 'abp_assorted_max_products', true);
+                $max = !empty($max) ? absint( $max ) : 1 ;
+                $price_type = get_post_meta($product_id, 'abp_pricing_type', true);
+                $msg_success = get_option('abp_assorted_products_item_added_text');
+                $msg_success = !empty($msg_success) ? esc_html__($msg_success, 'wc-abp') : esc_html__('Product has been added to bundle.', 'wc-abp');
+                $msg_error = get_option('abp_assorted_products_max_error_text');
+                $msg_error = !empty($msg_error) ? esc_html__($msg_error, 'wc-abp') : esc_html__('You can not add more products.', 'wc-abp');
+                $max_item_error = get_option('abp_assorted_products_item_max_error');
+                $max_item_error = !empty($max_item_error) ? esc_html__($max_item_error, 'wc-abp') : esc_html__('Maximum item quantity is added.', 'wc-abp');
 
-				$currency_position = !empty(get_option('woocommerce_currency_pos')) ? get_option('woocommerce_currency_pos') : 'left';
-				$thousand_sep = !empty(get_option('woocommerce_price_thousand_sep')) ? get_option('woocommerce_price_thousand_sep') : ',';
-				$decimal_sep = !empty(get_option('woocommerce_price_decimal_sep')) ? get_option('woocommerce_price_decimal_sep') : '.';
-				$no_of_decimal = !empty(get_option('woocommerce_price_num_decimals')) ? get_option('woocommerce_price_num_decimals') : 2;
-				$box_item_click = get_option('abp_assorted_products_item_click');
-				$box_item_click = !empty($box_item_click) ? $box_item_click : 'redirect';
-				$discounts = get_post_meta($product_id, 'abp_assorted_category_discounts', true);
-				$qty_discounts = get_post_meta($product_id, 'abp_assorted_quantities_discounts', true);
-				wp_enqueue_style('dashicons');
-				wp_enqueue_style('slick', WC_ABP_URL . '/assets/css/slick.css', array(), '1.5');
-				wp_enqueue_style('slick-theme', WC_ABP_URL . '/assets/css/slick-theme.css', array(), '1.5');
-				wp_enqueue_style('abp-product-style', WC_ABP_URL . '/assets/css/frontend_style.css', array(), '1.0.3');
-				wp_enqueue_script('slick', WC_ABP_URL . '/assets/js/slick.min.js', array('jquery'), '1.5');
-				wp_register_script('abp-product-script', WC_ABP_URL . '/assets/js/frontend_script.js', array('jquery'), '1.0.8', true );
-				wp_localize_script('abp-product-script', 'abpAssorted', array(
-					'ajaxurl'		=>	admin_url('admin-ajax.php'),
-					'product_id'	=> $product_id,
-					'type'	=>	$product->is_type('assorted_product'),
-					'ajax_nonce' => wp_create_nonce('assorted_bundle'),
-					'price'	=> $product->get_price(),
-					'price_type' => $price_type,
-					'min'	=> $min,
-					'max'	=> $max,
-					'max_error'=> $msg_error,
-					'max_item_error' => $max_item_error,
-					'msg_success'=> $msg_success,
-					'removebtn' => get_option('abp_assorted_products_remove_addtocart'),
-					'currency_symbol' => get_woocommerce_currency_symbol(),
-					'currency_pos'    => esc_attr($currency_position),
-					'thousand_sep'    => esc_attr($thousand_sep),
-					'decimal_sep'     => esc_attr($decimal_sep),
-					'no_of_decimal'   => esc_attr($no_of_decimal),
-					'box_item_click'  => $box_item_click,
-					'enable_discounts' => get_post_meta($product_id, 'abp_enable_categories_discounts', true),
-					'discounts' => $discounts,
-					'enable_qty_discounts' => get_post_meta($product_id, 'abp_enable_quantities_discounts', true),
-					'qty_discounts' => $qty_discounts,
-					'show_discount' => get_option('abp_assorted_show_product_discount'),
-					'discount_label' => esc_html__(get_option('abp_assorted_discount_text', 'Discount'), 'wc-abp')
-				));
-				wp_enqueue_script('abp-product-script');
-			}
-		}
-	}
-	new ABP_Assorted_Product_Frontend();
+                $currency_position = !empty(get_option('woocommerce_currency_pos')) ? get_option('woocommerce_currency_pos') : 'left';
+                $thousand_sep = !empty(get_option('woocommerce_price_thousand_sep')) ? get_option('woocommerce_price_thousand_sep') : ',';
+                $decimal_sep = !empty(get_option('woocommerce_price_decimal_sep')) ? get_option('woocommerce_price_decimal_sep') : '.';
+                $no_of_decimal = !empty(get_option('woocommerce_price_num_decimals')) ? get_option('woocommerce_price_num_decimals') : 2;
+                $box_item_click = get_option('abp_assorted_products_item_click');
+                $box_item_click = !empty($box_item_click) ? $box_item_click : 'redirect';
+                $discounts = get_post_meta($product_id, 'abp_assorted_category_discounts', true);
+                $qty_discounts = get_post_meta($product_id, 'abp_assorted_quantities_discounts', true);
+                wp_enqueue_style('dashicons');
+                wp_enqueue_style('slick', WC_ABP_URL . '/assets/css/slick.css', array(), '1.5');
+                wp_enqueue_style('slick-theme', WC_ABP_URL . '/assets/css/slick-theme.css', array(), '1.5');
+                wp_enqueue_style('abp-product-style', WC_ABP_URL . '/assets/css/frontend_style.css', array(), '1.0.3');
+                wp_enqueue_script('slick', WC_ABP_URL . '/assets/js/slick.min.js', array('jquery'), '1.5');
+                wp_register_script('abp-product-script', WC_ABP_URL . '/assets/js/frontend_script.js', array('jquery'), '1.0.8', true );
+                wp_localize_script('abp-product-script', 'abpAssorted', array(
+                    'ajaxurl'		=>	admin_url('admin-ajax.php'),
+                    'product_id'	=> $product_id,
+                    'type'	=>	$product->is_type('assorted_product'),
+                    'ajax_nonce' => wp_create_nonce('assorted_bundle'),
+                    'price'	=> $product->get_price(),
+                    'price_type' => $price_type,
+                    'min'	=> $min,
+                    'max'	=> $max,
+                    'max_error'=> $msg_error,
+                    'max_item_error' => $max_item_error,
+                    'msg_success'=> $msg_success,
+                    'removebtn' => get_option('abp_assorted_products_remove_addtocart'),
+                    'currency_symbol' => get_woocommerce_currency_symbol(),
+                    'currency_pos'    => esc_attr($currency_position),
+                    'thousand_sep'    => esc_attr($thousand_sep),
+                    'decimal_sep'     => esc_attr($decimal_sep),
+                    'no_of_decimal'   => esc_attr($no_of_decimal),
+                    'box_item_click'  => $box_item_click,
+                    'enable_discounts' => get_post_meta($product_id, 'abp_enable_categories_discounts', true),
+                    'discounts' => $discounts,
+                    'enable_qty_discounts' => get_post_meta($product_id, 'abp_enable_quantities_discounts', true),
+                    'qty_discounts' => $qty_discounts,
+                    'show_discount' => get_option('abp_assorted_show_product_discount'),
+                    'discount_label' => esc_html__(get_option('abp_assorted_discount_text', 'Discount'), 'wc-abp')
+                ));
+                wp_enqueue_script('abp-product-script');
+            }
+        }
+    }
+    new ABP_Assorted_Product_Frontend();
 }

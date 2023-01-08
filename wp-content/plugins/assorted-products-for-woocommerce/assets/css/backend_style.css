@@ -1,4 +1,5 @@
-span.abp_add_cat_discount {
+span.abp_add_cat_discount,
+.abp_per_item_extra_fee .dashicons.dashicons-plus-alt2 {
     background: #00881d;
     color: #fff;
     width: 30px;
@@ -6,7 +7,8 @@ span.abp_add_cat_discount {
     line-height: 30px;
     cursor: pointer;
 }
-span.abp_remove_cat_discount {
+span.abp_remove_cat_discount,
+.abp_per_item_extra_fee .dashicons.dashicons-minus {
     width: 30px;
     height: 30px;
     background: #d00;
@@ -23,4 +25,7 @@ p.abp_submit_subscription_msg {
 }
 .abp_spinner {
     display: none;
+}
+.abp_per_item_extra_fee input {
+    padding: 0 5px !important;
 }

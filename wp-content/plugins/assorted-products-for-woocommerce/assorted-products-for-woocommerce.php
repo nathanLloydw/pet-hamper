@@ -3,7 +3,7 @@
 * Plugin Name: Assorted Products For WooCommerce
 * Plugin URI: https://www.codeincept.com/
 * Description: Assorted Products For WooCommerce Plugin helps your customers to sort and make bundles.
-* Version: 1.0.8
+* Version: 1.1.0
 * Author: CodeIncept
 * Author URI: https://www.codeincept.com/
 * Developer: CodeIncept
@@ -12,15 +12,15 @@
 *
 * Woo: 4911617:164747fafbb4166d9553e56f6ebe6459
 * WC requires at least: 3.5
-* WC tested up to: 5.9.0
+* WC tested up to: 7.1.0
 * 
 * Copyright: © 2009-2015 WooCommerce.
 * License: GNU General Public License v3.0
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 **/
 if ( !defined('ABSPATH') ) {
-	exit; // Exit if accessed directly.
-} //!defined('ABSPATH')
+	exit(); // Exit if accessed directly.
+} 
 if ( !defined('WC_ABP_DIR') ) {
 	define('WC_ABP_DIR', plugin_dir_path(__FILE__));
 }
@@ -32,6 +32,8 @@ if ( !class_exists('ABP_Assorted_Bundle_Products') ) {
 		public function __construct() {
 			/**
 			 * Check if WooCommerce is installed and active.
+			 * 
+			 * @since 1.0.0
 			 **/
 			if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
@@ -50,8 +52,10 @@ if ( !class_exists('ABP_Assorted_Bundle_Products') ) {
 		}
 		public function abp_init() {
 			/**        
-			* Load language.     
-			*/
+			 * Load language.
+			 * 
+			 * @since 1.0.0
+			 **/
 			if ( function_exists( 'load_plugin_textdomain' ) ) {
 				load_plugin_textdomain('wc-abp', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 			}

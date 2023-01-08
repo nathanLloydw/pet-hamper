@@ -1,7 +1,6 @@
-<?php get_header(); ?>
-
-<?php if ( is_user_logged_in() ) { ?>
-	<?php 
+<?php 
+get_header();
+if ( is_user_logged_in() ) { 
 	do_action('wc_abp_edit_assorted_subscription_before_form');
 	global $woocommerce;
 	$obj = new ABP_Assorted_Products_Subscription();
