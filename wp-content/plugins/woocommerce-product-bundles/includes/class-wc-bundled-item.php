@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The bunded item class is a product container that initializes and holds pricing, availability and variation/attribute-related data for a bundled product.
  *
  * @class    WC_Bundled_Item
- * @version  6.14.1
+ * @version  6.17.2
  */
 class WC_Bundled_Item {
 
@@ -1849,7 +1849,18 @@ class WC_Bundled_Item {
 	 * @return boolean
 	 */
 	public function is_visible( $where = 'product' ) {
-		return isset( $this->visibility[ $where ] ) && 'hidden' !== $this->visibility[ $where ];
+
+		$visible = isset( $this->visibility[ $where ] ) && 'hidden' !== $this->visibility[ $where ];
+
+		/**
+		 * 'woocommerce_bundles_bundled_item_visibility' filter.
+		 *
+		 * @param  bool             $visible
+		 * @param  WC_Bundled_Item  $this
+		 * @param string            $where
+		 *
+		 */
+		return apply_filters( 'woocommerce_bundles_bundled_item_visibility', $visible, $this, $where );
 	}
 
 	/**
@@ -2027,7 +2038,7 @@ class WC_Bundled_Item {
 	 * Item discount.
 	 *
 	 * @param  string  $context
-	 * @return double
+	 * @return mixed   If numeric value is set, then return float. If discount is not set, return empty string.
 	 */
 	public function get_discount( $context = '' ) {
 
@@ -2044,8 +2055,13 @@ class WC_Bundled_Item {
 			 *
 			 * @param  mixed            $discount
 			 * @param  WC_Bundled_Item  $this
+			 * @param  string           $context
 			 */
 			$discount = apply_filters( 'woocommerce_bundled_item_discount', $this->discount, $this, $context );
+		}
+
+		if ( ! empty( $discount ) ) {
+			$discount = (float) $discount;
 		}
 
 		return $discount;

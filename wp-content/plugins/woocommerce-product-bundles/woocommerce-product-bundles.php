@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Bundles
 * Plugin URI: https://woocommerce.com/products/product-bundles/
 * Description: Offer product bundles, bulk discount packages, and assembled products.
-* Version: 6.15.5
+* Version: 6.17.3
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -12,13 +12,13 @@
 * Text Domain: woocommerce-product-bundles
 * Domain Path: /languages/
 *
-* Requires PHP: 5.6
+* Requires PHP: 7.0
 *
 * Requires at least: 4.4
-* Tested up to: 5.9
+* Tested up to: 6.0
 *
 * WC requires at least: 3.9
-* WC tested up to: 6.5
+* WC tested up to: 6.9
 *
 * License: GNU General Public License v3.0
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,12 +33,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Bundles
- * @version  6.15.5
+ * @version  6.17.3
  */
 class WC_Bundles {
 
-	public $version  = '6.15.5';
-	public $required = '3.6.0';
+	public $version  = '6.17.3';
+	public $required = '3.9.0';
 
 	/**
 	 * The single instance of the class.
@@ -191,9 +191,9 @@ class WC_Bundles {
 		}
 
 		// PHP version check.
-		if ( ! function_exists( 'phpversion' ) || version_compare( phpversion(), '5.6.20', '<' ) ) {
+		if ( ! function_exists( 'phpversion' ) || version_compare( phpversion(), '7.0.0', '<' ) ) {
 			/* translators: %1$s: Version %, %2$s: Update PHP doc URL */
-			$notice = sprintf( __( 'WooCommerce Product Bundles requires at least PHP <strong>%1$s</strong>. Learn <a href="%2$s">how to update PHP</a>.', 'woocommerce-product-bundles' ), '5.6.20', $this->get_resource_url( 'update-php' ) );
+			$notice = sprintf( __( 'WooCommerce Product Bundles requires at least PHP <strong>%1$s</strong>. Learn <a href="%2$s">how to update PHP</a>.', 'woocommerce-product-bundles' ), '7.0.0', $this->get_resource_url( 'update-php' ) );
 			require_once( WC_PB_ABSPATH . 'includes/admin/class-wc-pb-admin-notices.php' );
 			WC_PB_Admin_Notices::add_notice( $notice, 'error' );
 			return false;
@@ -349,6 +349,9 @@ class WC_Bundles {
 		// Analytics.
 		require_once( WC_PB_ABSPATH . 'includes/admin/analytics/class-wc-pb-admin-analytics.php' );
 
+		// Tracker.
+		require_once( WC_PB_ABSPATH . 'includes/class-wc-pb-tracker.php' );
+
 		// WP-CLI includes.
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			require_once( WC_PB_ABSPATH . 'includes/class-wc-pb-cli.php' );
@@ -372,6 +375,8 @@ class WC_Bundles {
 	 */
 	public function load_translation() {
 		load_plugin_textdomain( 'woocommerce-product-bundles', false, dirname( $this->plugin_basename() ) . '/languages/' );
+		// Subscribe to automated translations.
+		add_filter( 'woocommerce_translations_updates_for_' . basename( __FILE__, '.php' ), '__return_true' );
 	}
 
 	/**
@@ -426,6 +431,32 @@ class WC_Bundles {
 		return $this->plugin_version();
 	}
 
+	/**
+	 * Handle plugin activation process.
+	 *
+	 * @since  6.16.0
+	 *
+	 * @return void
+	 */
+	public function on_activation() {
+		// Add daily maintenance process.
+		if ( ! wp_next_scheduled( 'wc_pb_daily' ) ) {
+			wp_schedule_event( time() + 10, 'daily', 'wc_pb_daily' );
+		}
+	}
+
+	/**
+	 * Handle plugin deactivation process.
+	 *
+	 * @since  1.12.0
+	 *
+	 * @return void
+	 */
+	public function on_deactivation() {
+		// Clear daily maintenance process.
+		wp_clear_scheduled_hook( 'wc_pb_daily' );
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Deprecated methods.
@@ -453,3 +484,6 @@ function WC_PB() {
 }
 
 $GLOBALS[ 'woocommerce_bundles' ] = WC_PB();
+
+register_activation_hook( __FILE__, array( WC_PB(), 'on_activation' ) );
+register_deactivation_hook( __FILE__, array( WC_PB(), 'on_deactivation' ) );

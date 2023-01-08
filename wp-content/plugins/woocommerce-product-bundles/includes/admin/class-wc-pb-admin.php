@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Loads admin scripts, includes admin classes and adds admin hooks.
  *
  * @class    WC_PB_Admin
- * @version  6.12.8
+ * @version  6.17.3
  */
 class WC_PB_Admin {
 
@@ -26,7 +26,7 @@ class WC_PB_Admin {
 	 *
 	 * @var string
 	 */
-	private static $bundled_selectsw_version = '1.1.7';
+	private static $bundled_selectsw_version = '1.2.0';
 
 	/**
 	 * Setup Admin class.
@@ -251,7 +251,7 @@ class WC_PB_Admin {
 		 */
 		if ( in_array( $screen_id, array( 'edit-product', 'product' ) ) ) {
 			wp_enqueue_style( 'wc-pb-admin-product-css', 'sw-admin-css-select' );
-		} elseif ( in_array( $screen_id, array( 'shop_order', 'edit-shop_order', 'shop_subscription', 'edit-shop_subscription' ) ) ) {
+		} elseif ( in_array( $screen_id, array( 'shop_order', 'edit-shop_order', 'shop_subscription', 'edit-shop_subscription', 'woocommerce_page_wc-orders' ) ) ) {
 			wp_enqueue_style( 'wc-pb-admin-edit-order-css' );
 		}
 
@@ -275,7 +275,13 @@ class WC_PB_Admin {
 			$params = array(
 				'add_bundled_product_nonce' => wp_create_nonce( 'wc_bundles_add_bundled_product' ),
 				'group_modes_with_parent'   => $group_modes_with_parent,
-				'is_first_bundle'           => isset( $_GET[ 'wc_pb_first_bundle' ] ) ? 'yes' : 'no'
+				'is_first_bundle'           => isset( $_GET[ 'wc_pb_first_bundle' ] ) ? 'yes' : 'no',
+				/* translators: %s: Lowest required qty value. */
+				'i18n_qty_low_error'        => __( 'Please enter an integer higher than or equal to %s.', 'woocommerce-product-bundles' ),
+				/* translators: %s: Highest allowed qty value. */
+				'i18n_qty_high_error'       => __( 'Please enter an integer lower than or equal to %s.', 'woocommerce-product-bundles' ),
+				/* translators: %s: Required step qty value. */
+				'i18n_qty_step_error'       => __( 'Please enter an integer that is a multiple of %s.', 'woocommerce-product-bundles' )
 			);
 
 			wp_localize_script( 'wc-pb-admin-product-panel', 'wc_bundles_admin_params', $params );
@@ -300,7 +306,7 @@ class WC_PB_Admin {
 				} );
 			" );
 
-		} elseif ( in_array( $screen_id, array( 'shop_order', 'shop_subscription' ) ) ) {
+		} elseif ( in_array( $screen_id, array( 'shop_order', 'shop_subscription', 'woocommerce_page_wc-orders' ) ) ) {
 
 			wp_enqueue_script( 'wc-pb-admin-order-panel' );
 

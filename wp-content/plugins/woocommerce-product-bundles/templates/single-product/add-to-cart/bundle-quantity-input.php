@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Bundle quantity input template
@@ -20,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $product;
 
 do_action( 'woocommerce_before_add_to_cart_quantity' );
+
 if ( ! $product->is_sold_individually() ) {
 
 	woocommerce_quantity_input( array(
@@ -33,4 +33,3 @@ if ( ! $product->is_sold_individually() ) {
 }
 
 do_action( 'woocommerce_after_add_to_cart_quantity' );
-?>

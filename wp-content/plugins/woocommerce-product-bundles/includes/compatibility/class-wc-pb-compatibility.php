@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles compatibility with other WC extensions.
  *
  * @class    WC_PB_Compatibility
- * @version  6.15.0
+ * @version  6.17.3
  */
 class WC_PB_Compatibility {
 
@@ -96,7 +96,8 @@ class WC_PB_Compatibility {
 			'pao'    => '3.0.14',
 			'topatc' => '1.0.3',
 			'bd'     => '1.3.1',
-			'blocks' => '7.2.0'
+			'blocks' => '7.2.0',
+			'mmq'    => '3.0.0'
 		);
 
 		// Initialize.
@@ -117,6 +118,9 @@ class WC_PB_Compatibility {
 			add_action( 'admin_init', array( $this, 'add_compatibility_notices' ) );
 		}
 
+		// Declare HPOS compatibility.
+		add_action( 'before_woocommerce_init', array( $this, 'declare_hpos_compatibility' ) );
+
 		// Load modules.
 		add_action( 'plugins_loaded', array( $this, 'module_includes' ), 100 );
 
@@ -131,6 +135,20 @@ class WC_PB_Compatibility {
 	 */
 	public static function core_includes() {
 		require_once( WC_PB_ABSPATH . 'includes/compatibility/core/class-wc-pb-core-compatibility.php' );
+	}
+
+	/**
+	 * Declare HPOS( Custom Order tables) compatibility.
+	 *
+	 * @since 6.17.3
+	 */
+	public function declare_hpos_compatibility() {
+
+		if ( ! class_exists( 'Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			return;
+		}
+
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WC_PB()->plugin_basename(), true );
 	}
 
 	/**
@@ -240,7 +258,7 @@ class WC_PB_Compatibility {
 		}
 
 		// Min Max Quantities integration.
-		if ( class_exists( 'WC_Min_Max_Quantities' ) ) {
+		if ( class_exists( 'WC_Min_Max_Quantities' ) && defined( 'WC_MIN_MAX_QUANTITIES' ) && version_compare( WC_MIN_MAX_QUANTITIES, $this->required[ 'mmq' ] ) >= 0 ) {
 			$module_paths[ 'min_max_quantities' ] = WC_PB_ABSPATH . 'includes/compatibility/modules/class-wc-pb-min-max-compatibility.php';
 		}
 
@@ -270,7 +288,9 @@ class WC_PB_Compatibility {
 		}
 
 		// Shipstation integration.
-		$module_paths[ 'shipstation' ] = WC_PB_ABSPATH . 'includes/compatibility/modules/class-wc-pb-shipstation-compatibility.php';
+		if ( class_exists( 'WC_ShipStation_Integration' ) ) {
+			$module_paths[ 'shipstation' ] = WC_PB_ABSPATH . 'includes/compatibility/modules/class-wc-pb-shipstation-compatibility.php';
+		}
 
 		// Storefront compatibility.
 		if ( function_exists( 'wc_is_active_theme' ) && wc_is_active_theme( 'storefront' ) ) {
@@ -445,6 +465,20 @@ class WC_PB_Compatibility {
 				$notice         = sprintf( __( 'The installed version of <strong>%1$s</strong> is not supported by <strong>Product Bundles</strong>. Please update <a href="%2$s" target="_blank">%3$s</a> to version <strong>%4$s</strong> or higher.', 'woocommerce-product-bundles' ), $extension, $extension_url, $extension_full, $required_version );
 
 				WC_PB_Admin_Notices::add_notice( $notice, 'warning' );
+			}
+		}
+
+		// MMQ version check.
+		if ( class_exists( 'WC_Min_Max_Quantities' ) ) {
+			$required_version = $this->required[ 'mmq' ];
+			if ( ! defined( 'WC_MIN_MAX_QUANTITIES' ) || version_compare( WC_MIN_MAX_QUANTITIES, $required_version ) < 0 ) {
+				$extension      = __( 'Min/Max Quantities', 'woocommerce-product-bundles' );
+				$extension_full = __( 'WooCommerce Min/Max Quantities', 'woocommerce-product-bundles' );
+				$extension_url  = 'https://woocommerce.com/products/minmax-quantities/';
+				/* translators: %1$s: Extension, %2$s: Extension URL, %3$s: Extension full name, %4$s: Required version. */
+				$notice         = sprintf( __( 'The installed version of <strong>%1$s</strong> is not supported by <strong>Product Bundles</strong>. Please update <a href="%2$s" target="_blank">%3$s</a> to version <strong>%4$s</strong> or higher.', 'woocommerce-product-bundles' ), $extension, $extension_url, $extension_full, $required_version );
+
+				WC_PB_Admin_Notices::add_dismissible_notice( $notice, array( 'dismiss_class' => 'mmq_lt_' . $required_version, 'type' => 'warning' ) );
 			}
 		}
 	}

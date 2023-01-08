@@ -13,13 +13,13 @@
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 if ( ! $description ) {
-	return;
+    return;
 }
 
 ?><div class="bundled_product_excerpt product_excerpt line-clamp"><?php
-		echo $description;
+    echo $description;
 ?></div>

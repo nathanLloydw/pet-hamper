@@ -1,7 +1,42 @@
 *** WooCommerce Product Bundles ***
 
+2022.11.01 - version 6.17.3
+* Tweak - Improved security.
+* Tweak - Updated validation error that showed up when setting a low Maximum Quantity for a bundled item.
+* Tweak - Introduced compatibility with the new High-Performance Order Storage.
+
+2022.10.13 - version 6.17.2
+* Tweak - Introduced the 'woocommerce_bundles_bundled_item_visibility' filter.
+* Tweak - Added support for automated translations delivery.
+* Fix - Fixed an issue that prevented hidden bundled items from showing up when editing a Bundle order item in the admin area. 
+* Fix - Fixed a fatal error that was triggered when viewing Bundles Analytics containing Product Bundles that changed product type.
+* Fix - Fixed a fatal error that was triggered when using PHP v8 and using Cart/Checkout Blocks.
+
+2022.09.23 - version 6.17.1
+* Tweak - Hook into 'woocommerce_add_to_cart' with priority '9' instead '9.9'. 
+* Fix - Fixed fatal errors triggered when activating/deactivating the plugin via WP cli.
+
+2022.09.13 - version 6.17.0
+* Important - PHP 7.0 is now required.
+* Tweak - Prevent the 'Optional' box from being checked when the Minimum Quantity is zero.
+* Fix - Fixed a fatal error that was triggered by the Min/Max Quantities integration when an old version of the extension was in use.
+
+2022.08.29 - version 6.16.1
+* Important - The Min/Max Quantities integration requires Min/Max Quantities v3+.
+* Fix - Fixed fatal error that was triggered when trying to add a Bundle with invalid configuration to an order.
+* Tweak - Ensure that the Min/Max Quantities integration code affecting bundled item variations runs only in Product Bundles context.
+* Tweak - Update the bundled item step in the cart/checkout block based on the container's item quantity.
+
+2022.07.12 - version 6.16.0
+* Tweak - Improved support for the Min/Max Quantities 'Group of' feature.
+* Tweak - Introduced client-side min/max/default quantity validation.
+* Tweak - Introduced basic telemetry to collect data on extension usage when tracking is enabled.
+* Fix - Fixed a fatal error that was triggered from calling product functions on string.
+* Fix - Fixed a fatal error that was triggered when invalidating order cache.
+* Fix - Fixed an issue that prevented bundled item and Bundle-Sells discounts with comma separated decimals from being saved.
+
 2022.05.31 - version 6.15.5
-* Important - WooCommerce version 3.9 is now required.
+* Important - WooCommerce version 3.9+ is now required.
 * Fix - Include minified frontend script files for the new Cart and Checkout blocks integration. 
 
 2022.05.31 - version 6.15.4

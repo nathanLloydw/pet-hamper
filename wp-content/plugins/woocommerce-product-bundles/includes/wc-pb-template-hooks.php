@@ -8,7 +8,7 @@
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 // Single product template for Product Bundles. Form location: Default.

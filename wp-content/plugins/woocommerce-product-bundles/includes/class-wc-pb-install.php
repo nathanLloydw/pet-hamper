@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles installation and updating tasks.
  *
  * @class    WC_PB_Install
- * @version  6.12.0
+ * @version  6.17.1
  */
 class WC_PB_Install {
 
@@ -182,7 +182,11 @@ class WC_PB_Install {
 		$db_version_target  = end( $db_update_versions );
 
 		if ( is_null( self::$current_db_version ) ) {
-			return WC_PB_DB::query_bundled_items( array( 'return' => 'count' ) ) === 0;
+			/*
+			 * Back in the old days, PB didn't store its DB version at all. When updating from an ancient version like that, the DB version will be null but a DB upgrade will be needed.
+			 * A DB upgrade will be needed if bundles exist in the posts table, but no items exist in the bundled items table.
+			 */
+			return 0 === WC_PB_DB::query_bundled_items( array( 'return' => 'count' ) ) && ! empty( wc_get_products( array( 'type' => 'bundle', 'return' => 'ids', 'limit' => 1 ) ) );
 		} else {
 			return version_compare( self::$current_db_version, $db_version_target, '<' );
 		}
@@ -282,6 +286,9 @@ class WC_PB_Install {
 		self::maybe_prepare_db_for_upgrade();
 		self::create_tables();
 
+		// Create events.
+		self::create_events();
+
 		// if bundle type does not exist, create it.
 		if ( self::is_new_install() ) {
 			wp_insert_term( 'bundle', 'product_type' );
@@ -318,6 +325,17 @@ class WC_PB_Install {
 		$wpdb->hide_errors();
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( self::get_schema() );
+	}
+
+	/**
+	 * Schedule cron events.
+	 *
+	 * @since 6.16.0
+	 */
+	public static function create_events() {
+		if ( ! wp_next_scheduled( 'wc_pb_daily' ) ) {
+			wp_schedule_event( time() + 10, 'daily', 'wc_pb_daily' );
+		}
 	}
 
 	/**
