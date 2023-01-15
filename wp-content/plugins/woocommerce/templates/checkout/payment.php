@@ -33,9 +33,11 @@ if ( ! wp_doing_ajax() ) {
 				echo '<li class="woocommerce-notice woocommerce-notice--info woocommerce-info">' . apply_filters( 'woocommerce_no_available_payment_methods_message', WC()->customer->get_billing_country() ? esc_html__( 'Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce' ) : esc_html__( 'Please fill in your details above to see available payment methods.', 'woocommerce' ) ) . '</li>'; // @codingStandardsIgnoreLine
 			}
 			?>
+
 		</ul>
 	<?php endif; ?>
 	<div class="form-row place-order">
+
 		<noscript>
 			<?php
 			/* translators: $1 and $2 opening and closing emphasis tags respectively */
@@ -55,7 +57,9 @@ if ( ! wp_doing_ajax() ) {
 		<?php wp_nonce_field( 'woocommerce-process_checkout', 'woocommerce-process-checkout-nonce' ); ?>
 	</div>
 </div>
+
 <?php
 if ( ! wp_doing_ajax() ) {
-	do_action( 'woocommerce_review_order_after_payment' );
+    do_action( 'woocommerce_review_order_after_payment' );
 }
+?>

@@ -568,7 +568,7 @@ if( function_exists('acf_add_options_page') ) {
     
 }
 
-// // add AWIN tracking
+// add AWIN tracking
  add_action( 'woocommerce_thankyou', 'my_custom_tracking' );
 
  function my_custom_tracking( $order_id ) {

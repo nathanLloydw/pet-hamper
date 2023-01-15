@@ -63,6 +63,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	 ========================================================================== */
 
 /** Nathan Custom Styles - Start **/
+#ppc-button-ppcp-gateway { display:flex; justify-content:center; }
 
 .menu-item-42403 > a,
 .menu-item-42404 > a,
@@ -2456,7 +2457,8 @@ a.added_to_cart.wc-forward {
 }
 
 .woocommerce form select,
-.select2-container--default .select2-selection--single{
+.select2-container--default .select2-selection--single,
+.attribute_options select{
 	background: #f4f1e5;
 }
 
