@@ -3,7 +3,7 @@ Contributors: woocommerce, automattic, claudiosanches, bor0, royho, laurendaviss
 Tags: woocommerce, google analytics
 Requires at least: 3.9
 Tested up to: 6.1
-Stable tag: 1.5.18
+Stable tag: 1.5.19
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -59,6 +59,10 @@ Exact wording depends on the national data privacy laws and should be adjusted.
 1. Google Analytics Integration Settings.
 
 == Changelog ==
+
+= 1.5.19 - 2023-01-11 =
+* Fix - undefined WC constant.
+* Tweak - WC 7.3 compatibility.
 
 = 1.5.18 - 2022-12-14 =
 * Add - .nvmrc file.
