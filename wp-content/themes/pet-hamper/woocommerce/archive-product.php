@@ -49,6 +49,10 @@ do_action( 'woocommerce_before_main_content' );
                 <img style="margin-bottom:43px;" src="/wp-content/uploads/2022/06/christmas selling out banner.jpg">
             </a>
 
+        <?php elseif(woocommerce_page_title(false) == 'Valentines Collection') : ?>
+            <a href="/create-your-own-hamper">
+                <img style="margin-bottom:43px;" src="/wp-content/uploads/2022/06/valentines-collection-banner.jpg">
+            </a>
         <?php endif; ?>
 
         <?php endif; ?>
