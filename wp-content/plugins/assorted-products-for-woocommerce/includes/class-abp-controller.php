@@ -10,7 +10,8 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 			add_action( 'wp_ajax_abp_assorted_quick_view', array($this, 'abp_assorted_quick_view'));
 			add_action( 'wp_ajax_nopriv_abp_assorted_quick_view', array($this, 'abp_assorted_quick_view'));
 		}
-		public function abp_assorted_search_products() {
+		public function abp_assorted_search_products()
+        {
 			check_ajax_referer( 'assorted_bundle', 'security' );
 			if ( !isset($_POST['product_id']) ) {
 				wp_send_json_error(esc_html__('Something is wrong please try again.', 'wc-abp'));
@@ -182,6 +183,12 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 					'orderby' => 'title',
 					'order' => 'ASC',
 					'tax_query' => array(
+                        'relation' => 'AND',
+                        array('taxonomy' => 'product_visibility',
+                            'field'    => 'name',
+                            'terms'    => array('outofstock'),
+                            'operator' => 'NOT IN'),
+                        array(
 						'relation' => 'OR',
 						array(
 							'taxonomy' => 'product_type',
@@ -192,10 +199,12 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 						array(
 							'taxonomy' => 'product_type',
 							'operator' => 'NOT EXISTS',
-						)
+						))
 					)
 				);
-			} else {
+			}
+            else
+            {
 				$args = array(
 					'post_type'	=> array('product', 'product_variation'),
 					'posts_per_page' => $count,
@@ -203,19 +212,25 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 					'post_status'    => 'publish',
 					'order' => 'ASC',
 					'orderby' => 'title',
-					'tax_query' => array(
-						'relation' => 'OR',
-						array(
-							'taxonomy' => 'product_type',
-							'field'    => 'slug',
-							'terms'    => array('simple'),
-							'operator' => 'IN',
-						),
-						array(
-							'taxonomy' => 'product_type',
-							'operator' => 'NOT EXISTS',
-						)
-					)
+                    'tax_query' => array(
+                        'relation' => 'AND',
+                        array('taxonomy' => 'product_visibility',
+                            'field'    => 'name',
+                            'terms'    => array('outofstock'),
+                            'operator' => 'NOT IN'),
+                        array(
+                            'relation' => 'OR',
+                            array(
+                                'taxonomy' => 'product_type',
+                                'field'    => 'slug',
+                                'terms'    => array('simple'),
+                                'operator' => 'IN',
+                            ),
+                            array(
+                                'taxonomy' => 'product_type',
+                                'operator' => 'NOT EXISTS',
+                            ))
+                    )
 				);
 				$posts_in = array();
 				if ( !empty($filter_cat) ) {
@@ -304,6 +319,7 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 			$html = $this->abp_default_template($product_id, $query, $paged);
 			wp_send_json_success(array('success'=> true, 'html' => $html, 'paged' => $paged) );
 		}
+
 		public function abp_default_template( $product_id, $query, $paged ) {
 			$cols = get_post_meta($product_id, 'abp_assorted_columns', true);
 			$hide_unpurchasable = get_post_meta($product_id, 'abp_assorted_product_hide_unpurchasable', true);
@@ -335,32 +351,35 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
 					$options['cats'] = $term_list;
 					$options['tags'] = $tags_list;
 					$options['qty'] = ( $_product->is_sold_individually() ) ? 1 : $_product->get_stock_quantity();
-					if ( 0 == $options['purchaseable'] && 'yes' == $hide_unpurchasable ) {
-						continue;
-					}
-					$html .= '<li class="abp-col-' . $cols . '" data-product-id="' . esc_attr($_product->get_id()) . '" data-categories="' . esc_attr( implode(',', $term_list) ) . '" data-tags="' . esc_attr( implode(',', $tags_list) ) . '">';
-					$html .= '<div class="abp-inner">';
-					$html .= '<div class="abp-figure">';
-					$html .= $_product->get_image();
-					$html .= '</div>';
-					$html .= '<div class="abp-captions">';
-					$html .= '<span class="apb-title"><a href="' . esc_url(get_the_permalink($_product->get_id())) . '" target="_blank"><strong>' . esc_html($_product->get_name()) . '</strong></a></span>';
-					if ( 'yes' == $item_desc ) {
-						$html .= '<span class="apb-item-excerpt apb-short-description">' . wp_kses_post( get_the_excerpt() ) . '</span>';
-					}
-					$html .= '<span class="abp_assorted_item_price">' . wp_kses_post( $_product->get_price_html() ) . '</span>';
-					if ( 'yes' == $show_sku && !empty($_product->get_sku()) ) {
-						$html .= '<span class="abp_item_sku"><span class="abp_sku_title">' . esc_html($sku_title) . ' </span><span class="abp_sku_code">' . esc_html($_product->get_sku()) . '</span></span>';
-					}
-					if ($options['purchaseable']) {
-						$html .= '<span class="abp_button"><button class="button add-product-to-assorted" type="button" data-product-id="' . esc_attr($_product->get_id()) . '">' . esc_html__($btn_text, 'wc-abp') . '</button></span>';
-					} else {
-						$html .= '<span class="abp_button"><button class="button" type="button" data-product-id="' . esc_attr($_product->get_id()) . '" disabled="disabled">' . esc_html__($item_btn_text, 'wc-abp') . '</button></span>';
-					}
-					$html .= '<input type="hidden" name="abp_bundle_item_meta" class="abp_bundle_item_meta" value="' . esc_attr(json_encode($options)) . '">';
-					$html .= '</di>';
-					$html .= '</div>';
-					$html .= '</li>';
+
+                    if ( 0 == $options['purchaseable'] && 'yes' == $hide_unpurchasable ) {
+                        continue;
+                    }
+                    
+                    $html .= '<li class="abp-col-' . $cols . '" data-product-id="' . esc_attr($_product->get_id()) . '" data-categories="' . esc_attr( implode(',', $term_list) ) . '" data-tags="' . esc_attr( implode(',', $tags_list) ) . '">';
+                    $html .= '<div class="abp-inner" data-stock="'.$_product->is_purchasable().'">';
+                    $html .= '<div class="abp-figure">';
+                    $html .= $_product->get_image();
+                    $html .= '</div>';
+                    $html .= '<div class="abp-captions">';
+                    $html .= '<span class="apb-title"><a href="' . esc_url(get_the_permalink($_product->get_id())) . '" target="_blank"><strong>' . esc_html($_product->get_name()) . '</strong></a></span>';
+                    if ( 'yes' == $item_desc ) {
+                        $html .= '<span class="apb-item-excerpt apb-short-description">' . wp_kses_post( get_the_excerpt() ) . '</span>';
+                    }
+                    $html .= '<span class="abp_assorted_item_price">' . wp_kses_post( $_product->get_price_html() ) . '</span>';
+                    if ( 'yes' == $show_sku && !empty($_product->get_sku()) ) {
+                        $html .= '<span class="abp_item_sku"><span class="abp_sku_title">' . esc_html($sku_title) . ' </span><span class="abp_sku_code">' . esc_html($_product->get_sku()) . '</span></span>';
+                    }
+                    if ($options['purchaseable']) {
+                        $html .= '<span class="abp_button"><button class="button add-product-to-assorted" type="button" data-product-id="' . esc_attr($_product->get_id()) . '">' . esc_html__($btn_text, 'wc-abp') . '</button></span>';
+                    } else {
+                        $html .= '<span class="abp_button"><button class="button" type="button" data-product-id="' . esc_attr($_product->get_id()) . '" disabled="disabled">' . esc_html__($item_btn_text, 'wc-abp') . '</button></span>';
+                    }
+                    $html .= '<input type="hidden" name="abp_bundle_item_meta" class="abp_bundle_item_meta" value="' . esc_attr(json_encode($options)) . '">';
+                    $html .= '</di>';
+                    $html .= '</div>';
+                    $html .= '</li>';
+
 				}
 				wp_reset_postdata();
 				if ( 1 === $paged ) {
