@@ -355,7 +355,7 @@ if ( !class_exists('ABP_Assorted_Products_Controller') ) {
                     if ( 0 == $options['purchaseable'] && 'yes' == $hide_unpurchasable ) {
                         continue;
                     }
-                    
+
                     $html .= '<li class="abp-col-' . $cols . '" data-product-id="' . esc_attr($_product->get_id()) . '" data-categories="' . esc_attr( implode(',', $term_list) ) . '" data-tags="' . esc_attr( implode(',', $tags_list) ) . '">';
                     $html .= '<div class="abp-inner" data-stock="'.$_product->is_purchasable().'">';
                     $html .= '<div class="abp-figure">';
