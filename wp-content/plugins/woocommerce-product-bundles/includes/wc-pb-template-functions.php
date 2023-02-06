@@ -604,7 +604,8 @@ function wc_pb_template_before_bundled_items( $bundle ) {
         // Reset grid counter.
         WC_PB()->display->reset_grid_layout_pos();
 
-        echo '<ul class="products bundled_products columns-' . esc_attr( WC_PB()->display->get_grid_layout_columns( $bundle ) ) . '">';
+//        echo '<ul class="products bundled_products columns-' . esc_attr( WC_PB()->display->get_grid_layout_columns( $bundle ) ) . '">';
+        echo '<ul class="products bundled_products columns-4">';
     }
 }
 

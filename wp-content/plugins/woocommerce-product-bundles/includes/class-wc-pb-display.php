@@ -336,7 +336,7 @@ class WC_PB_Display {
 		 * @param  int                $count
 		 * @param  WC_Product_Bundle  $bundle
 		 */
-		return apply_filters( 'woocommerce_bundled_items_grid_layout_columns', 3, $bundle );
+		return apply_filters( 'woocommerce_bundled_items_grid_layout_columns', 4, $bundle );
 	}
 
 	/**
