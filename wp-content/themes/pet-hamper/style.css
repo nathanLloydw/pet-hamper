@@ -139,6 +139,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 .woocommerce-product-gallery__image:not(:first-child) img { border:1px solid #e2e2e2;cursor:pointer; }
 .product_meta { display:none; }
 .bundled_item_wrap { width: 100%; }
+.bundled_item_wrap .out-of-stock { margin-top:52px; }
 .woocommerce td.product-name dl.variation p { margin-bottom:revert;}
 .bundle_form table.variations .required { color:black !important; }
 .bundle_form { width: 1200px;min-width: 1200px; padding-left: 40px; }
