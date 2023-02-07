@@ -63,6 +63,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	 ========================================================================== */
 
 /** Nathan Custom Styles - Start **/
+
 #ppc-button-ppcp-gateway { display:flex; justify-content:center; }
 
 .menu-item-42403 > a,
@@ -184,6 +185,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.custom_bundle_form { width:100%; }
 	/*.woocommerce-message::before { padding-top:48px; }*/
 	.button.wc-forward { width:100%; text-align:center; }
+	.woocommerce-thankyou-order-details { display:flex;flex-direction: column; }
+	.woocommerce-thankyou-order-details li { border-right:0 !important;}
 }
 
 @media only screen and (max-width: 1200px)
