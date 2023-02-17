@@ -44,6 +44,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
         do_action( 'woocommerce_bundles_add_to_cart_wrap', $product );
 
         ?>
+
     </div>
 
     <div class="bundle_form <?php echo esc_attr( $classes ); ?>">
