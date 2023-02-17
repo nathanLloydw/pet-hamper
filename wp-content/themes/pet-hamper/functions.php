@@ -611,5 +611,9 @@ add_filter('woocommerce_paypal_payments_proceed_to_checkout_button_renderer_hook
     return 'twg_paypal_proceed_to_checkout_buttons';
 });
 
+add_filter('woocommerce_paypal_payments_single_product_renderer_hook', function() {
+    return 'twg_paypal_single_product_buttons';
+});
+
 
 ?>

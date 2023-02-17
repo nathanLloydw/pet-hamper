@@ -402,6 +402,10 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
   }
 }
 
+#ppcp-messages { height:0px; }
+
+.woocommerce div.product form.cart { margin-bottom:0px; }
+
 /** Nathan Custom Styles - End **/
 
 /**
@@ -2542,7 +2546,6 @@ a.added_to_cart.wc-forward {
 .woocommerce div.product form.cart .button {
   order: 6;
   flex-basis: 100%;
-  margin-top: 1rem;
 }
 
 .woocommerce-message,
