@@ -2529,7 +2529,7 @@ a.added_to_cart.wc-forward {
 #wc-stripe-payment-request-wrapper {
   order: 4;
   flex-basis: 100%;
-  padding-top: 1em !important;
+  padding-top: 0em !important;
 }
 
 #wc-stripe-payment-request-button-separator {
