@@ -606,4 +606,10 @@ function awesome_acf_responsive_image($image_id,$image_size,$max_width){
     }
 }
 
+
+add_filter('woocommerce_paypal_payments_proceed_to_checkout_button_renderer_hook', function() {
+    return 'twg_paypal_proceed_to_checkout_buttons';
+});
+
+
 ?>

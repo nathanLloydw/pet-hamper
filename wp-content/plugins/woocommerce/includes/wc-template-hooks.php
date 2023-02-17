@@ -238,7 +238,7 @@ add_action( 'woocommerce_widget_shopping_cart_total', 'woocommerce_widget_shoppi
 //add_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
 add_action( 'woocommerce_cart_collaterals', 'woocommerce_cart_totals', 10 );
 add_action( 'woocommerce_proceed_to_checkout', 'wc_get_pay_buttons', 10 );
-add_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
+add_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 ); // main checkout
 add_action( 'woocommerce_cart_is_empty', 'wc_empty_cart_message', 10 );
 
 /**
