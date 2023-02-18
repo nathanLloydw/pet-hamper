@@ -1352,21 +1352,19 @@ ul.splide__list {
 
 ul.collections-grid .content,
 .catgrid .griditem .content {
+  color: white !important;
   position: absolute;
-  bottom: 15px;
-  display: block;
-  color: #404040 !important;
-  right: 15px;
-  max-width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .catgrid .griditem .content p.title,
 ul.collections-grid p.title {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 15px 30px;
-  font-size: 1.2rem;
+
+  font-size: 3rem;
   text-align: center;
 }
 
