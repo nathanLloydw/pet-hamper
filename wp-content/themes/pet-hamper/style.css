@@ -1377,6 +1377,7 @@ ul.collections-grid p.title {
 .catgrid .griditem .image,
 ul.collections-grid .image {
   overflow: hidden;
+  background: linear-gradient(#000000, #000000), no-repeat top center;
 }
 
 .catgrid .griditem .image img,
@@ -1866,7 +1867,11 @@ ul.collections-grid li .inner {
 
   ul.collection_grid li img:hover,
   .griditem .bannerimg:hover {
-    opacity: 0.9;
+    opacity: 0.6;
+  }
+
+  .bannerimg {
+    opacity: 0.7;
   }
 
   .page-template-contact .page-content {
