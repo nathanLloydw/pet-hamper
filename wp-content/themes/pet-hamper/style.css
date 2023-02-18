@@ -1349,7 +1349,7 @@ ul.splide__list {
   padding: 0;
   margin: 0;
 }
-
+/*Centres the text on the homepage grids */
 ul.collections-grid .content,
 .catgrid .griditem .content {
   color: white !important;
@@ -1358,16 +1358,22 @@ ul.collections-grid .content,
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 .catgrid .griditem .content p.title,
 ul.collections-grid p.title {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
-
-  font-size: 3rem;
   text-align: center;
 }
+/*Controls the size of the  font in the category grid*/
+.catgrid .griditem .content p.title {
+  font-size: 3rem;
+}
+/*Controls the size of the  font in tcollections grid*/
+ul.collections-grid p.title {
+  font-size: 2rem;
+}
 
+/*Adds gradient to the images on the home page*/
 .catgrid .griditem .image,
 ul.collections-grid .image {
   overflow: hidden;
@@ -1859,6 +1865,7 @@ ul.collections-grid li .inner {
     flex-basis: 25%;
   }
 
+  /*Opacity of the bannerimg determines how much of the gradient shows*/
   ul.collection_grid li img:hover,
   .griditem .bannerimg:hover {
     opacity: 0.6;
