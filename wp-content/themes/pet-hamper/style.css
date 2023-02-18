@@ -108,6 +108,24 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
   margin: 5px !important;
 }
 
+.bannerimg {
+  opacity: 0.7;
+}
+.bannerimg:hover {
+  opacity: 0.6;
+}
+.catgrid .griditem .image,
+ul.collections-grid .image {
+  overflow: hidden;
+  background: linear-gradient(#000000, #000000), no-repeat top center;
+}
+
+.catgrid .griditem .image img,
+ul.collections-grid .image img {
+  margin-bottom: -7px;
+  transition: all 0.3s ease-in-out;
+}
+
 @media only screen and (max-width: 900px) {
   .ship_address {
     width: 100% !important;
@@ -1374,11 +1392,6 @@ ul.collections-grid p.title {
 }
 
 /*Adds gradient to the images on the home page*/
-.catgrid .griditem .image,
-ul.collections-grid .image {
-  overflow: hidden;
-  background: linear-gradient(#000000, #000000), no-repeat top center;
-}
 
 .catgrid .griditem .image img,
 ul.collections-grid .image img {
@@ -2960,10 +2973,11 @@ a.added_to_cart.wc-forward {
     margin-top: -6rem;
   }
 
-  .catgrid .griditem .content p.title,
+  .catgrid .griditem .content p.title {
+    font-size: 3em;
+  }
   ul.collections-grid p.title {
-    font-size: 1em;
-    padding: 15px;
+    font-size: 2em;
   }
 
   .catgrid.seasonal {
