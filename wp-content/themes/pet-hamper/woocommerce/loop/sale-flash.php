@@ -30,8 +30,8 @@ global $post, $product;
 
     if($sale_price != "" && $regular_price !="")
     {
-        $sale_percent = round((($regular_price - $sale_price) / $regular_price) * 100,2);
-        echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale test2" data-sale="'.$sale_price.'" data-reg="'.$regular_price.'">' . esc_html__( 'Sale! '.$sale_percent.'% off!', 'woocommerce' ) . '</span>', $post, $product );
+        $sale_percent = floor((($regular_price - $sale_price) / $regular_price) * 100);
+        echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale test2" style="font-weight: 700;" data-sale="'.$sale_price.'" data-reg="'.$regular_price.'">' . esc_html__( $sale_percent.'% off!', 'woocommerce' ) . '</span>', $post, $product );
     }
     else
     {
