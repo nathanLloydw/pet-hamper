@@ -2381,6 +2381,13 @@ ul.collections-grid li .inner {
   margin: 0;
   font-size: 2em;
 }
+.article picture img
+{
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+}
 
 .entry-meta a {
   color: #d0c5a5;
