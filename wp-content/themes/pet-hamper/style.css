@@ -1388,7 +1388,7 @@ ul.collections-grid p.title {
 }
 /*Controls the size of the  font in the category grid*/
 .catgrid .griditem .content p.title {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 /*Controls the size of the  font in tcollections grid*/
 ul.collections-grid p.title {
@@ -2984,7 +2984,7 @@ a.added_to_cart.wc-forward {
   }
 
   .catgrid .griditem .content p.title {
-    font-size: 3em;
+    font-size: 1.25em;
   }
   ul.collections-grid p.title {
     font-size: 1.25em;
