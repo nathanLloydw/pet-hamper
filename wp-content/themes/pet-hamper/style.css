@@ -108,6 +108,24 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
   margin: 5px !important;
 }
 
+.bannerimg {
+  opacity: 0.7;
+}
+.bannerimg:hover {
+  opacity: 0.6;
+}
+.catgrid .griditem .image,
+ul.collections-grid .image {
+  overflow: hidden;
+  background: linear-gradient(#000000, #000000), no-repeat top center;
+}
+
+.catgrid .griditem .image img,
+ul.collections-grid .image img {
+  margin-bottom: -7px;
+  transition: all 0.3s ease-in-out;
+}
+
 @media only screen and (max-width: 900px) {
   .ship_address {
     width: 100% !important;
@@ -1353,32 +1371,31 @@ ul.splide__list {
   padding: 0;
   margin: 0;
 }
-
+/*Centres the text on the homepage grids */
 ul.collections-grid .content,
 .catgrid .griditem .content {
+  color: white !important;
   position: absolute;
-  bottom: 15px;
-  display: block;
-  color: #404040 !important;
-  right: 15px;
-  max-width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
 .catgrid .griditem .content p.title,
 ul.collections-grid p.title {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 15px 30px;
-  font-size: 1.2rem;
   text-align: center;
 }
-
-.catgrid .griditem .image,
-ul.collections-grid .image {
-  overflow: hidden;
-  background: linear-gradient(#000000, #000000), no-repeat top center;
+/*Controls the size of the  font in the category grid*/
+.catgrid .griditem .content p.title {
+  font-size: 3rem;
 }
+/*Controls the size of the  font in tcollections grid*/
+ul.collections-grid p.title {
+  font-size: 2rem;
+}
+
+/*Adds gradient to the images on the home page*/
 
 .catgrid .griditem .image img,
 ul.collections-grid .image img {
@@ -1865,6 +1882,7 @@ ul.collections-grid li .inner {
     flex-basis: 25%;
   }
 
+  /*Opacity of the bannerimg determines how much of the gradient shows*/
   ul.collection_grid li img:hover,
   .griditem .bannerimg:hover {
     opacity: 0.6;
@@ -2362,6 +2380,13 @@ ul.collections-grid li .inner {
 .article .entry-title {
   margin: 0;
   font-size: 2em;
+}
+.article picture img
+{
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
 }
 
 .entry-meta a {
@@ -2958,10 +2983,11 @@ a.added_to_cart.wc-forward {
     margin-top: -6rem;
   }
 
-  .catgrid .griditem .content p.title,
+  .catgrid .griditem .content p.title {
+    font-size: 3em;
+  }
   ul.collections-grid p.title {
-    font-size: 1em;
-    padding: 15px;
+    font-size: 1.25em;
   }
 
   .catgrid.seasonal {

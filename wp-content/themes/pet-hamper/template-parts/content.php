@@ -16,7 +16,7 @@
 	<header class="entry-header">
 		<?php
 		if ( is_singular() ) :
-			
+
 		else :
 			the_title( '<h2 class="linetitle center"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 		endif;
@@ -35,20 +35,22 @@
 
 	<div class="entry-content">
 		<?php
-		the_excerpt(
-			sprintf(
-				wp_kses(
-					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'pet-hamper' ),
-					array(
-						'span' => array(
-							'class' => array(),
-						),
-					)
-				),
-				wp_kses_post( get_the_title() )
-			)
-		);
+
+        global $wp;
+
+        $page = home_url( $wp->request );
+        $content = null;
+
+        if(str_contains($page,'/blog'))
+        {
+            $content = get_the_excerpt();
+        }
+        else
+        {
+            $content = get_the_content();
+        }
+
+        echo $content;
 
 		wp_link_pages(
 			array(
