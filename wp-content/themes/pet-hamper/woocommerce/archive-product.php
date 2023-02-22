@@ -79,8 +79,7 @@ do_action( 'woocommerce_before_main_content' );
 		    <a onclick="scroll_to_content();" class="pointer">
 
 		    	<div class="image">
-		    	
-			    	<?php echo wp_get_attachment_image( get_term_meta( get_queried_object_id(), 'thumbnail_id', 1 ), 'full' ); ?>
+                    <?php echo wp_get_attachment_image( get_term_meta( get_queried_object_id(), 'thumbnail_id', 1 ), 'full',false, array('class' => 'bannerimg')); ?>
 			    </div> 
 
 		    	 <div class="content">
