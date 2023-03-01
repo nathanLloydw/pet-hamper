@@ -92,7 +92,7 @@ get_header();
 
 			<?php if( have_rows('seasonal_block') ): ?>
 
-			<p class="linetitle">Seasonal/Featured Collections</p>
+			<p class="linetitle">Featured</p>
 
 		    <div class="catgrid half seasonal">
 		    <?php while( have_rows('seasonal_block') ): the_row();
