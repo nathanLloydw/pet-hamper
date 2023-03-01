@@ -90,12 +90,12 @@ get_header();
 
 
 
-			<?php if( have_rows('Seasonal') ): ?>
+			<?php if( have_rows('seasonal_block') ): ?>
 
 			<p class="linetitle">Seasonal/Featured Collections</p>
 
 		    <div class="catgrid half seasonal">
-		    <?php while( have_rows('Seasonal') ): the_row();
+		    <?php while( have_rows('seasonal_block') ): the_row();
 		    	$link = get_sub_field('link');
 		    	?>
 				<div class="griditem">
