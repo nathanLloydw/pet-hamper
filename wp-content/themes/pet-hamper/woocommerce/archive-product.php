@@ -37,21 +37,26 @@ do_action( 'woocommerce_before_main_content' );
 
 		<?php if (is_product_category( array( 'hampers', 'example-cat')) ) : ?>
 
-		<h1 class="linetitle center"><?php woocommerce_page_title(); ?></h1>
+		    <h1 class="linetitle center"><?php woocommerce_page_title(); ?></h1>
 
 		<?php else : ?>
 
-		<h1 class="woocommerce-products-header__title page-title test-2"><?php woocommerce_page_title(); ?></h1>
+            <h1 class="woocommerce-products-header__title page-title test-2"><?php woocommerce_page_title(); ?></h1>
 
 
-        <?php if (woocommerce_page_title(false) == 'Christmas Hampers' || woocommerce_page_title(false) == 'Dog Christmas Hamper') : ?>
-            <a href="/create-your-own-hamper">
-                <img style="margin-bottom:43px;" src="/wp-content/uploads/2022/06/christmas selling out banner.jpg">
-            </a>
+            <?php
 
-        <?php elseif(woocommerce_page_title(false) == 'Valentines Collection') : ?>
-            <img style="margin-bottom:43px;" src="/wp-content/uploads/2022/06/valentines-collection-banner.jpg">
-        <?php endif; ?>
+            // get the current taxonomy term
+            $term = get_queried_object();
+            $image = get_field('category_banner_image', $term);
+
+            ?>
+
+            <?php if ($image) : ?>
+                <a href="/create-your-own-hamper">
+                    <img style="margin-bottom:43px;" src="<?php echo $image; ?>">
+                </a>
+            <?php endif; ?>
 
         <?php endif; ?>
 
