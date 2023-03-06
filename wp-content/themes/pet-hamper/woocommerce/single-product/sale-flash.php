@@ -21,6 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post, $product;
 
+if(get_field('pet_hamper_exclusive')){
+    echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__(  get_field('pet_hamper_exclusive_text'), 'woocommerce' ) . '</span>', $post, $product );
+}
+
 ?>
 <?php if ( $product->is_on_sale() ) : ?>
 
@@ -29,6 +33,8 @@ global $post, $product;
     $sale_price = $product->get_sale_price();
     $regular_price = $product->get_regular_price();
 
+
+   
     if($sale_price != "" && $regular_price !="")
     {
         $sale_percent = floor((($regular_price - $sale_price) / $regular_price) * 100);
