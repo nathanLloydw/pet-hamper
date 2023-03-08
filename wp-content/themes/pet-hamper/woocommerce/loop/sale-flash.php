@@ -21,12 +21,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post, $product;
 
+
 ?>
+
 <?php if ( $product->is_on_sale() ) : ?>
 
     <?php
     $sale_price = $product->get_sale_price();
     $regular_price = $product->get_regular_price();
+
+ 
 
     if($sale_price != "" && $regular_price !="")
     {

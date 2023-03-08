@@ -1431,7 +1431,13 @@ if ( ! function_exists( 'woocommerce_get_product_thumbnail' ) ) {
 
         $image_size = apply_filters( 'single_product_archive_thumbnail_size', $size );
 
+        if(get_field('pet_hamper_exclusive'))
+        {
+            return "<div class='exclusive-container'> <span class='exclusive'>".get_field('pet_hamper_exclusive_text')."</span>".($product ? $product->get_image( $image_size, $attr, $placeholder ) : '')."</div>";
+        }
+
         return $product ? $product->get_image( $image_size, $attr, $placeholder ) : '';
+
     }
 }
 
