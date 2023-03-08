@@ -21,9 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post, $product;
 
-if(get_field('pet_hamper_exclusive')){
-    echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__(  get_field('pet_hamper_exclusive_text'), 'woocommerce' ) . '</span>', $post, $product );
-}
+
 ?>
 
 <?php if ( $product->is_on_sale() ) : ?>

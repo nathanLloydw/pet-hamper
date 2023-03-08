@@ -1347,7 +1347,30 @@ textarea {
   line-height: normal;
   padding: 10px;
   min-height: auto;
+  position: absolute;
+  float: right;
 }
+
+.exclusive-container
+{
+  position:relative;
+}
+
+.exclusive-container span.exclusive {
+  z-index:111;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size:14px;
+  position: absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  background: #d5ccbe;
+  color:white;
+  padding: 6px;
+  text-align:center;
+}
+
 
 .h2-link {
   background: #b2a497;
