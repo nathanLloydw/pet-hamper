@@ -12,6 +12,11 @@ wp-content/cache/
 wp-content/uploads/
 wp-content/advanced-cache.php
 wp-content/wflogs/
+
+wp-content/wflogs/config-livewaf.php
+wp-content/wflogs/config-synced.php
+wp-content/wflogs/config-transient.php
+
 #wp-content/plugins/wordfence/tmp/configCache.php
 
 ### PHP Storm ###
