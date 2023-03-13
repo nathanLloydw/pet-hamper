@@ -51,7 +51,7 @@ $wrapper_classes   = apply_filters(
 
         if(get_field('pet_hamper_exclusive'))
         {
-            echo "<span class='exclusive'>".get_field('pet_hamper_exclusive_text')."</span>";
+            echo "<span class='exclusive' style='position:inherit;display:block;width:100%;'>".get_field('pet_hamper_exclusive_text')."</span>";
         }
 
         do_action( 'woocommerce_product_thumbnails' );
