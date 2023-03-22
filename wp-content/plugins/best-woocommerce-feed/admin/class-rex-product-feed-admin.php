@@ -657,8 +657,16 @@ class Rex_Product_Feed_Admin {
         return $plugin_meta;
     }
 
+    /**
+     * Register background schedulers
+     *
+     * @return void
+     */
+    public function register_cron_schedules() {
+        if (! wp_next_scheduled ( 'rex_feed_schedule_update' )) {
+            wp_schedule_event(time(), 'hourly', 'rex_feed_schedule_update');
+        }
 
-    public function register_weekly_cron() {
         if( ! wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
             wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
         }

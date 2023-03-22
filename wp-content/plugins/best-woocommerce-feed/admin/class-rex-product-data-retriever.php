@@ -150,10 +150,10 @@ class Rex_Product_Data_Retriever
         $this->wcml               = in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) );
         $this->feed_format        = $feed->get_feed_format();
         $this->feed_country       = $feed->get_shipping();
-        $this->feed_zip_codes           = $feed->get_zip_code();
+        $this->feed_zip_codes     = $feed->get_zip_code();
 
+        $log = wc_get_logger();
         if( $this->is_logging_enabled ) {
-            $log = wc_get_logger();
             $log->info( '*************************', array( 'source' => 'WPFM', ) );
             $log->info( __( 'Start product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
             $log->info( 'Product ID: ' . $this->product->get_id(), array( 'source' => 'WPFM', ) );
@@ -161,6 +161,7 @@ class Rex_Product_Data_Retriever
         }
 
         $this->set_all_value();
+
         if( $this->is_logging_enabled ) {
             $log->info( __( 'End product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
             $log->info( '*************************', array( 'source' => 'WPFM', ) );
@@ -687,6 +688,7 @@ class Rex_Product_Data_Retriever
                 return $this->product->get_id();
 
             case 'link':
+            case 'review_url':
                 $permalink = $this->product->get_permalink();
                 if ( function_exists( 'wpfm_is_wpml_active' ) && wpfm_is_wpml_active() ) {
                     $permalink = apply_filters( 'wpml_permalink', $permalink, $this->feed->wpml_language );
@@ -697,17 +699,17 @@ class Rex_Product_Data_Retriever
                         !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                         !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
-                        if( in_array( 'decode_url', $rule, true ) ) {
+                        if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                             return add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink));
                         }
                         return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink) ));
                     }
-                    if( in_array( 'decode_url', $rule, true ) ) {
+                    if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                         return urldecode($permalink);
                     }
                     return $this->safeCharEncodeURL(urldecode($permalink));
                 }
-                if( in_array( 'decode_url', $rule, true ) ) {
+                if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                     return urldecode($permalink);
                 }
 
@@ -723,17 +725,17 @@ class Rex_Product_Data_Retriever
                         !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                         !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
-                        if( in_array( 'decode_url', $rule, true ) ) {
+                        if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                             return add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) );
                         }
                         return $this->safeCharEncodeURL( add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) ) );
                     }
-                    if( in_array( 'decode_url', $rule, true ) ) {
+                    if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                         return urldecode( $_pr->get_permalink() );
                     }
                     return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
                 }
-                if( in_array( 'decode_url', $rule, true ) ) {
+                if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                     return urldecode( $_pr->get_permalink() );
                 }
                 return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
@@ -1019,9 +1021,9 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( rex_feed_get_grouped_price( $this->product, '_regular_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
 
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
 
@@ -1053,9 +1055,9 @@ class Rex_Product_Data_Retriever
                         }
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
 
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
 
@@ -1093,8 +1095,8 @@ class Rex_Product_Data_Retriever
                                 global $woocommerce_wpml;
                                 $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                                 //if WCML price is set manually
-                                $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency );
-                                if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                                $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency ) : $_price;
+                                if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                                     $_price = $_custom_prices[ '_regular_price' ];
                                 }
 
@@ -1117,8 +1119,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_regular_price' ];
                             }
 
@@ -1141,8 +1143,8 @@ class Rex_Product_Data_Retriever
                             global $woocommerce_wpml;
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_regular_price' ];
                             }
 
@@ -1172,8 +1174,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1199,8 +1201,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( rex_feed_get_grouped_price( $this->product, '_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1224,8 +1226,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1253,8 +1255,8 @@ class Rex_Product_Data_Retriever
                                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                                     //if WCML price is set manually
-                                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency );
-                                    if( $_custom_prices[ '_price' ] > 0 ) {
+                                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency ) : $_price;
+                                    if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                                         $_price = $_custom_prices[ '_price' ];
                                     }
                                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1278,8 +1280,8 @@ class Rex_Product_Data_Retriever
                                 $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
-                                $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if( $_custom_prices[ '_price' ] > 0 ) {
+                                $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                                if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                                     $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1303,8 +1305,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1380,7 +1382,7 @@ class Rex_Product_Data_Retriever
                         $args[ 'fields' ] = 'ids';
                         $products         = get_posts( $args );
 
-                        if( $discount_obj->is_applicable( $_pid ) && in_array( $_pid, $products ) ) {
+                        if( $discount_obj->is_applicable( $_pid ) && is_array( $products ) && in_array( $_pid, $products ) ) {
                             $to_widthdraw = 0;
                             if( in_array( $discount_obj->settings[ "action" ], array( "percentage-off-pprice", "percentage-off-osubtotal" ) ) )
                                 $to_widthdraw = floatval( floatval( $sale_price ) ) * floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] ) / 100;
@@ -1398,8 +1400,8 @@ class Rex_Product_Data_Retriever
                                 $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
-                                $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if( $_custom_prices[ '_price' ] > 0 ) {
+                                $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                                if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                                     $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1421,8 +1423,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1472,8 +1474,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', $sale_price, $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( !is_wp_error( $_custom_prices ) && $_custom_prices && isset( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !is_wp_error( $_custom_prices ) && $_custom_prices && !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_sale_price' ];
                             }
 
@@ -1525,8 +1527,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_sale_price' ];
                             }
 
@@ -1575,8 +1577,8 @@ class Rex_Product_Data_Retriever
                                 $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
-                                $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                                $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                                if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                                     $_price = $_custom_prices[ '_sale_price' ];
                                 }
 
@@ -1597,8 +1599,8 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', $sale_price, $this->wcml_currency );
 
                             //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                            if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                                 $_price = $_custom_prices[ '_sale_price' ];
                             }
 
@@ -1622,8 +1624,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1653,8 +1655,8 @@ class Rex_Product_Data_Retriever
                         }
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1687,8 +1689,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1713,8 +1715,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1738,8 +1740,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1761,8 +1763,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices[ '_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_price' ];
                     }
                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1787,8 +1789,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -1812,8 +1814,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -1837,8 +1839,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -1866,8 +1868,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1895,9 +1897,9 @@ class Rex_Product_Data_Retriever
                             $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                         }
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
 
-                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1929,8 +1931,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
@@ -1954,8 +1956,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -1978,8 +1980,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -2001,8 +2003,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices[ '_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_price' ];
                     }
                     $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
@@ -2027,8 +2029,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -2051,8 +2053,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -2076,8 +2078,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
@@ -2104,8 +2106,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_regular_price', true ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     
@@ -2129,8 +2131,8 @@ class Rex_Product_Data_Retriever
                     $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices[ '_price' ] > 0 ) {
+                    $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                    if( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_price' ];
                     }
                     
@@ -2152,8 +2154,8 @@ class Rex_Product_Data_Retriever
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                        $_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
+                        if( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         
@@ -3130,15 +3132,8 @@ class Rex_Product_Data_Retriever
                     $output[] = implode( $sep, $temp );
                 }
             }
-            else if( $term->parent == 0 ) {
-                if( is_array( $term_name_arr ) ) {
-                    $output[] = implode( $sep, $term_name_arr );
-                }
-            }
-            else if( !in_array( $term->parent, $terms_id ) ) {
-                if( is_array( $term_name_arr ) ) {
-                    $output[] = implode( $sep, $term_name_arr );
-                }
+            else if( (($term->parent == 0) || (is_array( $terms_id ) && !in_array( $term->parent, $terms_id ))) && (is_array( $term_name_arr )) ) {
+                $output[] = implode( $sep, $term_name_arr );
             }
         }
         return implode( ', ', $output );
@@ -3707,6 +3702,9 @@ class Rex_Product_Data_Retriever
                 return $val;
             case 'replace_comma_with_backslash':
                 return str_replace( ',', '/', str_replace( ', ', '/', $val ) );
+                return $val;
+            case 'replace_decimal_with_hyphen':
+                return str_replace( '.', '-', str_replace( '. ', '-', $val ) );
 
             default:
                 return $val;

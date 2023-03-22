@@ -90,14 +90,14 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-	        if ( !$this->include_out_of_stock ) {
-		        if ( !$product->is_in_stock() ) {
-			        continue;
-		        }
-		        elseif ( $product->is_on_backorder() ) {
-			        continue;
-		        }
-	        }
+            if ( ( !$this->include_out_of_stock )
+                && ( !$product->is_in_stock()
+                    || $product->is_on_backorder()
+                    || (is_integer($product->get_stock_quantity()) && 0 >= $product->get_stock_quantity())
+                )
+            ) {
+                continue;
+            }
 
             if( !$this->include_zero_priced ) {
                 $product_price = rex_feed_get_product_price($product);
@@ -124,6 +124,14 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
                             if($this->variations) {
                                 $variation_products[] = $variation;
                                 $variation_product = wc_get_product( $variation );
+                                if ( ( !$this->include_out_of_stock )
+                                    && ( !$variation_product->is_in_stock()
+                                        || $variation_product->is_on_backorder()
+                                        || (is_integer($variation_product->get_stock_quantity()) && 0 >= $variation_product->get_stock_quantity())
+                                    )
+                                ) {
+                                    continue;
+                                }
                                 $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
@@ -177,7 +185,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
             $item = RexShopping::createItem();
 
             foreach ($attributes as $key => $value) {
-                if( 'picture' === $key ) {
+                if( 'picture' === $key && !empty( $value ) && is_array( $value ) ) {
                     $value = array_slice( $value, 0, 10 );
                 }
                 elseif( 'oldprice' === $key ) {

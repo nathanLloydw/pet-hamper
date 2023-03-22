@@ -99,14 +99,14 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-	        if ( !$this->include_out_of_stock ) {
-		        if ( !$product->is_in_stock() ) {
-			        continue;
-		        }
-		        elseif ( $product->is_on_backorder() ) {
-			        continue;
-		        }
-	        }
+            if ( ( !$this->include_out_of_stock )
+                && ( !$product->is_in_stock()
+                    || $product->is_on_backorder()
+                    || (is_integer($product->get_stock_quantity()) && 0 >= $product->get_stock_quantity())
+                )
+            ) {
+                continue;
+            }
 
             if( !$this->include_zero_priced ) {
                 $product_price = rex_feed_get_product_price($product);

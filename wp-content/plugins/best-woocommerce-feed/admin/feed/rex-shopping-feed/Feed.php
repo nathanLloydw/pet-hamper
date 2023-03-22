@@ -234,12 +234,12 @@ class Feed
      */
     private function addItemsToFeed()
     {
-        
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
-            }else{
+            }
+            else {
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
@@ -252,7 +252,6 @@ class Feed
                 }
             }
         }
-        
     }
 
 
@@ -422,7 +421,6 @@ class Feed
 
         $this->addItemsToFeed();
 
-//        $data = html_entity_decode($this->feed->asXml());
         $data = $this->feed->asXml();
         if ($output) {
             header('Content-Type: application/xml; charset=utf-8');

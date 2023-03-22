@@ -120,6 +120,7 @@ class Rex_Feed_Attributes
             'product_subcategory'            => 'Product Sub Categories Path (with separator ">")',
             'link'                           => 'Product URL',
             'parent_url'                     => 'Parent Product URL',
+            'review_url'                     => 'Product Review URL',
             'condition'                      => 'Condition',
             'item_group_id'                  => 'Parent ID (Group ID)',
             'sku'                            => 'SKU',

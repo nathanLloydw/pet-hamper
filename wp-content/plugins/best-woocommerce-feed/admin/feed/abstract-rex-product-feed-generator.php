@@ -1143,24 +1143,24 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @return array|mixed|string|string[]
      */
     public function wpfm_custom_language_where_queries( $where, $query ) {
-        if ( wpfm_is_wpml_active() ) {
+        if( wpfm_is_wpml_active() ) {
             global $sitepress;
-            $search = "language_code = '".$sitepress->get_default_language()."'";
-            $replace = "language_code = '".$this->wpml_language."'";
-            return str_replace( $search, $replace, $where );
+            $search  = "language_code = '" . $sitepress->get_default_language() . "'";
+            $replace = "language_code = '" . $this->wpml_language . "'";
+            $where   = str_replace( $search, $replace, $where );
         }
-        if ( wpfm_is_polylang_active() && $this->bypass ) {
+        if( wpfm_is_polylang_active() && $this->bypass ) {
             global $wpdb;
             $polylang = get_the_terms( $this->id, 'language' );
-            $polylang = array_column($polylang, 'term_id');
+            $polylang = array_column( $polylang, 'term_id' );
             $polylang = implode( ', ', $polylang );
-            $where .= " AND {$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang}) ";
+            $where    .= " AND {$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang}) ";
         }
         if( $this->custom_filter_option ) {
             $search  = ') AND ( 
   ( wp_postmeta.meta_key =';
             $replace = ') OR ( ( wp_postmeta.meta_key =';
-            $where = str_replace( $search, $replace, $where );
+            $where   = str_replace( $search, $replace, $where );
         }
 
         return $where;
@@ -1554,81 +1554,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
     abstract public function make_feed();
 
     /**
-     * Include Product Variations
-     * @param $info
-     * @return bool
-     */
-    protected function include_product_variations( $info )
-    {
-        $feed_rules = array();
-        parse_str( $info, $feed_rules );
-        $include_variations = $feed_rules[ 'rex_feed_variations' ];
-        if ( $include_variations == 'yes' ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Append product variation
-     * name
-     * @param $info
-     * @return bool
-     */
-    protected function append_variation_product_name( $info )
-    {
-        $feed_rules = array();
-        parse_str( $info, $feed_rules );
-        $include_variations = $feed_rules[ 'rex_feed_variation_product_name' ];
-        if ( $include_variations === 'yes' ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Include Product Variations
-     * @param $info
-     * @return bool
-     */
-    protected function include_parent_product( $info )
-    {
-        $feed_rules = array();
-        parse_str( $info, $feed_rules );
-        $include_parent = $feed_rules[ 'rex_feed_parent_product' ];
-        if ( $include_parent === 'yes' ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Setup the variable products from products array.
-     */
-    protected function setup_group_products()
-    {
-
-        $this->grouped_products = array();
-
-        // Loop through all products and separate the variable products.
-        foreach ( $this->products as $product_id ) {
-            if ( $this->is_grouped_product( $product_id ) ) {
-                $this->grouped_products[] = $product_id;
-            }
-        }
-
-        // remove variable products from products array
-        if ( !empty( $this->grouped_products ) ) {
-            $this->products = array_diff( $this->products, $this->grouped_products );
-        }
-
-        // remove all variable product if product variations is exclude
-        if ( !$this->parent_product ) {
-            $this->grouped_products = array();
-        }
-    }
-
-    /**
      * Setup the variable products from products array.
      */
     protected function is_grouped_product( $product_id = false )
@@ -1644,71 +1569,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             return true;
         }
 
-        return false;
-    }
-
-    /**
-     * Setup the variable products from products array.
-     */
-    protected function is_variable_product( $product_id = false )
-    {
-
-        if ( false === $product_id ) {
-            return false;
-        }
-
-        $product = wc_get_product( $product_id );
-
-        if ( $product->is_type( 'variable' ) ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if simple product
-     * or not
-     * @param bool $product_id
-     * @return bool
-     */
-    protected function is_simple_product( $product_id = false )
-    {
-
-        if ( false === $product_id ) {
-            return false;
-        }
-        $product = wc_get_product( $product_id );
-        if ( $product->is_type( 'simple' ) ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if this is child product
-     * @param bool $product_id
-     * @return bool
-     */
-    protected function is_variation_product( $product_id = false )
-    {
-
-        if ( false === $product_id ) {
-            return false;
-        }
-
-        $product = wc_get_product( $product_id );
-        $type    = get_post_type( $product_id );
-        if ( $type ) {
-            if ( $type === 'product_variation' ) {
-                $parent_post_status = get_post_status( $product->get_parent_id() );
-                if ( $parent_post_status === 'publish' ) {
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
         return false;
     }
 
@@ -1735,19 +1595,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         return $all_data;
-
-        /*if ( class_exists( 'SitePress' ) ) {
-            global $sitepress;
-            $wpml = get_post_meta( $this->id, 'rex_feed_wpml_language', true ) ? get_post_meta( $this->id, 'rex_feed_wpml_language', true ) : $sitepress->get_default_language();
-            if ( $wpml ) {
-                $sitepress->switch_lang( $wpml );
-                $data = new Rex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params );
-            }
-        }
-        else {
-            $data = new Rex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params );
-        }
-        return $data->get_all_data();*/
     }
 
     /**
@@ -2118,7 +1965,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<review>';
-                $this->feed_string_footer .= '</feed>';
+                $this->feed_string_footer .= '</reviews></feed>';
             }
         }
         elseif ( $this->merchant === 'drezzy'

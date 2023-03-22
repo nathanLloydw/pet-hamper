@@ -692,42 +692,37 @@ class Rex_Product_Feed_Ajax {
 
     /**
      * Clear current batch
-     * @param $payload
+     *
+     * @return void
+     *
+     * @since 1.0.0
      */
-    public static function clear_batch($payload) {
-        delete_option('rex_wpfm_feed_queue');
-        $args = array(
-            'posts_per_page' => -1,
-            'post_type'      => 'product-feed',
-            'post_status'    => 'publish',
-            'fields'         => 'ids',
-        );
-
-        $feeds = get_posts($args);
-        foreach($feeds as $feedID) {
-            update_post_meta($feedID, '_rex_feed_status', 'completed');
-        }
-
-        /**
-         * https://stackoverflow.com/questions/55952451/wordpress-stop-process-for-wp-background-processing
-         */
+    public static function clear_batch() {
         global $wpdb;
-        $sql = "SELECT `option_name` AS `name`, `option_value` AS `value`
-            FROM  $wpdb->options
-            WHERE `option_name` LIKE %s
-            ORDER BY `option_name`";
-
-        $wild = '%';
-        $find = 'wp_rex_product_feed_background_process_cron';
-        $like = $wild . $wpdb->esc_like( $find ) . $wild;
-        $results = $wpdb->get_results( $wpdb->prepare($sql,$like) );
-
-        foreach ( $results as $result ){
-            delete_option($result->name);
-        }
 
         $WP_Background_Process = new Rex_Product_Feed_Background_Process();
-        $cancel_process = $WP_Background_Process->cancel_process();
+        $WP_Background_Process->cancel_process();
+
+        delete_option('rex_wpfm_feed_queue');
+
+        $wpdb->update(
+            $wpdb->postmeta,
+            [ 'meta_value' => 'completed' ],
+            [ 'meta_key' => '_rex_feed_status' ],
+        );
+
+        $find_key_1 = $wpdb->esc_like( 'wp_rex_product_feed_background_process_batch_' ) . '%';
+        $find_key_2 = '%' . $wpdb->esc_like( 'wp_rex_product_feed_background_process_cron' ) . '%';
+
+        $wpdb->query(
+            $wpdb->prepare(
+                'DELETE FROM %1s WHERE `option_name` LIKE %s OR `option_name` LIKE %s;',
+                $wpdb->options,
+                $find_key_1,
+                $find_key_2
+            )
+        );
+
         wp_send_json_success('success');
         wp_die();
     }

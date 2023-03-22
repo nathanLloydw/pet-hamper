@@ -1343,17 +1343,17 @@
      */
     function wpfm_clear_batch( e ) {
         e.preventDefault();
-        let payload = {};
-        $( this ).find( "span" ).hide();
-        $( this ).find( "i" ).show();
-        wpAjaxHelperRequest( 'rex-product-clear-batch', payload )
-            .success( function ( response ) {
-                $( "#wpfm-clear-batch" ).find( "i" ).hide();
-                $( "#wpfm-clear-batch" ).find( "span" ).show();
+        const $this = $( this );
+        $this.find( "span" ).hide();
+        $this.find( "i" ).show();
+
+        wpAjaxHelperRequest( 'rex-product-clear-batch' )
+            .success( function () {
+                $this.find( "i" ).hide();
+                $this.find( "span" ).show();
             } )
-            .error( function ( response ) {
+            .error( function () {
                 console.log( 'uh, oh!' );
-                
             } );
     }
 

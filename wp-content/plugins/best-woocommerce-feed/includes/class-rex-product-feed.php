@@ -199,7 +199,7 @@ class Rex_Product_Feed {
         /**
          * register scheduler the corn way
          */
-        $this->loader->add_action( 'admin_init', $plugin_admin, 'register_weekly_cron');
+        $this->loader->add_action( 'init', $plugin_admin, 'register_cron_schedules');
         $this->loader->add_action('rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update');
         $this->loader->add_action('rex_feed_daily_update', $plugin_admin, 'activate_daily_update');
         $this->loader->add_action('rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update');

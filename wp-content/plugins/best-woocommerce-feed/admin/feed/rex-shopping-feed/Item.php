@@ -262,16 +262,6 @@ class Item
      * @param  [type] $cost    [description]
      * @return [type]          [description]
      */
-//    public function shipping($code, $service, $cost)
-//    {
-//        $node = new Node('shipping');
-//        $value = "<g:country>{$code}</g:country><g:service>{$service}</g:service><g:price>{$cost}</g:price>";
-//        if (! isset($this->nodes['shipping'])) {
-//            $this->nodes['shipping'] = array();
-//        }
-//        $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
-//    }
-
     public function shipping($shipping)
     {
         $node = new Node('shipping');
@@ -395,7 +385,6 @@ class Item
             }
         } else {
             $node = new Node('additional_image_link');
-            $imageLink = $this->safeCharEncodeURL(urldecode($imagesLink));
             array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
         }
     }
@@ -407,14 +396,14 @@ class Item
     public function __call($name, $arguments)
     {
         // check if additional_image_link attributes
-        if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
-            $node = new Node($name);
+        if ( preg_match( '/^additional_imageurl_/', $name ) ) {
+            $node = new Node('additional_imageurl');
             $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
-        }else{ // other attributes
+        }
+        else{
             $node = new Node($name);
             $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
         }
-
     }
 
     /**

@@ -271,6 +271,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_hyphen_space'          => 'Remove hyphen(space)',
                 'replace_space_with_hyphen'    => 'Replace space ( ) with hyphen (-)',
                 'replace_comma_with_backslash' => 'Replace comma (,) with backslash (/)',
+                'replace_decimal_with_hyphen'  => 'Replace decimal point (.) with hyphen (-)',
             )
         );
     }
