@@ -1623,6 +1623,7 @@ ul.productgrid.four a {
   align-items: flex-start;
   flex-direction: column;
   max-width: 510px;
+  z-index:50;
 }
 
 .hp_banner .content p.title {
@@ -1635,6 +1636,62 @@ ul.productgrid.four a {
 
 .hp_banner img {
   width: 100%;
+  object-fit: cover;
+  max-height:800px;
+}
+
+.hp_banner li
+{
+  transition: opacity .5s ease-in-out;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s  ease-in-out;
+}
+
+.hp_banner li:not(:first-child)
+{
+  height:0;
+  opacity:0;
+}
+
+.slider-controls
+{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  align-items: center;
+}
+
+.slider-controls i
+{
+  font-size:50px;
+  cursor:pointer;
+  padding:15px;
+  color:white;
+  opacity: 75%;
+}
+
+.slider-controls i.disabled
+{
+  opacity: 25%;
+  cursor:auto !important;
+}
+
+.slider-controls i.disabled:hover
+{
+  opacity: 25%;
+}
+
+@media (max-width: 767.98px) {
+  .slider-controls i { padding:8px;font-size:20px;}
+}
+
+.slider-controls i:hover
+{
+  opacity: 100%;
+  /*background:#ccbcad;*/
 }
 
 .corporate-logos li {

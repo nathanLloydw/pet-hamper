@@ -219,6 +219,72 @@ function manage_pagination_autoscroll()
     }
 }
 
+function gallery_slider()
+{
+    let scroll_left = document.querySelector('.hp_banner .slider-controls .fa-chevron-left');
+    let scroll_right = document.querySelector('.hp_banner .slider-controls .fa-chevron-right');
+
+    let slides = document.querySelectorAll('.hp_banner li');
+
+    let current_slide = 0;
+
+    if(scroll_left)
+    {
+        scroll_left.addEventListener("click",function (e)
+        {
+            if(!scroll_left.classList.contains('disabled'))
+            {
+                scroll_right.classList.remove('disabled');
+                current_slide--;
+
+                slides.forEach(function(slide)
+                {
+                    slide.style.height = '0';
+                    slide.style.opacity = '0';
+                });
+
+                slides[current_slide].style.height = 'auto';
+                slides[current_slide].style.opacity = '1';
+
+                if(!slides[current_slide-1])
+                {
+                    scroll_left.classList.add('disabled');
+                }
+            }
+        });
+    }
+
+    if(scroll_right)
+    {
+        scroll_right.addEventListener("click",function (e)
+        {
+            if(!scroll_right.classList.contains('disabled'))
+            {
+                scroll_left.classList.remove('disabled');
+
+                current_slide++;
+
+                slides.forEach(function (slide)
+                {
+                    slide.style.height = '0';
+                    slide.style.opacity = '0';
+                });
+
+                slides[current_slide].style.height = 'auto';
+                slides[current_slide].style.opacity = '1';
+
+                if (!slides[current_slide + 1])
+                {
+                    scroll_right.classList.add('disabled');
+                }
+            }
+        });
+    }
+
+
+
+}
+
 
 document.addEventListener( 'DOMContentLoaded', function()
 {
@@ -230,6 +296,7 @@ document.addEventListener( 'DOMContentLoaded', function()
     set_multi_address_form_triggers();
     manage_pagination_autoscroll();
     set_add_to_basket_text_change();
+    gallery_slider();
 });
 
 jQuery(".abp_assorted_row").bind("DOMSubtreeModified", function()

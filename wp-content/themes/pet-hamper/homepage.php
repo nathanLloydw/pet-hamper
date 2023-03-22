@@ -10,20 +10,18 @@ get_header();
 
 	<main id="primary">
 
-		<div class="hp_banner remove_this_text_splide">
+		<div class="hp_banner">
 
-			<div class="splide__track">
+			<div>
 
 			<?php if( have_rows('slides') ): ?>
 
-			    <ul class="splide__list">
-			    <?php while( have_rows('slides') ): the_row(); 
-			        ?>
-			        <li class="remove_this_text_splide__slide" style="position: relative;max-height: 800px;overflow: hidden;">
+			    <ul class="splide__list" style="max-height: 800px;overflow: hidden;position:relative;background:#d0c5a5;">
+			    <?php while( have_rows('slides') ): the_row(); ?>
+			        <li style="position: relative">
 			        	<div class="image mobile-hide"><img class="skip-lazy" src="<?php echo get_sub_field('image') ?>"></div>
 			        	<div class="image mobile-show"><img class="skip-lazy" src="<?php echo get_sub_field('mobile_image') ?>"></div>
-			           <!--  <div class="image mobile-hide" style="background-image: url('<?php echo get_sub_field('image') ?>');"></div>
-			            <div class="image mobile-show" style="background-image: url('<?php echo get_sub_field('mobile_image') ?>');"></div> -->
+
 			            <div class="content">
 			            	<p class="title"><?php the_sub_field('title'); ?></p>
 			            	<?php 
@@ -36,8 +34,17 @@ get_header();
 							    <a class="button ib" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo $link_title; ?></a>
 							<?php endif; ?>
 			        	</div>
+
 			        </li>
 			    <?php endwhile; ?>
+
+                    <!-- slider controls -->
+                    <div class="slider-controls">
+                        <i class="fa-solid fa-chevron-left disabled" style="margin-left:20px;"></i>
+                        <i class="fa-solid fa-chevron-right" style="margin-right:20px;"></i>
+                    </div>
+                    <!-- slider controls -->
+
 			    </ul>
 			<?php endif; ?>
 
