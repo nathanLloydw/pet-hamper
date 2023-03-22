@@ -44,7 +44,7 @@ class Blocks {
 	public function renderCallback( $attributes, $content, $block ) {
 		$normalizedAttributes = array();
 
-		$isBackend = defined( 'REST_REQUEST' ) && REST_REQUEST && filter_input( INPUT_GET, 'context', FILTER_SANITIZE_STRING ) === 'edit';
+		$isBackend = defined( 'REST_REQUEST' ) && REST_REQUEST && isset( $_REQUEST['context'] ) && $_REQUEST['context'] === 'edit';
 
 		if ( isset( $attributes['inheritPluginSettings'] ) && ! $attributes['inheritPluginSettings'] ) {
 			if ( isset( $attributes['layout'] ) ) {
@@ -63,7 +63,6 @@ class Blocks {
 			if ( $isBackend ) {
 				if ( isset( $attributes['layout'] ) && $attributes['layout'] === 'icon-flexible' ) {
 					ob_start();
-
 					echo '<div class="dgwt-wcas-show-on-preview-desktop">';
 					$normalizedAttributes['layout'] = 'classic';
 					echo do_shortcode( '[fibosearch ' . $this->getAttributesString( $normalizedAttributes ) . ']' );

@@ -26,6 +26,9 @@ class Analytics {
 			// Load user interface
 			$ui = new UserInterface( $this );
 			$ui->init();
+
+			$widget = new Widget( $this, $ui );
+			$widget->init();
 		}
 
 		// Database

@@ -122,7 +122,7 @@ class FeedbackNotice {
 	 * @return void
 	 */
 	public function dismissNotice() {
-		if ( ! current_user_can( 'administrator' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( - 1, 403 );
 		}
 

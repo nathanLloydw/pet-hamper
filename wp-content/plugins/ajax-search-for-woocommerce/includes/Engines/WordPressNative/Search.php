@@ -742,6 +742,10 @@ class Search
         foreach ( $searchResults['suggestions'] as $suggestion ) {
             $postIn[] = $suggestion->ID;
         }
+        // Integration with FiboFilters.
+        if ( $query->get( 'fibofilters' ) ) {
+            $postIn = array_intersect( $query->get( 'post__in' ), $postIn );
+        }
         // Save for later use
         $this->postsIDsBuffer = $postIn;
         $query->set( 'orderby', $orderby );

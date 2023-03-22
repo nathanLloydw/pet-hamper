@@ -107,4 +107,17 @@ add_action( 'wp_footer', function () {
 		</style>
 		<?php
 	}
+	?>
+	<script>
+		(function ($) {
+			$('.et-mobile-panel-wrapper .et_b_mobile-panel-search').on('click', function () {
+				var $searchHandler = $(document).find('.js-dgwt-wcas-enable-mobile-form');
+
+				if ($searchHandler.length) {
+					$searchHandler[0].click();
+				}
+			});
+		})(jQuery);
+	</script>
+	<?php
 } );

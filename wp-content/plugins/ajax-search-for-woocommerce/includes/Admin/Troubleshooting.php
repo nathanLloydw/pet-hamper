@@ -112,7 +112,7 @@ class Troubleshooting
      */
     public function asyncTest()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::ASYNC_TEST_NONCE );
@@ -135,7 +135,7 @@ class Troubleshooting
      */
     public function asyncActionHandler()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::ASYNC_ACTION_NONCE );

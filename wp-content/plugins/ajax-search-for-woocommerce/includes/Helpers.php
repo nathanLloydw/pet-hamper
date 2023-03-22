@@ -347,6 +347,21 @@ class Helpers
 				</svg>
 				<?php 
                 break;
+            case 'history':
+                $style = ( empty($color) ? '' : 'style="fill: ' . esc_attr( $color ) . '"' );
+                ?>
+				<svg class="<?php 
+                echo  $class ;
+                ?>" xmlns="http://www.w3.org/2000/svg" width="18" height="16">
+					<g transform="translate(-17.498822,-36.972165)">
+						<path <?php 
+                echo  $style ;
+                ?>
+							d="m 26.596964,52.884295 c -0.954693,-0.11124 -2.056421,-0.464654 -2.888623,-0.926617 -0.816472,-0.45323 -1.309173,-0.860824 -1.384955,-1.145723 -0.106631,-0.400877 0.05237,-0.801458 0.401139,-1.010595 0.167198,-0.10026 0.232609,-0.118358 0.427772,-0.118358 0.283376,0 0.386032,0.04186 0.756111,0.308336 1.435559,1.033665 3.156285,1.398904 4.891415,1.038245 2.120335,-0.440728 3.927688,-2.053646 4.610313,-4.114337 0.244166,-0.737081 0.291537,-1.051873 0.293192,-1.948355 0.0013,-0.695797 -0.0093,-0.85228 -0.0806,-1.189552 -0.401426,-1.899416 -1.657702,-3.528366 -3.392535,-4.398932 -2.139097,-1.073431 -4.69701,-0.79194 -6.613131,0.727757 -0.337839,0.267945 -0.920833,0.890857 -1.191956,1.27357 -0.66875,0.944 -1.120577,2.298213 -1.120577,3.35859 v 0.210358 h 0.850434 c 0.82511,0 0.854119,0.0025 0.974178,0.08313 0.163025,0.109516 0.246992,0.333888 0.182877,0.488676 -0.02455,0.05927 -0.62148,0.693577 -1.32651,1.40957 -1.365272,1.3865 -1.427414,1.436994 -1.679504,1.364696 -0.151455,-0.04344 -2.737016,-2.624291 -2.790043,-2.784964 -0.05425,-0.16438 0.02425,-0.373373 0.179483,-0.477834 0.120095,-0.08082 0.148717,-0.08327 0.970779,-0.08327 h 0.847035 l 0.02338,-0.355074 c 0.07924,-1.203664 0.325558,-2.153721 0.819083,-3.159247 1.083047,-2.206642 3.117598,-3.79655 5.501043,-4.298811 0.795412,-0.167616 1.880855,-0.211313 2.672211,-0.107576 3.334659,0.437136 6.147035,3.06081 6.811793,6.354741 0.601713,2.981541 -0.541694,6.025743 -2.967431,7.900475 -1.127277,0.871217 -2.441309,1.407501 -3.893104,1.588856 -0.447309,0.05588 -1.452718,0.06242 -1.883268,0.01225 z m 3.375015,-5.084703 c -0.08608,-0.03206 -2.882291,-1.690237 -3.007703,-1.783586 -0.06187,-0.04605 -0.160194,-0.169835 -0.218507,-0.275078 L 26.639746,45.549577 V 43.70452 41.859464 L 26.749,41.705307 c 0.138408,-0.195294 0.31306,-0.289155 0.538046,-0.289155 0.231638,0 0.438499,0.109551 0.563553,0.298452 l 0.10019,0.151342 0.01053,1.610898 0.01053,1.610898 0.262607,0.154478 c 1.579961,0.929408 2.399444,1.432947 2.462496,1.513106 0.253582,0.322376 0.140877,0.816382 -0.226867,0.994404 -0.148379,0.07183 -0.377546,0.09477 -0.498098,0.04986 z"/>
+					</g>
+				</svg>
+				<?php 
+                break;
         }
         $svg .= ob_get_clean();
         return apply_filters(
@@ -1190,6 +1205,8 @@ class Helpers
             'show_more_details'  => DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ),
             'search_placeholder' => DGWT_WCAS()->settings->getOption( 'search_placeholder', __( 'Search for products...', 'ajax-search-for-woocommerce' ) ),
             'submit'             => DGWT_WCAS()->settings->getOption( 'search_submit_text', '' ),
+            'search_hist'        => __( 'Your search history', 'ajax-search-for-woocommerce' ),
+            'search_hist_clear'  => __( 'Clear', 'ajax-search-for-woocommerce' ),
         ) );
     }
     
@@ -1377,60 +1394,72 @@ class Helpers
         $layout = self::getLayoutSettings();
         // Localize
         $localize = array(
-            'labels'                       => self::getLabels(),
-            'ajax_search_endpoint'         => self::getEndpointUrl( 'search' ),
-            'ajax_details_endpoint'        => self::getEndpointUrl( 'details' ),
-            'ajax_prices_endpoint'         => self::getEndpointUrl( 'prices' ),
-            'action_search'                => DGWT_WCAS_SEARCH_ACTION,
-            'action_result_details'        => DGWT_WCAS_RESULT_DETAILS_ACTION,
-            'action_get_prices'            => DGWT_WCAS_GET_PRICES_ACTION,
-            'min_chars'                    => 3,
-            'width'                        => 'auto',
-            'show_details_panel'           => false,
-            'show_images'                  => false,
-            'show_price'                   => false,
-            'show_desc'                    => false,
-            'show_sale_badge'              => false,
-            'show_featured_badge'          => false,
-            'dynamic_prices'               => false,
-            'is_rtl'                       => ( is_rtl() == true ? true : false ),
-            'show_preloader'               => false,
-            'show_headings'                => false,
-            'preloader_url'                => '',
-            'taxonomy_brands'              => '',
-            'img_url'                      => DGWT_WCAS_URL . 'assets/img/',
-            'is_premium'                   => dgoraAsfwFs()->is_premium(),
-            'layout_breakpoint'            => $layout->layout_breakpoint,
-            'mobile_overlay_breakpoint'    => $layout->mobile_overlay_breakpoint,
-            'mobile_overlay_wrapper'       => $layout->mobile_overlay_wrapper,
-            'mobile_overlay_delay'         => apply_filters( 'dgwt/wcas/scripts/overlay_delay_ms', 0 ),
-            'debounce_wait_ms'             => apply_filters( 'dgwt/wcas/scripts/debounce_wait_ms', 400 ),
-            'send_ga_events'               => apply_filters( 'dgwt/wcas/scripts/send_ga_events', true ),
-            'enable_ga_site_search_module' => apply_filters( 'dgwt/wcas/scripts/enable_ga_site_search_module', false ),
-            'magnifier_icon'               => self::getMagnifierIco( '' ),
-            'close_icon'                   => self::getIcon( 'close' ),
-            'back_icon'                    => self::getIcon( 'arrow-left' ),
-            'preloader_icon'               => self::getIcon( 'preloader' ),
-            'voice_search_inactive_icon'   => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-inactive-pirx' : 'voice-search-inactive' ), 'dgwt-wcas-voice-search-mic-inactive' ),
-            'voice_search_active_icon'     => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-active-pirx' : 'voice-search-active' ), 'dgwt-wcas-voice-search-mic-active' ),
-            'voice_search_disabled_icon'   => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-disabled-pirx' : 'voice-search-disabled' ), 'dgwt-wcas-voice-search-mic-disabled' ),
-            'custom_params'                => (object) apply_filters( 'dgwt/wcas/scripts/custom_params', array() ),
-            'convert_html'                 => true,
-            'suggestions_wrapper'          => apply_filters( 'dgwt/wcas/scripts/suggestions_wrapper', 'body' ),
-            'show_product_vendor'          => dgoraAsfwFs()->is_premium() && class_exists( 'DgoraWcas\\Integrations\\Marketplace\\Marketplace' ) && DGWT_WCAS()->marketplace->showProductVendor(),
-            'disable_hits'                 => apply_filters( 'dgwt/wcas/scripts/disable_hits', false ),
-            'disable_submit'               => apply_filters( 'dgwt/wcas/scripts/disable_submit', false ),
-            'fixer'                        => apply_filters( 'dgwt/wcas/scripts/fixer', array(
+            'labels'                          => self::getLabels(),
+            'ajax_search_endpoint'            => self::getEndpointUrl( 'search' ),
+            'ajax_details_endpoint'           => self::getEndpointUrl( 'details' ),
+            'ajax_prices_endpoint'            => self::getEndpointUrl( 'prices' ),
+            'action_search'                   => DGWT_WCAS_SEARCH_ACTION,
+            'action_result_details'           => DGWT_WCAS_RESULT_DETAILS_ACTION,
+            'action_get_prices'               => DGWT_WCAS_GET_PRICES_ACTION,
+            'min_chars'                       => 3,
+            'width'                           => 'auto',
+            'show_details_panel'              => false,
+            'show_images'                     => false,
+            'show_price'                      => false,
+            'show_desc'                       => false,
+            'show_sale_badge'                 => false,
+            'show_featured_badge'             => false,
+            'dynamic_prices'                  => false,
+            'is_rtl'                          => ( is_rtl() == true ? true : false ),
+            'show_preloader'                  => false,
+            'show_headings'                   => false,
+            'preloader_url'                   => '',
+            'taxonomy_brands'                 => '',
+            'img_url'                         => DGWT_WCAS_URL . 'assets/img/',
+            'is_premium'                      => dgoraAsfwFs()->is_premium(),
+            'layout_breakpoint'               => $layout->layout_breakpoint,
+            'mobile_overlay_breakpoint'       => $layout->mobile_overlay_breakpoint,
+            'mobile_overlay_wrapper'          => $layout->mobile_overlay_wrapper,
+            'mobile_overlay_delay'            => apply_filters( 'dgwt/wcas/scripts/overlay_delay_ms', 0 ),
+            'debounce_wait_ms'                => apply_filters( 'dgwt/wcas/scripts/debounce_wait_ms', 400 ),
+            'send_ga_events'                  => apply_filters( 'dgwt/wcas/scripts/send_ga_events', true ),
+            'enable_ga_site_search_module'    => apply_filters( 'dgwt/wcas/scripts/enable_ga_site_search_module', false ),
+            'magnifier_icon'                  => self::getMagnifierIco( '' ),
+            'magnifier_icon_pirx'             => self::getMagnifierIco( '', 'magnifier-pirx' ),
+            'history_icon'                    => self::getIcon( 'history' ),
+            'close_icon'                      => self::getIcon( 'close' ),
+            'back_icon'                       => self::getIcon( 'arrow-left' ),
+            'preloader_icon'                  => self::getIcon( 'preloader' ),
+            'voice_search_inactive_icon'      => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-inactive-pirx' : 'voice-search-inactive' ), 'dgwt-wcas-voice-search-mic-inactive' ),
+            'voice_search_active_icon'        => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-active-pirx' : 'voice-search-active' ), 'dgwt-wcas-voice-search-mic-active' ),
+            'voice_search_disabled_icon'      => self::getIcon( ( $layout->style === 'pirx' ? 'voice-search-disabled-pirx' : 'voice-search-disabled' ), 'dgwt-wcas-voice-search-mic-disabled' ),
+            'custom_params'                   => (object) apply_filters( 'dgwt/wcas/scripts/custom_params', array() ),
+            'convert_html'                    => true,
+            'suggestions_wrapper'             => apply_filters( 'dgwt/wcas/scripts/suggestions_wrapper', 'body' ),
+            'show_product_vendor'             => dgoraAsfwFs()->is_premium() && class_exists( 'DgoraWcas\\Integrations\\Marketplace\\Marketplace' ) && DGWT_WCAS()->marketplace->showProductVendor(),
+            'disable_hits'                    => apply_filters( 'dgwt/wcas/scripts/disable_hits', false ),
+            'disable_submit'                  => apply_filters( 'dgwt/wcas/scripts/disable_submit', false ),
+            'fixer'                           => apply_filters( 'dgwt/wcas/scripts/fixer', array(
             'broken_search_ui'                  => true,
             'broken_search_ui_ajax'             => true,
             'broken_search_ui_hard'             => false,
             'broken_search_elementor_popups'    => true,
+            'broken_search_jet_mobile_menu'     => true,
             'broken_search_browsers_back_arrow' => true,
             'force_refresh_checkout'            => true,
         ) ),
-            'voice_search_enabled'         => defined( 'DGWT_WCAS_VOICE_SEARCH_ENABLE' ) && DGWT_WCAS_VOICE_SEARCH_ENABLE,
-            'voice_search_lang'            => apply_filters( 'dgwt/wcas/scripts/voice_search_lang', get_bloginfo( 'language' ) ),
+            'voice_search_enabled'            => defined( 'DGWT_WCAS_VOICE_SEARCH_ENABLE' ) && DGWT_WCAS_VOICE_SEARCH_ENABLE,
+            'voice_search_lang'               => apply_filters( 'dgwt/wcas/scripts/voice_search_lang', get_bloginfo( 'language' ) ),
+            'show_recently_searched_products' => false,
+            'show_recently_searched_phrases'  => false,
         );
+        // User search history
+        
+        if ( DGWT_WCAS()->settings->getOption( 'show_user_history' ) === 'on' ) {
+            $localize['show_recently_searched_products'] = apply_filters( 'dgwt/wcas/scripts/show_recently_searched_products', true );
+            $localize['show_recently_searched_phrases'] = apply_filters( 'dgwt/wcas/scripts/show_recently_searched_phrases', true );
+        }
+        
         if ( Multilingual::isMultilingual() ) {
             $localize['current_lang'] = Multilingual::getCurrentLanguage();
         }

@@ -158,6 +158,9 @@ a.dgwt-wcas-product-details-readmore:hover {
 	padding-bottom: 8px;
 	min-height: 60px;
 }
+.dgwt-wcas-has-img .dgwt-wcas-suggestion.dgwt-wcas-suggestion-product.dgwt-wcas-suggestion-history-product {
+	min-height: 40px;
+}
 
 .dgwt-wcas-suggestion.dgwt-wcas-suggestion-more,
 .dgwt-wcas-is-details .dgwt-wcas-has-img .dgwt-wcas-suggestion.dgwt-wcas-suggestion-more {
@@ -236,6 +239,23 @@ a.dgwt-wcas-product-details-readmore:hover {
 	width: auto;
 	max-height: 90%;
 	max-width: 100%;
+}
+
+.dgwt-wcas-suggestion-history-search {
+	min-height: 40px;
+}
+
+.dgwt-wcas-suggestion-history-search .dgwt-wcas-si,
+.dgwt-wcas-has-img-forced .dgwt-wcas-suggestion-history-product .dgwt-wcas-si {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dgwt-wcas-suggestion-searches .dgwt-wcas-si svg,
+.dgwt-wcas-has-img-forced .dgwt-wcas-suggestion-history-product .dgwt-wcas-si svg,
+.dgwt-wcas-suggestion-history-search .dgwt-wcas-si svg {
+	max-width: 18px;
 }
 
 .dgwt-wcas-content-wrapp {
@@ -1380,6 +1400,10 @@ html.dgwt-wcas-overlay-mobile-on {
 	left: 4px !important;
 	right: auto !important;
 }
+.rtl .dgwt-wcas-om-bar .dgwt-wcas-style-pirx.dgwt-wcas-has-submit-off .dgwt-wcas-preloader {
+	left: 10px !important;
+	right: auto !important;
+}
 
 
 @keyframes dgwt-wcas-preloader-price-anim {
@@ -1673,6 +1697,21 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 	white-space: nowrap;
 }
 
+.dgwt-wcas-suggestion.dgwt-wcas-suggestion-headline-v2 {
+	display: block;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: default;
+	font-size: 14px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.dgwt-wcas-suggestion.dgwt-wcas-suggestion-headline-v2 .dgwt-wcas-st {
+	padding-bottom: 3px;
+	margin-top: 16px;
+}
+
 .dgwt-wcas-has-headings .dgwt-wcas-suggestion-headline .dgwt-wcas-st {
 	border-bottom: 1px solid #ddd;
 	padding-bottom: 3px;
@@ -1698,6 +1737,16 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 
 .dgwt-wcas-is-details .dgwt-wcas-has-headings .dgwt-wcas-suggestion.dgwt-wcas-suggestion-tax {
 	min-height: 30px;
+}
+
+.dgwt-wcas-sugg-hist-clear {
+	cursor: pointer;
+	text-decoration: underline;
+	display: inline-block;
+	margin-left: 2px;
+}
+.dgwt-wcas-sugg-hist-clear:hover {
+	opacity: 0.7;
 }
 
 .dgwt-wcas-darkened-overlay {
@@ -1808,6 +1857,14 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 .dgwt-wcas-style-pirx .dgwt-wcas-preloader {
 	margin-right: 35px;
 }
+.rtl .dgwt-wcas-style-solaris .dgwt-wcas-preloader,
+.rtl .dgwt-wcas-style-solaris .dgwt-wcas-voice-search {
+	margin-left: 4px;
+}
+
+.dgwt-wcas-overlay-mobile .dgwt-wcas-style-pirx .dgwt-wcas-preloader {
+	margin-right: 15px;
+}
 .dgwt-wcas-style-pirx .dgwt-wcas-close:not(.dgwt-wcas-inner-preloader) {
 	transition: none;
 	width: 18px;
@@ -1893,22 +1950,41 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 .dgwt-wcas-open-pirx.dgwt-wcas-overlay-mobile-on .dgwt-wcas-om-bar button.dgwt-wcas-om-return path {
 	fill: #111;
 }
+
+.dgwt-wcas-search-filled .dgwt-wcas-voice-search {
+	display: none;
+}
+
 .dgwt-wcas-style-pirx .dgwt-wcas-voice-search {
-	right: 15px;
-	top: 2px;
+	right: 20px;
+	top: 1px;
 	opacity: 1;
+}
+
+.rtl .dgwt-wcas-style-pirx .dgwt-wcas-voice-search {
+	right: auto;
+	left: 50px;
+}
+
+.dgwt-wcas-overlay-mobile .dgwt-wcas-style-pirx .dgwt-wcas-voice-search {
+	right: 5px
+}
+.rtl .dgwt-wcas-overlay-mobile .dgwt-wcas-style-pirx .dgwt-wcas-voice-search {
+	right: auto;
+	left: 5px;
+}
+.dgwt-wcas-overlay-mobile .dgwt-wcas-style-solaris .dgwt-wcas-voice-search {
+	right: 5px!important;
+}
+.rtl .dgwt-wcas-overlay-mobile .dgwt-wcas-style-solaris .dgwt-wcas-voice-search {
+	left: 5px!important;
+	right: auto!important;
 }
 .dgwt-wcas-style-pirx .dgwt-wcas-voice-search:hover {
 	opacity: 0.3;
 }
 .dgwt-wcas-style-pirx .dgwt-wcas-voice-search svg path{
 	fill: #111;
-}
-.dgwt-wcas-style-pirx.dgwt-wcas-search-filled.dgwt-wcas-voice-search-supported .dgwt-wcas-sf-wrapp button.dgwt-wcas-search-submit {
-	right: 47px;
-}
-.dgwt-wcas-style-pirx.dgwt-wcas-voice-search-supported .dgwt-wcas-preloader {
-	margin-right: 50px;
 }
 .dgwt-wcas-suggestions-wrapp-fixed {
 	position: fixed !important;

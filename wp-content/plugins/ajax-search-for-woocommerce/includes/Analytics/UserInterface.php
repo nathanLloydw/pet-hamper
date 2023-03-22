@@ -18,6 +18,7 @@ class UserInterface
     const  CRITICAL_CHECK_NONCE = 'analytics-critical-check' ;
     const  EXCLUDE_CRITICAL_PHRASE_NONCE = 'analytics-exclude-critical-phrase' ;
     const  RESET_STATS_NONCE = 'analytics-reset-stats' ;
+    const  EXPORT_STATS_CSV_NONCE = 'analytics-export-stats-csv' ;
     const  CSS_CLASS_PLACEHOLDER = 'js-dgwt-wcas-stats-placeholder' ;
     const  CRITICAL_SEARCHES_LOAD_LIMIT = 10 ;
     const  TABLE_ROW_LIMIT_LIMIT = 10 ;
@@ -54,6 +55,7 @@ class UserInterface
         add_action( 'wp_ajax_dgwt_wcas_check_critical_phrase', array( $this, 'checkCriticalPhrase' ) );
         add_action( 'wp_ajax_dgwt_wcas_exclude_critical_phrase', array( $this, 'excludeCriticalPhrase' ) );
         add_action( 'wp_ajax_dgwt_wcas_reset_stats', array( $this, 'resetStats' ) );
+        add_action( 'wp_ajax_dgwt_wcas_export_stats_csv', array( $this, 'exportStats' ) );
         if ( $this->analytics->isModuleEnabled() ) {
             add_action( DGWT_WCAS_SETTINGS_KEY . '-form_end_' . self::SECTION_ID, array( $this, 'tabContent' ) );
         }
@@ -70,7 +72,7 @@ class UserInterface
     {
         $sections[28] = array(
             'id'    => self::SECTION_ID,
-            'title' => __( 'Analytics (beta)', 'ajax-search-for-woocommerce' ),
+            'title' => __( 'Analytics', 'ajax-search-for-woocommerce' ),
         );
         return $sections;
     }
@@ -84,6 +86,7 @@ class UserInterface
      */
     public function addSettingsTab( $settings )
     {
+        $searchAnalyticsLink = 'https://fibosearch.com/documentation/features/fibosearch-analytics/';
         $settings[self::SECTION_ID] = apply_filters( 'dgwt/wcas/settings/section=analytics', array(
             100 => array(
             'name'  => 'analytics_head',
@@ -93,8 +96,17 @@ class UserInterface
         ),
             110 => array(
             'name'    => 'analytics_enabled',
-            'label'   => __( 'Enable search analytics', 'ajax-search-for-woocommerce' ),
+            'label'   => __( 'Enable search analytics', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'enable_search_analytics', sprintf( __( 'Search analytics system helps to eliminate search phrases that don’t return any results. Also, allows to explore trending keywords. <a target="_blank" href="%s">Find our more</a> how to use and customize FiboSearch Analytics.', 'ajax-search-for-woocommerce' ), $searchAnalyticsLink ) ),
             'type'    => 'checkbox',
+            'class'   => 'dgwt-wcas-options-cb-toggle js-dgwt-wcas-cbtgroup-analytics-critial-searches-widget',
+            'size'    => 'small',
+            'default' => 'off',
+        ),
+            120 => array(
+            'name'    => 'analytics_critical_searches_widget_enabled',
+            'label'   => __( 'Show widget with critical searches in Dashboard', 'ajax-search-for-woocommerce' ),
+            'type'    => 'checkbox',
+            'class'   => 'js-dgwt-wcas-cbtgroup-analytics-critial-searches-widget',
             'size'    => 'small',
             'default' => 'off',
         ),
@@ -120,6 +132,7 @@ class UserInterface
             'check_critical_phrase'       => wp_create_nonce( self::CRITICAL_CHECK_NONCE ),
             'exclude_critical_phrase'     => wp_create_nonce( self::EXCLUDE_CRITICAL_PHRASE_NONCE ),
             'reset_stats'                 => wp_create_nonce( self::RESET_STATS_NONCE ),
+            'export_stats_csv'            => wp_create_nonce( self::EXPORT_STATS_CSV_NONCE ),
         ),
             'enabled' => $this->analytics->isModuleEnabled(),
             'images'  => array(
@@ -174,7 +187,7 @@ class UserInterface
      */
     public function loadInterface()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_INTERFACE_NONCE );
@@ -196,7 +209,7 @@ class UserInterface
      */
     public function loadMoreCriticalSearches()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_CRITICAL_SEARCHES_NONCE );
@@ -245,7 +258,7 @@ class UserInterface
      */
     public function loadMoreAutocomplete()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_AUTOCOMPLETE_NONCE );
@@ -277,7 +290,7 @@ class UserInterface
      */
     public function loadMoreSearchPage()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_SEARCH_PAGE_NONCE );
@@ -309,7 +322,7 @@ class UserInterface
      */
     public function checkCriticalPhrase()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::CRITICAL_CHECK_NONCE );
@@ -402,7 +415,7 @@ class UserInterface
      */
     public function excludeCriticalPhrase()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::EXCLUDE_CRITICAL_PHRASE_NONCE );
@@ -429,12 +442,36 @@ class UserInterface
      */
     public function resetStats()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::RESET_STATS_NONCE );
         Database::wipeAllRecords();
         wp_send_json_success();
+    }
+    
+    /**
+     * Export stats. AJAX callback
+     *
+     * @return void
+     */
+    public function exportStats()
+    {
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_die( -1, 403 );
+        }
+        check_ajax_referer( self::EXPORT_STATS_CSV_NONCE );
+        if ( !class_exists( 'WC_CSV_Exporter', false ) ) {
+            require_once WC_ABSPATH . 'includes/export/abstract-wc-csv-exporter.php';
+        }
+        $exporter = new CSVExporter();
+        $context = ( isset( $_GET['context'] ) ? sanitize_key( $_GET['context'] ) : '' );
+        $exporter->set_context( $context );
+        $lang = ( !empty($_REQUEST['lang']) && Multilingual::isLangCode( sanitize_key( $_REQUEST['lang'] ) ) ? sanitize_key( $_REQUEST['lang'] ) : '' );
+        if ( !empty($lang) ) {
+            $exporter->set_lang( $lang );
+        }
+        $exporter->export();
     }
     
     /**

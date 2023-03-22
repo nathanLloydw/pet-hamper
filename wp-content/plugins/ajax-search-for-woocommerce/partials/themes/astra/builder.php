@@ -4,10 +4,6 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 	exit;
 }
 
-if ( defined( 'ASTRA_EXT_VER' ) ) {
-	add_filter( 'dgwt/wcas/suggestion_details/show_quantity', '__return_false' );
-}
-
 function dgwt_wcas_astra_header_break_point() {
 	$header_break_point = 921;
 	if ( function_exists( 'astra_header_break_point' ) ) {
@@ -53,6 +49,18 @@ if ( ! function_exists( 'astra_get_search_form' ) ) {
 	}
 }
 
+// Astra cut our search using wp_kses(), so we need overwrite whole function.
+if ( ! function_exists( 'astra_addon_get_search_form' ) ) {
+	function astra_addon_get_search_form( $echo = true ) {
+		$result = apply_filters( 'astra_get_search_form', '' );
+		if ( $echo ) {
+			echo $result;
+		} else {
+			return $result;
+		}
+	}
+}
+
 add_filter( 'astra_get_search_form', function ( $form ) {
 	return dgwt_wcas_astra_search_form();
 } );
@@ -66,6 +74,14 @@ add_filter( 'astra_addon_get_template', function ( $located, $template_name, $ar
 	return $located;
 }, 100, 5 );
 
+add_filter( 'dgwt/wcas/form/html', function ( $html ) {
+	// We're removing the 'woocommerce' class on these pages because it makes it impossible to update the cart contents.
+	if ( is_checkout() || is_cart() ) {
+		return preg_replace( '/class="([0-9a-zA-Z-\s]+)woocommerce([0-9a-zA-Z-\s]+)"/m', "class=\"$1$2\"", $html );
+	}
+
+	return $html;
+} );
 
 add_action( 'wp_footer', function () {
 	$header_break_point = dgwt_wcas_astra_header_break_point();
@@ -182,6 +198,16 @@ add_filter( 'wp_head', function () {
 
 		.ast-search-box.header-cover .close {
 			margin-top: -5px;
+		}
+
+		/* Autosuggestion results */
+		.dgwt-wcas-suggestion {
+			transition: none;
+		}
+
+		/* Details panel */
+		.dgwt-wcas-details-wrapp .woocommerce a.added_to_cart {
+			display: block;
 		}
 	</style>
 	<?php

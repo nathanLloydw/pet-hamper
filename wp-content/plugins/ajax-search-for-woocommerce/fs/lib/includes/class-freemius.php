@@ -2316,7 +2316,7 @@
             ) {
                 return;
             }
-            
+
             $subscription_cancellation_dialog_box_template_params = $this->apply_filters( 'show_deactivation_subscription_cancellation', true ) ?
                 $this->_get_subscription_cancellation_dialog_box_template_params() :
                 array();
@@ -3480,7 +3480,7 @@
         /**
          * @author Leo Fajardo (@leorw)
          * @since 2.5.0
-         *        
+         *
          * @param int|null $blog_id
          * @param bool     $strip_protocol
          * @param bool     $add_trailing_slash
@@ -3648,7 +3648,7 @@
             } else {
                 // Add hidden debug page.
                 $hook = FS_Admin_Menu_Manager::add_subpage(
-                    null,
+                    '',
                     $title,
                     $title,
                     'manage_options',
@@ -3863,7 +3863,7 @@
         /**
          * @author Leo Fajardo (@leorw)
          * @since  2.5.0
-         * 
+         *
          * @return array
          */
         static function get_all_modules_sites() {
@@ -4117,7 +4117,7 @@
             if ( $is_connected ) {
                 FS_GDPR_Manager::instance()->store_is_required( $pong->is_gdpr_required );
             }
-            
+
             $this->store_connectivity_info( $pong, $is_connected );
 
             return $this->_has_api_connection;
@@ -7315,12 +7315,12 @@
 
             $this->_admin_notices->add_sticky(
                 sprintf(
-                    $this->get_text_inline( 'You should receive an activation email for %s to your mailbox at %s. Please make sure you click the activation button in that email to %s.', 'pending-activation-message' ),
+                    $this->get_text_inline( 'You should receive a confirmation email for %s to your mailbox at %s. Please make sure you click the button in that email to %s.', 'pending-activation-message' ),
                     '<b>' . $this->get_plugin_name() . '</b>',
                     '<b>' . $email . '</b>',
                     ( $is_pending_trial ?
                         $this->get_text_inline( 'start the trial', 'start-the-trial' ) :
-                        $this->get_text_inline( 'complete the install', 'complete-the-install' ) )
+                        $this->get_text_inline( 'complete the opt-in', 'complete-the-opt-in' ) )
                 ),
                 'activation_pending',
                 'Thanks!'
@@ -8454,7 +8454,7 @@
             $parent_licenses_endpoint = "/plugins/{$this->get_id()}/parent_licenses.json?filter=activatable";
 
             $fs = $this;
-            
+
             if ( $this->is_addon() ) {
                 $parent_instance = $this->get_parent_instance();
 
@@ -10315,7 +10315,7 @@
 
             if ( is_object( $fs ) ) {
                 $fs->remove_sdk_reference();
-                
+
                 self::require_plugin_essentials();
 
                 if ( is_plugin_active( $fs->_free_plugin_basename ) ||
@@ -10917,7 +10917,7 @@
             if ( fs_starts_with( $option_name, WP_FS__MODULE_TYPE_THEME . '_' ) ) {
                 $option_name = str_replace( WP_FS__MODULE_TYPE_THEME . '_', '', $option_name );
             }
-            
+
             switch ( $option_name ) {
                 case 'plugins':
                 case 'themes':
@@ -13581,7 +13581,7 @@
                 // Subscription cancellation dialog box is currently not supported for multisite networks.
                 return array();
             }
-            
+
             if ( $this->is_whitelabeled() ) {
                 return array();
             }
@@ -13681,7 +13681,7 @@
                 ! $this->is_premium() &&
                 /**
                  * Also handle the case when an upgrade was made using the free version.
-                 * 
+                 *
                  * @author Leo Fajardo (@leorw)
                  * @since 2.3.2
                  */
@@ -13912,7 +13912,7 @@
          */
         function _activate_license_ajax_action() {
             $this->_logger->entrance();
-            
+
             $this->check_ajax_referer( 'activate_license' );
 
             $license_key = trim( fs_request_get( 'license_key' ) );
@@ -13983,7 +13983,7 @@
             foreach ( $installs_info_by_slug_map as $slug => $install_info ) {
                 $install_ids[ $slug ] = $install_info['install']->id;
             }
-            
+
             $params['install_ids'] = implode( ',', array_values( $install_ids ) );
 
             $install = $this->get_api_site_scope()->call( $this->add_show_pending( '/' ), 'put', $params );
@@ -14076,7 +14076,7 @@
          *
          * @author Vova Feldman (@svovaf)
          * @since  2.3.0
-         *         
+         *
          * @param string      $license_key
          * @param null|bool   $is_marketing_allowed
          * @param null|number $plugin_id
@@ -18859,7 +18859,7 @@
             if ( is_object( $this->_site ) && ! $this->is_registered() ) {
                 return;
             }
-            
+
             /**
              * When running from a site admin with a network activated module and the connection
              * was NOT delegated and the user still haven't skipped or opted-in, then hide the
@@ -18975,7 +18975,7 @@
             if ( ! $this->has_settings_menu() ) {
                 // Add the opt-in page without a menu item.
                 $hook = FS_Admin_Menu_Manager::add_subpage(
-                    null,
+                    '',
                     $this->get_plugin_name(),
                     $this->get_plugin_name(),
                     'manage_options',
@@ -19407,7 +19407,7 @@
                         $hook = FS_Admin_Menu_Manager::add_subpage(
                             $item['show_submenu'] ?
                                 $top_level_menu_slug :
-                                null,
+                                '',
                             $item['page_title'],
                             $menu_item,
                             $capability,
@@ -19422,7 +19422,7 @@
                         FS_Admin_Menu_Manager::add_subpage(
                             $item['show_submenu'] ?
                                 $top_level_menu_slug :
-                                null,
+                                '',
                             $item['page_title'],
                             $menu_item,
                             $capability,

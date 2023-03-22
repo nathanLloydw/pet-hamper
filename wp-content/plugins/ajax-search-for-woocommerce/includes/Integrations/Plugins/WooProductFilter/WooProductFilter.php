@@ -71,6 +71,9 @@ class WooProductFilter
         // parse args from url passed as POST var
         $url_query = wp_parse_url( $_POST['currenturl'] );
         $url_query_args = array();
+        if ( empty($url_query['query']) ) {
+            return;
+        }
         wp_parse_str( $url_query['query'], $url_query_args );
         if ( !isset( $url_query_args['dgwt_wcas'] ) || !isset( $url_query_args['s'] ) ) {
             return;

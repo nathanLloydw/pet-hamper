@@ -4,7 +4,7 @@ Tags: woocommerce search, ajax search, search by sku, product search, woocommerc
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 1.21.0
+Stable tag: 1.22.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,7 @@ The most popular **WooCommerce product search plugin**. It gives your users a we
 
 By default, WooCommerce provides a very simple search solution, without live product search or even SKU search. FiboSearch (formerly Ajax Search for WooCommerce) provides advanced search with live suggestions.
 
-Who doesn’t love instant, as-you-type suggestions? In 2021, customers expect smart product search. Baymard Institute’s latest UX research reveals that search autocomplete, auto-suggest, or an instant search feature **is now offered on 96% of major e-commerce sites**. It's a must-have feature for every online business that can’t afford to lose customers. Why? FiboSearch helps users save time and makes shopping easier. As a result, Fibo really boosts sales.
+Who doesn’t love instant, as-you-type suggestions? In 2023, customers expect smart product search. Baymard Institute’s latest UX research reveals that search autocomplete, auto-suggest, or an instant search feature **is now offered on 96% of major e-commerce sites**. It's a must-have feature for every online business that can’t afford to lose customers. Why? FiboSearch helps users save time and makes shopping easier. As a result, Fibo really boosts sales.
 
 = Features =
 &#9989; **Search by product title, long and short description**
@@ -29,6 +29,7 @@ Who doesn’t love instant, as-you-type suggestions? In 2021, customers expect s
 &#9989; **Details panels** with extended information – **“add to cart” button** with a **quantity field** and **extended product** data displayed on hovering over the live suggestion
 &#9989; **Easy implementation** in your theme - embed the plugin using a **shortcode**, as a **menu item** or as a **widget**
 &#9989; **Terms search** – search for product categories and tags
+&#9989; **Search history** – the current search history is presented when the user clicked/taped on the search bar, but hasn't yet typed the query.
 &#9989; **Limit** displayed suggestions – the number is customizable
 &#9989; **The minimum number of characters** required to display suggestions – the number is customizable
 &#9989; **Better ordering** – a smart algorithm ensures that the displayed results are as accurate as possible
@@ -106,7 +107,7 @@ We have prepared a one-click replacement of the search bar for the following the
 *  Astra
 *  Avada
 *  Sailent
-*  and 34 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
+*  and 35 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
 
 
 If you want to replace your search bar in another theme, please [contact our support team](https://fibosearch.com/contact/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=contact&utm_gen=utmdc).
@@ -142,6 +143,39 @@ You can read more and compare Pro and Free features here: [Full comparison - Pro
 5. Settings page
 
 == Changelog ==
+
+= 1.22.3, January 30, 2023 =
+* FIX: Some prices were not aligned properly
+
+= 1.22.0, January 30, 2023 =
+* ADD: New feature - Search history. The current search history is presented when the user clicked/taped on the search bar, but hasn't yet typed the query.
+* ADD: FiboSearch Analytics - New widget in WordPress Dashboard with critical searches without result
+* ADD: Integration with Essentials theme
+* ADD: Make UI_FIXER object as global object
+* ADD: Ability to search for vendors by description and city
+* ADD: Ability to exclude critical phrases in the Analytics module
+* ADD: Custom JavaScript events during the search process
+* ADD: Ability to export search analytics data as CSV files
+* FIX: Integration with Flatsome theme - focus event didn't work with a search bar
+* FIX: Integration with WooCommerce Product Filter by WooBeWoo - “Undefined array key 'query'” notice
+* FIX: Integration with Jet Smart Menu - repair duplicated search bars IDs
+* FIX: Integration with Astra theme - support for version 4.0.0
+* FIX: Integration with Astra theme - cannot change the number of products on the cart page
+* FIX: Integration with XStore theme - support for search icon in mobile panel
+* FIX: Compatibility with PHP 8.1
+* FIX: RWD for FiboSearch Settings views including Analytics views
+* FIX: Search bar CSS, especially when Pirx style and Voice Search work together
+* FIX: A user with permission to edit plugin settings cannot see search analytics
+
+* CHANGE: Updated French translation
+* CHANGE: Hide the Voice Search icon when a user starts typing
+* CHANGE: Updated Freemius SDK to v2.5.3
+* CHANGE: Remove information that Analytics is a beta feature
+* CHANGE: Remove information that Darkened Background is a beta feature
+* CHANGE: Set "Pirx" as a default search bar style
+
+
+
 
 = 1.21.0, November 21, 2022 =
 * ADD: Integration with Product GTIN (EAN, UPC, ISBN) for WooCommerce plugin

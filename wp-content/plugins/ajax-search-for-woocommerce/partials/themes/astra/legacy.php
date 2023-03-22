@@ -4,10 +4,6 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 	exit;
 }
 
-if ( defined( 'ASTRA_EXT_VER' ) ) {
-	add_filter( 'dgwt/wcas/suggestion_details/show_quantity', '__return_false' );
-}
-
 function dgwt_wcas_astra_header_break_point() {
 	$header_break_point = 921;
 	if ( function_exists( 'astra_header_break_point' ) ) {
@@ -48,6 +44,15 @@ add_filter( 'astra_get_search_form', function ( $form ) {
 	$form               .= '</div>';
 
 	return $form;
+} );
+
+add_filter( 'dgwt/wcas/form/html', function ( $html ) {
+	// We're removing the 'woocommerce' class on these pages because it makes it impossible to update the cart contents.
+	if ( is_checkout() || is_cart() ) {
+		return preg_replace( '/class="([0-9a-zA-Z-\s]+)woocommerce([0-9a-zA-Z-\s]+)"/m', "class=\"$1$2\"", $html );
+	}
+
+	return $html;
 } );
 
 add_action( 'wp_footer', function () {

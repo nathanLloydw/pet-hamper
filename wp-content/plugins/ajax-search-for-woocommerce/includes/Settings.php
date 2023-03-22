@@ -163,6 +163,7 @@ class Settings
         $customFieldsLink = 'https://fibosearch.com/documentation/features/search-in-custom-fields/';
         $mobileOverlayLink = 'https://fibosearch.com/documentation/features/overlay-on-mobile/';
         $searchLayoutLink = 'https://fibosearch.com/documentation/features/search-bar-layout/';
+        $searchHistory = 'https://fibosearch.com/user-search-history/';
         $readMore = __( '<a target="_blank" href="%s">Read more</a> about this feature.', 'ajax-search-for-woocommerce' );
         $settingsFields = array(
             'dgwt_wcas_basic'        => apply_filters( 'dgwt/wcas/settings/section=basic', array(
@@ -251,10 +252,10 @@ class Settings
             'label'   => __( 'Style', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'search_style', sprintf( __( 'FiboSearch provides two different styles of search bars: Solaris and Pirx. Solaris has a rectangular shape while Pirx is a bean-shaped bar with curvy and smooth edges. <a target="_blank" href="%s">See the differences</a> between Solaris and Pirx style.', 'ajax-search-for-woocommerce' ), $styleLink ) ),
             'type'    => 'select',
             'options' => array(
-            'solaris' => _x( 'Solaris (default)', 'Solaris is proper name.', 'ajax-search-for-woocommerce' ),
-            'pirx'    => _x( 'Pirx', 'Pirx is proper name.', 'ajax-search-for-woocommerce' ),
+            'pirx'    => _x( 'Pirx (default)', 'Pirx is proper name.', 'ajax-search-for-woocommerce' ),
+            'solaris' => _x( 'Solaris', 'Solaris is proper name.', 'ajax-search-for-woocommerce' ),
         ),
-            'default' => 'solaris',
+            'default' => 'pirx',
             'class'   => 'js-dgwt-wcas-adv-settings',
         ),
             660  => array(
@@ -306,7 +307,6 @@ class Settings
             695  => array(
             'name'    => 'darken_background',
             'label'   => __( 'Darkened background', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'darken-_background', __( 'Darkening the page background while autocomplete is active gives it stronger emphasis, minimizing elements (e.g., ads, carousels, and other page content) that could distract users from considering autocomplete suggestions.', 'ajax-search-for-woocommerce' ) . ' ' . sprintf( $readMore, $darkenedBgLink ) ),
-            'desc'    => __( '(beta feature)', 'ajax-search-for-woocommerce' ),
             'type'    => 'checkbox',
             'class'   => 'js-dgwt-wcas-adv-settings',
             'size'    => 'small',
@@ -474,15 +474,23 @@ class Settings
         ),
             2000 => array(
             'name'  => 'details_box_head',
-            'label' => __( 'Details panel', 'ajax-search-for-woocommerce' ),
+            'label' => __( 'Extra views', 'ajax-search-for-woocommerce' ),
             'type'  => 'head',
             'class' => 'dgwt-wcas-sgs-header',
         ),
             2100 => array(
             'name'    => 'show_details_box',
-            'label'   => __( 'Show Details panel', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'details-box', __( 'The Details panel is an additional container for extended information. The details change dynamically when the cursor hovers over one of the suggestions.', 'ajax-search-for-woocommerce' ) . ' ' . sprintf( $readMore, $detailsPanelLink ) ),
+            'label'   => __( 'Show Details Panel', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'details-box', __( 'The Details Panel is an additional container for extended information. The details change dynamically when the cursor hovers over one of the suggestions.', 'ajax-search-for-woocommerce' ) . ' ' . sprintf( $readMore, $detailsPanelLink ) ),
             'type'    => 'checkbox',
             'size'    => 'small',
+            'default' => 'off',
+        ),
+            2200 => array(
+            'name'    => 'show_user_history',
+            'label'   => __( 'User search history (beta)', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'user-search-history', __( "The current search history is presented when the user clicked/taped on the search bar, but hasn't yet typed the query. The history includes the last searched products and phrases.", 'ajax-search-for-woocommerce' ) . ' ' . sprintf( $readMore, $searchHistory ) ),
+            'type'    => 'checkbox',
+            'size'    => 'small',
+            'class'   => 'js-dgwt-wcas-adv-settings',
             'default' => 'off',
         ),
             2500 => array(
@@ -896,7 +904,7 @@ class Settings
      */
     public function toggleAdvancedSettings()
     {
-        if ( !current_user_can( 'administrator' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( 'dgwt_wcas_advanced_options_switch' );

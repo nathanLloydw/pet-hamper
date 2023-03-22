@@ -16,39 +16,45 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</p>
 		<div class="dgwt-wcas-analytics-module-critical-body">
-			<table class="widefat fixed dgwt-wcas-analytics-table">
-				<thead>
-				<tr>
-					<th>#</th>
-					<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
-					<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
-					<th><?php _e( "Check if it's been solved", 'ajax-search-for-woocommerce' ); ?></th>
-				</tr>
-				</thead>
-				<tbody>
-				<?php
-				$i = 1;
-				foreach ( $vars['critical-searches'] as $row ) {
-					require DGWT_WCAS_DIR . 'partials/admin/stats/critical-searches-row.php';
-					$i ++;
-				}
+			<div>
+				<table class="widefat fixed dgwt-wcas-analytics-table">
+					<thead>
+					<tr>
+						<th>#</th>
+						<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
+						<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
+						<th><?php _e( "Check if it's been solved", 'ajax-search-for-woocommerce' ); ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+					$i = 1;
+					foreach ( $vars['critical-searches'] as $row ) {
+						require DGWT_WCAS_DIR . 'partials/admin/stats/critical-searches-row.php';
+						$i ++;
+					}
 
-				if ( $vars['critical-searches-more'] > 0 ): ?>
-					<tr class="dgwt-wcas-analytics-load-more-row">
-						<td colspan="4">
-							<div>
+					if ( $vars['critical-searches-more'] > 0 ): ?>
+						<tr class="dgwt-wcas-analytics-load-more-row">
+							<td colspan="4">
+								<div>
 						<span class="js-dgwt-wcas-critical-searches-load-more">
 							<span><?php printf( _n( 'load another %d phrase', 'load another %d phrases', $vars['critical-searches-more'], 'ajax-search-for-woocommerce' ), $vars['critical-searches-more'] ); ?></span>
 							<span class="dashicons dashicons-arrow-down-alt2"></span>
 						</span>
-							</div>
-						</td>
+								</div>
+							</td>
 
-					</tr>
-				<?php endif; ?>
-				</tbody>
-			</table>
-
+						</tr>
+					<?php endif; ?>
+					</tbody>
+				</table>
+				<?php
+				if ( $vars['critical-searches-total'] > 0 ) {
+					printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+				}
+				?>
+			</div>
 			<div class="dgwt-wcas-analytics-module-critical-info">
 				<h4><?php _e( 'How to fix it?', 'ajax-search-for-woocommerce' ); ?></h4>
 				<div>
@@ -167,6 +173,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 			</tbody>
 		</table>
+		<?php
+		if ( ! empty( $vars['autocomplete']['with-results'] ) ) {
+			printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="autocomplete" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+		}
+		?>
 
 	</div>
 	<div class="dgwt-wcas-analytics-module-table">
@@ -216,7 +227,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 			</tbody>
 		</table>
-
+		<?php
+		if ( ! empty( $vars['search-page']['with-results'] ) ) {
+			printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="search-results-page" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+		}
+		?>
 	</div>
 </div>
 

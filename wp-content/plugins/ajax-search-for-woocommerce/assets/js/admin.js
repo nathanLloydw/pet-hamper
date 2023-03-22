@@ -681,6 +681,7 @@
         excludePhraseClass: 'js-dgwt-wcas-analytics-exclude-phrase',
         checkIndexerAction: 'js-dgwt-wcas-analytics-check-indexer',
         resetAnalyticsAction: 'js-dgwt-wcas-analytics-reset',
+        analyticsExportCSVAction: 'js-dgwt-wcas-analytics-export-csv',
         init: function () {
             var _this = this;
 
@@ -753,6 +754,7 @@
                         _this.loadCheckCriticalSearchesListeners();
                         _this.loadMoreListeners();
                         _this.resetStatsListener();
+                        _this.exportStatsListener();
                     }
                 }
             );
@@ -820,6 +822,24 @@
                         }
                     );
                 }
+            })
+        },
+        exportStatsListener: function () {
+            var _this = this,
+                $lang = $('.' + _this.languageSwitcherClass + ' option:selected');
+
+            $('.' + _this.analyticsExportCSVAction).on('click', function (e) {
+                var $el = $(this);
+                e.preventDefault();
+                var url = new URL(dgwt_wcas.adminurl);
+                url.searchParams.append('action', 'dgwt_wcas_export_stats_csv');
+                url.searchParams.append('context', $(this).data('context'));
+                url.searchParams.append('_wpnonce', dgwt_wcas.analytics.nonce.export_stats_csv);
+                if ($lang.length > 0) {
+                    url.searchParams.append('lang', $lang.val());
+                }
+
+                window.location = url;
             })
         },
         checkPhraseStatus: function ($el) {
@@ -2196,6 +2216,9 @@
                             timeout = 500;
                         }
                         var url = window.location.href;
+                        if (url.lastIndexOf("#") > 0) {
+                            url = url.substring(0, url.lastIndexOf("#"));
+                        }
                         if (typeof response.data.args === "object") {
                             url = wp.url.addQueryArgs(url, response.data.args);
                         }

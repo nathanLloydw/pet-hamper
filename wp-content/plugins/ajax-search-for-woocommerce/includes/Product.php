@@ -318,9 +318,24 @@ class Product
      */
     public function getAvailableVariations()
     {
+        global  $wpdb ;
+        
         if ( empty($this->variations) && is_a( $this->wcProduct, 'WC_Product_Variable' ) ) {
-            return $this->wcProduct->get_available_variations();
+            $sql = $wpdb->prepare( "\n\t\t\t\tSELECT {$wpdb->posts}.ID AS variation_id, postmeta.meta_value AS variation_description, wc_product_meta_lookup.sku\n\t\t\t\tFROM {$wpdb->posts}\n                LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON {$wpdb->posts}.ID = wc_product_meta_lookup.product_id\n\t\t\t\tLEFT JOIN {$wpdb->postmeta} postmeta ON {$wpdb->posts}.ID = postmeta.post_id AND postmeta.meta_key = '_variation_description'\n\t\t\t\tWHERE {$wpdb->posts}.post_parent = %d AND wc_product_meta_lookup.min_price > 0\n\t\t\t", $this->getID() );
+            if ( DGWT_WCAS()->settings->getOption( 'exclude_out_of_stock' ) === 'on' ) {
+                $sql .= " AND wc_product_meta_lookup.stock_status = 'instock'";
+            }
+            $result = $wpdb->get_results( $sql, ARRAY_A );
+            if ( is_array( $result ) ) {
+                $result = array_map( function ( $item ) {
+                    $item['variation_id'] = intval( $item['variation_id'] );
+                    return $item;
+                }, $result );
+            }
+            $this->variations = $result;
+            return $this->variations;
         }
+        
         return $this->variations;
     }
     

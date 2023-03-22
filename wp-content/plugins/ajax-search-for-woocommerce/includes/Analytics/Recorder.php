@@ -44,6 +44,15 @@ class Recorder
         if ( defined( 'DGWT_WCAS_ANALYTICS_ONLY_CRITICAL' ) && DGWT_WCAS_ANALYTICS_ONLY_CRITICAL && $hits > 0 ) {
             return;
         }
+        // Allow to exclude critical phrases.
+        
+        if ( $hits === 0 ) {
+            $excludedPhrases = apply_filters( 'dgwt/wcas/analytics/excluded_critical_phrases', array() );
+            if ( is_array( $excludedPhrases ) && in_array( $phrase, $excludedPhrases, true ) ) {
+                return;
+            }
+        }
+        
         // Break early when a user has specific roles.
         $roles = apply_filters( 'dgwt/wcas/analytics/exclude_roles', array() );
         if ( !empty($roles) ) {

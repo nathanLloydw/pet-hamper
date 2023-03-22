@@ -835,9 +835,38 @@ class SettingsAPI
         ?>
 		<script>
 			jQuery(document).ready(function ($) {
+				const tabHrefs = [
+					{'old': '#dgwt_wcas_basic', 'new': '#starting'},
+					{'old': '#dgwt_wcas_form_body', 'new': '#search_bar'},
+					{'old': '#dgwt_wcas_autocomplete', 'new': '#autocomplete'},
+					{'old': '#dgwt_wcas_search', 'new': '#search_config'},
+					{'old': '#dgwt_wcas_analytics', 'new': '#analytics'},
+					{'old': '#dgwt_wcas_performance', 'new': '#indexer'},
+					{'old': '#dgwt_wcas_performance', 'new': '#indexer'},
+					{'old': '#dgwt_wcas_troubleshooting', 'new': '#troubleshooting'},
+				];
+
+				function getOldTabHref($new) {
+					var result = $new;
+					tabHrefs.forEach(function (href) {
+						if (href.new === $new) {
+							result = href.old;
+						}
+					});
+					return result;
+				}
+
+				function getNewTabHref($old) {
+					var result = $old;
+					tabHrefs.forEach(function (href) {
+						if (href.old === $old) {
+							result = href.new;
+						}
+					});
+					return result;
+				}
 
 				function markActiveGroup($group) {
-
 					var name = $group.attr('id').replace('dgwt_wcas_', '');
 
 					$group.addClass('dgwt-wcas-group-active');
@@ -875,27 +904,35 @@ class SettingsAPI
 				var activetab = '';
 				var maybe_active = '';
 
-				if (typeof (localStorage) != 'undefined') {
+				if (typeof (localStorage) !== 'undefined') {
 					maybe_active = localStorage.getItem('<?php 
         echo  $this->prefix ;
         ?>settings-active-tab');
-
 					if (maybe_active) {
-
 						// Check if tabs exists
 						$('.<?php 
         echo  $this->prefix ;
         ?>nav-tab-wrapper a:not(.js-nav-tab-minor)').each(function () {
-
 							if ($(this).attr('href') === maybe_active) {
 								activetab = maybe_active;
 							}
 						});
-
 					}
 				}
 
-				if (activetab != '' && $(activetab).length) {
+				if (window.location.hash.indexOf('#') === 0) {
+					var maybe_active_href = getOldTabHref(window.location.hash);
+					// Check if tabs exists
+					$('.<?php 
+        echo  $this->prefix ;
+        ?>nav-tab-wrapper a:not(.js-nav-tab-minor)').each(function () {
+						if ($(this).attr('href') === maybe_active_href) {
+							activetab = maybe_active_href;
+						}
+					});
+				}
+
+				if (activetab !== '' && $(activetab).length) {
 					$(activetab).fadeIn();
 					markActiveGroup($(activetab));
 				} else {
@@ -919,8 +956,9 @@ class SettingsAPI
 						});
 				});
 
-				if (activetab != '' && $(activetab + '-tab').length) {
+				if (activetab !== '' && $(activetab + '-tab').length) {
 					$(activetab + '-tab').addClass('nav-tab-active');
+					history.pushState({}, "", getNewTabHref(activetab));
 				} else {
 					$('.<?php 
         echo  $this->prefix ;
@@ -929,12 +967,13 @@ class SettingsAPI
 				$('.<?php 
         echo  $this->prefix ;
         ?>nav-tab-wrapper a:not(.js-nav-tab-minor)').on('click', function (evt) {
-
-					if (typeof (localStorage) != 'undefined') {
+					if (typeof (localStorage) !== 'undefined') {
 						localStorage.setItem('<?php 
         echo  $this->prefix ;
         ?>settings-active-tab', $(this).attr('href'));
 					}
+
+					history.pushState({}, "", getNewTabHref($(this).attr('href')));
 
 					$('.<?php 
         echo  $this->prefix ;

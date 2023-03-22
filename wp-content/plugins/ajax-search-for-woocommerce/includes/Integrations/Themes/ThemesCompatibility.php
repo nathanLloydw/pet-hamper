@@ -265,6 +265,14 @@ class ThemesCompatibility {
 					'forceMobileOverlayBreakpoint' => 767,
 				),
 			),
+			'essentials'       => array(
+				'slug' => 'essentials',
+				'name' => 'Essentials',
+				'args' => array(
+					'forceMobileOverlay'           => true,
+					'forceMobileOverlayBreakpoint' => 991,
+				)
+			),
 		);
 	}
 
