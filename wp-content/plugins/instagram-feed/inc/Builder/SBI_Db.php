@@ -321,7 +321,7 @@ class SBI_Db {
 			$data['expires'] = $to_insert['expires'];
 			$format[]        = '%s';
 		} else {
-			$data['expires'] = '2100-12-30 00:00:00';
+			$data['expires'] = '2037-12-30 00:00:00';
 			$format[]        = '%s';
 		}
 		$data['last_updated'] = gmdate( 'Y-m-d H:i:s' );
@@ -534,14 +534,10 @@ class SBI_Db {
 		$feed_caches_table_name = $wpdb->prefix . 'sbi_feed_caches';
 		$feed_ids_array         = implode( ',', array_map( 'absint', $feed_ids_array ) );
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM $feeds_table_name WHERE id IN ($feed_ids_array)"
-			)
+			"DELETE FROM $feeds_table_name WHERE id IN ($feed_ids_array)"
 		);
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM $feed_caches_table_name WHERE feed_id IN ($feed_ids_array)"
-			)
+			"DELETE FROM $feed_caches_table_name WHERE feed_id IN ($feed_ids_array)"
 		);
 
 		echo sbi_json_encode( SBI_Feed_Builder::get_feed_list() );

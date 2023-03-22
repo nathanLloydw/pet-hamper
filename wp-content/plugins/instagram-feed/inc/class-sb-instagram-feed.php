@@ -947,13 +947,14 @@ class SB_Instagram_Feed
 				$this->header_data['local_avatar'] = false;
 				$sb_instagram_posts_manager->remove_error( 'connection', $connected_accounts_for_feed[ $first_user ] );
 
-				if ( ! empty( $connected_accounts_for_feed[ $first_user ]['local_avatar_url'] ) ) {
-					$this->header_data['local_avatar'] = $connected_accounts_for_feed[ $first_user ]['local_avatar_url'];
-				}
-				if ( empty( $this->header_data['bio'] )
-					 && isset( $connected_accounts_for_feed[ $first_user ]['bio'] ) ) {
+				$single_source = InstagramFeed\Builder\SBI_Source::update_single_source( $connected_accounts_for_feed[ $first_user ] );
 
-					$this->header_data['bio'] = sbi_decode_emoji( $connected_accounts_for_feed[ $first_user ]['bio'] );
+				if ( ! empty( $single_source['local_avatar_url'] ) ) {
+					$this->header_data['local_avatar'] = $single_source['local_avatar_url'];
+				}
+
+				if( isset( $this->header_data['biography'] ) && ! empty( $this->header_data['biography'] ) ) {
+					$this->header_data['bio'] = sbi_decode_emoji( $this->header_data['biography'] );
 				}
 			} else {
 				$this->should_use_backup = true;

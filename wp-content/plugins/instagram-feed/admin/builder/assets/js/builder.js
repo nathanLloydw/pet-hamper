@@ -1632,9 +1632,6 @@ sbiBuilder = new Vue({
 				self.setShortcodeGlobalSettings(true);
 				self.loadingBar = false;
 			}, 200);
-			setTimeout(function () {
-				window.sbi_init();
-			}, 300)
 			sbiBuilder.$forceUpdate();
 		},
 		switchCustomizerTab: function (tabId) {

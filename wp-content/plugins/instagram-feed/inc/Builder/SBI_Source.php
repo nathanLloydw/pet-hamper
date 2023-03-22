@@ -39,6 +39,7 @@ bool(false)
 namespace InstagramFeed\Builder;
 
 use function DI\value;
+use InstagramFeed\Helpers\Util;
 
 class SBI_Source {
 
@@ -237,9 +238,14 @@ class SBI_Source {
 			$admin_url_state = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		}
 
-		$sb_admin_email = get_option( 'admin_email', '' );
-		$urls['personal']  ='https://connect.smashballoon.com/auth/ig/?wordpress_user=' . sanitize_email( $sb_admin_email ) . '&v=free&vn=' . SBIVER . '&sbi_con=' . $nonce . '&state=';
-		$urls['business'] = 'https://connect.smashballoon.com/auth/ig/?wordpress_user=' . sanitize_email( $sb_admin_email ) . '&v=free&vn=' . SBIVER . '&sbi_con=' . $nonce . '&state=';
+		$admin_email = get_option( 'admin_email', '' );
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			$user_email = $current_user->user_email;
+		}
+		$user_email = isset( $user_email ) ? $user_email : $admin_email;
+		$urls['personal']  ='https://connect.smashballoon.com/auth/ig/?wordpress_user=' . sanitize_email( $user_email ) . '&v=free&vn=' . SBIVER . '&sbi_con=' . $nonce . '&state=';
+		$urls['business'] = 'https://connect.smashballoon.com/auth/ig/?wordpress_user=' . sanitize_email( $user_email ) . '&v=free&vn=' . SBIVER . '&sbi_con=' . $nonce . '&state=';
 
 		$urls['stateURL'] = $admin_url_state;
 
@@ -716,17 +722,26 @@ class SBI_Source {
 		$header_details       = '{}';
 		$source_data['error'] = '';
 		if ( ! $connection->is_wp_error() && ! $connection->is_instagram_error() ) {
-			$header_details_array = $connection->get_data();
-			$header_details_array = self::merge_account_details( $header_details_array, $connected_account );
+			$header_array = $connection->get_data();
+			$header_array = self::merge_account_details( $header_array, $connected_account );
 
-			$cdn_avatar_url = \SB_Instagram_Parse::get_avatar( $header_details_array, array(), true );
+			$cdn_avatar_url = \SB_Instagram_Parse::get_avatar( $header_array, array(), true );
 			if ( ! empty( $cdn_avatar_url ) ) {
-				$created = \SB_Instagram_Connected_Account::create_local_avatar( $header_details_array['username'], $cdn_avatar_url );
-				\SB_Instagram_Connected_Account::update_local_avatar_status( $header_details_array['username'], $created );
+				$created = \SB_Instagram_Connected_Account::create_local_avatar( $header_array['username'], $cdn_avatar_url );
+				\SB_Instagram_Connected_Account::update_local_avatar_status( $header_array['username'], $created );
+				
+				if($created){
+					$header_array['local_avatar_url'] = \SB_Instagram_Connected_Account::get_local_avatar_url( $header_array['username'] );
+					$header_array['local_avatar']     = \SB_Instagram_Connected_Account::get_local_avatar_url( $header_array['username'] );
+				}
+			} else {
+				\SB_Instagram_Connected_Account::delete_local_avatar( $header_array['username'] );
+				$header_array['local_avatar'] = false;
 			}
-
-			$source_data['username'] = $header_details_array['username'];
-			$header_details          = sbi_json_encode( $header_details_array );
+			$source_data['username'] = $header_array['username'];
+			$header_details          = sbi_json_encode( $header_array );
+			$source_data['local_avatar']     = $header_array['local_avatar'];
+			$source_data['local_avatar_url'] = $header_array['local_avatar'];
 		} else {
 			$source_data['error'] = $connection;
 			if ( $connection->is_wp_error() ) {
@@ -859,7 +874,7 @@ class SBI_Source {
 				'username'          => $source_datum['username'],
 				'access_token'      => sbi_maybe_clean( $source_datum['access_token'] ),
 				'privilege'         => $source_datum['privilege'],
-				'expires_timestamp' => strtotime( $source_datum['expires'] ),
+				'expires_timestamp' => Util::get_valid_timestamp( $source_datum['expires'] ),
 				'is_valid'          => empty( $source_datum['error'] ),
 				'profile_picture'   => $avatar,
 				'last_checked'      => isset( $source_datum['last_updated'] ) ? strtotime( $source_datum['last_updated'] ) : time(),

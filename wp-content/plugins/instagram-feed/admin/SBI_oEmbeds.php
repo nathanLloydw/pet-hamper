@@ -207,11 +207,11 @@ class SBI_oEmbeds {
 			),
 			'modal' => array(
 				'title' => __( 'Enable Facebook oEmbeds', 'instagram-feed' ),
-				'description' => __( 'To enable Instagram oEmbeds our Custom Facebok Feed plugin is required. Click the button below to Install it and enable Instagram oEmbeds.', 'instagram-feed' ),
+				'description' => __( 'To enable Facebook oEmbeds our Custom Facebook Feed plugin is required. Click the button below to Install it and enable Facebook oEmbeds.', 'instagram-feed' ),
 				'install' => __( 'Install Plugin', 'instagram-feed' ),
 				'activate' => __( 'Activate Plugin', 'instagram-feed' ),
 				'cancel' => __( 'Cancel', 'instagram-feed' ),
-				'instaIcon' => SBI_PLUGIN_URL . 'admin/assets/img/instagram-color-icon.svg',
+				'instaIcon' => SBI_PLUGIN_URL . 'admin/assets/img/facebook-color-icon.svg',
 				'timesIcon' => '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.2084 2.14275L12.8572 0.791504L7.50008 6.14859L2.143 0.791504L0.791748 2.14275L6.14883 7.49984L0.791748 12.8569L2.143 14.2082L7.50008 8.85109L12.8572 14.2082L14.2084 12.8569L8.85133 7.49984L14.2084 2.14275Z" fill="#141B38"/></svg>',
 				'plusIcon' => '<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.0832 6.83317H7.08317V11.8332H5.4165V6.83317H0.416504V5.1665H5.4165V0.166504H7.08317V5.1665H12.0832V6.83317Z" fill="white"/></svg>'
 			),

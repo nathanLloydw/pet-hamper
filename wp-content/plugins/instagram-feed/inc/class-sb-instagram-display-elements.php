@@ -36,6 +36,7 @@ class SB_Instagram_Display_Elements {
 				$classes .= ' sbi_new sbi_no_js sbi_no_resraise sbi_js_load_disabled';
 			}
 		} else {
+			$classes .= isset( $settings['disable_js_image_loading'] ) && $settings['disable_js_image_loading'] ? ' sbi_no_js_customizer' : '';
 			$classes .= ' sbi_new ';
 		}
 
