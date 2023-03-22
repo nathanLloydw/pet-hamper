@@ -2,8 +2,8 @@
 Contributors: facebook, automattic, woothemes
 Tags: facebook, shop, catalog, advertise, pixel, product
 Requires at least: 4.4
-Tested up to: 6.1
-Stable tag: 3.0.8
+Tested up to: 6.2
+Stable tag: 3.0.16
 Requires PHP: 5.6 or greater
 MySQL: 5.6 or greater
 License: GPLv2 or later
@@ -38,6 +38,39 @@ When opening a bug on GitHub, please give us as many details as possible.
 * Current version of Facebook-for-WooCommerce, WooCommerce, Wordpress, PHP
 
 == Changelog ==
+
+= 3.0.16 - 2023-03-21 =
+* Fix - Deprecation notices thrown by nonce_user_logged_out.
+* Fix - Display the Facebook tab and sync settings for external products.
+* Fix - viewContent events triggering PHP server notices on elementor sites.
+
+= 3.0.15 - 2023-03-14 =
+* Tweak - WC 7.5 compatibility.
+* Tweak - WP 6.2 compatibility.
+
+= 3.0.14 - 2023-03-02 =
+* Fix - Fatal error due to the latest WC Blocks changes.
+* Fix custom attribute name with special characters breaks sync.
+
+= 3.0.13 - 2023-02-28 =
+* Fix - WC()->session causing fatal error when the `woocommerce_add_to_cart_redirect` filter is called via REST API.
+
+= 3.0.12 - 2023-02-21 =
+* Fix - Replace is_ajax calls with wp_doing_ajax().
+* Fix - out-of-stock products not deleted in Facebook catalog.
+
+= 3.0.11 - 2023-02-14 =
+* Fix - Default sync mode on new product.
+
+= 3.0.10 - 2023-02-07 =
+* Add - Ping Meta server with the currently installed plugin version.
+* Fix - PHP 8.1 deprecated warnings.
+* Tweak - WC 7.4 compatibility.
+
+= 3.0.9 - 2023-01-31 =
+* Fix - CAPI purchase event not firing with orders from FB/Instagram app on iOS.
+* Fix - Setting a product's Facebook sync status to "Do not sync" not working.
+* Update - Onboarding task title and remove task content.
 
 = 3.0.8 - 2023-01-10 =
 * Add - Add support for Mix and Match containers with per-item pricing.

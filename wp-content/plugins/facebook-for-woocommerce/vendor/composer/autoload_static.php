@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc
+class ComposerStaticInitd5a95737b390c6cf4200ad5873a6ae44
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -242,6 +242,7 @@ class ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc
         'WooCommerce\\Facebook\\Events\\AAMSettings' => __DIR__ . '/../..' . '/includes/Events/AAMSettings.php',
         'WooCommerce\\Facebook\\Events\\Event' => __DIR__ . '/../..' . '/includes/Events/Event.php',
         'WooCommerce\\Facebook\\Events\\Normalizer' => __DIR__ . '/../..' . '/includes/Events/Normalizer.php',
+        'WooCommerce\\Facebook\\ExternalVersionUpdate\\Update' => __DIR__ . '/../..' . '/includes/ExternalVersionUpdate/Update.php',
         'WooCommerce\\Facebook\\Feed\\FeedConfigurationDetection' => __DIR__ . '/../..' . '/includes/Feed/FeedConfigurationDetection.php',
         'WooCommerce\\Facebook\\Framework\\AdminMessageHandler' => __DIR__ . '/../..' . '/includes/Framework/AdminMessageHandler.php',
         'WooCommerce\\Facebook\\Framework\\AdminNoticeHandler' => __DIR__ . '/../..' . '/includes/Framework/AdminNoticeHandler.php',
@@ -293,9 +294,9 @@ class ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit32c1603b6923a4e2ea639c81fe74cbbc::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd5a95737b390c6cf4200ad5873a6ae44::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd5a95737b390c6cf4200ad5873a6ae44::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd5a95737b390c6cf4200ad5873a6ae44::$classMap;
 
         }, null, ClassLoader::class);
     }
