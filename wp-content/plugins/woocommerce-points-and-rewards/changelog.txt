@@ -1,5 +1,27 @@
 *** WooCommerce Points and Rewards Changelog ***
 
+2023-03-14 - version 1.7.29
+* Dev - Adds a filter to bypass rendering messages.
+* Tweak - WC 7.5 compatibility.
+* Tweak - WP 6.2 compatibility.
+
+2023-03-07 - version 1.7.28
+* Tweak - Hide redundant "Earn up to" message for variable products.
+
+2023-02-28 - version 1.7.27
+* Fix - Adds placeholder for minimum and maximum points discount field.
+* Fix - Changes Minimum Points Discount field type to number to avoid non-numeric characters.
+* Fix - Excessive recording of events for zero redeemed points.
+
+2023-01-31 - version 1.7.26
+* Fix - Only allow non-negative customer point updates.
+* Tweak - WC 7.4 compatibility.
+
+2023-01-24 - version 1.7.25
+* Dev - Fix incorrect core value in .wp-env.json.
+* Fix - Add backlog automation.
+* Fix - Fix a bug where Points and Rewards would not render correctly in the Cart and Checkout blocks.
+
 2023-01-04 - version 1.7.24
 * Tweak - WC 7.3 compatibility.
 
