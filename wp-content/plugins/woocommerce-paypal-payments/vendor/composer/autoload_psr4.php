@@ -12,6 +12,7 @@ return array(
     'WooCommerce\\PayPalCommerce\\WcGateway\\' => array($baseDir . '/modules/ppcp-wc-gateway/src'),
     'WooCommerce\\PayPalCommerce\\Vendor\\' => array($baseDir . '/lib/packages'),
     'WooCommerce\\PayPalCommerce\\Vaulting\\' => array($baseDir . '/modules/ppcp-vaulting/src'),
+    'WooCommerce\\PayPalCommerce\\Uninstall\\' => array($baseDir . '/modules/ppcp-uninstall/src'),
     'WooCommerce\\PayPalCommerce\\Subscription\\' => array($baseDir . '/modules/ppcp-subscription/src'),
     'WooCommerce\\PayPalCommerce\\StatusReport\\' => array($baseDir . '/modules/ppcp-status-report/src'),
     'WooCommerce\\PayPalCommerce\\Session\\' => array($baseDir . '/modules/ppcp-session/src'),

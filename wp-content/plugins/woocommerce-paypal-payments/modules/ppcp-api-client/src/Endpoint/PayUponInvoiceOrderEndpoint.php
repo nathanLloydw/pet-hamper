@@ -26,7 +26,7 @@ use WooCommerce\PayPalCommerce\ApiClient\Entity\Order;
 use WooCommerce\PayPalCommerce\ApiClient\Entity\PurchaseUnit;
 use WooCommerce\PayPalCommerce\ApiClient\Exception\PayPalApiException;
 use WooCommerce\PayPalCommerce\ApiClient\Factory\OrderFactory;
-use WooCommerce\PayPalCommerce\WcGateway\Gateway\PayUponInvoice\FraudNet;
+use WooCommerce\PayPalCommerce\WcGateway\FraudNet\FraudNet;
 use WooCommerce\PayPalCommerce\WcGateway\Gateway\PayUponInvoice\PaymentSource;
 use WP_Error;
 
@@ -133,7 +133,7 @@ class PayUponInvoiceOrderEndpoint {
 				'Content-Type'              => 'application/json',
 				'Prefer'                    => 'return=representation',
 				'PayPal-Client-Metadata-Id' => $this->fraudnet->session_id(),
-				'PayPal-Request-Id'         => uniqid( 'ppcp-', true ),
+				'PayPal-Request-Id'         => uniqid( 'ppcp-', true ), // Request-Id header is required.
 			),
 			'body'    => wp_json_encode( $data ),
 		);

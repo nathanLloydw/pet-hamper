@@ -9,6 +9,11 @@ declare(strict_types=1);
 
 namespace WooCommerce\PayPalCommerce\Button;
 
+use WooCommerce\PayPalCommerce\Button\Endpoint\CartScriptParamsEndpoint;
+use WooCommerce\PayPalCommerce\Button\Helper\CheckoutFormSaver;
+use WooCommerce\PayPalCommerce\Button\Endpoint\SaveCheckoutFormEndpoint;
+use WooCommerce\PayPalCommerce\Button\Validation\CheckoutFormValidator;
+use WooCommerce\PayPalCommerce\Button\Endpoint\ValidateCheckoutEndpoint;
 use WooCommerce\PayPalCommerce\Vendor\Psr\Container\ContainerInterface;
 use WooCommerce\PayPalCommerce\Button\Assets\DisabledSmartButton;
 use WooCommerce\PayPalCommerce\Button\Assets\SmartButton;
@@ -104,6 +109,7 @@ return array(
 			$currency,
 			$container->get( 'wcgateway.all-funding-sources' ),
 			$container->get( 'button.basic-checkout-validation-enabled' ),
+			$container->get( 'button.early-wc-checkout-validation-enabled' ),
 			$container->get( 'woocommerce.logger.woocommerce' )
 		);
 	},
@@ -181,6 +187,16 @@ return array(
 			$logger
 		);
 	},
+	'button.checkout-form-saver'                  => static function ( ContainerInterface $container ): CheckoutFormSaver {
+		return new CheckoutFormSaver();
+	},
+	'button.endpoint.save-checkout-form'          => static function ( ContainerInterface $container ): SaveCheckoutFormEndpoint {
+		return new SaveCheckoutFormEndpoint(
+			$container->get( 'button.request-data' ),
+			$container->get( 'button.checkout-form-saver' ),
+			$container->get( 'woocommerce.logger.woocommerce' )
+		);
+	},
 	'button.endpoint.data-client-id'              => static function( ContainerInterface $container ) : DataClientIdEndpoint {
 		$request_data   = $container->get( 'button.request-data' );
 		$identity_token = $container->get( 'api.endpoint.identity-token' );
@@ -195,6 +211,19 @@ return array(
 		return new StartPayPalVaultingEndpoint(
 			$container->get( 'button.request-data' ),
 			$container->get( 'api.endpoint.payment-token' ),
+			$container->get( 'woocommerce.logger.woocommerce' )
+		);
+	},
+	'button.endpoint.validate-checkout'           => static function ( ContainerInterface $container ): ValidateCheckoutEndpoint {
+		return new ValidateCheckoutEndpoint(
+			$container->get( 'button.request-data' ),
+			$container->get( 'button.validation.wc-checkout-validator' ),
+			$container->get( 'woocommerce.logger.woocommerce' )
+		);
+	},
+	'button.endpoint.cart-script-params'          => static function ( ContainerInterface $container ): CartScriptParamsEndpoint {
+		return new CartScriptParamsEndpoint(
+			$container->get( 'button.smart-button' ),
 			$container->get( 'woocommerce.logger.woocommerce' )
 		);
 	},
@@ -233,5 +262,8 @@ return array(
 		 * The validation is triggered in a non-standard way and may cause issues on some sites.
 		 */
 		return (bool) apply_filters( 'woocommerce_paypal_payments_early_wc_checkout_validation_enabled', true );
+	},
+	'button.validation.wc-checkout-validator'     => static function ( ContainerInterface $container ): CheckoutFormValidator {
+		return new CheckoutFormValidator();
 	},
 );
