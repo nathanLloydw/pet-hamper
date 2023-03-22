@@ -796,6 +796,7 @@ class WC_Stripe_Payment_Request {
 	 * @version 5.2.0
 	 */
 	public function display_payment_request_button_html() {
+        global $product;
 		$gateways = WC()->payment_gateways->get_available_payment_gateways();
 
 		if ( ! isset( $gateways['stripe'] ) ) {
@@ -810,8 +811,14 @@ class WC_Stripe_Payment_Request {
 			return;
 		}
 
+        // bundled products do not work with express checkout, tmp solution till fixed
+        if($product->is_type("bundle"))
+        {
+            return;
+        }
+
 		?>
-		<div id="wc-stripe-payment-request-wrapper" style="clear:both;padding-top:1.5em;display:none;">
+		<div id="wc-stripe-payment-request-wrapper" data-type="<?php echo $product->get_type(); ?>" style="clear:both;padding-top:1.5em;display:none;">
 			<div id="wc-stripe-payment-request-button">
 				<?php
 				if ( $this->is_custom_button() ) {

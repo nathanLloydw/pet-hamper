@@ -2479,7 +2479,7 @@ ul.collections-grid li .inner {
 }
 
 .wc-points-rewards-product-message,
-.single_variation_wrap p.points {
+.single_variation_wrap, .single_variation_wrap p.points {
   width: 100%;
 }
 
@@ -2639,6 +2639,10 @@ a.added_to_cart.wc-forward {
 
 .woocommerce div.product form.cart .variations .label {
   line-height: 1 !important;
+}
+
+.woocommerce div.product form.cart .variations .value select {
+  width:100%;
 }
 
 .single-product .plus {
