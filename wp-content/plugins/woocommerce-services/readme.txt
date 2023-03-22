@@ -5,8 +5,8 @@ Requires PHP: 5.6
 Requires at least: 4.6
 Tested up to: 6.1.1
 WC requires at least: 3.6
-WC tested up to: 7.1.0
-Stable tag: 2.1.1
+WC tested up to: 7.3.0
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,21 @@ The source code is freely available [in GitHub](https://github.com/Automattic/wo
 6. Checking and exporting the label purchase reports
 
 == Changelog ==
+
+= 2.2.4 - 2023-03-14 =
+* Fix   - Incompatibility with Kadence WooCommerce Email Designer.
+
+= 2.2.3 - 2023-02-14 =
+* Fix   - Link correction on Automated taxes description text.
+
+= 2.2.2 - 2023-02-02 =
+* Fix   - Adjust checkout US zipcode validation to run only when exactly 5 or 10 digits are typed.
+
+= 2.2.1 - 2023-01-24 =
+* Fix   - Fix warning on checkout page apper if zipcode doesn't match selected state.
+
+= 2.2.0 - 2023-01-19 =
+* Add   - Add option to let user pick whether to save the last package & service or not.
 
 = 2.1.1 - 2023-01-02 =
 * Fix   - Save the selected package box and do not skip the package step.
