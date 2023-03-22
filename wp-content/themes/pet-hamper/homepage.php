@@ -5,6 +5,8 @@
 */
 
 get_header();
+
+$total_rows = 0;
 ?>
 
 
@@ -18,7 +20,9 @@ get_header();
 
 			    <ul class="splide__list" style="max-height: 800px;overflow: hidden;position:relative;background:#d0c5a5;">
 			    <?php while( have_rows('slides') ): the_row(); ?>
-			        <li style="position: relative">
+
+                <?php $total_rows = get_row_index() ?>
+			        <li data-row="<?php echo $total_rows; ?>" style="position: relative">
 			        	<div class="image mobile-hide"><img class="skip-lazy" src="<?php echo get_sub_field('image') ?>"></div>
 			        	<div class="image mobile-show"><img class="skip-lazy" src="<?php echo get_sub_field('mobile_image') ?>"></div>
 
@@ -38,12 +42,14 @@ get_header();
 			        </li>
 			    <?php endwhile; ?>
 
+                    <?php if($total_rows > 1): ?>
                     <!-- slider controls -->
                     <div class="slider-controls">
                         <i class="fa-solid fa-chevron-left disabled" style="margin-left:20px;"></i>
                         <i class="fa-solid fa-chevron-right" style="margin-right:20px;"></i>
                     </div>
                     <!-- slider controls -->
+                    <?php endif; ?>
 
 			    </ul>
 			<?php endif; ?>
