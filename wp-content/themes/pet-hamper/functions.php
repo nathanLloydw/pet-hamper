@@ -615,6 +615,4 @@ add_filter('woocommerce_paypal_payments_single_product_renderer_hook', function(
     return 'twg_paypal_single_product_buttons';
 });
 
-add_filter( 'big_image_size_threshold', '__return_false' );
-
 ?>

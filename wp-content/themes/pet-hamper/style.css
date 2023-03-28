@@ -64,6 +64,37 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 /** Nathan Custom Styles - Start **/
 
+.woocommerce-free-shipping
+{
+  padding: 1em 2em 1em 3.5em;
+  margin: 0 0 2em;
+  background:#f5f1e5 !important;
+  text-align:center;
+}
+
+.woocommerce-free-shipping::before { content:"" !important; }
+
+.woocommerce-free-shipping .progress-bar,
+.woocommerce-free-shipping .progress
+{
+  height:12px;
+  border-radius: 8px;
+}
+
+.woocommerce-free-shipping .progress-bar
+{
+  margin-top:5px !important;
+  width:50%;
+  margin:auto;
+  background:white;
+}
+
+.woocommerce-free-shipping .progress
+{
+  width:50%;
+  background:#b2a598;
+}
+
 #ppc-button-ppcp-gateway {
   display: flex;
   justify-content: center;
