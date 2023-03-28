@@ -30,11 +30,11 @@ do_action( 'woocommerce_before_cart' ); ?>
 
         if($order_total > $free_shipping)
         {
-            echo "CONGRATS! YOU'RE GETTING FREE DELIVERY (UK)";
+            echo "<i class='fa-solid fa-check'></i> CONGRATS! YOU'RE GETTING FREE DELIVERY (UK)";
         }
         else
         {
-            echo '<strong>£'.($free_shipping - $order_total).'</strong> AWAY FROM FREE STANDARD DELIVERY (UK)</br>';
+            echo '<strong>£'.number_format($free_shipping - $order_total,2).'</strong> AWAY FROM FREE STANDARD DELIVERY (UK)</br>';
             echo '<div class="progress-bar"><div class="progress" style="width:'.(100 - ((($free_shipping - $order_total) / $free_shipping)*100)).'%"></div></div>';
         }
         ?>
