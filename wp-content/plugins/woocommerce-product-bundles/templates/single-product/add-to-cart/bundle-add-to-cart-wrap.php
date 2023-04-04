@@ -88,8 +88,5 @@ if ( ! defined( 'ABSPATH' ) ) {
     ?>
 </div>
 
-<p id="wc-stripe-payment-request-button-separator" style="text-align: center;">— OR —</p>
-
-<?php do_action( 'twg_paypal_single_product_buttons' ); ?>
 
 </div>
