@@ -1668,7 +1668,7 @@ ul.productgrid.four a {
 .hp_banner img {
   width: 100%;
   object-fit: cover;
-  max-height:800px;
+  height:800px;
 }
 
 .hp_banner li
@@ -1695,7 +1695,7 @@ ul.productgrid.four a {
   align-items: center;
 }
 
-.slider-controls i
+.slider-controls div
 {
   font-size:50px;
   cursor:pointer;
@@ -1704,22 +1704,22 @@ ul.productgrid.four a {
   opacity: 75%;
 }
 
-.slider-controls i.disabled
+.slider-controls div.disabled
 {
   opacity: 25%;
   cursor:auto !important;
 }
 
-.slider-controls i.disabled:hover
+.slider-controls div.disabled:hover
 {
   opacity: 25%;
 }
 
 @media (max-width: 767.98px) {
-  .slider-controls i { padding:8px;font-size:20px;}
+  .slider-controls div { padding:8px;font-size:20px;font-size:70px; }
 }
 
-.slider-controls i:hover
+.slider-controls div:hover
 {
   opacity: 100%;
   /*background:#ccbcad;*/

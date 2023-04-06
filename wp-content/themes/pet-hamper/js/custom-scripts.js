@@ -221,8 +221,8 @@ function manage_pagination_autoscroll()
 
 function gallery_slider()
 {
-    let scroll_left = document.querySelector('.hp_banner .slider-controls .fa-chevron-left');
-    let scroll_right = document.querySelector('.hp_banner .slider-controls .fa-chevron-right');
+    let scroll_left = document.querySelector('.hp_banner .slider-controls .scroll-left');
+    let scroll_right = document.querySelector('.hp_banner .slider-controls .scroll-right');
 
     let slides = document.querySelectorAll('.hp_banner li');
 
@@ -281,8 +281,48 @@ function gallery_slider()
         });
     }
 
+    window.setInterval(function()
+    {
+        if (slides[current_slide + 1])
+        {
+            scroll_left.classList.remove('disabled');
 
+            current_slide++;
 
+            slides.forEach(function (slide)
+            {
+                slide.style.height = '0';
+                slide.style.opacity = '0';
+            });
+
+            slides[current_slide].style.height = 'auto';
+            slides[current_slide].style.opacity = '1';
+
+            console.log(current_slide);
+            console.log(slides.length - 1);
+
+            if((slides.length - 1) == current_slide)
+            {
+                scroll_right.classList.add('disabled');
+            }
+        }
+        else
+        {
+            scroll_left.classList.add('disabled');
+            scroll_right.classList.remove('disabled');
+            current_slide = 0;
+
+            slides.forEach(function (slide)
+            {
+                slide.style.height = '0';
+                slide.style.opacity = '0';
+            });
+
+            slides[current_slide].style.height = 'auto';
+            slides[current_slide].style.opacity = '1';
+        }
+
+    }, 6000);
 }
 
 

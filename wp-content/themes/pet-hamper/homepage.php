@@ -22,7 +22,7 @@ $total_rows = 0;
 			    <?php while( have_rows('slides') ): the_row(); ?>
 
                 <?php $total_rows = get_row_index() ?>
-			        <li data-row="<?php echo $total_rows; ?>" style="position: relative">
+			        <li data-row="<?php echo $total_rows - 1; ?>" style="position: relative">
 			        	<div class="image mobile-hide"><img class="skip-lazy" src="<?php echo get_sub_field('image') ?>"></div>
 			        	<div class="image mobile-show"><img class="skip-lazy" src="<?php echo get_sub_field('mobile_image') ?>"></div>
 
@@ -45,8 +45,8 @@ $total_rows = 0;
                     <?php if($total_rows > 1): ?>
                     <!-- slider controls -->
                     <div class="slider-controls">
-                        <i class="fa-solid fa-chevron-left disabled" style="margin-left:20px;"></i>
-                        <i class="fa-solid fa-chevron-right" style="margin-right:20px;"></i>
+                        <div class="scroll-left disabled" style="margin-left:20px;"><</div>
+                        <div class="scroll-right" style="margin-right:20px;">></div>
                     </div>
                     <!-- slider controls -->
                     <?php endif; ?>
