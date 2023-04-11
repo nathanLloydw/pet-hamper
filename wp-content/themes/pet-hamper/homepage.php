@@ -18,7 +18,7 @@ $total_rows = 0;
 
 			<?php if( have_rows('slides') ): ?>
 
-			    <ul class="splide__list" style="max-height: 800px;overflow: hidden;position:relative;background:#d0c5a5;">
+			    <ul class="splide__list">
 			    <?php while( have_rows('slides') ): the_row(); ?>
 
                 <?php $total_rows = get_row_index() ?>

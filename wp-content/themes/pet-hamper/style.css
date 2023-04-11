@@ -1715,8 +1715,25 @@ ul.productgrid.four a {
   opacity: 25%;
 }
 
+.splide__list
+{
+  max-height: 800px;
+  overflow: hidden;
+  position:relative;
+  background:#d0c5a5;
+}
+
 @media (max-width: 767.98px) {
   .slider-controls div { padding:8px;font-size:20px;font-size:70px; }
+
+  .hp_banner img {
+    height:650px;
+  }
+
+  .splide__list
+  {
+    max-height: 650px;
+  }
 }
 
 .slider-controls div:hover
