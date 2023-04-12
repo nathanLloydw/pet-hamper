@@ -1402,6 +1402,14 @@ textarea {
   text-align:center;
 }
 
+@media (max-width: 1015px) {
+  .exclusive-container span.exclusive { font-size:12px; }
+}
+
+@media (max-width: 500px) {
+  .exclusive-container span.exclusive { font-size:10px; }
+}
+
 
 .h2-link {
   background: #b2a497;
