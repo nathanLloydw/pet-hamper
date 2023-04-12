@@ -1725,11 +1725,13 @@ ul.productgrid.four a {
 
 .splide__list
 {
-  max-height: 800px;
+  max-height: 73vh;
   overflow: hidden;
   position:relative;
   background:#d0c5a5;
 }
+
+.hp_banner img { height:73vh; }
 
 @media (max-width: 800px) {
   .slider-controls div { padding:8px;font-size:20px;font-size:70px; }
