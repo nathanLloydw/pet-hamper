@@ -1731,17 +1731,11 @@ ul.productgrid.four a {
   background:#d0c5a5;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 800px) {
   .slider-controls div { padding:8px;font-size:20px;font-size:70px; }
 
-  .hp_banner img {
-    height:650px;
-  }
-
-  .splide__list
-  {
-    max-height: 650px;
-  }
+  .splide__list { max-height: 60vh; }
+  .hp_banner img { height:60vh; }
 }
 
 .slider-controls div:hover
