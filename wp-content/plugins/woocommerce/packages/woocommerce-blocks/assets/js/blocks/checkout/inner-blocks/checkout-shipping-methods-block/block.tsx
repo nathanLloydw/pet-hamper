@@ -4,21 +4,28 @@
 import { __ } from '@wordpress/i18n';
 import { useShippingData } from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
-import { getShippingRatesPackageCount } from '@woocommerce/base-utils';
+import {
+	getShippingRatesPackageCount,
+	hasCollectableRate,
+	isAddressComplete,
+} from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { useEditorContext } from '@woocommerce/base-context';
+import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
-import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import type {
+	PackageRateOption,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/types';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
+import { useSelect } from '@wordpress/data';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
-import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
 
 /**
@@ -46,7 +53,7 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = (): JSX.Element | null => {
+const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -54,12 +61,32 @@ const Block = (): JSX.Element | null => {
 		needsShipping,
 		isLoadingRates,
 		hasCalculatedShipping,
+		isCollectable,
 	} = useShippingData();
+
+	const filteredShippingRates = isCollectable
+		? shippingRates.map( ( shippingRatesPackage ) => {
+				return {
+					...shippingRatesPackage,
+					shipping_rates: shippingRatesPackage.shipping_rates.filter(
+						( shippingRatesPackageRate ) =>
+							! hasCollectableRate(
+								shippingRatesPackageRate.method_id
+							)
+					),
+				};
+		  } )
+		: shippingRates;
+
+	const shippingAddress = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getCustomerData()?.shippingAddress;
+	} );
 
 	if ( ! needsShipping ) {
 		return null;
 	}
 
+	const addressComplete = isAddressComplete( shippingAddress );
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
@@ -80,26 +107,29 @@ const Block = (): JSX.Element | null => {
 
 	return (
 		<>
+			<StoreNoticesContainer
+				context={ noticeContexts.SHIPPING_METHODS }
+			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
-				<NoShippingPlaceholder />
+				noShippingPlaceholder
 			) : (
 				<ShippingRatesControl
 					noResultsMessage={
-						<Notice
-							isDismissible={ false }
-							className={ classnames(
-								'wc-block-components-shipping-rates-control__no-results-notice',
-								'woocommerce-error'
-							) }
-						>
-							{ __(
-								'There are no shipping options available. Please check your shipping address.',
-								'woo-gutenberg-products-block'
-							) }
-						</Notice>
+						<>
+							{ addressComplete
+								? __(
+										'There are no shipping options available. Please check your shipping address.',
+										'woo-gutenberg-products-block'
+								  )
+								: __(
+										'Add a shipping address to view shipping options.',
+										'woo-gutenberg-products-block'
+								  ) }
+						</>
 					}
 					renderOption={ renderShippingRatesControlOption }
-					shippingRates={ shippingRates }
+					collapsible={ false }
+					shippingRates={ filteredShippingRates }
 					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>

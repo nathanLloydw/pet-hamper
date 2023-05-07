@@ -104,7 +104,6 @@ defined( 'ABSPATH' ) || exit;
 	</table>
 
 	<div class="wc-proceed-to-checkout">
-        <?php do_action( 'twg_paypal_proceed_to_checkout_buttons' ); ?>
 		<?php do_action( 'woocommerce_proceed_to_checkout' ); ?>
 	</div>
 

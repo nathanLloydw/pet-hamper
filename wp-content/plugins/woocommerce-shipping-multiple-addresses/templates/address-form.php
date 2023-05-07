@@ -28,8 +28,6 @@ if ( empty($addresses) ) {
 
 ?>
 
-<hr />
-
 <?php
 $address_id = '-1';
 $address    = array();

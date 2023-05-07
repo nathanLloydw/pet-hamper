@@ -45,13 +45,13 @@ const settings: BlockConfiguration = {
 	example: {
 		attributes: {
 			isPreview: true,
+			className: 'wc-block-mini-cart--preview',
 		},
 	},
 	attributes: {
 		isPreview: {
 			type: 'boolean',
 			default: false,
-			save: false,
 		},
 		addToCartBehaviour: {
 			type: 'string',

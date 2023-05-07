@@ -255,9 +255,9 @@ jQuery( function( $ ) {
 
 			// Provide the submit button value because wc-form-handler expects it.
 			$( '<input />' ).attr( 'type', 'hidden' )
-				.attr( 'name', 'calc_shipping' )
-				.attr( 'value', 'x' )
-				.appendTo( $form );
+							.attr( 'name', 'calc_shipping' )
+							.attr( 'value', 'x' )
+							.appendTo( $form );
 
 			// Make call to actual form post URL.
 			$.ajax( {
@@ -460,7 +460,6 @@ jQuery( function( $ ) {
 		 * @param {JQuery Object} $form The cart form.
 		 */
 		apply_coupon: function( $form ) {
-
 			block( $form );
 
 			var cart = this;
@@ -537,9 +536,9 @@ jQuery( function( $ ) {
 
 			// Provide the submit button value because wc-form-handler expects it.
 			$( '<input />' ).attr( 'type', 'hidden' )
-				.attr( 'name', 'update_cart' )
-				.attr( 'value', 'Update Cart' )
-				.appendTo( $form );
+							.attr( 'name', 'update_cart' )
+							.attr( 'value', 'Update Cart' )
+							.appendTo( $form );
 
 			// Make call to actual form post URL.
 			$.ajax( {
