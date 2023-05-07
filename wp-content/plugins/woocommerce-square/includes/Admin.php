@@ -71,9 +71,7 @@ class Admin {
 		$this->products_handler = $this->plugin->get_products_handler();
 
 		// privacy
-		if ( version_compare( WC_VERSION, '3.4', '>=' ) ) {
-			$this->privacy_handler = new Admin\Privacy();
-		}
+		$this->privacy_handler = new Admin\Privacy();
 
 		$this->add_hooks();
 	}

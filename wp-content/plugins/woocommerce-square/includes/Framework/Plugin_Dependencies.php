@@ -192,8 +192,8 @@ class Plugin_Dependencies {
 	 */
 	public function add_php_settings_notices() {
 
-		/** Ignoring nonce verification as we're just outputting an admin notice. */
-		if ( isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce none required, only showing a notice.
+		if ( isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] ) {
 
 			$bad_settings = $this->get_incompatible_php_settings();
 
@@ -267,8 +267,8 @@ class Plugin_Dependencies {
 		}
 
 		// display a notice that WC < 6.8 support will soon be dropped
-		/** Ignoring nonce verification as we're just outputting an admin notice. */
-		if ( isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] && Plugin_Compatibility::is_wc_version_lt( '6.8' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce none required, only showing a notice.
+		if ( isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] && Plugin_Compatibility::is_wc_version_lt( '6.8' ) ) { 
 
 			$message = sprintf(
 				/* translators: Placeholders: %1$s - WooCommerce version number, %2$s - <strong>, %3$s - </strong>, %4$s - Plugin name, %5$s - <a> tag, %6$s - </a> tag */

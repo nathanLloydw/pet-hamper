@@ -1,5 +1,12 @@
 *** WooCommerce Square Changelog ***
 
+= 3.8.0 - 2023-05-04 =
+* Dev - Bump WooCommerce "tested up to" version 7.6.
+* Dev - Bump WordPress minimum supported version from 5.6 to 5.8.
+* Dev - Ignore false positives for phpcs nonce check.
+* Fix - Incorrect inventory value for product import.
+* Update - Migrate Payment Tokens from user meta to WC_Payment_Tokens to support card expiry alerts through Automate Woo and also to align with WooCommerce Core.
+
 = 3.7.1 - 2023-04-21 =
 * Add – Show a `Beta` notice in Gift Card settings UI to discourage Production usage.
 * Fix - 500 error when trying to use Gift Cards on Production environment.

@@ -127,6 +127,7 @@ class Inventory extends Request {
 	 *     @type string[] $location_ids filters results by Location ID
 	 *     @type string $updated_after filters any changes updated after this time
 	 *     @type string $cursor pagination cursor
+	 *     @type string[] $states filters query results by InventoryState
 	 */
 	public function set_batch_retrieve_inventory_counts_data( $args = array() ) {
 
@@ -135,6 +136,7 @@ class Inventory extends Request {
 			'location_ids'       => null,
 			'updated_after'      => null,
 			'cursor'             => null,
+			'states'             => null,
 		);
 
 		// apply defaults and remove any keys that aren't recognized
@@ -144,6 +146,9 @@ class Inventory extends Request {
 		$body->setLocationIds( $args['location_ids'] );
 		$body->setUpdatedAfter( $args['updated_after'] );
 		$body->setCursor( $args['cursor'] );
+		if ( ! empty( $args['states'] ) ) {
+			$body->setStates( $args['states'] );
+		}
 		$this->square_api_method = 'batchRetrieveInventoryCounts';
 		$this->square_api_args   = array( $body );
 	}
@@ -183,8 +188,8 @@ class Inventory extends Request {
 		 * Using `batchRetrieveInventoryChanges` instead.
 		 */
 		$this->square_api_method = 'batchRetrieveInventoryChanges';
-		$body = new \Square\Models\BatchRetrieveInventoryChangesRequest();
-		$body->setCatalogObjectIds( [ $catalog_object_id ] );
+		$body                    = new \Square\Models\BatchRetrieveInventoryChangesRequest();
+		$body->setCatalogObjectIds( array( $catalog_object_id ) );
 
 		$this->square_api_args = array( $body );
 	}

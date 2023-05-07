@@ -20,13 +20,14 @@
  */
 
 namespace WooCommerce\Square\Framework\PaymentGateway\PaymentTokens;
+
 use WooCommerce\Square\Framework\PaymentGateway\Payment_Gateway;
 use WooCommerce\Square\Framework\Addresses\Customer_Address;
 use WooCommerce\Square\Framework\Square_Helper;
 use WooCommerce\Square\Framework\PaymentGateway\Api\Payment_Gateway_API_Response;
 use WooCommerce\Square\Framework\PaymentGateway\Admin\Payment_Gateway_Admin_Payment_Token_Editor;
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handle the payment tokenization related functionality.
@@ -57,6 +58,76 @@ class Payment_Gateway_Payment_Tokens_Handler {
 		$this->gateway = $gateway;
 
 		$this->environment_id = $gateway->get_environment();
+
+		add_action( 'wc_square_init_payment_token_migration', array( $this, 'register_payment_tokens_migration_scheduler' ) );
+		add_action( 'woocommerce_payment_token_deleted', array( $this, 'remove_token' ), 25, 2 );
+		add_action( 'init', array( $this, 'schedule_token_migration_job' ), 11 );
+	}
+
+	/**
+	 * Schedules the migration of payment tokens.
+	 *
+	 * @since 3.8.0
+	 */
+	public function schedule_token_migration_job() {
+		if ( false !== get_option( 'wc_square_payment_token_migration_complete' ) ) {
+			return;
+		}
+
+		if ( false === as_has_scheduled_action( 'wc_square_init_payment_token_migration' ) ) {
+			as_enqueue_async_action( 'wc_square_init_payment_token_migration', array( 'page' => 1 ) );
+		}
+	}
+
+	/**
+	 * Migrates payment token from user_meta to WC_Payment_Token_CC.
+	 *
+	 * @param integer $page Pagination number.
+	 * @since 3.8.0
+	 */
+	public function register_payment_tokens_migration_scheduler( $page ) {
+		// Get 5 users in a batch.
+		$users = get_users(
+			array(
+				'fields' => array( 'ID' ),
+				'number' => 5,
+				'paged'  => $page,
+			)
+		);
+
+		// If users array is empty, then set status in options to indicate migration is complete.
+		if ( empty( $users ) ) {
+			update_option( 'wc_square_payment_token_migration_complete', true );
+			return;
+		}
+
+		// Re-run scheduler for the next page of users.
+		as_enqueue_async_action( 'wc_square_init_payment_token_migration', array( 'page' => $page + 1 ) );
+
+		foreach ( $users as $user ) {
+			$user_payment_tokens = get_user_meta( $user->id, $this->get_user_meta_name(), true );
+
+			if ( ! is_array( $user_payment_tokens ) || empty( $user_payment_tokens ) ) {
+				continue;
+			}
+
+			foreach ( $user_payment_tokens as $token => $user_payment_token_data ) {
+				$payment_token = new Square_Credit_Card_Payment_Token();
+				$payment_token->set_token( $token );
+				$payment_token->set_card_type( $user_payment_token_data['card_type'] );
+				$payment_token->set_last4( $user_payment_token_data['last_four'] );
+				$payment_token->set_expiry_month( $user_payment_token_data['exp_month'] );
+				$payment_token->set_expiry_year( $user_payment_token_data['exp_year'] );
+				$payment_token->set_user_id( $user->id );
+				$payment_token->set_gateway_id( wc_square()->get_gateway()->get_id() );
+
+				if ( isset( $user_payment_token_data['nickname'] ) ) {
+					$payment_token->set_nickname( $user_payment_token_data['nickname'] );
+				}
+
+				$payment_token->save();
+			}
+		}
 	}
 
 
@@ -144,10 +215,11 @@ class Payment_Gateway_Payment_Tokens_Handler {
 			$gateway->add_transaction_data( $order, $response );
 
 			// clear any cached tokens
-			if ( $transient_key = $this->get_transient_key( $order->get_user_id() ) ) {
+			$transient_key = $this->get_transient_key( $order->get_user_id() );
+
+			if ( $transient_key ) {
 				delete_transient( $transient_key );
 			}
-
 		} else {
 
 			if ( $response->get_status_code() && $response->get_status_message() ) {
@@ -165,6 +237,7 @@ class Payment_Gateway_Payment_Tokens_Handler {
 
 			// add transaction id if there is one
 			if ( $response->get_transaction_id() ) {
+				// translators: Placeholders: %s Transation ID.
 				$message .= ' ' . sprintf( esc_html__( 'Transaction ID %s', 'woocommerce-square' ), $response->get_transaction_id() );
 			}
 
@@ -186,27 +259,17 @@ class Payment_Gateway_Payment_Tokens_Handler {
 	 * @return bool|int false if token not added, user meta ID if added
 	 */
 	public function add_token( $user_id, $token, $environment_id = null ) {
-
-		// default to current environment
-		if ( is_null( $environment_id ) ) {
-			$environment_id = $this->get_environment_id();
-		}
-
-		// get existing tokens
-		$tokens = $this->get_tokens( $user_id, array( 'environment_id' => $environment_id ) );
-
-		// if this token is set as active, mark all others as false
-		if ( $token->is_default() ) {
-			foreach ( array_keys( $tokens ) as $key ) {
-				$tokens[ $key ]->set_default( false );
-			}
-		}
-
-		// add the new token
-		$tokens[ $token->get_id() ] = $token;
-
-		// persist the updated tokens
-		return $this->update_tokens( $user_id, $tokens, $environment_id );
+		$payment_token = new Square_Credit_Card_Payment_Token();
+		$payment_token->set_token( $token->get_id() );
+		$payment_token->set_gateway_id( $this->get_gateway()->get_id() );
+		$payment_token->set_last4( $token->get_last_four() );
+		$payment_token->set_expiry_year( $token->get_exp_year() );
+		$payment_token->set_expiry_month( $token->get_exp_month() );
+		$payment_token->set_card_type( $token->get_card_type() );
+		$payment_token->set_user_id( $user_id );
+		$payment_token->set_environment( $this->get_environment_id() );
+		$payment_token->set_billing_hash( $token->set_billing_hash() );
+		$payment_token->save();
 	}
 
 
@@ -219,7 +282,7 @@ class Payment_Gateway_Payment_Tokens_Handler {
 	 * @param int $user_id WordPress user identifier, or 0 for guest
 	 * @param string $token payment token
 	 * @param string|null $environment_id optional environment id, defaults to plugin current environment
-	 * @return Payment_Gateway_Payment_Token payment token object or null
+	 * @return Square_Credit_Card_Payment_Token payment token object or null
 	 */
 	public function get_token( $user_id, $token, $environment_id = null ) {
 
@@ -230,9 +293,16 @@ class Payment_Gateway_Payment_Tokens_Handler {
 
 		$tokens = $this->get_tokens( $user_id, array( 'environment_id' => $environment_id ) );
 
-		if ( isset( $tokens[ $token ] ) ) return $tokens[ $token ];
+		$result = array_values(
+			array_filter(
+				$tokens,
+				function( $customer_token ) use ( $token ) {
+					return $token === $customer_token->get_token();
+				}
+			)
+		);
 
-		return null;
+		return count( $result ) > 0 ? $result[0] : null;
 	}
 
 
@@ -268,40 +338,25 @@ class Payment_Gateway_Payment_Tokens_Handler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param int $user_id user identifier
-	 * @param Payment_Gateway_Payment_Token|string $token the payment token to delete
-	 * @param string|null $environment_id optional environment id, defaults to plugin current environment
+	 * @param string                    $token_id The payment token string.
+	 * @param \WC_Payment_Token_CC|null $token    The payment token object.
 	 * @return bool|int false if not deleted, updated user meta ID if deleted
 	 */
-	public function remove_token( $user_id, $token, $environment_id = null ) {
+	public function remove_token( $token_id, $token = null ) {
 
-		// default to current environment
-		if ( is_null( $environment_id ) ) {
-			$environment_id = $this->get_environment_id();
-		}
-
-		// unknown token?
-		if ( ! $this->user_has_token( $user_id, $token, $environment_id ) ) {
-			return false;
-		}
-
-		// get the payment token object as needed
-		if ( ! is_object( $token ) ) {
-			$token = $this->get_token( $user_id, $token, $environment_id );
-		}
+		$token_id = is_null( $token ) ? $token_id : $token->get_token();
 
 		// for direct gateways that allow it, attempt to delete the token from the endpoint
 		if ( $this->get_gateway()->get_api()->supports_remove_tokenized_payment_method() ) {
 
 			try {
 
-				$response = $this->get_gateway()->get_api()->remove_tokenized_payment_method( $token->get_id(), $this->get_gateway()->get_customer_id( $user_id, array( 'environment_id' => $environment_id ) ) );
+				$response = $this->get_gateway()->get_api()->remove_tokenized_payment_method( $token_id, $this->get_gateway()->get_customer_id( get_current_user_id() ) );
 
-				if ( ! $response->transaction_approved() && ! $this->should_delete_token( $token, $response ) ) {
+				if ( ! $response->transaction_approved() && ! $this->should_delete_token( $response ) ) {
 					return false;
 				}
-
-			} catch( \Exception $e ) {
+			} catch ( \Exception $e ) {
 
 				if ( $this->get_gateway()->debug_log() ) {
 					$this->get_gateway()->get_plugin()->log( $e->getMessage(), $this->get_gateway()->get_id() );
@@ -311,7 +366,7 @@ class Payment_Gateway_Payment_Tokens_Handler {
 			}
 		}
 
-		return $this->delete_token( $user_id, $token );
+		return true;
 	}
 
 
@@ -320,55 +375,12 @@ class Payment_Gateway_Payment_Tokens_Handler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Payment_Gateway_Payment_Token $token payment token object
 	 * @param Payment_Gateway_API_Response $response API response object
 	 * @return bool
 	 */
-	public function should_delete_token( Payment_Gateway_Payment_Token $token, Payment_Gateway_API_Response $response ) {
+	public function should_delete_token( Payment_Gateway_API_Response $response ) {
 		return false;
 	}
-
-
-	/**
-	 * Deletes a payment token from user meta.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param int $user_id WordPress user ID
-	 * @param Payment_Gateway_Payment_Token $token payment token object
-	 * @param string|null $environment_id gateway environment ID
-	 * @return bool
-	 */
-	public function delete_token( $user_id, Payment_Gateway_Payment_Token $token, $environment_id = null ) {
-
-		// default to current environment
-		if ( is_null( $environment_id ) ) {
-			$environment_id = $this->get_environment_id();
-		}
-
-		// get existing tokens
-		$tokens = $this->get_tokens( $user_id, array( 'environment_id' => $environment_id ) );
-
-		if ( ! isset( $tokens[ $token->get_id() ] ) ) {
-			return false;
-		}
-
-		unset( $tokens[ $token->get_id() ] );
-
-		// if the deleted card was the default one, make another one the new default
-		if ( $token->is_default() ) {
-
-			foreach ( array_keys( $tokens ) as $key ) {
-
-				$tokens[ $key ]->set_default( true );
-				break;
-			}
-		}
-
-		// persist the updated tokens
-		return $this->update_tokens( $user_id, $tokens );
-	}
-
 
 	/**
 	 * Sets the default token for a user.
@@ -390,8 +402,9 @@ class Payment_Gateway_Payment_Tokens_Handler {
 		}
 
 		// unknown token?
-		if ( ! $this->user_has_token( $user_id, $token ) )
+		if ( ! $this->user_has_token( $user_id, $token ) ) {
 			return false;
+		}
 
 		// get the payment token object as needed
 		if ( ! is_object( $token ) ) {
@@ -404,12 +417,11 @@ class Payment_Gateway_Payment_Tokens_Handler {
 		// mark $token as the only active
 		foreach ( $tokens as $key => $_token ) {
 
-			if ( $token->get_id() == $_token->get_id() ) {
+			if ( $token->get_id() === $_token->get_id() ) {
 				$tokens[ $key ]->set_default( true );
 			} else {
 				$tokens[ $key ]->set_default( false );
 			}
-
 		}
 
 		// persist the updated tokens
@@ -429,8 +441,8 @@ class Payment_Gateway_Payment_Tokens_Handler {
 	 *
 	 * @param int $user_id WordPress user identifier, or 0 for guest
 	 * @param array $args optional arguments, can include
-	 *  	`customer_id` - if not provided, this will be looked up based on $user_id
-	 *  	`environment_id` - defaults to plugin current environment
+	 *      `customer_id` - if not provided, this will be looked up based on $user_id
+	 *      `environment_id` - defaults to plugin current environment
 	 * @return array|Payment_Gateway_Payment_Token[] associative array of string token to Payment_Gateway_Payment_Token object
 	 */
 	public function get_tokens( $user_id, $args = array() ) {
@@ -454,12 +466,13 @@ class Payment_Gateway_Payment_Tokens_Handler {
 		}
 
 		// return tokens cached in transient
-		if ( $transient_key && ( false !== ( $this->tokens[ $environment_id ][ $user_id ] = get_transient( $transient_key ) ) ) ) {
+		if ( $transient_key && false !== get_transient( $transient_key ) ) {
+			$this->tokens[ $environment_id ][ $user_id ] = get_transient( $transient_key );
 			return $this->tokens[ $environment_id ][ $user_id ];
 		}
 
 		$this->tokens[ $environment_id ][ $user_id ] = array();
-		$tokens = array();
+		$tokens                                      = array();
 
 		// retrieve the datastore persisted tokens first, so we have them for
 		// gateways that don't support fetching them over an API, as well as the
@@ -484,7 +497,7 @@ class Payment_Gateway_Payment_Tokens_Handler {
 			try {
 
 				// retrieve the payment method tokes from the remote API
-				$response = $this->get_gateway()->get_api()->get_tokenized_payment_methods( $customer_id );
+				$response                                    = $this->get_gateway()->get_api()->get_tokenized_payment_methods( $customer_id );
 				$this->tokens[ $environment_id ][ $user_id ] = $response->get_payment_tokens();
 
 				// check for a default from the persisted set, if any
@@ -506,7 +519,7 @@ class Payment_Gateway_Payment_Tokens_Handler {
 				// persist locally after merging
 				$this->update_tokens( $user_id, $this->tokens[ $environment_id ][ $user_id ], $environment_id );
 
-			} catch( \Exception $e ) {
+			} catch ( \Exception $e ) {
 
 				// communication or other error
 
@@ -514,7 +527,6 @@ class Payment_Gateway_Payment_Tokens_Handler {
 
 				$this->tokens[ $environment_id ][ $user_id ] = $tokens;
 			}
-
 		}
 
 		// set the payment type image url, if any, for convenience
@@ -818,8 +830,9 @@ class Payment_Gateway_Payment_Tokens_Handler {
 		// order note based on gateway type
 		if ( $gateway->is_credit_card_gateway() ) {
 
-			/* translators: Placeholders: %1$s - payment gateway title (such as Authorize.net, Braintree, etc), %2$s - payment method name (mastercard, bank account, etc), %3$s - last four digits of the card/account, %4$s - card/account expiry date */
-			$message = sprintf( esc_html__( '%1$s Payment Method Saved: %2$s ending in %3$s (expires %4$s)', 'woocommerce-square' ),
+			$message = sprintf(
+				/* translators: Placeholders: %1$s - payment gateway title (such as Authorize.net, Braintree, etc), %2$s - payment method name (mastercard, bank account, etc), %3$s - last four digits of the card/account, %4$s - card/account expiry date */
+				esc_html__( '%1$s Payment Method Saved: %2$s ending in %3$s (expires %4$s)', 'woocommerce-square' ),
 				$gateway->get_method_title(),
 				$token->get_type_full(),
 				$token->get_last_four(),

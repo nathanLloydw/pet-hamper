@@ -95,6 +95,7 @@ class Connection {
 	 */
 	public function handle_connected() {
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Setting variable, nonce checked next line.
 		$nonce = isset( $_GET['_wpnonce'] ) ? wc_clean( wp_unslash( $_GET['_wpnonce'] ) ) : '';
 
 		// check the user role & nonce
@@ -163,6 +164,7 @@ class Connection {
 		// remove the refresh fail flag if previously set
 		delete_option( 'wc_square_refresh_failed' );
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended - Setting var, nonce checked next line.
 		$nonce = isset( $_GET['_wpnonce'] ) ? wc_clean( $_GET['_wpnonce'] ) : '';
 
 		// check the user role & nonce

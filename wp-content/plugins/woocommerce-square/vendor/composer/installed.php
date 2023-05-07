@@ -3,7 +3,7 @@
         'name' => 'woocommerce/woocommerce-square',
         'pretty_version' => 'dev-trunk',
         'version' => 'dev-trunk',
-        'reference' => '4656c275903b11182b5e46216c3dabfe088cba34',
+        'reference' => 'b2e18e73d99d75234666dc618801933f2869d451',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'woocommerce/woocommerce-square' => array(
             'pretty_version' => 'dev-trunk',
             'version' => 'dev-trunk',
-            'reference' => '4656c275903b11182b5e46216c3dabfe088cba34',
+            'reference' => 'b2e18e73d99d75234666dc618801933f2869d451',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

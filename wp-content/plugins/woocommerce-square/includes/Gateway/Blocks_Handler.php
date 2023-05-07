@@ -234,7 +234,7 @@ class Blocks_Handler extends AbstractPaymentMethodType {
 			$saved_method = array(
 				'method'     => array(
 					'gateway' => 'square_credit_card',
-					'last4'   => $token->get_last_four(),
+					'last4'   => $token->get_last4(),
 					'brand'   => wc_get_credit_card_type_label( $token->get_card_type() ),
 				),
 				'expires'    => $token->get_exp_date(),

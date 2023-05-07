@@ -26,8 +26,8 @@ namespace WooCommerce\Square\Gateway;
 defined( 'ABSPATH' ) || exit;
 
 use WooCommerce\Square\Framework\PaymentGateway\Api\Payment_Gateway_API_Response;
-use WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Payment_Gateway_Payment_Token;
 use WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Payment_Gateway_Payment_Tokens_Handler;
+use WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Square_Credit_Card_Payment_Token;
 
 class Card_Handler extends Payment_Gateway_Payment_Tokens_Handler {
 
@@ -62,11 +62,10 @@ class Card_Handler extends Payment_Gateway_Payment_Tokens_Handler {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Payment_Gateway_Payment_Token $token
 	 * @param Payment_Gateway_API_Response $response
 	 * @return bool
 	 */
-	public function should_delete_token( Payment_Gateway_Payment_Token $token, Payment_Gateway_API_Response $response ) {
+	public function should_delete_token( Payment_Gateway_API_Response $response ) {
 
 		return 'NOT_FOUND' === $response->get_status_code();
 	}
@@ -92,42 +91,21 @@ class Card_Handler extends Payment_Gateway_Payment_Tokens_Handler {
 			$args['customer_id'] = $this->get_gateway()->get_customer_id( $user_id, array( 'environment_id' => $args['environment_id'] ) );
 		}
 
-		$environment_id = $args['environment_id'];
-		$customer_id    = $args['customer_id'];
-		$transient_key  = $this->get_transient_key( $user_id );
+		$transient_key = $this->get_transient_key( $user_id );
 
-		// return tokens cached during a single request
-		if ( isset( $this->tokens[ $environment_id ][ $user_id ] ) ) {
-			return $this->tokens[ $environment_id ][ $user_id ];
-		}
+		$customer_id = $args['customer_id'];
 
-		// return tokens cached in transient
 		if ( $transient_key ) {
-			$this->tokens[ $environment_id ][ $user_id ] = get_transient( $transient_key );
+			$transient_tokens = get_transient( $transient_key );
 
-			if ( false !== $this->tokens[ $environment_id ][ $user_id ] ) {
-				return $this->tokens[ $environment_id ][ $user_id ];
+			if ( false !== $transient_tokens ) {
+				return $transient_tokens;
 			}
 		}
 
-		$this->tokens[ $environment_id ][ $user_id ] = array();
-		$tokens                                      = array();
-
-		// retrieve the datastore persisted tokens first, so we have them for
-		// gateways that don't support fetching them over an API, as well as the
-		// default token for those that do
-		if ( $user_id ) {
-			$_tokens = get_user_meta( $user_id, $this->get_user_meta_name( $environment_id ), true );
-
-			// from database format
-			if ( is_array( $_tokens ) ) {
-				foreach ( $_tokens as $token => $data ) {
-					$tokens[ $token ] = $this->build_token( $token, $data );
-				}
-			}
-
-			$this->tokens[ $environment_id ][ $user_id ] = $tokens;
-		}
+		$loaded_tokens = Square_Credit_Card_Payment_Token::get_square_customer_tokens(
+			\WC_Payment_Tokens::get_customer_tokens( $user_id )
+		);
 
 		if ( $customer_id ) {
 			try {
@@ -136,47 +114,59 @@ class Card_Handler extends Payment_Gateway_Payment_Tokens_Handler {
 
 				// Only update local tokens when the response has no errors or the customer is not found in Square
 				if ( ! $response->has_errors() || 'NOT_FOUND' === $response->get_status_code() ) {
-					$this->tokens[ $environment_id ][ $user_id ] = $response->get_payment_tokens();
+					$remote_payment_tokens = $response->get_payment_tokens();
 
-					// check for a default from the persisted set, if any
-					$default_token = null;
-					foreach ( $tokens as $default_token ) {
-						if ( $default_token->is_default() ) {
-							break;
+					$all_remote_payment_tokens = array_values(
+						array_map(
+							function( $remote_payment_token ) {
+								return $remote_payment_token->get_id();
+							},
+							$remote_payment_tokens
+						)
+					);
+
+					$all_loaded_tokens = array_map(
+						function( $loaded_token ) {
+							return $loaded_token->get_token();
+						},
+						$loaded_tokens
+					);
+
+					$unsynced_payment_token_ids = array_unique( array_diff( $all_remote_payment_tokens, $all_loaded_tokens ) );
+
+					/**
+					 * @var WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Payment_Gateway_Payment_Token $payment_token
+					 */
+					foreach ( $remote_payment_tokens as $payment_token => $remote_payment_token ) {
+						if ( in_array( $remote_payment_token->get_id(), $unsynced_payment_token_ids, true ) ) {
+							$token_obj = new Square_Credit_Card_Payment_Token();
+							$token_obj->set_token( $remote_payment_token->get_id() );
+							$token_obj->set_gateway_id( $this->get_gateway()->get_id() );
+							$token_obj->set_last4( $remote_payment_token->get_last_four() );
+							$token_obj->set_expiry_year( $remote_payment_token->get_exp_year() );
+							$token_obj->set_expiry_month( $remote_payment_token->get_exp_month() );
+							$token_obj->set_card_type( $remote_payment_token->get_card_type() );
+							$token_obj->set_user_id( $user_id );
+							$token_obj->save();
 						}
 					}
-
-					// mark the corresponding token from the API as the default one
-					if ( $default_token && $default_token->is_default() && isset( $this->tokens[ $environment_id ][ $user_id ][ $default_token->get_id() ] ) ) {
-						$this->tokens[ $environment_id ][ $user_id ][ $default_token->get_id() ]->set_default( true );
-					}
-
-					// merge local token data with remote data, sometimes local data is more robust
-					$this->tokens[ $environment_id ][ $user_id ] = $this->merge_token_data( $tokens, $this->tokens[ $environment_id ][ $user_id ] );
-
-					// persist locally after merging
-					$this->update_tokens( $user_id, $this->tokens[ $environment_id ][ $user_id ], $environment_id );
 				}
 			} catch ( \Exception $e ) {
 
 				// communication or other error
 				$this->get_gateway()->add_debug_message( $e->getMessage(), 'error' );
-
-				$this->tokens[ $environment_id ][ $user_id ] = $tokens;
 			}
 		}
 
-		// set the payment type image url, if any, for convenience
-		foreach ( $this->tokens[ $environment_id ][ $user_id ] as $key => $token ) {
-			$this->tokens[ $environment_id ][ $user_id ][ $key ]->set_image_url( $this->get_gateway()->get_payment_method_image_url( $token->get_card_type() ) );
-		}
+		/**
+		 * Hook that fires once the Square Credit Card payment tokens are loaded.
+		 *
+		 * @since 3.8.0
+		 */
+		do_action( 'wc_payment_gateway_square_credit_card_payment_tokens_loaded', $loaded_tokens, $this );
 
-		if ( $transient_key ) {
-			set_transient( $transient_key, $this->tokens[ $environment_id ][ $user_id ], HOUR_IN_SECONDS );
-		}
+		set_transient( $transient_key, $loaded_tokens, HOUR_IN_SECONDS );
 
-		do_action( 'wc_payment_gateway_square_credit_card_payment_tokens_loaded', $this->tokens[ $environment_id ][ $user_id ], $this );
-
-		return $this->tokens[ $environment_id ][ $user_id ];
+		return $loaded_tokens;
 	}
 }

@@ -124,6 +124,7 @@ class Admin_Message_Handler {
 	 */
 	public function load_messages() {
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - nonce is checked as part of $this->get_message_id()
 		if ( isset( $_GET[ self::MESSAGE_ID_GET_NAME ] ) && $this->get_message_id() == $_GET[ self::MESSAGE_ID_GET_NAME ] ) {
 
 			$memo = get_transient( self::MESSAGE_TRANSIENT_PREFIX . $_GET[ self::MESSAGE_ID_GET_NAME ] );
