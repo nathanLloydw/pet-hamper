@@ -2,12 +2,12 @@
 ----------------------------------------------------------------
 
 admin-css-utilities.css
-Gravity Forms Administration Utility Styles
-http: //www.gravityforms.com
+Gravity Forms Admin Utility Styles
+https://www.gravityforms.com
 
 Gravity Forms is a Rocketgenius project
-copyright 2008-2021 Rocketgenius Inc.
-http: //www.rocketgenius.com
+copyright 2008-2023 Rocketgenius Inc.
+https://www.rocketgenius.com
 this may not be re-distributed without the
 express written permission of the author.
 
@@ -184,6 +184,10 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 
 .gform-admin .gform-util-gform-admin-background-color-button-disabled {
 		background-color: #639cc1;
+	}
+
+.gform-admin .gform-util-gform-admin-background-color-secondary-text {
+		background-color: #6a6a80;
 	}
 
 .gform-admin .gform-util-gform-admin-background-color-focus {
@@ -460,6 +464,10 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 
 .gform-admin .gform-util-gform-admin-color-button-disabled {
 		color: #639cc1;
+	}
+
+.gform-admin .gform-util-gform-admin-color-secondary-text {
+		color: #6a6a80;
 	}
 
 .gform-admin .gform-util-gform-admin-color-focus {
