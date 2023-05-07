@@ -234,9 +234,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             if( $product_type === 'variation' && $check_item_group_id === 0){
                 $item->item_group_id($product->get_parent_id());
             }
-            else {
-                $item->item_group_id('');
-            }
         }
     }
 

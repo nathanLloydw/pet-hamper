@@ -2,11 +2,11 @@
 Contributors: sitewit
 Tags: advertising, adwords, analytics, bing, google, leads, marketing, marketing platform, metrics, online advertising, online marketing, plugin, ppc, PPC, google shopping, shopping ads, product ads, ROI, conversions
 Requires at least: 4.4
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 WC requires at least: 3.0
-WC tested up to: 7.2
+WC tested up to: 7.6
 License: GPLv3 or later License
 URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,7 +25,7 @@ With Kliken's All-In-One Marketing Solution, you can:
 
 Owning a small business is hard. Marketing that business shouldn't be. Kliken's all-in-one marketing platform helps business owners, like you, reach high-intent customers, surpass your competition and realize significant growth in sales, while decreasing conversion costs.
 
-For over a decade, the Kliken team has built the best performing e-commerce advertising engine, across multiple platforms, giving our customers the time to do what you do best – run your business, while Kliken helps grow your sales. 
+For over a decade, the Kliken team has built the best performing e-commerce advertising engine, across multiple platforms, giving our customers the time to do what you do best – run your business, while Kliken helps grow your sales.
 
 From start to finish in under 10 minutes, build your shopping campaign, define your audience, and preview your ads – all for FREE – no credit card required. Once you're ready to start growing your sales, select a monthly budget, checkout,  and get more.
 
@@ -44,7 +44,7 @@ Kliken's AI Powered Marketing manages and automates everything you need to get y
 #### AI Powered Marketing Features
 
 * Grow your sales: Unleash your potential by finding the customers that are looking for exactly what you offer across Google, Facebook and the Open Web.
-* Priced for small businesses: Flexible advertising budget options starting as low as $5 per day. Get everything you need to advertise your business, no matter which platform you choose. 
+* Priced for small businesses: Flexible advertising budget options starting as low as $5 per day. Get everything you need to advertise your business, no matter which platform you choose.
 * Maximize your marketing performance: Track your sales performance and campaign results in your WooCommerce dashboard. You can see exactly how many visitors Kliken sends your way from the Open Web, Google, and Facebook. PLUS, see how your marketing budget is spent every day.
 * Track sales performance: View results across the Open Web, Google, and Facebook while Kliken computes your return on advertising spend and optimize your campaigns using AI, giving you real-time campaign performance.
 
@@ -60,7 +60,7 @@ Kliken Ads is the easiest, most affordable way to find new customers and increas
 We help you create or link your Woo store to the necessary accounts needed to get your products on Google. We also continue to optimize and manage these accounts so you don’t have to.
 
 #### Optimize Smart Product feeds with daily inventory sync
-Keeping your inventory up-to-date is easy with our automated product feed and daily syncs so you can make sure shoppers are only seeing your in-stock products when they find you on Google. 
+Keeping your inventory up-to-date is easy with our automated product feed and daily syncs so you can make sure shoppers are only seeing your in-stock products when they find you on Google.
 
 #### Access free listings on the Google Shopping tab and surfaces across Google
 When eligible merchants sign up for Google Shopping, they automatically opt into free listings so that they can potentially show up on [surfaces across Google](https://support.google.com/merchants/answer/9199328) or the [Google Shopping tab](https://support.google.com/merchants/answer/9838672?hl=en) to drive free traffic to their approved products.
@@ -137,6 +137,9 @@ Google Ads & Marketing for WooCommerce is a contract free service. You can cance
 
 
 == Changelog ==
+
+= 1.2.0 =
+* Support latest WordPress and WooCommerce version.
 
 = 1.1.0 =
 * Name and text changes.

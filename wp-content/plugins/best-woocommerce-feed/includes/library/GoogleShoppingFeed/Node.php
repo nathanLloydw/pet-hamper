@@ -83,11 +83,14 @@ class Node
      */
     public function attachNodeTo(\SimpleXMLElement $parent)
     {
-        if($this->name === 'sale_price') {
-            if(!$this->value) return;
+        if( 'sale_price' === $this->name && !$this->value ) {
+            return;
+        }
+        if( is_array( $this->value ) ) {
+            return;
         }
 
-        if ($this->cdata && ! preg_match("#^<!\[CDATA#is", $this->value)) {
+        if ($this->cdata && ! preg_match("#^<!\[CDATA#i", $this->value)) {
             $this->value = "<![CDATA[{$this->value}]]>";
         }
         $parent->addChild($this->name, htmlspecialchars($this->value), $this->_namespace);
