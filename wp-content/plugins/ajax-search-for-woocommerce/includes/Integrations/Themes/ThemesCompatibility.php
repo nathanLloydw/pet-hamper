@@ -59,10 +59,18 @@ class ThemesCompatibility {
 			'flatsome'         => array(
 				'slug' => 'flatsome',
 				'name' => 'Flatsome',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 850,
+					'forceLayoutBreakpoint'        => 850,
+				),
 			),
 			'astra'            => array(
 				'slug' => 'astra',
 				'name' => 'Astra',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => true,
+					'forceLayoutBreakpoint'        => true,
+				),
 			),
 			'thegem'           => array(
 				'slug' => 'thegem',
@@ -86,6 +94,10 @@ class ThemesCompatibility {
 			'shopkeeper'       => array(
 				'slug' => 'shopkeeper',
 				'name' => 'Shopkeeper',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 767,
+					'forceLayoutBreakpoint'        => 767,
+				),
 			),
 			'the7'             => array(
 				'slug' => 'the7',
@@ -133,14 +145,26 @@ class ThemesCompatibility {
 			'divi'             => array(
 				'slug' => 'divi',
 				'name' => 'Divi',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 980,
+					'forceLayoutBreakpoint'        => 980,
+				),
 			),
 			'block-shop'       => array(
 				'slug' => 'block-shop',
 				'name' => 'BlockShop',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 1200,
+					'forceLayoutBreakpoint'        => 1200,
+				),
 			),
 			'dfd-ronneby'      => array(
 				'slug' => 'dfd-ronneby',
 				'name' => 'DFDRonneby',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 500,
+					'forceLayoutBreakpoint'        => 500,
+				),
 			),
 			'restoration'      => array(
 				'slug' => 'restoration',
@@ -149,14 +173,26 @@ class ThemesCompatibility {
 			'salient'          => array(
 				'slug' => 'salient',
 				'name' => 'Salient',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 1000,
+					'forceLayoutBreakpoint'        => 1000,
+				),
 			),
 			'konte'            => array(
 				'slug' => 'konte',
 				'name' => 'Konte',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 1024,
+					'forceLayoutBreakpoint'        => 1024,
+				),
 			),
 			'rehub-theme'      => array(
 				'slug' => 'rehub-theme',
 				'name' => 'Rehub',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 1200,
+					'forceLayoutBreakpoint'        => 1200,
+				),
 			),
 			'supro'            => array(
 				'slug' => 'supro',
@@ -173,6 +209,10 @@ class ThemesCompatibility {
 			'bigcart'          => array(
 				'slug' => 'bigcart',
 				'name' => 'BigCart',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 782,
+					'forceLayoutBreakpoint'        => 782,
+				),
 			),
 			'top-store-pro'    => array(
 				'slug' => 'top-store-pro',
@@ -225,6 +265,10 @@ class ThemesCompatibility {
 			'uncode'           => array(
 				'slug' => 'uncode',
 				'name' => 'Uncode',
+				'args' => array(
+					'forceMobileOverlayBreakpoint' => 960,
+					'forceLayoutBreakpoint'        => 960,
+				),
 			),
 			'xstore'           => array(
 				'slug' => 'xstore',
@@ -272,6 +316,30 @@ class ThemesCompatibility {
 					'forceMobileOverlay'           => true,
 					'forceMobileOverlayBreakpoint' => 991,
 				)
+			),
+			'blocksy'          => array(
+				'slug' => 'blocksy',
+				'name' => 'Blocksy',
+				'args' => array(
+					'forceMobileOverlay'           => true,
+					'forceMobileOverlayBreakpoint' => 689,
+				),
+			),
+			'qwery'            => array(
+				'slug' => 'qwery',
+				'name' => 'Qwery',
+				'args' => array(
+					'forceMobileOverlay'           => true,
+					'forceMobileOverlayBreakpoint' => 767,
+				),
+			),
+			'storebiz'         => array(
+				'slug' => 'storebiz',
+				'name' => 'StoreBiz',
+				'args' => array(
+					'forceMobileOverlay'           => true,
+					'forceMobileOverlayBreakpoint' => 767,
+				),
 			),
 		);
 	}

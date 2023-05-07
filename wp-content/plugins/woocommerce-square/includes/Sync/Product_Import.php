@@ -280,6 +280,7 @@ class Product_Import extends Stepped_Job {
 			array(
 				'catalog_object_ids' => $variation_ids,
 				'location_ids'       => array( wc_square()->get_settings_handler()->get_location_id() ),
+				'states'             => array( 'IN_STOCK' ),
 			)
 		);
 

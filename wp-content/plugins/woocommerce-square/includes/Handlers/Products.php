@@ -177,6 +177,7 @@ class Products {
 		}
 
 		$label    = esc_html__( 'Synced with Square', 'woocommerce-square' );
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce check not required, checked against known string, read-only action.
 		$selected = isset( $_GET['product_type'] ) && 'synced-with-square' === $_GET['product_type'] ? 'selected=\"selected\"' : '';
 
 		wc_enqueue_js(
@@ -202,6 +203,7 @@ class Products {
 	public function filter_products_synced_with_square( $query_vars ) {
 		global $typenow;
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce check not required, just filtering products, read-only action.
 		if ( 'product' === $typenow && isset( $_GET['product_type'] ) && 'synced-with-square' === $_GET['product_type'] ) {
 
 			// not really a product type, otherwise WooCommerce will handle it as such

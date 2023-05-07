@@ -31,8 +31,13 @@ function dgwt_wcas_astra_search_box_style() {
 	return $search_box_style;
 }
 
-// Change mobile breakpoint
-add_filter( 'dgwt/wcas/scripts/mobile_breakpoint', function () {
+// Force mobile overlay breakpoint.
+add_filter( 'dgwt/wcas/settings/load_value/key=mobile_overlay_breakpoint', function () {
+	return dgwt_wcas_astra_header_break_point();
+} );
+
+// Force mobile breakpoint.
+add_filter( 'dgwt/wcas/settings/load_value/key=mobile_breakpoint', function () {
 	return dgwt_wcas_astra_header_break_point();
 } );
 

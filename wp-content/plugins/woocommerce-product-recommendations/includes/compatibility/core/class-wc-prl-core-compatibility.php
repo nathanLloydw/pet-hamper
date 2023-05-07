@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Functions related to core back-compatibility.
  *
  * @class    WC_PRL_Core_Compatibility
- * @version  2.2.0
+ * @version  2.2.1
  */
 class WC_PRL_Core_Compatibility {
 
@@ -61,10 +61,25 @@ class WC_PRL_Core_Compatibility {
 	 * Cache HPOS status.
 	 *
 	 * @since  2.2.0
-	 *
-	 * @var bool
+	 * @var    bool
 	 */
 	private static $is_hpos_enabled = null;
+
+	/**
+	 * Cache block based cart detection result.
+	 *
+	 * @since  2.2.1
+	 * @var    bool
+	 */
+	private static $is_block_based_cart = null;
+
+	/**
+	 * Cache block based checkout detection result.
+	 *
+	 * @since  2.2.1
+	 * @var    bool
+	 */
+	private static $is_block_based_checkout = null;
 
 	/**
 	 * Initialization and hooks.
@@ -111,7 +126,7 @@ class WC_PRL_Core_Compatibility {
 	 * Returns true if the installed version of WooCommerce is greater than or equal to $version.
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wc_version_gte( $version ) {
 		if ( ! isset( self::$is_wc_version_gte[ $version ] ) ) {
@@ -124,7 +139,7 @@ class WC_PRL_Core_Compatibility {
 	 * Returns true if the installed version of WooCommerce is greater than $version.
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wc_version_gt( $version ) {
 		if ( ! isset( self::$is_wc_version_gt[ $version ] ) ) {
@@ -137,7 +152,7 @@ class WC_PRL_Core_Compatibility {
 	 * Returns true if the installed version of WooCommerce is lower than or equal $version.
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wc_version_lte( $version ) {
 		if ( ! isset( self::$is_wc_version_gt[ $version ] ) ) {
@@ -150,7 +165,7 @@ class WC_PRL_Core_Compatibility {
 	 * Returns true if the installed version of WooCommerce is lower than $version.
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wc_version_lt( $version ) {
 		if ( ! isset( self::$is_wc_version_gt[ $version ] ) ) {
@@ -165,7 +180,7 @@ class WC_PRL_Core_Compatibility {
 	 * @since  1.1.2
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wp_version_gt( $version ) {
 		if ( ! isset( self::$is_wp_version_gt[ $version ] ) ) {
@@ -181,7 +196,7 @@ class WC_PRL_Core_Compatibility {
 	 * @since  1.1.2
 	 *
 	 * @param  string  $version
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wp_version_gte( $version ) {
 		if ( ! isset( self::$is_wp_version_gte[ $version ] ) ) {
@@ -196,7 +211,7 @@ class WC_PRL_Core_Compatibility {
 	 *
 	 * @since  1.2.3
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_wc_admin_enabled() {
 
@@ -256,7 +271,7 @@ class WC_PRL_Core_Compatibility {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_admin_or_embed_page() {
 
@@ -277,7 +292,7 @@ class WC_PRL_Core_Compatibility {
 	 *
 	 * @since  1.4.9
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public static function is_block_editor() {
 		global $current_screen;
@@ -308,6 +323,44 @@ class WC_PRL_Core_Compatibility {
 		}
 
 		return self::$is_hpos_enabled;
+	}
+
+	/**
+	 * Whether the cart page contains the cart block.
+	 *
+	 * @since  2.2.1
+	 * @return bool
+	 */
+	public static function is_block_based_cart() {
+
+		if ( ! class_exists( 'Automattic\WooCommerce\Blocks\Package' ) ) {
+			return false;
+		}
+
+		if ( is_null( self::$is_block_based_cart ) ) {
+			self::$is_block_based_cart = class_exists( 'WC_Blocks_Utils' ) && ! empty( WC_Blocks_Utils::get_blocks_from_page( 'woocommerce/cart', 'cart' ) );
+		}
+
+		return self::$is_block_based_cart;
+	}
+
+	/**
+	 * Whether the checkout page contains the checkout block.
+	 *
+	 * @since  2.2.1
+	 * @return bool
+	 */
+	public static function is_block_based_checkout() {
+
+		if ( ! class_exists( 'Automattic\WooCommerce\Blocks\Package' ) ) {
+			return false;
+		}
+
+		if ( is_null( self::$is_block_based_checkout ) ) {
+			self::$is_block_based_checkout = class_exists( 'WC_Blocks_Utils' ) && ! empty( WC_Blocks_Utils::get_blocks_from_page( 'woocommerce/checkout', 'checkout' ) );
+		}
+
+		return self::$is_block_based_checkout;
 	}
 
 }

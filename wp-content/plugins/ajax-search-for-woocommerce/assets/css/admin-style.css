@@ -371,6 +371,11 @@
 	width: 35em;
 }
 
+.dgwt-wcas-settings-textarea--half textarea.regular-text {
+	width: 100%;
+	max-width: 283px;
+}
+
 .dgwt-wcas-admin-head h1 {
 	display: inline-block;
 	margin: 0 20px 0 0;
@@ -795,7 +800,7 @@ table.widefat.dgwt-wcas-analytics-table {
 	padding: 10px 12px 1px 12px;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-	margin: 15px 25px 20px 5px;
+	margin: 15px 0 20px 0;
 }
 
 .dgwt-wcas-review-notice .dgwt-wcas-review-notice-logo {
@@ -1517,9 +1522,8 @@ td.dgwt-wcas-indexing-details-row a {
 }
 
 .dgwt-wcas-preview-nores {
-	width: 100% !important;;
-	max-height: 41px !important;
-	min-height: 0 !important;;
+	width: 100% !important;
+	min-height: 0 !important;
 }
 
 .dgwt-wcas-pd-addtc .input-text.qty {
@@ -2206,6 +2210,22 @@ h3.dgwt-wcas-troubleshooting-issue-title {
 
 .dgwt-wcas-widget-tab-active {
 	font-weight: bold;
+}
+.dgwt-wcas-search-icon {
+	position: relative;
+}
+.dgwt-wcas-search-icon-handler-click:after {
+	display: block;
+	content: "";
+	border-radius: 100%;
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	left: -13px;
+	top: -13px;
+	opacity: 1;
+	border: 3px solid rgba( 205, 98, 105, 0.5);
+	transition: all 200ms ease-in-out;
 }
 
 @media only screen and (max-width: 1150px) {

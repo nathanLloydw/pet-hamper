@@ -261,14 +261,14 @@
     var AJAX_BUILD_INDEX = {
         actionTriggerClass: 'js-ajax-build-index',
         actionStopTriggerClass: 'js-ajax-stop-build-index',
-        indexingWrappoerClass: 'js-dgwt-wcas-indexing-wrapper',
+        indexingWrapperClass: 'js-dgwt-wcas-indexing-wrapper',
         indexerTabProgressClass: 'js-dgwt-wcas-indexer-tab-progress',
         indexerTabErrorClass: 'js-dgwt-wcas-indexer-tab-error',
         indexerMenuErrorClass: 'dgwt-wcas-menu-warning-icon',
         getWrapper: function () {
             var _this = this;
 
-            return $('.' + _this.indexingWrappoerClass).closest('.dgwt-wcas-settings-info');
+            return $('.' + _this.indexingWrapperClass).closest('.dgwt-wcas-settings-info');
         },
         registerListeners: function () {
             var _this = this;
@@ -432,7 +432,7 @@
             var _this = this;
             _this.registerListeners();
 
-            if ($('.' + _this.indexingWrappoerClass).length > 0) {
+            if ($('.' + _this.indexingWrapperClass).length > 0 && typeof dgwt_wcas['is_premium'] !== 'undefined') {
                 _this.heartbeat();
             }
             _this.detailsToggle();
@@ -1071,7 +1071,7 @@
             var _this = this,
                 suggestionsTarget = '.js-dgwt-wcas-preview .dgwt-wcas-suggestion:not(.js-dgwt-wcas-suggestion-nores)',
                 noresTarget = '.js-dgwt-wcas-suggestion-nores',
-                target = "input[id*='search_no_results_text']";
+                target = "textarea[id*='search_no_results_text']";
 
             $(document).on('focus', target, function () {
                 $(suggestionsTarget).addClass('dgwt-wcas-hide');
@@ -1188,8 +1188,9 @@
                     'search_see_all_results_text'
                 ];
             for (var i = 0; i < options.length; i++) {
-                var selector = "input[id*='" + options[i] + "']";
-                var $el = $(selector),
+                var elType = options[i] === 'search_no_results_text' ? 'textarea' : 'input',
+                    selector = elType + "[id*='" + options[i] + "']",
+                    $el = $(selector),
                     methodToCall = 'onType' + _this.camelCase(options[i],);
 
                 _this[methodToCall]($el, $el.val());
@@ -1894,10 +1895,26 @@
             _this.searchInput.attr('placeholder', value);
         },
         onTypeSearchNoResultsText: function ($el, value) {
+            var _this = this,
+                html = value;
+
             if (value.length == 0) {
-                value = dgwt_wcas.labels.no_results;
+                try {
+                    html = JSON.parse(dgwt_wcas.labels.no_results);
+                    // Fix invalid HTML
+                    var tmpEl = document.createElement('div');
+                    tmpEl.innerHTML = html;
+                    html = tmpEl.innerHTML;
+                } catch (e) {
+
+                }
             }
-            $('.js-dgwt-wcas-suggestion-nores span').text(value);
+
+            if (_this.isHTMLPossiblyDangerous(html)) {
+                html = 'You used invalid HTML tags or attributes!';
+            }
+
+            $('.js-dgwt-wcas-suggestion-nores').html(html);
         },
         onTypeSearchSeeAllResultsText: function ($el, value) {
             if (value.length == 0) {
@@ -1995,17 +2012,42 @@
             });
 
         },
+        getSearchLayout: function(){
+            return $("select[id*='search_layout'] option:selected").val();
+        },
         startAnimateTyping: function () {
             var that = this,
                 frame = 0,
                 $wrapp = $('.js-dgwt-wcas-search-wrapp'),
                 $searchBar = $('.js-dgwt-wcas-search-input'),
+                $iconStyleForm = $('.js-dgwt-wcas-preview-icon-example .dgwt-wcas-search-form'),
+                $iconStyleArrow = $('.js-dgwt-wcas-preview-icon-example .dgwt-wcas-search-icon-arrow'),
+                $iconStyleIcon = $('.js-dgwt-wcas-preview-icon-example .dgwt-wcas-search-icon'),
                 $closeEl = $('.dgwt-wcas-preloader'),
                 closeSvg = $('.js-dgwt-wcas-preview-elements-close').html();
 
             // TODO [refactor] shorten it using a recursive function
             that.animateTypingInterval = setInterval(function () {
                 frame++;
+
+
+                if (that.getSearchLayout() === 'icon') {
+                    if (frame === 1) {
+                        $iconStyleForm.addClass('dgwt-wcas-hidden');
+                        $iconStyleArrow.addClass('dgwt-wcas-hidden');
+                    }
+
+                    if (frame === 6) {
+                        $iconStyleIcon.addClass('dgwt-wcas-search-icon-handler-click');
+                    }
+
+
+                    if (frame === 7) {
+                        $iconStyleIcon.removeClass('dgwt-wcas-search-icon-handler-click');
+                        $iconStyleForm.removeClass('dgwt-wcas-hidden');
+                        $iconStyleArrow.removeClass('dgwt-wcas-hidden');
+                    }
+                }
 
                 if (frame === 10) {
                     $searchBar.val('f');
@@ -2087,7 +2129,7 @@
                 }
             }, 200);
         },
-        stopAnimateTyping() {
+        stopAnimateTyping: function () {
             var that = this,
                 $wrapp = $('.js-dgwt-wcas-search-wrapp'),
                 $searchBar = $('.js-dgwt-wcas-search-input'),
@@ -2099,6 +2141,20 @@
             $wrapp.removeClass('dgwt-wcas-search-filled');
 
             clearInterval(that.animateTypingInterval);
+        },
+        isHTMLPossiblyDangerous: function (html) {
+            var i,
+                suspicious = false;
+            suspiciousStrings = [
+                'data:text/html', 'javascript:', 'xlink:href', 'function(', '<script', '<embed', '<iframe', '<form', 'background:url', 'onclick', 'document.'
+            ];
+            for (i = 0; i < suspiciousStrings.length; i++) {
+                if (html.indexOf(suspiciousStrings[i]) !== -1) {
+                    suspicious = true;
+                    break;
+                }
+            }
+            return suspicious;
         }
     };
 

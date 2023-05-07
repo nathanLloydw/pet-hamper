@@ -672,16 +672,20 @@ class Helpers
     /**
      * Calc score for searched
      *
-     * @param string $searched
-     * @param string $string eg. product title
+     * @param string $phrase Search phrase (user input)
+     * @param string $string eg. product title, SKU, attribute name etc.
      * @param array $args
      *
      * @return int
      */
-    public static function calcScore( $searched, $string, $args = array() )
+    public static function calcScore( $phrase, $string, $args = array() )
     {
         $score = 0;
-        if ( empty($searched) || empty($string) ) {
+        if ( empty($phrase) || empty($string) ) {
+            return $score;
+        }
+        // Don't apply score for a search phrase with a single character
+        if ( strlen( $phrase ) <= 1 ) {
             return $score;
         }
         $default = array(
@@ -690,31 +694,47 @@ class Helpers
             'score_containing' => 50,
         );
         $args = array_merge( $default, $args );
-        $searched = mb_strtolower( $searched );
+        $phrase = mb_strtolower( $phrase );
         $string = mb_strtolower( $string );
         
         if ( $args['check_similarity'] ) {
-            $m = similar_text( $searched, $string, $percent );
+            $m = similar_text( $phrase, $string, $percent );
             $score = ($score + $percent) / 3;
         }
         
-        $pos = strpos( $string, $searched );
+        $pos = strpos( $string, $phrase );
         // Add score based on substring position
         
         if ( $pos !== false ) {
             $score += $args['score_containing'];
             // Bonus for contained substring
+            $allocated = false;
+            // Bonus for exact match for whole phrase
+            
+            if ( $string === $phrase ) {
+                $score += $args['score_containing'] * 5;
+                $allocated = true;
+            }
+            
+            
+            if ( !$allocated && strpos( $string, ' ' ) !== false ) {
+                $phrase = Helpers::escPhraseForRegex( $phrase );
+                // Bonus for exact match for part phrase
+                
+                if ( preg_match( '/\\b' . $phrase . '\\b/i', $string ) ) {
+                    $score += $args['score_containing'] * 2;
+                    $allocated = true;
+                }
+            
+            }
+            
             // Bonus for substring position
             
-            if ( $args['check_position'] ) {
+            if ( !$allocated && $args['check_position'] ) {
                 $posBonus = (100 - $pos * 100 / strlen( $string )) / 2;
                 $score += $posBonus;
             }
-            
-            // Bonus for exact match
-            if ( $string === $searched ) {
-                $score += $args['score_containing'] * 5;
-            }
+        
         }
         
         return $score;
@@ -1186,6 +1206,8 @@ class Helpers
      */
     public static function getLabels()
     {
+        $noResults = DGWT_WCAS()->settings->getOption( 'search_no_results_text', __( 'No results', 'ajax-search-for-woocommerce' ) );
+        $noResults = json_encode( Helpers::ksesNoResults( $noResults ), JSON_UNESCAPED_SLASHES );
         return apply_filters( 'dgwt/wcas/labels', array(
             'post'               => __( 'Post' ),
             'page'               => __( 'Page' ),
@@ -1200,7 +1222,8 @@ class Helpers
             'featured_badge'     => __( 'Featured', 'woocommerce' ),
             'in'                 => _x( 'in', 'in categories fe. in Books > Crime stories', 'ajax-search-for-woocommerce' ),
             'read_more'          => __( 'continue reading', 'ajax-search-for-woocommerce' ),
-            'no_results'         => DGWT_WCAS()->settings->getOption( 'search_no_results_text', __( 'No results', 'ajax-search-for-woocommerce' ) ),
+            'no_results'         => $noResults,
+            'no_results_default' => __( 'No results', 'ajax-search-for-woocommerce' ),
             'show_more'          => DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ),
             'show_more_details'  => DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ),
             'search_placeholder' => DGWT_WCAS()->settings->getOption( 'search_placeholder', __( 'Search for products...', 'ajax-search-for-woocommerce' ) ),
@@ -1827,6 +1850,64 @@ class Helpers
             $options = $res;
         }
         return $options;
+    }
+    
+    /**
+     * Does the "Shop manager" role have access to the plugin settings?
+     *
+     * @return bool
+     */
+    public static function shopManagerHasAccess()
+    {
+        return defined( 'DGWT_WCAS_ALLOW_SHOP_MANAGER_ACCESS' ) && DGWT_WCAS_ALLOW_SHOP_MANAGER_ACCESS;
+    }
+    
+    /**
+     * Clear phrase before processing regex expression.
+     * Some user inputs might contain special characters which should be escaped.
+     *
+     * @return string
+     */
+    public static function escPhraseForRegex( $phrase )
+    {
+        $phrase = preg_replace_callback( "/([!@#\$&()\\-\\[\\]{}\\`.+,\\/\"\\'])/", function ( $matches ) {
+            return '\\' . $matches[0];
+        }, $phrase );
+        return $phrase;
+    }
+    
+    /**
+     * Esc not allowed HTML tags for No Results text
+     *
+     * @return string
+     */
+    public static function ksesNoResults( $content )
+    {
+        $content = wp_kses( $content, array(
+            'div'  => array(
+            'class' => array(),
+        ),
+            'span' => array(
+            'class' => array(),
+        ),
+            'a'    => array(
+            'href' => array(),
+        ),
+            'br'   => array(),
+            'p'    => array(),
+            'em'   => array(),
+            'b'    => array(),
+            'ol'   => array(),
+            'ul'   => array(),
+            'li'   => array(),
+            'h1'   => array(),
+            'h2'   => array(),
+            'h3'   => array(),
+            'h4'   => array(),
+            'h5'   => array(),
+            'h6'   => array(),
+        ) );
+        return $content;
     }
 
 }

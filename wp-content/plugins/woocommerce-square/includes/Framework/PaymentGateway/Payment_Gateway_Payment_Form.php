@@ -21,9 +21,7 @@
 
 namespace WooCommerce\Square\Framework\PaymentGateway;
 
-use WooCommerce;
-
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Payment Form Class
@@ -85,13 +83,13 @@ class Payment_Gateway_Payment_Form {
 		add_action( "wc_{$gateway_id}_payment_form_start", array( $this, 'render_fieldset_start' ), 30 );
 
 		// payment fields
-		add_action( "wc_{$gateway_id}_payment_form",       array( $this, 'render_payment_fields' ), 0 );
+		add_action( "wc_{$gateway_id}_payment_form", array( $this, 'render_payment_fields' ), 0 );
 
 		// fieldset end
-		add_action( "wc_{$gateway_id}_payment_form_end",   array( $this, 'render_fieldset_end' ), 5 );
+		add_action( "wc_{$gateway_id}_payment_form_end", array( $this, 'render_fieldset_end' ), 5 );
 
 		// payment form JS
-		add_action( "wc_{$gateway_id}_payment_form_end",   array( $this, 'render_js' ), 5 );
+		add_action( "wc_{$gateway_id}_payment_form_end", array( $this, 'render_js' ), 5 );
 	}
 
 
@@ -243,11 +241,11 @@ class Payment_Gateway_Payment_Form {
 
 			case 'credit-card':
 				$fields = $this->get_credit_card_fields();
-			break;
+				break;
 
 			default:
 				$fields = array();
-			break;
+				break;
 		}
 
 		/**
@@ -298,7 +296,7 @@ class Payment_Gateway_Payment_Form {
 					'autocapitalize' => 'no',
 					'spellcheck'     => 'no',
 				),
-				'value' => $defaults['account-number'],
+				'value'             => $defaults['account-number'],
 			),
 			'card-expiry' => array(
 				'type'              => 'text',
@@ -315,7 +313,7 @@ class Payment_Gateway_Payment_Form {
 					'autocapitalize' => 'no',
 					'spellcheck'     => 'no',
 				),
-				'value' => $defaults['expiry'],
+				'value'             => $defaults['expiry'],
 			),
 		);
 
@@ -337,7 +335,7 @@ class Payment_Gateway_Payment_Form {
 					'autocapitalize' => 'no',
 					'spellcheck'     => 'no',
 				),
-				'value' => $defaults['csc'],
+				'value'             => $defaults['csc'],
 			);
 		}
 
@@ -401,9 +399,15 @@ class Payment_Gateway_Payment_Form {
 
 		$html .= $this->get_manage_payment_methods_button_html();
 
-		foreach ( $this->get_tokens() as $token ) {
+		$tokens = \WC_Payment_Tokens::get_customer_tokens( get_current_user_id(), $this->get_gateway()->get_id() );
+
+		foreach ( $tokens as $token ) {
 
 			$html .= $this->get_saved_payment_method_html( $token );
+
+			if ( $token->is_default() ) {
+				$this->default_new_payment_method = false;
+			}
 		}
 
 		$html .= $this->get_use_new_payment_method_input_html();
@@ -434,18 +438,18 @@ class Payment_Gateway_Payment_Form {
 
 		$url = wc_get_account_endpoint_url( 'payment-methods' );
 
-		/**
-		 * Payment Form Manage Payment Methods Button Text Filter.
-		 *
-		 * Allow actors to modify the "manage payment methods" button text rendered
-		 * on the checkout page.
-		 *
-		 * @since 3.0.0
-		 * @param string $button_text button text
-		 */
-		$html = sprintf( '<a class="button sv-wc-payment-gateway-payment-form-manage-payment-methods" href="%s">%s</a>',
+		$html = sprintf(
+			'<a class="button sv-wc-payment-gateway-payment-form-manage-payment-methods" href="%s">%s</a>',
 			esc_url( $url ),
-			/* translators: Payment method as in a specific credit card, eCheck or bank account */
+			/**
+			 * Payment Form Manage Payment Methods Button Text Filter.
+			 *
+			 * Allow actors to modify the "manage payment methods" button text rendered
+			 * on the checkout page.
+			 *
+			 * @since 3.0.0
+			 * @param string $button_text button text
+			 */
 			wp_kses_post( apply_filters( 'wc_' . $this->get_gateway()->get_id() . '_manage_payment_methods_text', esc_html__( 'Manage Payment Methods', 'woocommerce-square' ) ) )
 		);
 
@@ -469,15 +473,16 @@ class Payment_Gateway_Payment_Form {
 	 * o <Amex logo> American Express ending in 6666 (expires 10/20)
 	 *
 	 * @since 3.0.0
-	 * @param Payment_Gateway_Payment_Token $token payment token
+	 * @param \WC_Payment_Token_CC $token payment token
 	 * @return string saved payment method HTML
 	 */
 	protected function get_saved_payment_method_html( $token ) {
 
 		// input
-		$html = sprintf( '<input type="radio" id="wc-%1$s-payment-token-%2$s" name="wc-%1$s-payment-token" class="js-sv-wc-payment-gateway-payment-token js-wc-%1$s-payment-token" style="width:auto; margin-right:.5em;" value="%2$s" %3$s/>',
+		$html = sprintf(
+			'<input type="radio" id="wc-%1$s-payment-token-%2$s" name="wc-%1$s-payment-token" class="js-sv-wc-payment-gateway-payment-token js-wc-%1$s-payment-token" style="width:auto; margin-right:.5em;" value="%2$s" %3$s/>',
 			esc_attr( $this->get_gateway()->get_id_dasherized() ),
-			esc_attr( $token->get_id() ),
+			esc_attr( $token->get_token() ),
 			checked( $token->is_default(), true, false )
 		);
 
@@ -509,20 +514,16 @@ class Payment_Gateway_Payment_Form {
 	 * <Amex logo> American Express ending in 6666 (expires 10/20)
 	 *
 	 * @since 3.0.0
-	 * @param Payment_Gateway_Payment_Token $token payment token
+	 * @param \WC_Payment_Token_CC $token payment token
 	 * @return string saved payment method title
 	 */
 	protected function get_saved_payment_method_title( $token ) {
 
-		$image_url = $token->get_image_url();
-		$last_four = $token->get_last_four();
-		$type      = $token->get_type_full();
+		$type      = $token->get_card_type();
+		$image_url = wc_square()->get_gateway()->get_payment_method_image_url( $type );
+		$last_four = $token->get_last4();
 
 		$title = '<span class="title">';
-
-		if ( $token->get_nickname() ) {
-			$title .= '<span class="nickname">' . $token->get_nickname() . '</span>';
-		}
 
 		if ( $image_url ) {
 
@@ -540,11 +541,14 @@ class Payment_Gateway_Payment_Form {
 			$title .= '&bull; &bull; &bull; ' . esc_html( $last_four );
 		}
 
-		// add "(expires MM/YY)" if available
-		if ( $token->get_exp_month() && $token->get_exp_year() ) {
+		$expiry_month = $token->get_expiry_month();
+		$expiry_year  = $token->get_expiry_year();
 
+		// add "(expires MM/YY)" if available
+		if ( $expiry_month && $expiry_year ) {
+			$expiry_date = $expiry_month . '/' . substr( $expiry_year, -2 );
 			/* translators: Placeholders: %s - expiry date */
-			$title .= ' ' . sprintf( esc_html__( '(expires %s)', 'woocommerce-square' ), $token->get_exp_date() );
+			$title .= ' ' . sprintf( esc_html__( '(expires %s)', 'woocommerce-square' ), $expiry_date );
 		}
 
 		$title .= '</span>';
@@ -575,13 +579,15 @@ class Payment_Gateway_Payment_Form {
 	protected function get_use_new_payment_method_input_html() {
 
 		// input
-		$html = sprintf( '<input type="radio" id="wc-%1$s-use-new-payment-method" name="wc-%1$s-payment-token" class="js-sv-wc-payment-token js-wc-%1$s-payment-token" style="width:auto; margin-right: .5em;" value="" %2$s />',
+		$html = sprintf(
+			'<input type="radio" id="wc-%1$s-use-new-payment-method" name="wc-%1$s-payment-token" class="js-sv-wc-payment-token js-wc-%1$s-payment-token" style="width:auto; margin-right: .5em;" value="" %2$s />',
 			esc_attr( $this->get_gateway()->get_id_dasherized() ),
 			checked( $this->default_new_payment_method(), true, false )
 		);
 
 		// label
-		$html .= sprintf( '<label style="display:inline;" for="wc-%s-use-new-payment-method">%s</label>',
+		$html .= sprintf(
+			'<label style="display:inline;" for="wc-%s-use-new-payment-method">%s</label>',
 			esc_attr( $this->get_gateway()->get_id_dasherized() ),
 			$this->get_gateway()->is_credit_card_gateway() ? esc_html__( 'Use a new card', 'woocommerce-square' ) : esc_html__( 'Use a new bank account', 'woocommerce-square' )
 		);
@@ -635,18 +641,25 @@ class Payment_Gateway_Payment_Form {
 
 				$html .= sprintf( '<input name="wc-%1$s-tokenize-payment-method" id="wc-%1$s-tokenize-payment-method" class="js-sv-wc-tokenize-payment method js-wc-%1$s-tokenize-payment-method" type="checkbox" value="true" style="width:auto;" %2$s/>', $this->get_gateway()->get_id_dasherized(), $checked ? 'checked="checked" ' : '' );
 
-				/**
-				 * Payment Form Tokenize Payment Method Checkbox Text Filter.
-				 *
-				 * Allow actors to modify the "securely save to account" checkbox
-				 * text rendered on the payment form on the checkout page.
-				 *
-				 * @since 3.0.0
-				 *
-				 * @param string $checkbox_text checkbox text
-				 */
-				/* translators: account as in customer's account on the eCommerce site */
-				$html .= sprintf( '<label for="wc-%s-tokenize-payment-method" style="display:inline;">%s</label>', $this->get_gateway()->get_id_dasherized(), apply_filters( 'wc_' . $this->get_gateway()->get_id() . '_tokenize_payment_method_text', esc_html__( 'Securely Save to Account', 'woocommerce-square' ) ) );
+				$html .= sprintf(
+					/* translators: account as in customer's account on the eCommerce site */
+					'<label for="wc-%s-tokenize-payment-method" style="display:inline;">%s</label>',
+					$this->get_gateway()->get_id_dasherized(),
+					/**
+					 * Payment Form Tokenize Payment Method Checkbox Text Filter.
+					 *
+					 * Allow actors to modify the "securely save to account" checkbox
+					 * text rendered on the payment form on the checkout page.
+					 *
+					 * @since 3.0.0
+					 *
+					 * @param string $checkbox_text checkbox text
+					 */
+					apply_filters(
+						'wc_' . $this->get_gateway()->get_id() . '_tokenize_payment_method_text',
+						esc_html__( 'Securely Save to Account', 'woocommerce-square' )
+					)
+				);
 				$html .= '</p><div class="clear"></div>';
 			}
 		}
@@ -690,7 +703,6 @@ class Payment_Gateway_Payment_Form {
 		 */
 		do_action( 'wc_' . $this->get_gateway()->get_id() . '_payment_form_start', $this );
 
-
 		/**
 		 * Payment Gateway Payment Form Action.
 		 *
@@ -703,7 +715,6 @@ class Payment_Gateway_Payment_Form {
 		 * @param Payment_Gateway_Payment_Form $this payment form instance
 		 */
 		do_action( 'wc_' . $this->get_gateway()->get_id() . '_payment_form', $this );
-
 
 		/**
 		 * Payment Gateway Payment Form End Action.
@@ -730,6 +741,7 @@ class Payment_Gateway_Payment_Form {
 	 */
 	public function render_payment_form_description() {
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_payment_form_description_html();
 	}
 
@@ -747,6 +759,8 @@ class Payment_Gateway_Payment_Form {
 
 		// tokenization forced check to prevent rendering this on the "add new payment method" screen
 		if ( $this->has_tokens() && ! $is_add_new_payment_method_page ) {
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $this->get_saved_payment_methods_html();
 		}
 	}
@@ -807,6 +821,7 @@ class Payment_Gateway_Payment_Form {
 		// clear
 		echo '<div class="clear"></div>';
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_save_payment_method_checkbox_html() . '</div><!-- ./new-payment-method-form-div -->';
 
 		echo '</fieldset>';

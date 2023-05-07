@@ -181,7 +181,7 @@
                 isIE11: function () {
                     return !!navigator.userAgent.match(/Trident\/7\./);
                 },
-                setLocalStorageItem(key, value) {
+                setLocalStorageItem: function (key, value) {
                     try {
                         window.localStorage.setItem(
                             key,
@@ -191,7 +191,7 @@
                         // A more advanced implementation would handle the error case
                     }
                 },
-                getLocalStorageItem(key, defaultValue) {
+                getLocalStorageItem: function (key, defaultValue) {
                     try {
                         const item = window.localStorage.getItem(key);
                         return item ? JSON.parse(item) : defaultValue;
@@ -199,7 +199,7 @@
                         return defaultValue;
                     }
                 },
-                removeLocalStorageItem(key) {
+                removeLocalStorageItem: function (key) {
                     try {
                         window.localStorage.removeItem(key);
                     } catch (error) {
@@ -763,6 +763,7 @@
                         if (!($target.closest('.' + that.options.searchFormClass).length > 0
                             || $target.closest('.' + that.options.containerClass).length > 0
                             || $target.closest('.' + that.options.containerDetailsClass).length > 0
+                            || $target.hasClass('js-dgwt-wcas-sugg-hist-clear')
                         )) {
                             that.hideIconModeSearch();
                         }
@@ -1041,14 +1042,18 @@
             var that = this,
                 options = that.options,
                 value = that.el.val(),
-                query = that.getQuery(value);
+                query = that.getQuery(value),
+                isMobileOverlayOnIPhone = false;
 
             // Remove focused classes
             $('body').removeClass('dgwt-wcas-focused');
             $('.' + options.searchFormClass).removeClass('dgwt-wcas-search-focused');
 
-            if (!that.isMouseDownOnSearchElements) {
+            if (utils.isIOS() && $('html').hasClass('dgwt-wcas-overlay-mobile-on')) {
+                isMobileOverlayOnIPhone = true;
+            }
 
+            if (!(that.isMouseDownOnSearchElements || isMobileOverlayOnIPhone)) {
                 that.hide();
 
                 if (that.selection && that.currentValue !== query) {
@@ -1220,15 +1225,16 @@
         fixHeight: function () {
             var that = this;
 
-            if (!that.canShowDetailsPanel()) {
-                return false;
-            }
-
             var $suggestionsWrapp = that.getSuggestionsContainer(),
                 $detailsWrapp = that.getDetailsContainer();
 
             $suggestionsWrapp.css('height', 'auto');
             $detailsWrapp.css('height', 'auto');
+
+            if (!that.canShowDetailsPanel()) {
+                $suggestionsWrapp.css('height', 'auto');
+                return false;
+            }
 
             var sH = $suggestionsWrapp.outerHeight(false),
                 dH = $detailsWrapp.outerHeight(false),
@@ -1504,13 +1510,24 @@
             return (suggestions.length === 1 && suggestions[0].value.toLowerCase() === query.toLowerCase());
         },
         isNoResults: function (suggestions) {
-            return suggestions.length === 1 && typeof suggestions[0].type !== 'undefined' && suggestions[0].type === 'no-results';
+            var isNoResults = false;
+
+            if (
+                typeof suggestions != 'undefined'
+                && suggestions.length === 1
+                && typeof suggestions[0].type !== 'undefined'
+                && suggestions[0].type === 'no-results'
+            ) {
+                isNoResults = true;
+            }
+
+            return isNoResults;
         },
         canShowDetailsPanel: function () {
             var that = this,
                 show = that.options.showDetailsPanel;
 
-            if ($(window).width() < 768 || ('ontouchend' in document) || that.isPreSuggestionsMode) {
+            if ($(window).width() < 768 || ('ontouchend' in document) || that.isPreSuggestionsMode || that.isNoResults(that.suggestions)) {
                 show = false;
             }
             return show;
@@ -2251,7 +2268,8 @@
                         append = '',
                         title = '',
                         highlight = true,
-                        isImg;
+                        isImg,
+                        noResults = false;
 
                     if (suggestion.taxonomy === 'product_cat') {
                         classes += ' dgwt-wcas-suggestion-tax dgwt-wcas-suggestion-cat';
@@ -2305,53 +2323,62 @@
                             suggestion.value = dgwt_wcas.labels[suggestion.value + '_plu'];
                         }
                         highlight = false;
-                    } else {
-                        classes += ' dgwt-wcas-suggestion-nores';
-                        suggestion.value = dgwt_wcas.labels.no_results;
-                        highlight = false;
-                        if (that.canShowDetailsPanel()) {
-                            that.detailsPanelClearScene();
-                        }
+                    }
+
+                    if (suggestion.type === 'no-results') {
+
                         $('body').addClass('dgwt-wcas-nores');
-                    }
-
-                    // Image
-                    if (typeof suggestion.image_src != 'undefined' && suggestion.image_src) {
-                        isImg = true;
-                    }
-
-                    title = title.length > 0 ? ' title="' + title + '"' : '';
-
-                    html += '<a href="' + url + '" class="' + classes + '" data-index="' + i + '">';
-
-                    if (isImg) {
-                        html += '<span class="dgwt-wcas-si"><img src="' + suggestion.image_src + '" /></span>';
-                        html += '<div class="dgwt-wcas-content-wrapp">';
-                    }
-
-                    html += '<span' + title + ' class="' + innerClass + '">';
-
-                    if (suggestion.type === 'vendor') {
-                        html += '<span class="dgwt-wcas-st-title">' + prepend + formatResult(suggestion.value, value, highlight, options) + append + '</span>';
-
-                        // Vendor city
-                        if (suggestion.shop_city) {
-                            html += '<span class="dgwt-wcas-vendor-city"><span> - </span>' + formatResult(suggestion.shop_city, value, true, options) + '</span>';
+                        if (containerDetails.length) {
+                            that.detailsPanelClearScene();
+                            containerDetails.hide();
+                            containerDetails.removeClass(that.classes.fixed);
+                            that.fixHeight();
                         }
 
-                        // Description
-                        if (typeof suggestion.desc != 'undefined' && suggestion.desc) {
-                            html += '<span class="dgwt-wcas-sd">' + formatResult(suggestion.desc, value, true, options) + '</span>';
-                        }
+                        suggestion.value = '';
+                        html += that.createNoResultsContent();
 
                     } else {
-                        html += prepend + formatResult(suggestion.value, value, highlight, options) + append;
+
+                        // Image
+                        if (typeof suggestion.image_src != 'undefined' && suggestion.image_src) {
+                            isImg = true;
+                        }
+
+                        title = title.length > 0 ? ' title="' + title + '"' : '';
+
+                        html += '<a href="' + url + '" class="' + classes + '" data-index="' + i + '">';
+
+                        if (isImg) {
+                            html += '<span class="dgwt-wcas-si"><img src="' + suggestion.image_src + '" /></span>';
+                            html += '<div class="dgwt-wcas-content-wrapp">';
+                        }
+
+                        html += '<span' + title + ' class="' + innerClass + '">';
+
+                        if (suggestion.type === 'vendor') {
+                            html += '<span class="dgwt-wcas-st-title">' + prepend + formatResult(suggestion.value, value, highlight, options) + append + '</span>';
+
+                            // Vendor city
+                            if (suggestion.shop_city) {
+                                html += '<span class="dgwt-wcas-vendor-city"><span> - </span>' + formatResult(suggestion.shop_city, value, true, options) + '</span>';
+                            }
+
+                            // Description
+                            if (typeof suggestion.desc != 'undefined' && suggestion.desc) {
+                                html += '<span class="dgwt-wcas-sd">' + formatResult(suggestion.desc, value, true, options) + '</span>';
+                            }
+
+                        } else {
+                            html += prepend + formatResult(suggestion.value, value, highlight, options) + append;
+                        }
+
+                        html += '</span>';
+
+                        html += isImg ? '</div>' : '';
+                        html += '</a>';
                     }
 
-                    html += '</span>';
-
-                    html += isImg ? '</div>' : '';
-                    html += '</a>';
                 } else {
 
                     html += that.createProductSuggestion(suggestion, i);
@@ -2394,6 +2421,28 @@
 
             that.visible = true;
             that.fixPosition();
+        },
+        createNoResultsContent: function () {
+            var html = '<div class="dgwt-wcas-suggestion-nores">',
+                defaultHtml = typeof dgwt_wcas.labels.no_results_default != 'undefined' ? dgwt_wcas.labels.no_results_default : '',
+                noResultsHtml = defaultHtml;
+
+            try {
+                noResultsHtml = JSON.parse(dgwt_wcas.labels.no_results);
+                // Fix invalid HTML
+                var tmpEl = document.createElement('div');
+                tmpEl.innerHTML = noResultsHtml;
+                noResultsHtml = tmpEl.innerHTML;
+
+            } catch (e) {
+
+            }
+
+            html += noResultsHtml;
+            html += '</div>';
+
+            return html;
+
         },
         createProductSuggestion: function (suggestion, index, extClassName) {
             var that = this,

@@ -1,10 +1,10 @@
 === WooCommerce Square ===
 Contributors: woocommerce, automattic, royho, woothemes, bor0, mattdallan, menakas, chickenn00dle, jorgeatorres, jamesgallan, achyuthajoy
 Tags: credit card, square, woocommerce, inventory sync
-Requires at least: 5.6
+Requires at least: 5.8
 Tested up to: 6.2.0
 Requires PHP: 7.4
-Stable tag: 3.7.1
+Stable tag: 3.8.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -71,6 +71,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 2. The payment gateway settings.
 
 == Changelog ==
+
+= 3.8.0 - 2023-05-04 =
+* Dev - Bump WooCommerce "tested up to" version 7.6.
+* Dev - Bump WordPress minimum supported version from 5.6 to 5.8.
+* Dev - Ignore false positives for phpcs nonce check.
+* Fix - Incorrect inventory value for product import.
+* Update - Migrate Payment Tokens from user meta to WC_Payment_Tokens to support card expiry alerts through Automate Woo and also to align with WooCommerce Core.
 
 = 3.7.1 - 2023-04-21 =
 * Add – Show a `Beta` notice in Gift Card settings UI to discourage Production usage.

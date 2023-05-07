@@ -518,8 +518,10 @@ class Plugin extends Payment_Gateway_Plugin {
 		global $typenow;
 
 		// only show on product edit pages when configured that prices include tax
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce not required, not writing any changes.
 		if ( 'product' === $typenow && isset( $_GET['action'], $_GET['post'] ) && 'edit' === $_GET['action'] && wc_prices_include_tax() && $this->get_settings_handler()->is_product_sync_enabled() ) {
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce not required, not writing any changes.
 			$product = wc_get_product( (int) $_GET['post'] );
 
 			// only show for products configured as taxable and sync with Square
@@ -550,6 +552,7 @@ class Plugin extends Payment_Gateway_Plugin {
 
 		parent::add_currency_admin_notices();
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce not required, only showing a notice.
 		if ( isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] && $this->get_settings_handler()->is_connected() ) {
 
 			foreach ( $this->get_settings_handler()->get_locations() as $location ) {
@@ -652,7 +655,7 @@ class Plugin extends Payment_Gateway_Plugin {
 	 * @return bool
 	 */
 	public function is_plugin_settings() {
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce note required, read-only check.
 		return parent::is_plugin_settings() || ( isset( $_GET['page'], $_GET['tab'] ) && 'wc-settings' === $_GET['page'] && self::PLUGIN_ID === $_GET['tab'] );
 	}
 
@@ -664,7 +667,7 @@ class Plugin extends Payment_Gateway_Plugin {
 	 * @return bool
 	 */
 	public function is_gateway_settings() {
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended - Nonce note required, read-only check.
 		return isset( $_GET['page'], $_GET['tab'], $_GET['section'] ) && 'wc-settings' === $_GET['page'] && 'checkout' === $_GET['tab'] && self::GATEWAY_ID === $_GET['section'];
 	}
 

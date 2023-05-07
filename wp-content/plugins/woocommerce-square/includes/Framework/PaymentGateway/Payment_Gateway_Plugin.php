@@ -999,10 +999,11 @@ abstract class Payment_Gateway_Plugin extends Plugin {
 	 * @return boolean true if the current page is the admin configuration page for the gateway
 	 */
 	public function is_payment_gateway_configuration_page( $gateway_id ) {
-
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Not required, only comparing against known string, read-only action.
 		return isset( $_GET['page'] ) && 'wc-settings' === $_GET['page'] &&
 		isset( $_GET['tab'] ) && 'checkout' === $_GET['tab'] &&
 		isset( $_GET['section'] ) && $gateway_id === $_GET['section'];
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**

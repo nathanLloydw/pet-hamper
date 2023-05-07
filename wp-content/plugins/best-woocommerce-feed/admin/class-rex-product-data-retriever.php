@@ -3834,36 +3834,14 @@ class Rex_Product_Data_Retriever
      * @return string
      * @since    1.2.5
      */
-
-    public function calculate_identifier_exists( $data )
-    {
-
-        $identifier_exists = "no";
-
-        if( array_key_exists( "brand", $data ) and ( $data[ 'brand' ] != "" ) ) {
-            if( ( array_key_exists( "gtin", $data ) ) and ( $data[ 'gtin' ] != "" ) ) {
-                $identifier_exists = "yes";
-            }
-            elseif( ( array_key_exists( "mpn", $data ) ) and ( $data[ 'mpn' ] != "" ) ) {
-                $identifier_exists = "yes";
-            }
-            else {
-                $identifier_exists = "no";
-            }
+    public function calculate_identifier_exists( $data ) {
+        if(
+            ( !empty( $data[ 'brand' ] ) && ( !empty( $data[ 'gtin' ] ) || !empty( $data[ 'mpn' ] ) ) )
+            || ( !empty( $data[ 'gtin' ] ) || !empty( $data[ 'mpn' ] ) )
+        ) {
+            return 'yes';
         }
-        else {
-            if( ( array_key_exists( "gtin", $data ) ) and ( $data[ 'gtin' ] != "" ) ) {
-                $identifier_exists = "no";
-            }
-            elseif( ( array_key_exists( "mpn", $data ) ) and ( $data[ 'mpn' ] != "" ) ) {
-                $identifier_exists = "no";
-            }
-            else {
-                $identifier_exists = "no";
-            }
-        }
-
-        return $identifier_exists;
+        return 'no';
     }
 
 

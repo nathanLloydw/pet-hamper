@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles compatibility with other WC extensions.
  *
  * @class    WC_PRL_Compatibility
- * @version  2.2.0
+ * @version  2.2.1
  */
 class WC_PRL_Compatibility {
 
@@ -33,8 +33,9 @@ class WC_PRL_Compatibility {
 
 		// Define dependencies.
 		self::$required = array(
-			'pb' => '5.11.0',
-			'cp' => '4.1.0'
+			'pb'     => '5.11.0',
+			'cp'     => '4.1.0',
+			'blocks' => '7.2.0',
 		);
 
 		// Initialize.
@@ -106,6 +107,11 @@ class WC_PRL_Compatibility {
 	public static function module_includes() {
 
 		$module_paths = array();
+
+		// Cart/Checkout Block support.
+		if ( class_exists( 'Automattic\WooCommerce\Blocks\Package' ) && version_compare( \Automattic\WooCommerce\Blocks\Package::get_version(), self::$required[ 'blocks' ] ) >= 0 ) {
+			$module_paths[ 'blocks' ] = WC_PRL_ABSPATH . '/includes/compatibility/modules/class-wc-prl-blocks-compatibility.php';
+		}
 
 		// Product Bundles support.
 		if ( function_exists( 'WC_PB' ) ) {

@@ -4,6 +4,7 @@ namespace DgoraWcas\Admin;
 
 use  DgoraWcas\Engines\TNTSearchMySQL\Config ;
 use  DgoraWcas\Engines\TNTSearchMySQL\Indexer\Builder ;
+use  DgoraWcas\Helpers ;
 use  DgoraWcas\Settings ;
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) {
@@ -39,7 +40,7 @@ class AdminMenu
             'woocommerce',
             __( 'FiboSearch', 'ajax-search-for-woocommerce' ),
             __( 'FiboSearch', 'ajax-search-for-woocommerce' ) . $menuSuffix,
-            'manage_options',
+            ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ),
             'dgwt_wcas_settings',
             array( $this, 'settingsPage' )
         );

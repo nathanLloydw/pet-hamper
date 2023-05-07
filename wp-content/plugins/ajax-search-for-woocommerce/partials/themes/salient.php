@@ -4,11 +4,6 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 	exit;
 }
 
-// Change mobile breakpoint
-add_filter( 'dgwt/wcas/scripts/mobile_breakpoint', function () {
-	return 1000;
-} );
-
 add_action( 'wp_footer', function () {
 	if ( ! function_exists( 'get_nectar_theme_options' ) ) {
 		return;

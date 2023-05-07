@@ -21,7 +21,9 @@
 
 namespace WooCommerce\Square\Framework\PaymentGateway;
 
-defined( 'ABSPATH' ) or exit;
+use \WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Square_Credit_Card_Payment_Token;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * The payment gateway privacy handler class.
@@ -51,8 +53,11 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 		$this->add_hooks();
 
 		// add the token exporters & erasers
-		$this->add_exporter( "wc-{$plugin->get_id_dasherized()}-customer-tokens", sprintf( esc_html__( "%s Payment Tokens", 'woocommerce-square' ), $plugin->get_plugin_name() ), array( $this, 'customer_tokens_exporter' ) );
-		$this->add_eraser(   "wc-{$plugin->get_id_dasherized()}-customer-tokens", sprintf( esc_html__( "%s Payment Tokens", 'woocommerce-square' ), $plugin->get_plugin_name() ), array( $this, 'customer_tokens_eraser' ) );
+		// translators: Placeholder %s - Plugin name
+		$this->add_exporter( "wc-{$plugin->get_id_dasherized()}-customer-tokens", sprintf( esc_html__( '%s Payment Tokens', 'woocommerce-square' ), $plugin->get_plugin_name() ), array( $this, 'customer_tokens_exporter' ) );
+
+		// translators: Placeholder %s - Plugin name
+		$this->add_eraser( "wc-{$plugin->get_id_dasherized()}-customer-tokens", sprintf( esc_html__( '%s Payment Tokens', 'woocommerce-square' ), $plugin->get_plugin_name() ), array( $this, 'customer_tokens_eraser' ) );
 	}
 
 
@@ -102,9 +107,12 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 					continue;
 				}
 
-				if ( $customer_id = $gateway->get_customer_id( $customer->get_id(), array( 'autocreate' => false ) ) ) {
+				$customer_id = $gateway->get_customer_id( $customer->get_id(), array( 'autocreate' => false ) );
+
+				if ( $customer_id ) {
 
 					$data[] = array(
+						// translators: Placeholder %s - Customer ID
 						'name'  => sprintf( esc_html__( '%s Customer ID', 'woocommerce-square' ), $gateway->get_method_title() ),
 						'value' => $customer_id,
 					);
@@ -167,23 +175,24 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 					continue;
 				}
 
+				/** @var Square_Credit_Card_Payment_Token $token */
 				foreach ( $gateway->get_payment_tokens_handler()->get_tokens( $user->ID ) as $token ) {
 
 					$token_data = array();
 
-					if ( $token->get_type_full() ) {
+					if ( $token->get_card_type() ) {
 
 						$token_data[] = array(
 							'name'  => __( 'Type', 'woocommerce-square' ),
-							'value' => $token->get_type_full(),
+							'value' => $token->get_card_type(),
 						);
 					}
 
-					if ( $token->get_last_four() ) {
+					if ( $token->get_last4() ) {
 
 						$token_data[] = array(
 							'name'  => __( 'Last Four', 'woocommerce-square' ),
-							'value' => $token->get_last_four(),
+							'value' => $token->get_last4(),
 						);
 					}
 
@@ -199,6 +208,7 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 
 						$data[] = array(
 							'group_id'    => 'wc_' . $gateway->get_id() . '_tokens',
+							// translators: Placeholder %s - Payment token
 							'group_label' => sprintf( esc_html__( '%s Payment Tokens', 'woocommerce-square' ), $gateway->get_method_title() ),
 							'item_id'     => 'token-' . $token->get_id(),
 							'data'        => $token_data,
@@ -242,8 +252,9 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 
 				foreach ( $gateway->get_payment_tokens_handler()->get_tokens( $user->ID ) as $token ) {
 
-					$gateway->get_payment_tokens_handler()->remove_token( $user->ID, $token );
+					$gateway->get_payment_tokens_handler()->remove_token( null, $token );
 
+					// translators: Placeholder %d - Payment token
 					$messages[] = sprintf( esc_html__( 'Removed payment token "%d"', 'woocommerce-square' ), $token->get_id() );
 					$removed    = true;
 				}
@@ -296,7 +307,9 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 
 			foreach ( $meta_to_export as $key => $label ) {
 
-				if ( $value = $gateway->get_order_meta( $order, $key ) ) {
+				$value = $gateway->get_order_meta( $order, $key );
+
+				if ( $value ) {
 
 					$data[] = array(
 						'name'  => $label,
@@ -346,7 +359,9 @@ class Payment_Gateway_Privacy extends \WC_Abstract_Privacy {
 			foreach ( $meta_to_remove as $key => $anonymized_value ) {
 
 				// if the meta value already exists (don't add new meta to orders)
-				if ( $value = $gateway->get_order_meta( $order, $key ) ) {
+				$value = $gateway->get_order_meta( $order, $key );
+
+				if ( $value ) {
 
 					// if no anon value was specified, let WP use its default
 					if ( empty( $anonymized_value ) && function_exists( 'wp_privacy_anonymize_data' ) ) {

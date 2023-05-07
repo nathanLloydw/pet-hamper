@@ -33,6 +33,7 @@ abstract class ThemeIntegration {
 			'whiteLabel'                   => false,
 			'forceMobileOverlay'           => false,
 			'forceMobileOverlayBreakpoint' => false,
+			'forceLayoutBreakpoint'        => false,
 		) );
 
 		$this->maybeOverwriteSearch();
@@ -167,16 +168,35 @@ abstract class ThemeIntegration {
 			} );
 		}
 
-		if ( $this->args['forceMobileOverlayBreakpoint'] !== false && intval( $this->args['forceMobileOverlayBreakpoint'] ) > 0 ) {
+		if ( $this->args['forceMobileOverlayBreakpoint'] !== false ) {
 			// Change mobile breakpoint.
-			add_filter( 'dgwt/wcas/settings/load_value/key=mobile_overlay_breakpoint', function () {
-				return $this->args['forceMobileOverlayBreakpoint'];
-			} );
+			if ( is_numeric( $this->args['forceMobileOverlayBreakpoint'] ) && intval( $this->args['forceMobileOverlayBreakpoint'] ) > 0 ) {
+				add_filter( 'dgwt/wcas/settings/load_value/key=mobile_overlay_breakpoint', function () {
+					return $this->args['forceMobileOverlayBreakpoint'];
+				} );
+			}
 
 			// Mark that the value of the option "mobile breakpoint" is forced.
 			add_filter( 'dgwt/wcas/settings/section=form', function ( $settings ) {
 				$settings[685]['disabled'] = true;
 				$settings[685]['label']    = Helpers::createOverrideTooltip( 'ovtt-theme-breakpoint', Helpers::getOverrideOptionText( $this->themeName ) ) . $settings[685]['label'];
+
+				return $settings;
+			} );
+		}
+
+		if ( $this->args['forceLayoutBreakpoint'] !== false ) {
+			// Change layout breakpoint.
+			if ( is_numeric( $this->args['forceLayoutBreakpoint'] ) && intval( $this->args['forceLayoutBreakpoint'] ) > 0 ) {
+				add_filter( 'dgwt/wcas/settings/load_value/key=mobile_breakpoint', function () {
+					return $this->args['forceLayoutBreakpoint'];
+				} );
+			}
+
+			// Mark that the value of the option "layout breakpoint" is forced.
+			add_filter( 'dgwt/wcas/settings/section=form', function ( $settings ) {
+				$settings[670]['disabled'] = true;
+				$settings[670]['label']    = Helpers::createOverrideTooltip( 'ovtt-theme-breakpoint', Helpers::getOverrideOptionText( $this->themeName ) ) . $settings[670]['label'];
 
 				return $settings;
 			} );

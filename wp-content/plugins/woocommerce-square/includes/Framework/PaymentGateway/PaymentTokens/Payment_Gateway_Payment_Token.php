@@ -20,9 +20,10 @@
  */
 
 namespace WooCommerce\Square\Framework\PaymentGateway\PaymentTokens;
+
 use WooCommerce\Square\Framework\PaymentGateway\Payment_Gateway_Helper;
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * WooCommerce Payment Gateway Token
@@ -64,14 +65,14 @@ class Payment_Gateway_Payment_Token {
 	 */
 	public function __construct( $id, $data ) {
 
-		if ( isset( $data['type'] ) && 'credit_card' == $data['type'] ) {
+		if ( isset( $data['type'] ) && 'credit_card' === $data['type'] ) {
 
 			// normalize the provided card type to adjust for possible abbreviations if set
 			if ( isset( $data['card_type'] ) && $data['card_type'] ) {
 
 				$data['card_type'] = Payment_Gateway_Helper::normalize_card_type( $data['card_type'] );
 
-			// otherwise, get the payment type from the account number
+				// otherwise, get the payment type from the account number
 			} elseif ( isset( $data['account_number'] ) ) {
 
 				$data['card_type'] = Payment_Gateway_Helper::card_type_from_account_number( $data['account_number'] );
@@ -81,8 +82,8 @@ class Payment_Gateway_Payment_Token {
 		// remove account number so it's not saved to the token
 		unset( $data['account_number'] );
 
-		$this->id    = $id;
-		$this->data  = $data;
+		$this->id   = $id;
+		$this->data = $data;
 	}
 
 	/**
@@ -129,7 +130,7 @@ class Payment_Gateway_Payment_Token {
 	 */
 	public function is_credit_card() {
 
-		return 'credit_card' == $this->data['type'];
+		return 'credit_card' === $this->data['type'];
 	}
 
 	/**
@@ -365,7 +366,7 @@ class Payment_Gateway_Payment_Token {
 	 *
 	 * @param string $value billing hash
 	 */
-	public function set_billing_hash( $value ) {
+	public function set_billing_hash( $value = '' ) {
 
 		$this->data['billing_hash'] = $value;
 	}

@@ -148,14 +148,14 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		}
 
 		// validate expiration data
-		$current_year  = date( 'Y' );
-		$current_month = date( 'n' );
+		$current_year  = gmdate( 'Y' );
+		$current_month = gmdate( 'n' );
 
 		if ( ! ctype_digit( $expiration_month ) || ! ctype_digit( $expiration_year ) ||
 			$expiration_month > 12 ||
 			$expiration_month < 1 ||
 			$expiration_year < $current_year ||
-			( $expiration_year == $current_year && $expiration_month < $current_month ) ||
+			( $expiration_year === $current_year && $expiration_month < $current_month ) ||
 			$expiration_year > $current_year + 20
 		) {
 			Square_Helper::wc_add_notice( esc_html__( 'Card expiration date is invalid', 'woocommerce-square' ), 'error' );
@@ -268,7 +268,9 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		 * @param int|string $order_id order ID for the payment
 		 * @param Payment_Gateway_Direct $this instance
 		 */
-		if ( is_array( $result = apply_filters( 'wc_payment_gateway_' . $this->get_id() . '_process_payment', true, $order_id, $this ) ) ) {
+		$result = apply_filters( 'wc_payment_gateway_' . $this->get_id() . '_process_payment', true, $order_id, $this );
+
+		if ( is_array( $result ) ) {
 			return $result;
 		}
 
@@ -410,6 +412,7 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 				} catch ( \Exception $exception ) {
 
 					$message = sprintf(
+						// translators: Placeholder: %s Error message.
 						esc_html__( 'Payment method address could not be updated. %s', 'woocommerce-square' ),
 						$exception->getMessage()
 					);
@@ -426,9 +429,6 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 				$token->set_billing_hash( $new_billing_hash );
 			}
 		}
-
-		// don't halt payment if this fails
-		$this->get_payment_tokens_handler()->update_token( $order->get_user_id(), $token );
 
 		return $order;
 	}
@@ -473,16 +473,16 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 			// paying with tokenized payment method (we've already verified that this token exists in the validate_fields method)
 			$token = $this->get_payment_tokens_handler()->get_token( $order->get_user_id(), Square_Helper::get_post( 'wc-' . $this->get_id_dasherized() . '-payment-token' ) );
 
-			$order->payment->token          = $token->get_id();
-			$order->payment->account_number = $token->get_last_four();
-			$order->payment->last_four      = $token->get_last_four();
+			$order->payment->token          = $token->get_token();
+			$order->payment->account_number = $token->get_last4();
+			$order->payment->last_four      = $token->get_last4();
 
 			if ( $this->is_credit_card_gateway() ) {
 
 				// credit card specific attributes
 				$order->payment->card_type = $token->get_card_type();
-				$order->payment->exp_month = $token->get_exp_month();
-				$order->payment->exp_year  = $token->get_exp_year();
+				$order->payment->exp_month = $token->get_expiry_month();
+				$order->payment->exp_year  = $token->get_expiry_year();
 
 				if ( $this->csc_enabled_for_tokens() ) {
 					$order->payment->csc = Square_Helper::get_post( 'wc-' . $this->get_id_dasherized() . '-csc' );
@@ -532,12 +532,13 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		// success! update order record
 		if ( $response->transaction_approved() ) {
 
-			$last_four = substr( $order->payment->account_number, -4 );
+			$last_four  = substr( $order->payment->account_number, -4 );
+			$first_four = substr( $order->payment->account_number, 0, 4 );
 
 			// use direct card type if set, or try to guess it from card number
 			if ( ! empty( $order->payment->card_type ) ) {
 				$card_type = $order->payment->card_type;
-			} elseif ( $first_four = substr( $order->payment->account_number, 0, 4 ) ) {
+			} elseif ( $first_four ) {
 				$card_type = Payment_Gateway_Helper::card_type_from_account_number( $first_four );
 			} else {
 				$card_type = 'card';
@@ -558,7 +559,7 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 			if ( ! empty( $order->payment->exp_month ) && ! empty( $order->payment->exp_year ) ) {
 
 				$message .= ' ' . sprintf(
-					/** translators: Placeholders: %s - credit card expiry date */
+					/* translators: Placeholders: %s - credit card expiry date */
 					__( '(expires %s)', 'woocommerce-square' ),
 					esc_html( $order->payment->exp_month . '/' . substr( $order->payment->exp_year, -2 ) )
 				);
@@ -698,7 +699,7 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		// handle the response
 		if ( $response->transaction_approved() || $response->transaction_held() ) {
 
-			if ( $this->supports_tokenization() && 0 != $order->get_user_id() && $this->get_payment_tokens_handler()->should_tokenize() &&
+			if ( $this->supports_tokenization() && 0 !== $order->get_user_id() && $this->get_payment_tokens_handler()->should_tokenize() &&
 				( $order->payment_total > 0 && ( $this->tokenize_with_sale() || $this->tokenize_after_sale() ) ) ) {
 
 				try {
@@ -822,6 +823,7 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 
 				/* translators: Payment method as in a specific credit card. Placeholders: %1$s - card type (visa, mastercard, ...), %2$s - last four digits of the card, %3$s - card expiry date */
 				$message = sprintf(
+					// translators: Placeholder: %1$s - card name, %2$s - card's last four digits, %3$s - card's expiration date.
 					esc_html__( 'Nice! New payment method added: %1$s ending in %2$s (expires %3$s)', 'woocommerce-square' ),
 					$token->get_type_full(),
 					$token->get_last_four(),
@@ -858,10 +860,13 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		} else {
 
 			if ( $response->get_status_code() && $response->get_status_message() ) {
+				// translators: Placeholder: %s The status code.
 				$message = sprintf( esc_html__( 'Status code %1$s: %2$s', 'woocommerce-square' ), $response->get_status_code(), $response->get_status_message() );
 			} elseif ( $response->get_status_code() ) {
+				// translators: Placeholder: %s The status code.
 				$message = sprintf( esc_html__( 'Status code: %s', 'woocommerce-square' ), $response->get_status_code() );
 			} elseif ( $response->get_status_message() ) {
+				// translators: Placeholder: %s The status message.
 				$message = sprintf( esc_html__( 'Status message: %s', 'woocommerce-square' ), $response->get_status_message() );
 			} else {
 				$message = 'Unknown Error';
@@ -998,7 +1003,7 @@ abstract class Payment_Gateway_Direct extends Payment_Gateway {
 		}
 
 		// update the user
-		if ( 0 != $user_id ) {
+		if ( 0 !== $user_id ) {
 			$this->update_customer_id( $user_id, $customer_id );
 		}
 	}

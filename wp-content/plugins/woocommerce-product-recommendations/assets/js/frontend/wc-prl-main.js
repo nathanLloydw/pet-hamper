@@ -423,7 +423,7 @@
 					: $( '.wc-prl-recommendations:not(.placeholder)' );
 			if ( $deployments.length ) {
 				// Localized lookups.
-				var is_ajax_add_to_cart = 'yes' !== WC_PRL.params.ajax_add_to_cart;
+				var is_ajax_add_to_cart = 'yes' === WC_PRL.params.ajax_add_to_cart;
 				var is_checkout_page = $( document.body ).hasClass(
 					'woocommerce-checkout'
 				);

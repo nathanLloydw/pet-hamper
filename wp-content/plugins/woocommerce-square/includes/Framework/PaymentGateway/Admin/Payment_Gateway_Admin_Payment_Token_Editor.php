@@ -26,6 +26,7 @@ use WooCommerce\Square\Plugin;
 use WooCommerce\Square\Framework\Square_Helper;
 use WooCommerce\Square\Framework\PaymentGateway\Payment_Gateway_Helper;
 use WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Payment_Gateway_Payment_Token;
+use WooCommerce\Square\Framework\PaymentGateway\PaymentTokens\Square_Credit_Card_Payment_Token;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -169,7 +170,7 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 		/** Ignoring nonce verification as the permission check is already taken care of in Payment_Gateway_Admin_User_Handler::save_profile_fields. */
 		$tokens = ( isset( $_POST[ $this->get_input_name() ] ) ) ? sanitize_text_field( wp_unslash( $_POST[ $this->get_input_name() ] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		$built_tokens = array();
+		$customer_tokens = \WC_Payment_Tokens::get_customer_tokens( $user_id, wc_square()->get_gateway()->get_id() );
 
 		foreach ( $tokens as $data ) {
 
@@ -187,14 +188,36 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 
 			// Set the default method
 			$data['default'] = Square_Helper::get_post( $this->get_input_name() . '_default' ) === $token_id;
+			$data            = $this->validate_token_data( $token_id, $data );
 
-			$data = $this->validate_token_data( $token_id, $data );
-			if ( is_array( $data ) ) {
-				$built_tokens[ $token_id ] = $this->build_token( $user_id, $token_id, $data );
+			if ( $data ) {
+				$token_found           = false;
+				$matched_payment_token = null;
+				$token_obj             = false;
+
+				foreach ( $customer_tokens as $payment_token => $customer_token ) {
+					if ( $customer_token->get_token() === $token_id ) {
+						$token_found           = true;
+						$matched_payment_token = $payment_token;
+						break;
+					}
+				}
+
+				if ( $token_found ) {
+					$token_obj = \WC_Payment_Tokens::get( $matched_payment_token );
+					$token_obj = new Square_Credit_Card_Payment_Token( $token_obj );
+				} else {
+					$token_obj = new Square_Credit_Card_Payment_Token();
+				}
+
+				$token_obj->set_last4( $data['last_four'] );
+				$token_obj->set_expiry_year( $data['exp_year'] );
+				$token_obj->set_expiry_month( $data['exp_month'] );
+				$token_obj->set_card_type( $data['card_type'] );
+				$token_obj->set_default( $data['default'] );
+				$token_obj->save();
 			}
 		}
-
-		$this->update_tokens( $user_id, $built_tokens );
 	}
 
 
@@ -250,8 +273,9 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 				throw new \Exception( 'Invalid nonce' );
 			}
 
-			$user_id  = Square_Helper::get_request( 'user_id' );
-			$token_id = Square_Helper::get_request( 'token_id' );
+			$user_id          = Square_Helper::get_request( 'user_id' );
+			$token_id         = Square_Helper::get_request( 'token_id' );
+			$payment_token_id = Square_Helper::get_request( 'payment_token_id' );
 
 			if ( ! $user_id ) {
 				throw new \Exception( 'User ID is missing' );
@@ -261,7 +285,10 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 				throw new \Exception( 'Token ID is missing' );
 			}
 
-			if ( $this->remove_token( $user_id, $token_id ) ) {
+			$token      = \WC_Payment_Tokens::get( $payment_token_id );
+			$is_deleted = $token->delete();
+
+			if ( $is_deleted ) {
 				wp_send_json_success();
 			} else {
 				throw new \Exception( 'Could not remove token' );
@@ -337,21 +364,6 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 		$this->get_gateway()->get_payment_tokens_handler()->update_tokens( $user_id, $tokens, $this->get_gateway()->get_environment() );
 	}
 
-
-	/**
-	 * Remove a specific token.
-	 *
-	 * @since 3.0.0
-	 * @param int    $user_id the user ID
-	 * @param string $token_id the token ID
-	 * @return bool whether the token was successfully removed
-	 */
-	protected function remove_token( $user_id, $token_id ) {
-
-		return $this->get_gateway()->get_payment_tokens_handler()->remove_token( $user_id, $token_id, $this->get_gateway()->get_environment() );
-	}
-
-
 	/**
 	 * Validate a token's data before saving.
 	 *
@@ -386,7 +398,7 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 	protected function prepare_expiry_date( $data ) {
 
 		// expiry date must be present, include a forward slash and be 5 characters (MM/YY)
-		if ( ! $data['expiry'] || ! Square_Helper::str_exists( $data['expiry'], '/' ) || 5 !== strlen( $data['expiry'] ) ) {
+		if ( ! $data['expiry'] || ! Square_Helper::str_exists( $data['expiry'], '/' ) || 7 !== strlen( $data['expiry'] ) ) {
 			unset( $data['expiry'] );
 			return $data;
 		}
@@ -426,29 +438,7 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 			)
 		);
 
-		$tokens = array();
-
-		foreach ( $stored_tokens as $token ) {
-
-			$token_id = $token->get_id();
-
-			// Set the token data
-			$tokens[ $token_id ] = $token->to_datastore_format();
-
-			$tokens[ $token_id ]['id'] = $token_id;
-
-			// Set the credit card expiration date
-			if ( $token->is_credit_card() ) {
-				$tokens[ $token_id ]['expiry'] = $token->get_exp_month() && $token->get_exp_year() ? $token->get_exp_date() : '';
-			}
-
-			$tokens[ $token_id ]['default'] = $token->is_default();
-
-			// Parse against the editor field IDs so we don't have to isset throughout the HTML
-			$tokens[ $token_id ] = wp_parse_args( $tokens[ $token_id ], array_fill_keys( array_keys( $this->get_fields() ), '' ) );
-		}
-
-		return $tokens;
+		return $stored_tokens;
 	}
 
 
@@ -547,11 +537,11 @@ class Payment_Gateway_Admin_Payment_Token_Editor {
 						),
 					),
 					'expiry'    => array(
-						'label'      => esc_html__( 'Expiration (MM/YY)', 'woocommerce-square' ),
+						'label'      => esc_html__( 'Expiration (MM/YYYY)', 'woocommerce-square' ),
 						'attributes' => array(
-							'placeholder' => 'MM/YY',
-							'pattern'     => '(0[1-9]|1[012])[- /.]\d\d',
-							'maxlength'   => 5,
+							'placeholder' => 'MM/YYYY',
+							'pattern'     => '^(0[1-9]|1[0-2])\/?([0-9]{4})$',
+							'maxlength'   => 7,
 						),
 					),
 				);

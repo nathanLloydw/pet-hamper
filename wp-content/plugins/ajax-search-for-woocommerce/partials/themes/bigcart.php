@@ -4,11 +4,6 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 	exit;
 }
 
-// Change mobile breakpoint
-add_filter( 'dgwt/wcas/scripts/mobile_breakpoint', function () {
-	return 782;
-} );
-
 add_action( 'wp_footer', function () {
 	echo '<div id="wcas-theme-search" style="display: block;">' . do_shortcode( '[wcas-search-form]' ) . '</div>';
 } );

@@ -1,5 +1,14 @@
 *** WooCommerce Product Recommendations ***
 
+2023-03-07 - version 2.2.2
+* Fix - Fixed an issue that prevented plugin styles from loading in RTL sites when WooCommerce 7.3+ was active. 
+* Fix - Fixed an issue that prevented checkout table contents from being updated after an AJAX add-to-cart event in the Checkout page.
+
+2023-01-23 - version 2.2.1
+* Fix - Fixed deprecation notices, when sorting conditions by complexity.
+* Fix - Fixed fatal errors triggered when activating/deactivating the plugin via WP-CLI.
+* Tweak - Removed cart and checkout locations when block-based cart/checkout is used.
+
 2022-11-28 - version 2.2.0
 * Important - Declared compatibility with the new High-Performance Order Storage.
 * Important - Security improvements.

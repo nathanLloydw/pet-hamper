@@ -14,10 +14,6 @@ add_filter( 'et_builder_load_requests', function ( $requests ) {
 	return $requests;
 } );
 
-add_filter( 'dgwt/wcas/scripts/mobile_breakpoint', function () {
-	return 980;
-} );
-
 add_action( 'wp_footer', function () {
 	echo '<div id="wcas-divi-search" style="display: block;">' . do_shortcode( '[wcas-search-form layout="classic" mobile_overlay="1" mobile_breakpoint="980" ]' ) . '</div>';
 } );
