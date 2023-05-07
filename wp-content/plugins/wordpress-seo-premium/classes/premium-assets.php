@@ -336,22 +336,6 @@ class WPSEO_Premium_Assets implements WPSEO_WordPress_Integration {
 				],
 				'footer'       => true,
 			],
-			[
-				'name'         => 'wp-seo-premium-schema-blocks',
-				'path'         => 'assets/js/dist/',
-				'filename'     => 'wp-seo-premium-schema-blocks-' . $version . WPSEO_CSSJS_SUFFIX . '.js',
-				'dependencies' => [
-					WPSEO_Admin_Asset_Manager::PREFIX . 'schema-blocks-package',
-				],
-			],
-			[
-				'name'         => 'wp-seo-premium-crawl-settings',
-				'path'         => 'assets/js/dist/',
-				'filename'     => 'crawl-settings-' . $version . WPSEO_CSSJS_SUFFIX . '.js',
-				'dependencies' => [
-					'jquery',
-				],
-			],
 		];
 	}
 
@@ -386,13 +370,6 @@ class WPSEO_Premium_Assets implements WPSEO_WordPress_Integration {
 				],
 			],
 			[
-				'name'         => WPSEO_Admin_Asset_Manager::PREFIX . 'premium-schema-blocks',
-				'source'       => 'assets/css/dist/premium-schema-blocks-' . $version . '.css',
-				'dependencies' => [
-					WPSEO_Admin_Asset_Manager::PREFIX . 'schema-blocks',
-				],
-			],
-			[
 				'name'         => WPSEO_Admin_Asset_Manager::PREFIX . 'premium-draft-js-plugins',
 				'source'       => 'assets/css/dist/premium-draft-js-plugins-' . $version . '.css',
 				'dependencies' => [],
@@ -400,6 +377,11 @@ class WPSEO_Premium_Assets implements WPSEO_WordPress_Integration {
 			[
 				'name'         => WPSEO_Admin_Asset_Manager::PREFIX . 'premium-thank-you',
 				'source'       => 'assets/css/dist/premium-thank-you-' . $version . '.css',
+				'dependencies' => [],
+			],
+			[
+				'name'         => WPSEO_Admin_Asset_Manager::PREFIX . 'premium-settings',
+				'source'       => 'assets/css/dist/premium-settings-' . $version . '.css',
 				'dependencies' => [],
 			],
 		];

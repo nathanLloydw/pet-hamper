@@ -42,16 +42,27 @@ class Replacement_Variables_Integration implements Integration_Interface {
 		 *
 		 * @since 19.0
 		 *
-		 * @param bool Whether to load the emoji picker.
+		 * @param bool $load Whether to load the emoji picker.
 		 */
 		if ( ! \apply_filters( 'wpseo_premium_load_emoji_picker', true ) ) {
 			return;
 		}
 
-		$get_action = \filter_input( \INPUT_GET, 'action', \FILTER_SANITIZE_STRING );
-		$get_page   = \filter_input( \INPUT_GET, 'page', \FILTER_SANITIZE_STRING );
+		$is_elementor_action = false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+		if ( isset( $_GET['action'] ) && \is_string( $_GET['action'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason: We are not processing form information, We are only strictly comparing.
+			$is_elementor_action = ( \wp_unslash( $_GET['action'] ) === 'elementor' );
+		}
 
-		if ( $get_page !== 'wpseo_titles' && $get_action !== 'elementor' && ! $this->load_metabox( $this->get_current_page() ) ) {
+		$is_settings_page = false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+		if ( isset( $_GET['page'] ) && \is_string( $_GET['page'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason: We are not processing form information, We are only strictly comparing.
+			$is_settings_page = ( \wp_unslash( $_GET['page'] ) === 'wpseo_page_settings' );
+		}
+
+		if ( ! $is_settings_page && ! $is_elementor_action && ! $this->load_metabox( $this->get_current_page() ) ) {
 			return;
 		}
 
@@ -59,17 +70,22 @@ class Replacement_Variables_Integration implements Integration_Interface {
 
 		\wp_enqueue_style( 'yoast-seo-premium-draft-js-plugins' );
 
-		\wp_register_script(
+		$draft_js_external_script_location = 'https://yoast.com/shared-assets/scripts/wp-seo-premium-draft-js-plugins-source-2.0.0.min.js';
+
+		if ( \file_exists( \WPSEO_PREMIUM_PATH . 'assets/js/external/draft-js-emoji-picker.min.js' ) ) {
+			$draft_js_external_script_location = \plugins_url( 'wordpress-seo-premium/assets/js/external/draft-js-emoji-picker.min.js' );
+		}
+
+		\wp_enqueue_script(
 			'yoast-seo-premium-draft-js-plugins-external',
-			'https://yoast.com/shared-assets/scripts/wp-seo-premium-draft-js-plugins-source.min.js',
+			$draft_js_external_script_location,
 			[
 				'yoast-seo-premium-commons',
 				WPSEO_Admin_Asset_Manager::PREFIX . 'search-metadata-previews',
 			],
-			WPSEO_PREMIUM_VERSION,
+			\WPSEO_PREMIUM_VERSION,
 			false
 		);
-		\wp_enqueue_script( 'yoast-seo-premium-draft-js-plugins-external' );
 	}
 
 	/**
@@ -94,7 +110,7 @@ class Replacement_Variables_Integration implements Integration_Interface {
 		}
 
 		// Make sure ajax integrations are loaded.
-		return wp_doing_ajax();
+		return \wp_doing_ajax();
 	}
 
 	/**

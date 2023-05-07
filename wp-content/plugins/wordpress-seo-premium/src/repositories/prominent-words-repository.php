@@ -112,12 +112,12 @@ class Prominent_Words_Repository {
 			$query = $query->where_not_in( 'id', $excluded_ids );
 		}
 
-		if ( ! empty( $post_type ) && is_array( $post_type ) ) {
-			$query = $query->where_in( 'object_type', $post_type );
+		if ( ! empty( $post_type ) && \is_array( $post_type ) ) {
+			$query = $query->where_in( 'object_sub_type', $post_type );
 		}
 
 		if ( $only_include_public ) {
-			$query = $query->where_raw( 'i.is_public = 1 OR i.is_public is null' );
+			$query = $query->where_raw( '(i.is_public = 1 OR i.is_public is null)' );
 		}
 
 		$results = $query->find_array();
@@ -143,6 +143,24 @@ class Prominent_Words_Repository {
 		return $this->query()
 			->where( 'indexable_id', $indexable_id )
 			->where_in( 'stem', $outdated_stems )
+			->delete_many();
+	}
+
+	/**
+	 * Deletes all prominent words for an indexable
+	 *
+	 * @param int $indexable_id     The id of the indexable which needs to have
+	 *                              some of its prominent words deleted.
+	 *
+	 * @return bool Whether the deletion was successful.
+	 */
+	public function delete_by_indexable_id( $indexable_id ) {
+		if ( ! $indexable_id ) {
+			return false;
+		}
+
+		return $this->query()
+			->where( 'indexable_id', $indexable_id )
 			->delete_many();
 	}
 

@@ -8,6 +8,7 @@
 use Yoast\WP\SEO\Integrations\Blocks\Siblings_Block;
 use Yoast\WP\SEO\Integrations\Blocks\Subpages_Block;
 use Yoast\WP\SEO\Premium\Addon_Installer;
+use Yoast\WP\SEO\Premium\Helpers\Current_Page_Helper;
 use Yoast\WP\SEO\Premium\Helpers\Prominent_Words_Helper;
 use Yoast\WP\SEO\Presenters\Admin\Help_Link_Presenter;
 use Yoast\WP\SEO\Repositories\Indexable_Repository;
@@ -29,7 +30,7 @@ class WPSEO_Premium {
 	 *
 	 * @var string
 	 */
-	const PLUGIN_VERSION_NAME = '19.1';
+	const PLUGIN_VERSION_NAME = '20.6';
 
 	/**
 	 * Machine readable version for determining whether an upgrade is needed.
@@ -71,7 +72,9 @@ class WPSEO_Premium {
 		// Enable tracking.
 		if ( class_exists( WPSEO_Options::class ) ) {
 			WPSEO_Premium_Option::register_option();
-			WPSEO_Options::set( 'tracking', true );
+			if ( WPSEO_Options::get( 'toggled_tracking' ) !== true ) {
+				WPSEO_Options::set( 'tracking', true );
+			}
 			WPSEO_Options::set( 'should_redirect_after_install', true );
 		}
 
@@ -85,7 +88,8 @@ class WPSEO_Premium {
 	public function __construct() {
 		$this->integrations = [
 			'premium-metabox'              => new WPSEO_Premium_Metabox(
-				YoastSEOPremium()->classes->get( Prominent_Words_Helper::class )
+				YoastSEOPremium()->helpers->prominent_words,
+				YoastSEOPremium()->helpers->current_page
 			),
 			'premium-assets'               => new WPSEO_Premium_Assets(),
 			'link-suggestions'             => new WPSEO_Metabox_Link_Suggestions(),
@@ -124,11 +128,6 @@ class WPSEO_Premium {
 			// Make sure priority is below registration of other implementations of the beacon in News, Video, etc.
 			add_filter( 'wpseo_helpscout_beacon_settings', [ $this, 'filter_helpscout_beacon' ], 1 );
 
-			// Only register the yoast i18n when the page is a Yoast SEO page.
-			if ( $this->is_yoast_seo_premium_page( filter_input( INPUT_GET, 'page' ) ) ) {
-				$this->register_i18n_promo_class();
-			}
-
 			add_filter( 'wpseo_enable_tracking', '__return_true', 1 );
 
 			// Add Sub Menu page and add redirect page to admin page array.
@@ -137,7 +136,7 @@ class WPSEO_Premium {
 
 			// Add input fields to page meta post types.
 			add_action(
-				'Yoast\WP\SEO\admin_post_types_beforearchive',
+				'Yoast\WP\SEO\admin_post_types_beforearchive_internal',
 				[
 					$this,
 					'admin_page_meta_post_types_checkboxes',
@@ -175,10 +174,6 @@ class WPSEO_Premium {
 		add_action( 'wpseo_premium_indicator_classes', [ $this, 'change_premium_indicator' ] );
 		add_action( 'wpseo_premium_indicator_text', [ $this, 'change_premium_indicator_text' ] );
 
-		// Only initialize the AJAX for all tabs except settings.
-		$facebook_name = new WPSEO_Facebook_Profile();
-		$facebook_name->set_hooks();
-
 		foreach ( $this->integrations as $integration ) {
 			$integration->register_hooks();
 		}
@@ -195,26 +190,6 @@ class WPSEO_Premium {
 		$premium_pages = [ 'wpseo_redirects' ];
 
 		return in_array( $page, $premium_pages, true );
-	}
-
-	/**
-	 * Registers the promotion class for our GlotPress instance.
-	 *
-	 * @link https://github.com/Yoast/i18n-module
-	 */
-	private function register_i18n_promo_class() {
-		new Yoast_I18n_v3(
-			[
-				'textdomain'     => 'wordpress-seo-premium',
-				'project_slug'   => 'wordpress-seo-premium',
-				'plugin_name'    => 'Yoast SEO premium',
-				'hook'           => 'wpseo_admin_promo_footer',
-				'api_url'        => 'https://translationspress.com/app/api/yoast/wordpress-seo-premium/',
-				'glotpress_name' => 'Yoast Translate',
-				'glotpress_logo' => 'https://yoast.com/app/uploads/yoast/Yoast_Translate.svg',
-				'register_url'   => 'https://yoa.st/translationspress',
-			]
-		);
 	}
 
 	/**
@@ -295,7 +270,7 @@ class WPSEO_Premium {
 		$node = [
 			'id'    => 'wpseo-premium-create-redirect',
 			'title' => __( 'Create Redirect', 'wordpress-seo-premium' ),
-			'href'  => admin_url( 'admin.php?page=wpseo_redirects&old_url=' . $old_url ),
+			'href'  => wp_nonce_url( admin_url( 'admin.php?page=wpseo_redirects&old_url=' . $old_url ), 'wpseo_redirects-old-url', 'wpseo_premium_redirects_nonce' ),
 		];
 		$wp_admin_bar->add_menu( $node );
 	}

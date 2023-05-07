@@ -2,7 +2,6 @@
 
 namespace Yoast\WP\SEO\Premium\Actions;
 
-use Yoast\WP\SEO\Helpers\Options_Helper;
 use Yoast\WP\SEO\Premium\Helpers\Zapier_Helper;
 use Yoast\WP\SEO\Repositories\Indexable_Repository;
 
@@ -31,10 +30,7 @@ class Zapier_Action {
 	 * @param Zapier_Helper        $zapier_helper        The Zapier helper.
 	 * @param Indexable_Repository $indexable_repository The Indexable repository.
 	 */
-	public function __construct(
-		Zapier_Helper $zapier_helper,
-		Indexable_Repository $indexable_repository
-	) {
+	public function __construct( Zapier_Helper $zapier_helper, Indexable_Repository $indexable_repository ) {
 		$this->zapier_helper        = $zapier_helper;
 		$this->indexable_repository = $indexable_repository;
 	}
@@ -156,8 +152,10 @@ class Zapier_Action {
 		);
 		$zapier_data = [];
 		foreach ( $latest_post as $item ) {
-			$indexable     = $this->indexable_repository->find_by_id_and_type( $item->ID, 'post' );
-			$zapier_data[] = (object) $this->zapier_helper->get_data_for_zapier( $indexable );
+			$indexable = $this->indexable_repository->find_by_id_and_type( $item->ID, 'post' );
+			if ( $indexable ) {
+				$zapier_data[] = (object) $this->zapier_helper->get_data_for_zapier( $indexable );
+			}
 		}
 
 		return (object) [
