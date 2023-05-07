@@ -281,48 +281,52 @@ function gallery_slider()
         });
     }
 
-    window.setInterval(function()
+    if(scroll_left && scroll_right && slides)
     {
-        if (slides[current_slide + 1])
+        window.setInterval(function()
         {
-            scroll_left.classList.remove('disabled');
-
-            current_slide++;
-
-            slides.forEach(function (slide)
+            if (slides[current_slide + 1])
             {
-                slide.style.height = '0';
-                slide.style.opacity = '0';
-            });
+                scroll_left.classList.remove('disabled');
 
-            slides[current_slide].style.height = 'auto';
-            slides[current_slide].style.opacity = '1';
+                current_slide++;
 
-            console.log(current_slide);
-            console.log(slides.length - 1);
+                slides.forEach(function (slide)
+                {
+                    slide.style.height = '0';
+                    slide.style.opacity = '0';
+                });
 
-            if((slides.length - 1) == current_slide)
-            {
-                scroll_right.classList.add('disabled');
+                slides[current_slide].style.height = 'auto';
+                slides[current_slide].style.opacity = '1';
+
+                console.log(current_slide);
+                console.log(slides.length - 1);
+
+                if((slides.length - 1) == current_slide)
+                {
+                    scroll_right.classList.add('disabled');
+                }
             }
-        }
-        else
-        {
-            scroll_left.classList.add('disabled');
-            scroll_right.classList.remove('disabled');
-            current_slide = 0;
-
-            slides.forEach(function (slide)
+            else
             {
-                slide.style.height = '0';
-                slide.style.opacity = '0';
-            });
+                scroll_left.classList.add('disabled');
+                scroll_right.classList.remove('disabled');
+                current_slide = 0;
 
-            slides[current_slide].style.height = 'auto';
-            slides[current_slide].style.opacity = '1';
-        }
+                slides.forEach(function (slide)
+                {
+                    slide.style.height = '0';
+                    slide.style.opacity = '0';
+                });
 
-    }, 6000);
+                slides[current_slide].style.height = 'auto';
+                slides[current_slide].style.opacity = '1';
+            }
+
+        }, 6000);
+    }
+
 }
 
 
