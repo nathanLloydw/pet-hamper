@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Recommendations
 * Plugin URI: https://woocommerce.com/products/product-recommendations/
 * Description: Create smarter up-sells and cross-sells, place them anywhere, and measure their impact with in-depth analytics.
-* Version: 2.2.0
+* Version: 2.2.2
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Product_Recommendations
- * @version  2.2.0
+ * @version  2.2.2
  */
 class WC_Product_Recommendations {
 
@@ -40,7 +40,7 @@ class WC_Product_Recommendations {
 	 *
 	 * @var string
 	 */
-	private $version = '2.2.0';
+	private $version = '2.2.2';
 
 	/**
 	 * Min required WC version.
@@ -471,9 +471,10 @@ class WC_Product_Recommendations {
 	 * @return void
 	 */
 	public function on_activation() {
-		$this->define_constants();
-		require_once  WC_PRL_ABSPATH . 'includes/class-wc-prl-install.php';
-		WC_PRL_Install::create_events();
+		// Add daily maintenance process.
+		if ( ! wp_next_scheduled( 'wc_prl_daily' ) ) {
+			wp_schedule_event( time() + 10, 'daily', 'wc_prl_daily' );
+		}
 	}
 
 	/**
@@ -484,8 +485,6 @@ class WC_Product_Recommendations {
 	 * @return void
 	 */
 	public function on_deactivation() {
-		$this->define_constants();
-		require_once  WC_PRL_ABSPATH . 'includes/class-wc-prl-install.php';
 		// Clear daily maintenance process.
 		wp_clear_scheduled_hook( 'wc_prl_daily' );
 	}
@@ -526,8 +525,13 @@ class WC_Product_Recommendations {
 	 * Get PRL screen ids.
 	 */
 	public function get_screen_ids() {
-		$screens   = array();
-		$prefix    = sanitize_title( __( 'WooCommerce', 'woocommerce' ) );
+		$screens = array();
+
+		if ( version_compare( WC()->version, '7.3.0' ) < 0 ) {
+			$prefix = sanitize_title( __( 'WooCommerce', 'woocommerce' ) );
+		} else {
+			$prefix = 'woocommerce';
+		}
 
 		$screens[] = 'prl_engine';
 		$screens[] = 'edit-prl_engine';

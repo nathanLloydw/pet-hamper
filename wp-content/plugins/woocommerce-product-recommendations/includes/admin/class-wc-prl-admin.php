@@ -26,7 +26,7 @@ class WC_PRL_Admin {
 	 *
 	 * @var string
 	 */
-	private static $bundled_selectsw_version = '1.2.0';
+	private static $bundled_selectsw_version = '1.2.1';
 
 	/**
 	 * Setup Admin class.

@@ -4,7 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  2.0.0
+ * @version  2.2.1
  */
 
 // Exit if accessed directly.
@@ -290,7 +290,7 @@ function wc_prl_complexity_cmp( $a, $b ) {
 	$aa = $a[ 'object' ];
 	$bb = $b[ 'object' ];
 
-	return $aa->get_complexity() > $bb->get_complexity();
+	return $aa->get_complexity() - $bb->get_complexity();
 }
 
 /**
