@@ -811,7 +811,7 @@ class WC_Stripe_Payment_Request {
 		if ( ! $this->should_show_payment_request_button() ) {
 			return;
 		}
-        
+
         // bundled products do not work with express checkout, tmp solution till fixed
         if($product && $product->is_type("bundle"))
         {

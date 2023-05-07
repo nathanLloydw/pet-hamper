@@ -19,6 +19,27 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_cart' ); ?>
 
+<div class="woocommerce-info woocommerce-free-shipping">
+    <?php
+    $order_total = floatval( preg_replace( '#[^\d.]#', '', WC()->cart->get_cart_total() ) );
+
+    $shipping_zone = new WC_Shipping_Zone(1);
+    $shipping_methods = $shipping_zone->get_shipping_methods( true, 'values' );
+    $free_shipping = floatval($shipping_methods[4]->min_amount);
+
+
+    if($order_total > $free_shipping)
+    {
+        echo "<i class='fa-solid fa-check'></i> CONGRATS! YOU'RE GETTING FREE DELIVERY (UK)";
+    }
+    else
+    {
+        echo '<strong>£'.number_format($free_shipping - $order_total,2).'</strong> AWAY FROM FREE STANDARD DELIVERY (UK)</br>';
+        echo '<div class="progress-bar"><div class="progress" style="width:'.(100 - ((($free_shipping - $order_total) / $free_shipping)*100)).'%"></div></div>';
+    }
+    ?>
+</div>
+
 <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
