@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite312b9993383772806e60eb5d2538fc0
+class ComposerStaticInit1ef0fc1b13e2bc13d9151b56ecd99720
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -287,6 +287,7 @@ class ComposerStaticInite312b9993383772806e60eb5d2538fc0
         'WP_Rocket\\Engine\\Cache\\AdminSubscriber' => __DIR__ . '/../..' . '/inc/Engine/Cache/AdminSubscriber.php',
         'WP_Rocket\\Engine\\Cache\\AdvancedCache' => __DIR__ . '/../..' . '/inc/Engine/Cache/AdvancedCache.php',
         'WP_Rocket\\Engine\\Cache\\Config\\ConfigSubscriber' => __DIR__ . '/../..' . '/inc/Engine/Cache/Config/ConfigSubscriber.php',
+        'WP_Rocket\\Engine\\Cache\\Config\\Subscriber' => __DIR__ . '/../..' . '/inc/Engine/Cache/Config/Subscriber.php',
         'WP_Rocket\\Engine\\Cache\\Purge' => __DIR__ . '/../..' . '/inc/Engine/Cache/Purge.php',
         'WP_Rocket\\Engine\\Cache\\PurgeActionsSubscriber' => __DIR__ . '/../..' . '/inc/Engine/Cache/PurgeActionsSubscriber.php',
         'WP_Rocket\\Engine\\Cache\\PurgeExpired\\PurgeExpiredCache' => __DIR__ . '/../..' . '/inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php',
@@ -352,12 +353,17 @@ class ComposerStaticInite312b9993383772806e60eb5d2538fc0
         'WP_Rocket\\Engine\\Optimization\\DeferJS\\ServiceProvider' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DeferJS/ServiceProvider.php',
         'WP_Rocket\\Engine\\Optimization\\DeferJS\\Subscriber' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DeferJS/Subscriber.php',
         'WP_Rocket\\Engine\\Optimization\\DelayJS\\Admin\\Settings' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/Admin/Settings.php',
+        'WP_Rocket\\Engine\\Optimization\\DelayJS\\Admin\\SiteList' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/Admin/SiteList.php',
         'WP_Rocket\\Engine\\Optimization\\DelayJS\\Admin\\Subscriber' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/Admin/Subscriber.php',
         'WP_Rocket\\Engine\\Optimization\\DelayJS\\HTML' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/HTML.php',
         'WP_Rocket\\Engine\\Optimization\\DelayJS\\ServiceProvider' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/ServiceProvider.php',
         'WP_Rocket\\Engine\\Optimization\\DelayJS\\Subscriber' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DelayJS/Subscriber.php',
-        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\APIClient' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/APIClient.php',
-        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DataManager' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DataManager.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\AbstractAPIClient' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/AbstractAPIClient.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\AbstractDataManager' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/AbstractDataManager.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DefaultLists\\APIClient' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DefaultLists/APIClient.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DefaultLists\\DataManager' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DefaultLists/DataManager.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DelayJSLists\\APIClient' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DelayJSLists/APIClient.php',
+        'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DelayJSLists\\DataManager' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DelayJSLists/DataManager.php',
         'WP_Rocket\\Engine\\Optimization\\DynamicLists\\DynamicLists' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/DynamicLists.php',
         'WP_Rocket\\Engine\\Optimization\\DynamicLists\\ServiceProvider' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/ServiceProvider.php',
         'WP_Rocket\\Engine\\Optimization\\DynamicLists\\Subscriber' => __DIR__ . '/../..' . '/inc/Engine/Optimization/DynamicLists/Subscriber.php',
@@ -468,6 +474,7 @@ class ComposerStaticInite312b9993383772806e60eb5d2538fc0
         'WP_Rocket\\ThirdParty\\Hostings\\O2Switch' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/O2Switch.php',
         'WP_Rocket\\ThirdParty\\Hostings\\OneCom' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/OneCom.php',
         'WP_Rocket\\ThirdParty\\Hostings\\Pressable' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/Pressable.php',
+        'WP_Rocket\\ThirdParty\\Hostings\\ProIsp' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/ProIsp.php',
         'WP_Rocket\\ThirdParty\\Hostings\\Savvii' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/Savvii.php',
         'WP_Rocket\\ThirdParty\\Hostings\\ServiceProvider' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/ServiceProvider.php',
         'WP_Rocket\\ThirdParty\\Hostings\\SpinUpWP' => __DIR__ . '/../..' . '/inc/ThirdParty/Hostings/SpinUpWP.php',
@@ -534,9 +541,9 @@ class ComposerStaticInite312b9993383772806e60eb5d2538fc0
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite312b9993383772806e60eb5d2538fc0::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite312b9993383772806e60eb5d2538fc0::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite312b9993383772806e60eb5d2538fc0::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1ef0fc1b13e2bc13d9151b56ecd99720::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1ef0fc1b13e2bc13d9151b56ecd99720::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1ef0fc1b13e2bc13d9151b56ecd99720::$classMap;
 
         }, null, ClassLoader::class);
     }
