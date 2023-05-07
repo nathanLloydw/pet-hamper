@@ -2,6 +2,7 @@
 
 namespace DgoraWcas\Analytics;
 
+use DgoraWcas\Helpers;
 use DgoraWcas\Multilingual;
 
 // Exit if accessed directly
@@ -33,10 +34,12 @@ class Widget {
 
 	public function init() {
 		if ( $this->analytics->isModuleEnabled() && $this->isCriticalSearchesWidgetEnabled() ) {
-			add_action( 'wp_dashboard_setup', array( $this, 'addWidget' ) );
+			if ( current_user_can( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) {
+				add_action( 'wp_dashboard_setup', array( $this, 'addWidget' ) );
 
-			if ( Multilingual::isMultilingual() ) {
-				add_action( 'admin_init', array( $this, 'enqueueTabsScript' ), 5 );
+				if ( Multilingual::isMultilingual() ) {
+					add_action( 'admin_init', array( $this, 'enqueueTabsScript' ), 5 );
+				}
 			}
 		}
 	}

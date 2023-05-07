@@ -15,11 +15,6 @@ add_action( 'wp_loaded', function () {
 	add_shortcode( 'search', array( 'DgoraWcas\\Shortcode', 'addBody' ) );
 } );
 
-// Change mobile breakpoint from 992 to 850
-add_filter( 'dgwt/wcas/scripts/mobile_breakpoint', function () {
-	return 850;
-} );
-
 add_action( 'wp_head', function () { ?>
 	<style>
 		.dgwt-wcas-flatsome-up {
@@ -75,13 +70,46 @@ add_action( 'wp_head', function () { ?>
 } );
 
 add_action( 'wp_footer', function () {
+	// Overwriting search icon.
+	if ( get_theme_mod( 'header_search_style' ) === 'dropdown' ) {
+		echo '<div id="wcas-theme-search" style="display: block;"><li>' . do_shortcode( '[fibosearch layout="icon"]' ) . '</li></div>';
+		?>
+		<style>
+			.header-main .dgwt-wcas-search-wrapp.dgwt-wcas-layout-icon .dgwt-wcas-search-icon {
+				width: 16px;
+			}
+
+			.header-main .dgwt-wcas-search-wrapp.dgwt-wcas-layout-icon .dgwt-wcas-ico-magnifier-handler {
+				fill: hsla(0, 0%, 40%, .85);
+				max-width: 16px;
+			}
+
+			.header-main .dgwt-wcas-search-wrapp.dgwt-wcas-layout-icon .dgwt-wcas-ico-magnifier-handler:hover {
+				fill: hsla(0, 0%, 7%, .85);
+			}
+
+			.header-main.nav-dark .dgwt-wcas-search-wrapp.dgwt-wcas-layout-icon .dgwt-wcas-ico-magnifier-handler {
+				fill: hsla(0, 0%, 100%, .8);
+			}
+
+			.header-main.nav-dark .dgwt-wcas-search-wrapp.dgwt-wcas-layout-icon .dgwt-wcas-ico-magnifier-handler:hover {
+				fill: #ffffff;
+			}
+		</style>
+		<script>
+			wcasThemeSearch = document.querySelector('.header-search');
+			if (wcasThemeSearch !== null) {
+				wcasThemeSearch.replaceWith(document.querySelector('#wcas-theme-search > li'));
+			}
+			document.querySelector('#wcas-theme-search').remove();
+		</script>
+		<?php
+	}
 
 	$minChars = DGWT_WCAS()->settings->getOption( 'min_chars' );
 	if ( empty( $minChars ) || ! is_numeric( $minChars ) ) {
 		$minChars = 3;
 	}
-
-	// @TODO Dropdown on search hover
 	?>
 	<script>
 		(function ($) {
@@ -171,3 +199,38 @@ add_action( 'wp_footer', function () { ?>
 	</script>
 	<?php
 }, 1001 );
+
+add_filter( 'dgwt/wcas/troubleshooting/tests', function ( $tests ) {
+	$tests['direct'][] = array(
+		'label' => 'Flatsome incompatible settings',
+		'test'  => function () {
+			$result = array(
+				'label'       => '',
+				'status'      => 'good',
+				'description' => '',
+				'actions'     => '',
+				'test'        => 'FlatsomeIncompatibleSettings',
+			);
+
+			if (
+				get_theme_mod( 'header_search_style' ) === 'lightbox' &&
+				get_theme_mod( 'header_cart_style', 'dropdown' ) === 'off-canvas' &&
+				DGWT_WCAS()->settings->getOption( 'show_details_box' ) === 'on'
+			) {
+				$customizeUrl = admin_url( 'customize.php' );
+
+				$result['status']       = 'critical';
+				$result['label']        = __( 'There is a conflict between Flatsome theme settings and our plugin', 'ajax-search-for-woocommerce' );
+				$result['description']  = '<p style="max-width: 740px">' . __( "There is a rare combination of <b>FiboSearch</b> and <b>Flatsome</b> settings that might cause issues when adding a product to the cart from the autocomplete search results. Unfortunately, you have this combination. You can't use <b>Off-Canvas Sidebar</b> as <b>Cart Style (Flatsome)</b>, <b>Search Icon Type</b> as <b>Search Icon Type (Flatsome)</b>, and <b>Details Panel (FiboSearch)</b> at the same time. The solution is to resign from one of these options.", 'ajax-search-for-woocommerce' ) . '</p>';
+				$result['description'] .= '<p><b>' . __( 'Solutions (you only need to use one of them)', 'ajax-search-for-woocommerce' ) . '</b></p>';
+				$result['description'] .= '<ol><li>' . __( '(FiboSearch settings) Go to <code>Autocomplete</code> tab and disable <code>Show Details Panel</code> option.', 'ajax-search-for-woocommerce' ) . '</li>';
+				$result['description'] .= '<li>' . sprintf( __( '(Flatsome settings) Go to <code>Appearance -> <a href="%s" target="_blank">Customize</a> -> Header -> Search</code> and change <code>Search Icon Type</code> option to <code>Dropdown</code>.', 'ajax-search-for-woocommerce' ), $customizeUrl ) . '</li>';
+				$result['description'] .= '<li>' . sprintf( __( '(Flatsome settings) Go to <code>Appearance -> <a href="%s" target="_blank">Customize</a> -> Header -> Cart</code> and change <code>Cart Style</code> option to <code>Dropdown</code> or <code>Link only</code>.', 'ajax-search-for-woocommerce' ), $customizeUrl ) . '</li></ol>';
+			}
+
+			return $result;
+		}
+	);
+
+	return $tests;
+} );

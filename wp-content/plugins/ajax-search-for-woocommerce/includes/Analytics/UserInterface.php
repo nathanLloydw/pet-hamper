@@ -187,7 +187,7 @@ class UserInterface
      */
     public function loadInterface()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_INTERFACE_NONCE );
@@ -209,7 +209,7 @@ class UserInterface
      */
     public function loadMoreCriticalSearches()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_CRITICAL_SEARCHES_NONCE );
@@ -258,7 +258,7 @@ class UserInterface
      */
     public function loadMoreAutocomplete()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_AUTOCOMPLETE_NONCE );
@@ -290,7 +290,7 @@ class UserInterface
      */
     public function loadMoreSearchPage()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::LOAD_MORE_SEARCH_PAGE_NONCE );
@@ -322,7 +322,7 @@ class UserInterface
      */
     public function checkCriticalPhrase()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::CRITICAL_CHECK_NONCE );
@@ -415,7 +415,7 @@ class UserInterface
      */
     public function excludeCriticalPhrase()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::EXCLUDE_CRITICAL_PHRASE_NONCE );
@@ -442,7 +442,7 @@ class UserInterface
      */
     public function resetStats()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::RESET_STATS_NONCE );
@@ -457,7 +457,7 @@ class UserInterface
      */
     public function exportStats()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( self::EXPORT_STATS_CSV_NONCE );

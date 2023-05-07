@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use DgoraWcas\Helpers;
+
 class FeedbackNotice {
 
 	const ACTIVATION_DATE_OPT = 'dgwt_wcas_activation_date';
@@ -122,7 +124,7 @@ class FeedbackNotice {
 	 * @return void
 	 */
 	public function dismissNotice() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) {
 			wp_die( - 1, 403 );
 		}
 

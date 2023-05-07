@@ -68,6 +68,11 @@ class Settings
             3
         );
         add_action( 'wp_ajax_dgwt_wcas_adv_settings', array( $this, 'toggleAdvancedSettings' ) );
+        if ( Helpers::shopManagerHasAccess() ) {
+            add_filter( 'option_page_capability_dgwt_wcas_troubleshooting', function ( $cap ) {
+                return 'manage_woocommerce';
+            } );
+        }
         $this->dependentOptions();
     }
     
@@ -164,6 +169,7 @@ class Settings
         $mobileOverlayLink = 'https://fibosearch.com/documentation/features/overlay-on-mobile/';
         $searchLayoutLink = 'https://fibosearch.com/documentation/features/search-bar-layout/';
         $searchHistory = 'https://fibosearch.com/user-search-history/';
+        $noResultsExtLink = 'https://fibosearch.com/documentation/tips-tricks/extended-no-results-message/';
         $readMore = __( '<a target="_blank" href="%s">Read more</a> about this feature.', 'ajax-search-for-woocommerce' );
         $settingsFields = array(
             'dgwt_wcas_basic'        => apply_filters( 'dgwt/wcas/settings/section=basic', array(
@@ -384,10 +390,13 @@ class Settings
             'class'   => 'js-dgwt-wcas-adv-settings',
         ),
             80   => array(
-            'name'    => 'search_no_results_text',
-            'label'   => _x( 'No results label', 'admin', 'ajax-search-for-woocommerce' ),
-            'type'    => 'text',
-            'default' => __( 'No results', 'ajax-search-for-woocommerce' ),
+            'name'              => 'search_no_results_text',
+            'label'             => _x( 'No results label', 'admin', 'ajax-search-for-woocommerce' ) . ' ' . Helpers::createQuestionMark( 'no-results-label', sprintf( __( 'The following HTML tags are allowed:<br /> %s.', 'ajax-search-for-woocommerce' ), '<code>h1-h6,p,ul,ol,li,b,em,br,div,span,a</code>' ) . ' <br /> ' . sprintf( __( 'See an example of a more complex "No results" message in <a href="%s" target="_blank">our documentation</a>.', 'ajax-search-for-woocommerce' ), $noResultsExtLink ) ),
+            'type'              => 'textarea',
+            'textarea_rows'     => 2,
+            'class'             => 'dgwt-wcas-settings-textarea--half',
+            'sanitize_callback' => array( '\\DgoraWcas\\Admin\\SettingsAPI', 'sanitize_no_results_field' ),
+            'default'           => __( 'No results', 'ajax-search-for-woocommerce' ),
         ),
             100  => array(
             'name'  => 'product_suggestion_head',
@@ -904,7 +913,7 @@ class Settings
      */
     public function toggleAdvancedSettings()
     {
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( ( Helpers::shopManagerHasAccess() ? 'manage_woocommerce' : 'manage_options' ) ) ) {
             wp_die( -1, 403 );
         }
         check_ajax_referer( 'dgwt_wcas_advanced_options_switch' );

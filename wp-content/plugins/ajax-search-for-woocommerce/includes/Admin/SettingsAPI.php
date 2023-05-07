@@ -173,6 +173,7 @@ class SettingsAPI
                     'move_dest'         => ( isset( $option['move_dest'] ) ? $option['move_dest'] : '' ),
                     'input_data'        => ( isset( $option['input_data'] ) ? $option['input_data'] : '' ),
                     'disabled'          => ( isset( $option['disabled'] ) ? $option['disabled'] : false ),
+                    'textarea_rows'     => ( isset( $option['textarea_rows'] ) ? $option['textarea_rows'] : 5 ),
                 );
                 add_settings_field(
                     "{$this->name}[" . $option['name'] . ']',
@@ -455,12 +456,14 @@ class SettingsAPI
             $args
         );
         $size = ( isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular' );
+        $rows = ( !empty($args['textarea_rows']) && is_numeric( $args['textarea_rows'] ) ? absint( $args['textarea_rows'] ) : 5 );
         $html = sprintf(
-            '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>',
+            '<textarea rows="%5$d" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>',
             $size,
             $this->name,
             $args['id'],
-            $value
+            $value,
+            $rows
         );
         $html .= $this->get_field_description( $args );
         echo  $html ;
@@ -734,6 +737,18 @@ class SettingsAPI
     }
     
     /**
+     * Sanitize text for "No results" field.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function sanitize_no_results_field( $value )
+    {
+        return Helpers::ksesNoResults( $value );
+    }
+    
+    /**
      * Get the value of a settings field
      *
      * @param string $option settings field name
@@ -771,7 +786,9 @@ class SettingsAPI
         foreach ( $this->settings_sections as $tab ) {
             $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'] );
         }
-        $html .= '<a target="_blank" href="' . dgoraAsfwFs()->contact_url() . '" class="js-nav-tab-minor nav-tab-minor nav-tab-minor-contact" >' . __( 'Contact', 'ajax-search-for-woocommerce' ) . '</a>';
+        if ( current_user_can( 'manage_options' ) ) {
+            $html .= '<a target="_blank" href="' . dgoraAsfwFs()->contact_url() . '" class="js-nav-tab-minor nav-tab-minor nav-tab-minor-contact" >' . __( 'Contact', 'ajax-search-for-woocommerce' ) . '</a>';
+        }
         if ( !dgoraAsfwFs()->is_premium() ) {
             $html .= '<a target="_blank" href="https://fibosearch.com/showcase/?utm_source=wp-admin&utm_medium=referral&utm_campaign=settings&utm_content=showcase&utm_gen=utmdc" class="js-nav-tab-minor nav-tab-minor nav-tab-minor-showcase" >' . __( 'Showcase', 'ajax-search-for-woocommerce' ) . '</a>';
         }

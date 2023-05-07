@@ -10,7 +10,6 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 $submitText = Helpers::getLabel( 'submit' );
 $hasSubmit  = DGWT_WCAS()->settings->getOption( 'show_submit_button' );
 
-$labelNoResults = Helpers::getLabel( 'no_results' );
 $labelSeeAll    = Helpers::getLabel( 'show_more' );
 
 ?>
@@ -208,8 +207,7 @@ $labelSeeAll    = Helpers::getLabel( 'show_more' );
 						<span class="dgwt-wcas-st-more"><span class="js-dgwt-wcas-st-more-label"><?php echo $labelSeeAll; ?></span> (73)</span>
 					</div>
 
-					<div class="dgwt-wcas-suggestion dgwt-wcas-suggestion-nores js-dgwt-wcas-suggestion-nores dgwt-wcas-hide">
-						<span class="dgwt-wcas-st"><?php echo $labelNoResults; ?></span>
+					<div class="dgwt-wcas-suggestion-nores js-dgwt-wcas-suggestion-nores dgwt-wcas-hide">
 					</div>
 
 				</div>

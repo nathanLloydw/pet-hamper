@@ -70,7 +70,7 @@ class Database {
 				created_at      DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
 				autocomplete    TINYINT(1) NULL DEFAULT 1,
 				solved          TINYINT(1) NULL DEFAULT 0,
-				lang            VARCHAR(7) NULL,
+				lang            VARCHAR(10) NULL,
 				PRIMARY KEY    (id)
 			) ENGINE=InnoDB $collate;";
 

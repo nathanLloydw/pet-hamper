@@ -41,12 +41,14 @@ add_action( 'wp_footer', function () {
 		(function ($) {
 			$(window).on('load', function () {
 				$(document).on('click', '.storefront-handheld-footer-bar .search > a', function (e) {
-					var $wrapper = $(this).parent();
+					var $wrapper = $(this).parent(),
+						$mobileHandler = $wrapper.find('.js-dgwt-wcas-enable-mobile-form');
 					$wrapper.removeClass('active');
 
-					setTimeout(function () {
-						$wrapper.find('.js-dgwt-wcas-enable-mobile-form')[0].click();
-					}, 200);
+					if ($mobileHandler.length) {
+						$mobileHandler[0].click();
+					}
+
 					e.preventDefault();
 				});
 			});
@@ -56,14 +58,14 @@ add_action( 'wp_footer', function () {
 }, 100 );
 
 /**
- * Toole mobile search when AMP is active
+ * Toggle mobile search when AMP is active
  */
 if ( ! function_exists( 'storefront_handheld_footer_bar_search' ) ) {
 	function storefront_handheld_footer_bar_search() {
 		if ( Helpers::isAMPEndpoint() ) {
 			echo '<a on="tap:page.toggleClass(class=\'search-mobile-active\')" href="javascript:void(0);">' . esc_attr__( 'Search', 'storefront' ) . '</a>';
 		} else {
-			echo '<a href="">' . esc_attr__( 'Search', 'storefront' ) . '</a>';
+			echo '<a href="#">' . esc_attr__( 'Search', 'storefront' ) . '</a>';
 		}
 		storefront_product_search();
 	}
