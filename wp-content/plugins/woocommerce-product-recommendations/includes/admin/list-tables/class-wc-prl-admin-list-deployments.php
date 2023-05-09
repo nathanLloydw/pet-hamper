@@ -19,7 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Adds a custom deployments list table.
  *
  * @class    WC_PRL_Deployments_List_Table
- * @version  2.2.0
+ * @version  2.2.3
  */
 class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
@@ -72,10 +72,22 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 	 */
 	public function column_title( $item ) {
 
+		$edit_url = add_query_arg( array(
+			'page'       => 'prl_locations',
+			'section'    => 'deploy',
+			'deployment' => $item[ 'id' ],
+		), admin_url( 'admin.php' ) );
+
+		$delete_url = add_query_arg( array(
+			'page'   => 'prl_locations',
+			'delete' => $item[ 'id' ],
+		), admin_url( 'admin.php' ) );
+		$delete_url = wp_nonce_url( $delete_url, 'wc_prl_delete_location_action', '_wc_prl_admin_nonce' );
+
 		$actions = array(
-			'edit'       => sprintf( '<a href="' . admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=%d' ) . '">%s</a>', $item[ 'id' ], __( 'Edit', 'woocommerce-product-recommendations' ) ),
-			'regenerate' => sprintf( '<a id="%d" href="' . admin_url( 'admin.php?page=prl_locations&delete=%d' ) . '">%s</a>', $item[ 'id' ], $item[ 'id' ], __( 'Regenerate', 'woocommerce-product-recommendations' ) ),
-			'delete'     => sprintf( '<a href="' . admin_url( 'admin.php?page=prl_locations&delete=%d' ) . '">%s</a>', $item[ 'id' ], __( 'Delete', 'woocommerce-product-recommendations' ) ),
+			'edit'       => sprintf( '<a href="%s">%s</a>', esc_url( $edit_url ), __( 'Edit', 'woocommerce-product-recommendations' ) ),
+			'regenerate' => sprintf( '<a id="%d" href="#">%s</a>', $item[ 'id' ], __( 'Regenerate', 'woocommerce-product-recommendations' ) ),
+			'delete'     => sprintf( '<a href="%s">%s</a>', esc_url( $delete_url ), __( 'Delete', 'woocommerce-product-recommendations' ) ),
 		);
 
 		// Remove edit if it's a CPT.
@@ -180,7 +192,7 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 			<a class="button wc-action-button edit" href="<?php echo admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=' . $item[ 'id' ] ) ?>" aria-label="<?php esc_attr_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Edit', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?></a>
 		<?php } ?>
 			<a id="<?php echo $item[ 'id' ] ?>" class="button wc-action-button wc-action-button-regenerate" href="#" aria-label="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?></a>
-			<a class="button wc-action-button delete" href="<?php echo admin_url( 'admin.php?page=prl_locations&delete=' . $item[ 'id' ] ) ?>" aria-label="<?php esc_attr_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Delete', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?></a>
+			<a class="button wc-action-button delete" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=prl_locations&delete=' . $item[ 'id' ] ), 'wc_prl_delete_location_action', '_wc_prl_admin_nonce' ) ) ?>" aria-label="<?php esc_attr_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Delete', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?></a>
 		</p>
 		<?php
 	}

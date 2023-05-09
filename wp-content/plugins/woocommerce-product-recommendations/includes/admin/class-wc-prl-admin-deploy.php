@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Deploy Class.
  *
  * @class    WC_PRL_Admin_Deploy
- * @version  2.0.2
+ * @version  2.2.3
  */
 class WC_PRL_Admin_Deploy {
 
@@ -37,7 +37,7 @@ class WC_PRL_Admin_Deploy {
 		}
 
 		$post_prl_deploy = isset( $_POST[ 'prl_deploy' ] ) ? $_POST[ 'prl_deploy' ] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		if ( ! $post_prl_deploy[ 'hook' ] ) {
+		if ( empty ( $post_prl_deploy[ 'hook' ] ) ) {
 			WC_PRL_Admin_Notices::add_notice( __( 'Please choose a Location.', 'woocommerce-product-recommendations' ), 'error', true );
 			wp_redirect( add_query_arg( 'engine', absint( $post_prl_deploy[ 'engine_id' ] ), admin_url( self::PAGE_URL ) ) );
 			exit();

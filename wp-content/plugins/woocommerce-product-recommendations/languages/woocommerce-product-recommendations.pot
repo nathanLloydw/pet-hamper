@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Product Recommendations 2.2.2\n"
+"Project-Id-Version: WooCommerce Product Recommendations 2.3.0\n"
 "Report-Msgid-Bugs-To: https://woocommerce.com/my-account/create-a-ticket/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-07T09:28:00+00:00\n"
+"POT-Creation-Date: 2023-05-08T11:37:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -138,7 +138,7 @@ msgid "No deployments found for regeneration."
 msgstr ""
 
 #: includes/admin/class-wc-prl-admin-ajax.php:270
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:86
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:98
 #: includes/class-wc-prl-deployments.php:266
 msgid "(no title)"
 msgstr ""
@@ -172,11 +172,15 @@ msgstr ""
 msgid "The engine you just deployed generates dynamic/personalized recommendations that some visitors <a href=\"%1$s\" target=\"_blank\">may not be able to see correctly</a>, as the page that contains them appears to be served from a cache. As a workaround, you may enable <strong>Deployments rendering > Use AJAX</strong> under <strong>WooCommerce > Settings > Recommendations</strong> &ndash; but please be aware that doing so will have an impact on server utilization and user experience."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-hooks.php:94
+#: includes/admin/class-wc-prl-admin-hooks.php:96
 msgid "Deployments saved."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-locations.php:63
+#: includes/admin/class-wc-prl-admin-locations.php:62
+msgid "Deployment could not be deleted."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-locations.php:71
 msgid "Deployment deleted."
 msgstr ""
 
@@ -493,127 +497,127 @@ msgstr ""
 msgid "Product Recommendations queue cleared successfully."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:76
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:180
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:88
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
 #: includes/admin/views/html-admin-deploy.php:50
 #: includes/class-wc-prl-post-types.php:87
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:77
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:89
 msgid "Regenerate"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:78
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:183
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:90
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:195
 #: includes/class-wc-prl-deployments.php:227
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:89
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:101
 msgid "inactive"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:95
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:107
 msgid "&#8220;%s&#8221; (Edit)"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:109
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:121
 msgid "Select %s"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:127
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:141
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:147
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:139
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:153
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:159
 msgid "N/A"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:168
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:180
 #: includes/class-wc-prl-post-types.php:88
 msgid "Edit engine"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:168
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:180
 #: includes/admin/views/html-admin-deploy.php:17
 #: includes/admin/views/html-admin-deploy.php:49
 msgid "(untitled)"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:180
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
 #: includes/admin/views/html-admin-deploy.php:21
 msgid "Edit deployment"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:182
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:194
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:223
 msgid "Regenerate recommendations"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:183
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:195
 msgid "Delete deployment"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:196
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:208
 msgctxt "column_name"
 msgid "Title"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:197
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:209
 msgctxt "column_name"
 msgid "Page"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:198
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:210
 msgctxt "column_name"
 msgid "Location"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:199
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:211
 msgctxt "column_name"
 msgid "Engine"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:200
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:212
 msgctxt "column_name"
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:218
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:230
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:239
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:251
 msgid "Deployments deleted."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:290
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:302
 msgid "Ready to start your Engines?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:293
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:305
 msgid "Deploy an Engine now to offer product recommendations at a Location of your store."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:296
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:308
 #: includes/admin/views/html-admin-locations.php:29
 #: includes/class-wc-prl-deployments.php:262
 msgid "Search for an Engine&hellip;"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:303
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:315
 #: includes/class-wc-prl-post-types.php:130
 msgid "Create an Engine"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:306
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:318
 msgid "Want to add product recommendations to a Location of your store?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:308
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:320
 msgid "Start by creating an Engine &mdash; then, return here to deploy it."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:310
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:322
 #: includes/class-wc-prl-post-types.php:137
 msgid "Create engine"
 msgstr ""
@@ -887,7 +891,7 @@ msgid "Cancel"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:160
-#: includes/admin/views/html-admin-hooks.php:116
+#: includes/admin/views/html-admin-hooks.php:117
 msgid "Save changes"
 msgstr ""
 
@@ -1061,8 +1065,8 @@ msgstr ""
 #: includes/db/class-wc-prl-frequencies-db.php:33
 #: includes/db/class-wc-prl-tracking-db.php:26
 #: includes/db/class-wc-prl-tracking-db.php:33
-#: woocommerce-product-recommendations.php:104
-#: woocommerce-product-recommendations.php:111
+#: woocommerce-product-recommendations.php:106
+#: woocommerce-product-recommendations.php:113
 msgid "Foul!"
 msgstr ""
 
@@ -1893,12 +1897,12 @@ msgid "%1$s&nbsp;&gt;&nbsp;&hellip;&nbsp;&gt;&nbsp;%2$s"
 msgstr ""
 
 #. translators: %s: WC min version
-#: woocommerce-product-recommendations.php:203
+#: woocommerce-product-recommendations.php:205
 msgid "WooCommerce Product Recommendations requires at least WooCommerce <strong>%s</strong>."
 msgstr ""
 
 #. translators: %s: PHP min version
-#: woocommerce-product-recommendations.php:212
+#: woocommerce-product-recommendations.php:217
 msgid "WooCommerce Product Recommendations requires at least PHP <strong>%1$s</strong>. Learn <a href=\"%2$s\">how to update PHP</a>."
 msgstr ""
 

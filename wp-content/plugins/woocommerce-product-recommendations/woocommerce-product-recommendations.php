@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Recommendations
 * Plugin URI: https://woocommerce.com/products/product-recommendations/
 * Description: Create smarter up-sells and cross-sells, place them anywhere, and measure their impact with in-depth analytics.
-* Version: 2.2.2
+* Version: 2.3.0
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -11,6 +11,8 @@
 *
 * Text Domain: woocommerce-product-recommendations
 * Domain Path: /languages/
+*
+* Requires PHP: 7.0
 *
 * Requires at least: 4.4
 * Tested up to: 6.0
@@ -31,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Product_Recommendations
- * @version  2.2.2
+ * @version  2.3.0
  */
 class WC_Product_Recommendations {
 
@@ -40,7 +42,7 @@ class WC_Product_Recommendations {
 	 *
 	 * @var string
 	 */
-	private $version = '2.2.2';
+	private $version = '2.3.0';
 
 	/**
 	 * Min required WC version.
@@ -201,15 +203,21 @@ class WC_Product_Recommendations {
 		if ( ! function_exists( 'WC' ) || version_compare( WC()->version, $this->wc_min_version ) < 0 ) {
 			/* translators: %s: WC min version */
 			$notice = sprintf( __( 'WooCommerce Product Recommendations requires at least WooCommerce <strong>%s</strong>.', 'woocommerce-product-recommendations' ), $this->wc_min_version );
+
+			// Including functions as, admin notices uses wc_prl_get_formatted_screen_id.
+			require_once( WC_PRL_ABSPATH . 'includes/wc-prl-functions.php' );
 			require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-notices.php' );
 			WC_PRL_Admin_Notices::add_notice( $notice, 'error' );
 			return false;
 		}
 
 		// PHP version check.
-		if ( ! function_exists( 'phpversion' ) || version_compare( phpversion(), '5.6.20', '<' ) ) {
+		if ( ! function_exists( 'phpversion' ) || version_compare( phpversion(), '7.0.0', '<' ) ) {
 			/* translators: %s: PHP min version */
-			$notice = sprintf( __( 'WooCommerce Product Recommendations requires at least PHP <strong>%1$s</strong>. Learn <a href="%2$s">how to update PHP</a>.', 'woocommerce-product-recommendations' ), '5.6.20', $this->get_resource_url( 'update-php' ) );
+			$notice = sprintf( __( 'WooCommerce Product Recommendations requires at least PHP <strong>%1$s</strong>. Learn <a href="%2$s">how to update PHP</a>.', 'woocommerce-product-recommendations' ), '7.0.0', $this->get_resource_url( 'update-php' ) );
+
+			// Including functions as, admin notices uses wc_prl_get_formatted_screen_id.
+			require_once( WC_PRL_ABSPATH . 'includes/wc-prl-functions.php' );
 			require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-notices.php' );
 			WC_PRL_Admin_Notices::add_notice( $notice, 'error' );
 			return false;

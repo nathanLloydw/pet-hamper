@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Hooks Class.
  *
  * @class    WC_PRL_Admin_Hooks
- * @version  2.0.2
+ * @version  2.2.3
  */
 class WC_PRL_Admin_Hooks {
 
@@ -29,6 +29,9 @@ class WC_PRL_Admin_Hooks {
 	 * Save the settings.
 	 */
 	public static function save() {
+
+		check_admin_referer( 'woocommerce-prl-locations-hook' );
+
 		$deployments = isset( $_POST[ 'deployment' ] ) ? (array) $_POST[ 'deployment' ] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		if ( empty( $deployments ) ) {
@@ -36,9 +39,8 @@ class WC_PRL_Admin_Hooks {
 		}
 
 		// Parse GET.
-		$locations = WC_PRL()->locations->get_locations();
-		$hook      = isset( $_GET[ 'hook' ] ) ? wc_clean( $_GET[ 'hook' ] ) : false;
-		$location  = WC_PRL()->locations->get_location_by_hook( $hook );
+		$hook     = isset( $_GET[ 'hook' ] ) ? wc_clean( $_GET[ 'hook' ] ) : false;
+		$location = WC_PRL()->locations->get_location_by_hook( $hook );
 
 		if ( ! $location ) {
 			wp_redirect( admin_url( self::PAGE_URL ) );

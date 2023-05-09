@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_Admin_Locations Class.
  *
  * @class    WC_PRL_Admin_Locations
- * @version  1.0.0
+ * @version  2.2.3
  */
 class WC_PRL_Admin_Locations {
 
@@ -55,6 +55,14 @@ class WC_PRL_Admin_Locations {
 	private static function handle_delete() {
 
 		if ( isset( $_GET[ 'delete' ] ) ) {
+
+			$admin_nonce = isset( $_GET[ '_wc_prl_admin_nonce' ] ) ? sanitize_text_field( $_GET[ '_wc_prl_admin_nonce' ] ) : '';
+
+			if ( ! wp_verify_nonce( $admin_nonce, 'wc_prl_delete_location_action' ) ) {
+				WC_PRL_Admin_Notices::add_notice( __( 'Deployment could not be deleted.', 'woocommerce-product-recommendations' ), 'error', true );
+				wp_redirect( admin_url( self::PAGE_URL ) );
+				exit();
+			}
 
 			$id_to_delete = absint( $_GET[ 'delete' ] );
 

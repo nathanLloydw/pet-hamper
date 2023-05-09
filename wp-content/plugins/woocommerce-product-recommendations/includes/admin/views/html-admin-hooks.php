@@ -4,7 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  2.0.0
+ * @version  2.2.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -113,6 +113,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="wc-prl-deployments__list__buttons <?php echo empty( $map[ $selected_hook ] ) ? 'wc-prl-deployments__list__buttons--empty' : '' ; ?>">
 				<button class="wc-prl-deployments__add button"><?php esc_html_e( 'Deploy an Engine', 'woocommerce-product-recommendations' ); ?></button>
+				<?php wp_nonce_field( 'woocommerce-prl-locations-hook' ); ?>
 				<button type="submit" class="wc-prl-deployments__save button button-primary"><?php esc_html_e( 'Save changes', 'woocommerce-product-recommendations' ); ?></button>
 			</div>
 		</form>
