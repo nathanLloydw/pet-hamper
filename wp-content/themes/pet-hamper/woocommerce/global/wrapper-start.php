@@ -53,7 +53,7 @@ switch ( $template ) {
 		 	<h2 class="linetitle">Create your own hamper</h2>
 		
 			<div class="embed-container">
-    		 <?php the_field('video'); ?>
+    		 <?php echo "<img style='height:360px;width:100%;object-fit:cover;' src='".get_field('video')."'";  ?>
 			</div>
 
 			<style>

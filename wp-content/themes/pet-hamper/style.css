@@ -1657,9 +1657,11 @@ ul.productgrid.four a {
 .hp_banner .content {
   position: absolute;
   bottom: 2rem;
-  padding: 3rem 2rem;
+  right:0;
+  padding: 3rem;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
+  text-align:right;
   flex-direction: column;
   max-width: 510px;
   z-index:50;
