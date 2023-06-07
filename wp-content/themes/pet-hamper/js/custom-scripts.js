@@ -92,12 +92,8 @@ function image_zoom_feature()
 
 function set_secondary_image_switch_to_main_image()
 {
-    var secondary_images = document.querySelectorAll('picture.wp-secondary-image img');
+    var secondary_images = document.querySelectorAll('.wp-secondary-image');
 
-    if(secondary_images.length == 0)
-    {
-        secondary_images = document.querySelectorAll('.wp-secondary-image');
-    }
     var primary_image = document.querySelectorAll('.woocommerce-product-gallery__wrapper .woocommerce-product-gallery__image .wp-post-image source')[0];
     if(!primary_image)
     {
@@ -109,10 +105,16 @@ function set_secondary_image_switch_to_main_image()
         img.addEventListener("click", function (event)
         {
             var primary_image_src = JSON.parse(JSON.stringify(primary_image.getAttribute('srcset')));
-            var secondary_img_src = JSON.parse(JSON.stringify(img.parentNode.children[0].getAttribute('srcset')));
+            
+            if(img.tagName == 'PICTURE')
+            {
+                img = img.querySelector('img');
+            }
 
+            var secondary_img_src = JSON.parse(JSON.stringify(img.parentNode.children[0].getAttribute('srcset')));
             img.parentNode.children[0].setAttribute('srcset',primary_image_src);
             primary_image.setAttribute('srcset',secondary_img_src);
+
         });
     });
 }
@@ -157,7 +159,8 @@ function redirect_to_complete_cart()
     }
 }
 
-function remove_line_clamp_on_click() {
+function remove_line_clamp_on_click()
+{
     let line_clamps = document.querySelectorAll('.line-clamp');
 
     if(line_clamps)
@@ -300,7 +303,6 @@ function gallery_slider()
                 slides[current_slide].style.height = 'auto';
                 slides[current_slide].style.opacity = '1';
 
-                console.log(current_slide);
                 console.log(slides.length - 1);
 
                 if((slides.length - 1) == current_slide)
