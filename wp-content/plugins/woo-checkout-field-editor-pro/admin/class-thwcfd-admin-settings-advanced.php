@@ -261,14 +261,14 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 			$base64_decoded = base64_decode($settings_data_encoded);
 
 			if(!$this->is_json($base64_decoded,$return_data = false)){
-				$this->print_notices(__('The entered import settings data is invalid. Please try again with valid data.', 'woo-extra-product-options'), 'error', false);
+				$this->print_notices(__('The entered import settings data is invalid. Please try again with valid data.', 'woo-checkout-field-editor-pro'), 'error', false);
 				return false;
 			}
 
 			// $settings = unserialize($base64_decoded, ['allowed_classes' => false]);
 			$settings = json_decode($base64_decoded,true);
 
-			if($settings){	
+			if($settings){
 				foreach($settings as $key => $value){
 					if($key === 'option_key_billing_fields'){
 						$result = update_option(THWCFD_Utils::OPTION_KEY_BILLING_FIELDS, $value);

@@ -36,7 +36,7 @@ msgid "Text"
 msgstr ""
 
 #: admin/class-thwcfd-admin-form-field.php:41
-#: admin/class-thwcfd-admin-form-field.php:64
+#: admin/class-thwcfd-admin-form-field.php:71
 msgid "Number"
 msgstr ""
 
@@ -49,12 +49,12 @@ msgid "Password"
 msgstr ""
 
 #: admin/class-thwcfd-admin-form-field.php:44
-#: admin/class-thwcfd-admin-form-field.php:60
+#: admin/class-thwcfd-admin-form-field.php:67
 msgid "Email"
 msgstr ""
 
 #: admin/class-thwcfd-admin-form-field.php:45
-#: admin/class-thwcfd-admin-form-field.php:61
+#: admin/class-thwcfd-admin-form-field.php:68
 msgid "Phone"
 msgstr ""
 
@@ -86,182 +86,236 @@ msgstr ""
 msgid "Heading"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:62
-msgid "Postcode"
+#: admin/class-thwcfd-admin-form-field.php:53
+msgid "Datetime local"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:63
-msgid "State"
+#: admin/class-thwcfd-admin-form-field.php:54
+msgid "Date"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:68
-msgid "Full width"
+#: admin/class-thwcfd-admin-form-field.php:55
+msgid "Time"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:56
+msgid "Month"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:57
+msgid "Week"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:58
+#: admin/class-thwcfd-admin-form-field.php:72
+msgid "URL"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:59
+msgid "Paragraph"
 msgstr ""
 
 #: admin/class-thwcfd-admin-form-field.php:69
-msgid "Half width left"
+msgid "Postcode"
 msgstr ""
 
 #: admin/class-thwcfd-admin-form-field.php:70
+msgid "State"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:76
+msgid "Full width"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:77
+msgid "Half width left"
+msgstr ""
+
+#: admin/class-thwcfd-admin-form-field.php:78
 msgid "Half width right"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:83
+#: admin/class-thwcfd-admin-form-field.php:91
 #: admin/class-thwcfd-admin-settings-general.php:89
 msgid "Type"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:85
+#: admin/class-thwcfd-admin-form-field.php:93
 #: admin/class-thwcfd-admin-settings-general.php:88
 msgid "Name"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:86
+#: admin/class-thwcfd-admin-form-field.php:94
 #: admin/class-thwcfd-admin-settings-general.php:90
 msgid "Label"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:87
+#: admin/class-thwcfd-admin-form-field.php:95
 msgid "Default Value"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:88
+#: admin/class-thwcfd-admin-form-field.php:96
 #: admin/class-thwcfd-admin-settings-general.php:91
 msgid "Placeholder"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:90
+#: admin/class-thwcfd-admin-form-field.php:98
 msgid "Class"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:90
+#: admin/class-thwcfd-admin-form-field.php:98
 msgid "Separate classes with comma"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:91
+#: admin/class-thwcfd-admin-form-field.php:99
 msgid "Validation"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:91
+#: admin/class-thwcfd-admin-form-field.php:99
 msgid "Select validations"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:96
+#: admin/class-thwcfd-admin-form-field.php:104
 #: admin/class-thwcfd-admin-settings-general.php:93
 msgid "Required"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:97
+#: admin/class-thwcfd-admin-form-field.php:105
 msgid " Checked by default"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:99
+#: admin/class-thwcfd-admin-form-field.php:107
 #: admin/class-thwcfd-admin-settings-general.php:94
 msgid "Enabled"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:101
+#: admin/class-thwcfd-admin-form-field.php:109
 msgid "Display in Emails"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:102
+#: admin/class-thwcfd-admin-form-field.php:110
 msgid "Display in Order Detail Pages"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:143
+#: admin/class-thwcfd-admin-form-field.php:151
 msgid "Save Field"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:146
+#: admin/class-thwcfd-admin-form-field.php:154
 msgid "Basic Info"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:178
+#: admin/class-thwcfd-admin-form-field.php:186
 msgid "Save & Close"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:181
+#: admin/class-thwcfd-admin-form-field.php:189
 msgid "Next"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:184
+#: admin/class-thwcfd-admin-form-field.php:192
 msgid "Back"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:198
+#: admin/class-thwcfd-admin-form-field.php:206
 msgid "Basic Details"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:212
+#: admin/class-thwcfd-admin-form-field.php:220
 msgid "Display Settings"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:530
+#: admin/class-thwcfd-admin-form-field.php:675
 msgid "Options"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:538
+#: admin/class-thwcfd-admin-form-field.php:683
 #: admin/assets/js/inc/thwcfd-admin-field.js:409
 #: admin/assets/js/thwcfd-admin.js:924
 msgid "Option Value"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:539
+#: admin/class-thwcfd-admin-form-field.php:684
 #: admin/assets/js/inc/thwcfd-admin-field.js:410
 #: admin/assets/js/thwcfd-admin.js:925
 msgid "Option Text"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:541
+#: admin/class-thwcfd-admin-form-field.php:686
 #: admin/assets/js/inc/thwcfd-admin-field.js:412
 #: admin/assets/js/thwcfd-admin.js:927
 msgid "Add new option"
 msgstr ""
 
-#: admin/class-thwcfd-admin-form-field.php:541
+#: admin/class-thwcfd-admin-form-field.php:686
 #: admin/assets/js/inc/thwcfd-admin-field.js:413
 #: admin/assets/js/thwcfd-admin.js:928
 msgid "Remove option"
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:56
+#: admin/class-thwcfd-admin-settings-advanced.php:64
 msgid "Enable label override for address fields."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:59
+#: admin/class-thwcfd-admin-settings-advanced.php:67
 msgid "Enable placeholder override for address fields."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:62
+#: admin/class-thwcfd-admin-settings-advanced.php:70
 msgid "Enable class override for address fields."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:65
+#: admin/class-thwcfd-admin-settings-advanced.php:73
 msgid "Enable priority override for address fields."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:68
+#: admin/class-thwcfd-admin-settings-advanced.php:76
 msgid "Enable required validation override for address fields."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:91
+#: admin/class-thwcfd-admin-settings-advanced.php:99
 msgid "Settings successfully reset."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:127
-#: admin/class-thwcfd-admin-settings-general.php:254
-#: admin/class-thwcfd-admin-settings-general.php:314
+#: admin/class-thwcfd-admin-settings-advanced.php:135
+#: admin/class-thwcfd-admin-settings-general.php:255
+#: admin/class-thwcfd-admin-settings-general.php:315
 msgid "Your changes were saved."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:129
-#: admin/class-thwcfd-admin-settings-general.php:256
-#: admin/class-thwcfd-admin-settings-general.php:316
+#: admin/class-thwcfd-admin-settings-advanced.php:137
+#: admin/class-thwcfd-admin-settings-advanced.php:292
+#: admin/class-thwcfd-admin-settings-general.php:257
+#: admin/class-thwcfd-admin-settings-general.php:317
 msgid "Your changes were not saved due to an error (or you made none!)."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-advanced.php:158
+#: admin/class-thwcfd-admin-settings-advanced.php:170
 msgid "Are you sure you want to reset to default settings? all your changes will be deleted."
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:219
+msgid "Backup and Import Settings"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:221
+msgid "Plugin Settings Data"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:222
+msgid "You can transfer the saved settings data between different installs by copying the text inside the text box. To import data from another install, replace the data in the text box with the one from another install and click \"Import Settings\"."
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:239
+msgid "Import Settings"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:264
+msgid "The entered import settings data is invalid. Please try again with valid data."
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-advanced.php:289
+msgid "Your Settings Updated."
 msgstr ""
 
 #: admin/class-thwcfd-admin-settings-general.php:31
@@ -337,21 +391,33 @@ msgstr ""
 msgid "Are you sure you want to reset to default fields? all your changes will be deleted."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-general.php:259
-#: admin/class-thwcfd-admin-settings-general.php:319
+#: admin/class-thwcfd-admin-settings-general.php:260
+#: admin/class-thwcfd-admin-settings-general.php:320
 msgid "Your changes were not saved due to an error."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-general.php:274
+#: admin/class-thwcfd-admin-settings-general.php:275
 msgid "Your changes were not saved due to no fields found."
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:138
+#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:146
 msgid "Compatible Plugins"
 msgstr ""
 
-#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:176
+#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:184
 msgid "Other Plugins"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:233
+msgid "Activated"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:246
+msgid "Activate"
+msgstr ""
+
+#: admin/class-thwcfd-admin-settings-themehigh-plugins.php:267
+msgid "Install now"
 msgstr ""
 
 #: admin/class-thwcfd-admin.php:55
@@ -374,24 +440,137 @@ msgstr ""
 msgid "Get Pro"
 msgstr ""
 
-#: admin/class-thwcfd-admin.php:102
-msgid "Just wanted to say thank you for using Checkout Field Editor plugin in your store."
+#: admin/class-thwcfd-admin.php:302
+msgid "We heard you!"
 msgstr ""
 
-#: admin/class-thwcfd-admin.php:103
-msgid "We hope you had a great experience. Please leave us with your feedback to serve best to you and others. Cheers!"
+#: admin/class-thwcfd-admin.php:303
+msgid "The free version of the WooCommerce Checkout Field Editor plugin is now loaded with more field types. We would love to know how you feel about the improvements we made just for you. Help us to serve you and others best by simply leaving a genuine review."
 msgstr ""
 
-#: admin/class-thwcfd-admin.php:105
-msgid "Review Now"
+#: admin/class-thwcfd-admin.php:306
+msgid "Yes, today"
 msgstr ""
 
-#: admin/class-thwcfd-admin.php:106
-msgid "Remind Me Later"
+#: admin/class-thwcfd-admin.php:310
+msgid "Already, Did"
 msgstr ""
 
-#: public/class-thwcfd-public-checkout.php:361
+#: admin/class-thwcfd-admin.php:314
+msgid "Maybe later"
+msgstr ""
+
+#: admin/class-thwcfd-admin.php:318
+msgid "Nah, Never"
+msgstr ""
+
+#: includes/class-thwcfd.php:156
+msgid "Quick Feedback"
+msgstr ""
+
+#: includes/class-thwcfd.php:161 includes/class-thwcfd.php:192
+msgid "Get Support"
+msgstr ""
+
+#: includes/class-thwcfd.php:165
+msgid "If you have a moment, please let us know why you want to deactivate this plugin"
+msgstr ""
+
+#: includes/class-thwcfd.php:184
+msgid "This form is only for getting your valuable feedback. We do not collect your personal data. To know more read our "
+msgstr ""
+
+#: includes/class-thwcfd.php:184
+msgid "Privacy Policy"
+msgstr ""
+
+#: includes/class-thwcfd.php:188
+msgid "Skip & Deactivate"
+msgstr ""
+
+#: includes/class-thwcfd.php:194
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: includes/class-thwcfd.php:195
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-thwcfd.php:416
+msgid "Deactivate and "
+msgstr ""
+
+#: includes/class-thwcfd.php:418
+msgid "leave a review"
+msgstr ""
+
+#: includes/class-thwcfd.php:422
+msgid "Upgraded"
+msgstr ""
+
+#: includes/class-thwcfd.php:492
+msgid "Upgraded to premium."
+msgstr ""
+
+#: includes/class-thwcfd.php:499
+msgid "A specific feature is missing"
+msgstr ""
+
+#: includes/class-thwcfd.php:501
+msgid "Type in the feature"
+msgstr ""
+
+#: includes/class-thwcfd.php:506
+msgid "Found an error in the plugin/ Plugin was not working"
+msgstr ""
+
+#: includes/class-thwcfd.php:508
+msgid "Specify the issue"
+msgstr ""
+
+#: includes/class-thwcfd.php:513
+msgid "It was hard to use"
+msgstr ""
+
+#: includes/class-thwcfd.php:515
+msgid "How can we improve your experience?"
+msgstr ""
+
+#: includes/class-thwcfd.php:520
+msgid "I found a better Plugin"
+msgstr ""
+
+#: includes/class-thwcfd.php:522 includes/class-thwcfd.php:536
+msgid "Could you please mention the plugin?"
+msgstr ""
+
+#: includes/class-thwcfd.php:534
+msgid "It’s a temporary deactivation - I’m troubleshooting an issue"
+msgstr ""
+
+#: includes/class-thwcfd.php:541
+msgid "Not mentioned here"
+msgstr ""
+
+#: includes/class-thwcfd.php:543
+msgid "Kindly tell us your reason, so that we can improve"
+msgstr ""
+
+#: includes/utils/class-thwcfd-utils.php:154
+msgid "Order Notes"
+msgstr ""
+
+#: includes/utils/class-thwcfd-utils.php:155
+msgctxt "placeholder"
+msgid "Notes about your order, e.g. special notes for delivery."
+msgstr ""
+
+#: public/class-thwcfd-public-checkout.php:426
 msgid "<strong>%s</strong> is not a valid number."
+msgstr ""
+
+#: public/class-thwcfd-public-checkout.php:430
+msgid "<strong>%s</strong> is not a valid url."
 msgstr ""
 
 #: admin/assets/js/inc/thwcfd-admin-field.js:10
@@ -424,7 +603,7 @@ msgstr ""
 msgid "Default value must be a number."
 msgstr ""
 
-#: admin/assets/js/inc/thwcfd-admin.js:74
-#: admin/assets/js/thwcfd-admin.js:1070
+#: admin/assets/js/inc/thwcfd-admin.js:63
+#: admin/assets/js/thwcfd-admin.js:1059
 msgid "Yes"
 msgstr ""

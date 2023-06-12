@@ -54,7 +54,8 @@ class THWCFD_Public_Checkout {
 		add_action('woocommerce_after_checkout_validation', array($this, 'checkout_fields_validation'), 10, 2);
 		add_action('woocommerce_checkout_update_order_meta', array($this, 'checkout_update_order_meta'), 10, 2);
 
-		add_filter('woocommerce_email_order_meta_fields', array($this, 'display_custom_fields_in_emails'), 10, 3);
+		$hp_email_order_meta_fields = apply_filters('thwcfd_email_order_meta_fields_priority', 10);
+		add_filter('woocommerce_email_order_meta_fields', array($this, 'display_custom_fields_in_emails'), $hp_email_order_meta_fields, 3);
 		add_action('woocommerce_order_details_after_order_table', array($this, 'order_details_after_customer_details'), 20, 1);
 
 		add_filter('woocommerce_form_field_checkboxgroup', array($this, 'woo_form_field'), 10, 4);
@@ -454,6 +455,8 @@ class THWCFD_Public_Checkout {
 	public function checkout_update_order_meta($order_id, $posted){
 		$types = array('billing', 'shipping', 'additional');
 
+		$order = wc_get_order( $order_id );
+
 		foreach($types as $type){
 			if($this->maybe_skip_fieldset($type, $posted)){
 				continue;
@@ -502,10 +505,12 @@ class THWCFD_Public_Checkout {
 						$value =  isset($posted[$name]) ? sanitize_text_field($posted[$name]) : '';						
 					}
 					if($value){
-						$result = update_post_meta($order_id, $name, $value);
+						// $result = update_post_meta($order_id, $name, $value);
+						$order->update_meta_data( $name, $value );
 					}
 				}
 			}
+			$order->save();
 		}
 	}
 
@@ -533,7 +538,11 @@ class THWCFD_Public_Checkout {
 		foreach( $fields as $key => $field ) {
 			if(isset($field['show_in_email']) && $field['show_in_email'] && !THWCFD_Utils::is_wc_handle_custom_field($field)){
 				$order_id = THWCFD_Utils::get_order_id($order);
-				$value = get_post_meta( $order_id, $key, true );
+
+				$order = wc_get_order( $order_id );
+				
+				// $value = get_post_meta( $order_id, $key, true );
+				$value = $order->get_meta( $key, true );
 				
 				if($value){
 					$label = isset($field['label']) && $field['label'] ? $field['label'] : $key;
@@ -569,7 +578,11 @@ class THWCFD_Public_Checkout {
 			// Loop through all custom fields to see if it should be added
 			foreach($fields as $key => $field){	
 				if(THWCFD_Utils::is_active_custom_field($field) && isset($field['show_in_order']) && $field['show_in_order'] && !THWCFD_Utils::is_wc_handle_custom_field($field)){
-					$value = get_post_meta( $order_id, $key, true );
+					$order = wc_get_order( $order_id );
+				
+					// $value = get_post_meta( $order_id, $key, true );
+					$value = $order->get_meta( $key, true );
+
 					if($value){
 						$label = isset($field['label']) && $field['label'] ? $field['label'] : $key;
 						//$label = esc_attr($label);

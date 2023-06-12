@@ -934,7 +934,7 @@ var thwcfd_settings_field = (function($, window, document) {
 
 	function add_new_option_row(elm){
 		var ptable = $(elm).closest('table');
-		var optionsSize = ptable.find('tbody tr').size();
+		var optionsSize = ptable.find('tbody tr').length;
 
 		if(optionsSize > 0){
 			ptable.find('tbody tr:last').after(prepare_option_row_html(null));
@@ -946,7 +946,7 @@ var thwcfd_settings_field = (function($, window, document) {
 	function remove_option_row(elm){
 		var ptable = $(elm).closest('table');
 		$(elm).closest('tr').remove();
-		var optionsSize = ptable.find('tbody tr').size();
+		var optionsSize = ptable.find('tbody tr').length;
 
 		if(optionsSize == 0){
 			ptable.find('tbody').append(prepare_option_row_html(null));
@@ -1017,6 +1017,15 @@ var thwcfd_settings = (function($, window, document) {
 			thwcfdSaveField(this);
 		}
 	});
+	$(document).ready(function(e){
+		var feature_popup = $(".thwcfd-pro-discount-popup");
+	    var feature_popup_wrapper = $(".thwcfd-pro-discount-popup-wrapper");
+
+	    if (feature_popup.length > 0) {
+	    	$('body').css('overflow','hidden');
+	        feature_popup[0].style.display = "flex";
+	    }
+	});
    
 	function select_all_fields(elm){
 		var checkAll = $(elm).prop('checked');
@@ -1078,9 +1087,155 @@ var thwcfd_settings = (function($, window, document) {
 	    z.style.display = "none";
 		th_arrow.style="transform:rotate(45deg);"
 	    th_animation.style.animation='pulse 1.5s infinite';
-	//     za.style.background = "black";
+	}
+	function accordionexpand(elm){
+		var curr_panel = elm.getElementsByClassName("panel")[0];
+		var accordion_qstn = elm.getElementsByClassName("accordion-qstn")[0];
+		var accordion_qstn_img = elm.getElementsByClassName("accordion-img")[0];
+		var accordion_qstn_img_opn = elm.getElementsByClassName("accordion-img-opn")[0];
+		var accordion_qstn_para = accordion_qstn.querySelector('p');
+		var panel = document.getElementsByClassName("panel");
+		var i;
+		for(i = 0; i < panel.length; i++){
+			if (curr_panel != panel[i]) {
+				if(panel[i].style.display === "block"){
+					var parentaccordion = panel[i].parentNode;
+					var parent_accordion_qstn = parentaccordion.getElementsByClassName("accordion-qstn")[0];
+					var parent_accordion_img = parentaccordion.getElementsByClassName("accordion-img")[0];
+					var parent_accordion_img_opn = parentaccordion.getElementsByClassName("accordion-img-opn")[0];
+					var parent_accordion_qstn_p = parent_accordion_qstn.querySelector('p');
+					panel[i].style.display = "none";
+					parent_accordion_qstn_p.style.color = "#121933";
+					parentaccordion.style.zIndex = "unset";
+					parentaccordion.style.borderColor = "#dfdfdf";
+					parent_accordion_qstn.style.marginTop = "0px";
+					parent_accordion_img.style.display = "block";
+					parent_accordion_img_opn.style.display = "none";
+				}
+			}
+		}
+		if (curr_panel.style.display === "block") {
+			curr_panel.style.display = "none";
+			accordion_qstn_para.style.color = "#121933";
+			elm.style.zIndex = "unset";
+			accordion_qstn.style.marginTop = "0";
+			elm.style.borderColor = "#dfdfdf";
+			accordion_qstn_img.style.display = "block";
+			accordion_qstn_img_opn.style.display = "none";
+		} else {
+			curr_panel.style.display = "block";
+			accordion_qstn_para.style.color = "#6E55FF";
+			elm.style.zIndex = "1";
+			elm.style.borderColor = "#6E55FF";
+			accordion_qstn.style.marginTop = "1.53rem";
+			accordion_qstn_img.style.display = "none";
+			accordion_qstn_img_opn.style.display = "block";
+		}
+	}
+	var slideIndex = 1;
+	var count = 0;
+	var myTimer;
+	var contentTimer;
+	var slideshowContainer;
+
+	window.addEventListener("load",function() {
+		showSlides(slideIndex);
+	    myTimer = setInterval(function(){plusSlides(1)}, 3000);
+	    slideshowContainer = document.getElementsByClassName('th-user-review-section')[0];
+	    if(slideshowContainer){
+	    	slideshowContainer.addEventListener('mouseenter', pause)
+		    slideshowContainer.addEventListener('mouseleave', resume)
+			slideContent(count);
+			contentTimer = setInterval(function(){ contentchange(1)},3000);
+	    }
+	})
+	function plusSlides(n){
+		clearInterval(myTimer);
+		if (n < 0){
+			showSlides(slideIndex -= 1);
+		} else {
+			showSlides(slideIndex += 1); 
+		}
+		if (n === -1){
+			myTimer = setInterval(function(){plusSlides(n + 2)}, 3000);
+		} else {
+			myTimer = setInterval(function(){plusSlides(n + 1)}, 3000);
+		}
+	}
+	function contentchange(n){
+		clearInterval(contentTimer);
+	  	if(n<0){
+	  		slideContent(count -= 1);
+	  	}else{
+	  		slideContent(count += 1);
+	  	}
+	  	if (n === -1){
+		    contentTimer = setInterval(function(){ contentchange(1)},3000);
+		} else {
+		    contentTimer = setInterval(function(){ contentchange(1)},3000);
+		}
+	}
+	function currentSlide(n){
+		clearInterval(myTimer);
+		myTimer = setInterval(function(){plusSlides(n + 1)}, 3000);
+		showSlides(slideIndex = n);
+		clearInterval(contentTimer);
+		contentTimer = setInterval(function(){ contentchange(n+1)},3000);
+		slideContent(count = n);
+	}
+	function slideContent(n){
+		var review_heading = ['Great plugin, even better support (free & pro versions)','Great Checkout Plugin', 'Great Plugin and Support', 'This saved me so much time and effort!','Outstanding – Plugin and support'];
+		var headingContainer = document.getElementsByClassName('th-review-heading');
+		var review_content = ['I used the free version of this plugin for a while until I needed some of the pro features. It was great as a free plugin and even better as a paid/pro version. On top of that, the support for the pro version is out-of-this-world good! Anuram on the support team went above and beyond. I heartily recommend upgrading to the pro version if it has features you’d like to use, as it is very well worth the price paid!',
+			'This full-featured plugin is easy to use and did exactly what I needed.I invested in the Pro version for even more features.',
+			'I’ve been using Checkout Field Editor Pro for years and have always been impressed with their support when I had questions or issues.',
+			'The free version does everything I need, but I paid for the premium version to support the developers, just because I am so grateful and relieved to find this plugin that actually does what I need. I had been trying to make changes by manipulating CSS, and by spending hours of research to find snippets to add to my functions.php file, and it was so difficult to maintain. This plugin Simply works.',
+			'Really amazing plugin for a start. Then I bought the PRO version and it was even better. But the best part is I contacted support about something I wanted to do and got told that it was not possible. BUT about 10 days later, out of the blue, their support responded to my original ticket with custom code that they had created specifically to solve my problem!!! Wow, awesome support guys. Quick and “above & beyond”.',
+		];
+		var contentContainer = document.getElementsByClassName('th-review-content');
+		var review_author = ['Eric Kuznacic','kenttubman','WP-77','Eilonwy926','doughoseck'];
+		var authorContainer = document.getElementsByClassName('th-review-user-name');
+		if(n > review_heading.length - 1){
+			count = 0;
+		}
+		headingContainer[0].innerHTML =  review_heading[count];
+		contentContainer[0].innerHTML = review_content[count];
+		authorContainer[0].innerHTML = review_author[count];
+	}
+	function showSlides(n){
+		var i;		  
+	  	var dots = document.getElementsByClassName("th-review-nav-btn");
+	  	
+	  	if(dots.length>0){
+	  		if (n > dots.length) {
+	  			slideIndex = 1
+	  		}
+			for (i = 0; i < dots.length; i++) {
+				dots[i].className = dots[i].className.replace(" active", "");
+			}
+	  		dots[slideIndex-1].className += " active";	
+	  	}
 	}
 
+	function pause() {
+	  	clearInterval(myTimer);
+	  	clearInterval(contentTimer)
+	};
+
+	function resume(){
+		clearInterval(myTimer);
+	  	clearInterval(contentTimer)
+	  	myTimer = setInterval(function(){plusSlides(slideIndex)}, 3000);
+	  	contentTimer = setInterval(function(){ contentchange(count)},3000);
+	};
+
+	function PopUpClose(elm){
+		var addressValue = elm.getAttribute("href");
+		window.open(addressValue);
+		var link = document.getElementById("thwcfd-discount-close-btn");
+		link.click();
+		
+	}
 
 	return {
 		thwcfdwidgetPopUp : widgetPopUp,
@@ -1088,6 +1243,9 @@ var thwcfd_settings = (function($, window, document) {
 		selectAllFields : select_all_fields,
 		removeSelectedFields : remove_selected_fields,
 		enableDisableSelectedFields : enable_disable_selected_fields,
+		thwcfdAccordionexpand : accordionexpand,
+		currentSlide : currentSlide,
+		thwcfdPopUpClose : PopUpClose,
    	};
 }(window.jQuery, window, document));	
 
@@ -1113,4 +1271,19 @@ function thwcfdwidgetPopUp(){
 
 function thwcfdwidgetClose() {
 	thwcfd_settings.thwcfdwidgetClose();
+}
+
+function thwcfdwidgetPopUp(){
+	thwcfd_settings.thwcfdwidgetPopUp();
+}
+
+function thwcfdAccordionexpand(elm){
+	thwcfd_settings.thwcfdAccordionexpand(elm);
+}
+function currentSlide(elm) {
+	thwcfd_settings.currentSlide(elm);
+}
+
+function thwcfdPopUpClose(elm){
+	thwcfd_settings.thwcfdPopUpClose(elm);
 }
