@@ -4,7 +4,7 @@ Tags: woocommerce, paypal, payments, ecommerce, e-commerce, store, sales, sell, 
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 7.2
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,9 @@ Follow the steps below to connect the plugin to your PayPal account:
 6. Main settings screen.
 
 == Changelog ==
+
+= 2.0.5 - 2023-05-31 =
+* Fix - Potential invalidation of merchant credentials #1339
 
 = 2.0.4 - 2023-04-03 =
 * Fix - Allow Pay Later in mini-cart #1221
