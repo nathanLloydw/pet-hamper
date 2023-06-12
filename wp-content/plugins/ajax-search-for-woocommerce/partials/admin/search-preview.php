@@ -10,7 +10,7 @@ if ( ! defined( 'DGWT_WCAS_FILE' ) ) {
 $submitText = Helpers::getLabel( 'submit' );
 $hasSubmit  = DGWT_WCAS()->settings->getOption( 'show_submit_button' );
 
-$labelSeeAll    = Helpers::getLabel( 'show_more' );
+$labelSeeAll = Helpers::getLabel( 'show_more' );
 
 ?>
 <div class="dgwt-wcas-preview js-dgwt-wcas-preview">
@@ -31,26 +31,26 @@ $labelSeeAll    = Helpers::getLabel( 'show_more' );
 			<div class="js-dgwt-wcas-search-wrapp js-dgwt-wcas-preview-bar-example dgwt-wcas-search-wrapp <?php echo Helpers::searchWrappClasses(); ?>" data-wcas-context="75c2">
 				<form class="dgwt-wcas-search-form" role="search" action="" method="get">
 					<div class="dgwt-wcas-sf-wrapp">
-						<?php echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' ); ?>
-						<?php echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx'); ?>
+						<?php echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' ); ?>
+						<?php echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx' ); ?>
 
 						<label class="screen-reader-text"><?php _e( 'Products search', 'ajax-search-for-woocommerce' ); ?></label>
 
 						<input
 							type="search"
 							class="js-dgwt-wcas-search-input dgwt-wcas-search-input"
-							name="<?php echo Helpers::getSearchInputName(); ?>"
-							value="<?php echo get_search_query() ?>"
+							name="<?php echo esc_attr( Helpers::getSearchInputName() ); ?>"
+							value="<?php echo esc_attr( get_search_query() ) ?>"
 							autocomplete="off"
-							placeholder="<?php echo Helpers::getLabel( 'search_placeholder' ); ?>"
+							placeholder="<?php echo esc_attr( Helpers::getLabel( 'search_placeholder' ) ); ?>"
 						/>
 						<div class="dgwt-wcas-preloader"></div>
 
 						<button type="submit" class="js-dgwt-wcas-search-submit dgwt-wcas-search-submit"><?php
 							echo '<span class="js-dgwt-wcas-search-submit-l">' . esc_html( $submitText ) . '</span>';
 							echo '<span class="js-dgwt-wcas-search-submit-m">';
-							echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris');
-							echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx');
+							echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' );
+							echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx' );
 							echo '</span>';
 							?>
 						</button>
@@ -73,25 +73,25 @@ $labelSeeAll    = Helpers::getLabel( 'show_more' );
 				<div class="dgwt-wcas-search-icon-arrow"></div>
 				<form class="dgwt-wcas-search-form" role="search" action="" method="get">
 					<div class="dgwt-wcas-sf-wrapp">
-						<?php echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' ); ?>
-						<?php echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx'); ?>
+						<?php echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' ); ?>
+						<?php echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx' ); ?>
 
 						<label class="screen-reader-text"><?php _e( 'Products search', 'ajax-search-for-woocommerce' ); ?></label>
 						<input
 							type="search"
 							class="js-dgwt-wcas-search-input dgwt-wcas-search-input"
-							name="<?php echo Helpers::getSearchInputName(); ?>"
-							value="<?php echo get_search_query() ?>"
+							name="<?php echo esc_attr( Helpers::getSearchInputName() ); ?>"
+							value="<?php echo esc_attr( get_search_query() ) ?>"
 							autocomplete="off"
-							placeholder="<?php echo Helpers::getLabel( 'search_placeholder' ); ?>"
+							placeholder="<?php echo esc_attr( Helpers::getLabel( 'search_placeholder' ) ); ?>"
 						/>
 						<div class="dgwt-wcas-preloader"></div>
 
 						<button type="submit" class="js-dgwt-wcas-search-submit dgwt-wcas-search-submit"><?php
 							echo '<span class="js-dgwt-wcas-search-submit-l">' . esc_html( $submitText ) . '</span>';
 							echo '<span class="js-dgwt-wcas-search-submit-m">';
-							echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris');
-							echo Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx');
+							echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-solaris' );
+							echo Helpers::getMagnifierIco( 'dgwt-wcas-ico-magnifier js-dgwt-wcas-ico-magnifier-pirx', 'magnifier-pirx' );
 							echo '</span>';
 							?>
 						</button>
@@ -204,7 +204,7 @@ $labelSeeAll    = Helpers::getLabel( 'show_more' );
 
 
 					<div class="dgwt-wcas-suggestion js-dgwt-wcas-suggestion-more dgwt-wcas-suggestion-more dgwt-wcas-suggestion-no-border-bottom" data-index="7">
-						<span class="dgwt-wcas-st-more"><span class="js-dgwt-wcas-st-more-label"><?php echo $labelSeeAll; ?></span> (73)</span>
+						<span class="dgwt-wcas-st-more"><span class="js-dgwt-wcas-st-more-label"><?php echo esc_html( $labelSeeAll ); ?></span> (73)</span>
 					</div>
 
 					<div class="dgwt-wcas-suggestion-nores js-dgwt-wcas-suggestion-nores dgwt-wcas-hide">
@@ -272,6 +272,6 @@ $labelSeeAll    = Helpers::getLabel( 'show_more' );
 	</div>
 
 	<div class="dgwt-wcas-preview-elements dgwt-wcas-hidden">
-		<div class="js-dgwt-wcas-preview-elements-close"><?php echo Helpers::getIcon( 'close' );  ?></div>
+		<div class="js-dgwt-wcas-preview-elements-close"><?php echo Helpers::getIcon( 'close' ); ?></div>
 	</div>
 </div>

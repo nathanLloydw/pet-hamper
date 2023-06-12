@@ -166,6 +166,9 @@
                 isBrowser: function (browser) {
                     return navigator.userAgent.indexOf(browser) !== -1;
                 },
+                isSafari: function () {
+                    return this.isBrowser('Safari') && ! this.isBrowser('Chrome');
+                },
                 isIOS: function () {
                     return [
                             'iPad Simulator',
@@ -1494,13 +1497,18 @@
 
             if (query.length < options.minChars) {
 
+                that.hideCloseButton();
+                that.hide();
+
                 if (that.canShowPreSuggestions() && query.length === 0) {
                     that.showPreSuggestions();
-                } else {
-                    that.hideCloseButton();
-                    that.hide();
                 }
             } else {
+
+                if (that.canShowPreSuggestions()) {
+                    that.hidePreSuggestions()
+                }
+
                 that.getSuggestions(query);
             }
         },
@@ -3409,6 +3417,10 @@
 
             if (utils.isBrowser('Chrome') && utils.isIOS()) {
                 // Chrome speech recognition on iPhone and iPad is not working well.
+                return false;
+            }
+            if (utils.isSafari()) {
+                // We don't support voice search on Safari because it's hard to debug.
                 return false;
             }
 

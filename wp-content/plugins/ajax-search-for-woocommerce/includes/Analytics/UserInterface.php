@@ -368,7 +368,7 @@ class UserInterface
      *
      * @return string
      */
-    public function getCriticalPhraseMessage( $context = '', $total = 0 )
+    public function getCriticalPhraseMessage( $context = '' )
     {
         $html = '';
         //This phrase returns X products.
@@ -377,12 +377,7 @@ class UserInterface
                 $html = '<p>';
                 $html .= '<b class="dgwt-wcas-analytics-text-good">' . __( "Perfect!", 'ajax-search-for-woocommerce' ) . '</b>';
                 $html .= ' ' . __( "It's sorted.", 'ajax-search-for-woocommerce' );
-                $html .= ' ' . sprintf( _n(
-                    "This phrase returns 1 product.",
-                    "This phrase returns %d products.",
-                    $total,
-                    'ajax-search-for-woocommerce'
-                ), $total );
+                $html .= ' ' . __( 'This phrase returns some results.', 'ajax-search-for-woocommerce' );
                 $html .= ' ' . __( 'Click the button below to remove this phrase from the list.', 'ajax-search-for-woocommerce' );
                 $html .= '<button class="button button-small dgwt-wcas-analytics-btn-mark js-dgwt-wcas-analytics-exclude-phrase"><span class="dashicons dashicons-yes"></span> ' . __( 'Mark this phrase as resolved', 'ajax-search-for-woocommerce' ) . '</button>';
                 $html .= '</p>';
@@ -515,7 +510,7 @@ class UserInterface
         );
         $vars['autocomplete']['total-results-uniq'] = $vars['autocomplete']['total-with-results-uniq'] + $vars['autocomplete']['total-without-results-uniq'];
         $vars['autocomplete']['total-results'] = $vars['autocomplete']['total-with-results'] + $vars['autocomplete']['total-without-results'];
-        // Search page
+        // WooCommerce Search Results Page
         $data->setContext( 'search-results-page' );
         $vars['search-page'] = array(
             'with-results'               => $data->getPhrasesWithResults( self::TABLE_ROW_LIMIT_LIMIT ),
@@ -528,10 +523,10 @@ class UserInterface
         $vars['search-page']['total-results-uniq'] = $vars['search-page']['total-with-results-uniq'] + $vars['search-page']['total-without-results-uniq'];
         $vars['search-page']['total-results'] = $vars['search-page']['total-with-results'] + $vars['search-page']['total-without-results'];
         // Common
-        $vars['total'] = $vars['autocomplete']['total-results'] + $vars['search-page']['total-results'];
+        $vars['total'] = $vars['autocomplete']['total-results'];
         
         if ( $vars['total'] > 0 ) {
-            $vars['returning-results-percent'] = round( ($vars['autocomplete']['total-with-results'] + $vars['search-page']['total-with-results']) * 100 / $vars['total'] );
+            $vars['returning-results-percent'] = round( $vars['autocomplete']['total-with-results'] * 100 / $vars['total'] );
             $vars['returning-results-percent-satisfying'] = $data->isSearchesReturningResutlsSatisfying( $vars['returning-results-percent'] );
         }
         

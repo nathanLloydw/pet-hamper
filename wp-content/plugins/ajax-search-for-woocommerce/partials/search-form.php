@@ -45,7 +45,7 @@ if ( ! empty( $args['layout_breakpoint'] ) && ! empty( $args['layout_breakpoint'
 			       class="dgwt-wcas-search-input"
 			       name="<?php echo Helpers::getSearchInputName(); ?>"
 			       value="<?php echo apply_filters( 'dgwt/wcas/search_bar/value', get_search_query(), DGWT_WCAS()->searchInstances); ?>"
-			       placeholder="<?php echo Helpers::getLabel( 'search_placeholder' ); ?>"
+				   placeholder="<?php echo esc_attr( Helpers::getLabel( 'search_placeholder' ) ); ?>"
 			       autocomplete="off"
 				   <?php echo ! empty( $customParams ) ? ' data-custom-params="' . htmlspecialchars(json_encode( (object) $customParams)) . '"' : ''; ?>
 			/>
@@ -55,7 +55,7 @@ if ( ! empty( $args['layout_breakpoint'] ) && ! empty( $args['layout_breakpoint'
 
 			<?php if ( $hasSubmit === 'on' ): ?>
 				<button type="submit"
-				        aria-label="<?php echo empty( $submitText ) ? __( 'Search','ajax-search-for-woocommerce' ) : esc_html( $submitText ); ?>"
+				        aria-label="<?php echo empty( $submitText ) ? __( 'Search','ajax-search-for-woocommerce' ) :  esc_attr($submitText); ?>"
 				        class="dgwt-wcas-search-submit"><?php echo empty( $submitText ) ? Helpers::getMagnifierIco('dgwt-wcas-ico-magnifier', $iconType) : esc_html( $submitText ); ?></button>
 			<?php endif; ?>
 

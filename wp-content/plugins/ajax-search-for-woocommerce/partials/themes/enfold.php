@@ -31,6 +31,14 @@ if ( ! function_exists( 'avia_append_search_nav' ) ) {
 add_action( 'wp_footer', function () {
 	?>
 	<script>
+		<?php // Mark the menu item to be ignored by the MegaMenu script that causes our search div to be hidden. ?>
+		document.querySelectorAll('.dgwt-wcas-search-enfold-wrapper').forEach((wrapper) => {
+			if (wrapper.parentElement) {
+				wrapper.parentElement.classList.add('ignore_menu');
+			}
+		});
+	</script>
+	<script>
 		(function ($) {
 			$(window).on('load', function () {
 				$('.dgwt-wcas-search-enfold-wrapper').on('click', function () {

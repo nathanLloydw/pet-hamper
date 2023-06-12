@@ -66,6 +66,9 @@ class WooProductFilter
         if ( !isset( $_POST['currenturl'] ) ) {
             return;
         }
+        if ( $query->get( 'wpf_query' ) !== 1 ) {
+            return;
+        }
         $orderby = 'relevance';
         $order = 'desc';
         // parse args from url passed as POST var

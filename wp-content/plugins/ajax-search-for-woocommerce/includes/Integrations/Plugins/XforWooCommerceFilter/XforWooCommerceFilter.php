@@ -58,6 +58,9 @@ class XforWooCommerceFilter
         if ( !$this->is_prdctfltr_ajax_search() ) {
             return;
         }
+        if ( $query->get( 'prdctfltr_active' ) !== true ) {
+            return;
+        }
         $orderby = ( isset( $_POST['pf_filters'][$_POST['pf_id']]['orderby'] ) ? wc_clean( wp_unslash( $_POST['pf_filters'][$_POST['pf_id']]['orderby'] ) ) : 'relevance' );
         $order = 'desc';
         if ( $orderby === 'price' ) {

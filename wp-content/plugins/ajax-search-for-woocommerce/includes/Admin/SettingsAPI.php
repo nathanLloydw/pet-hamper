@@ -169,6 +169,8 @@ class SettingsAPI
                     'std'               => ( isset( $option['default'] ) ? $option['default'] : '' ),
                     'class'             => ( isset( $option['class'] ) ? $option['class'] : '' ),
                     'sanitize_callback' => ( isset( $option['sanitize_callback'] ) ? $option['sanitize_callback'] : '' ),
+                    'number_min'        => ( isset( $option['number_min'] ) ? (int) $option['number_min'] : null ),
+                    'number_max'        => ( isset( $option['number_max'] ) ? (int) $option['number_max'] : null ),
                     'type'              => $type,
                     'move_dest'         => ( isset( $option['move_dest'] ) ? $option['move_dest'] : '' ),
                     'input_data'        => ( isset( $option['input_data'] ) ? $option['input_data'] : '' ),
@@ -233,15 +235,19 @@ class SettingsAPI
         $size = ( isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular' );
         $type = ( isset( $args['type'] ) ? $args['type'] : 'text' );
         $disabled = ( !empty($args['disabled']) ? 'disabled' : '' );
+        $numberMin = ( isset( $args['number_min'] ) ? ' min="' . $args['number_min'] . '"' : '' );
+        $numberMax = ( isset( $args['number_max'] ) ? ' min="' . $args['number_max'] . '"' : '' );
         $html = '<fieldset class="dgwt-wcas-fieldset">';
         $html .= sprintf(
-            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s" %6$s/>',
+            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s" %6$s %7$s %8$s/>',
             $type,
             $size,
             $this->name,
             $args['id'],
             $value,
-            $disabled
+            $disabled,
+            $numberMin,
+            $numberMax
         );
         $html .= $this->get_field_description( $args );
         $html .= '</fieldset>';
@@ -746,6 +752,31 @@ class SettingsAPI
     public static function sanitize_no_results_field( $value )
     {
         return Helpers::ksesNoResults( $value );
+    }
+    
+    /**
+     * Strip all tags
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function strip_all_tags( $value )
+    {
+        return wp_strip_all_tags( $value, true );
+    }
+    
+    /**
+     * Sanitize natural numbers
+     *
+     * @param string $value
+     *
+     * @return int
+     */
+    public static function sanitize_natural_numbers( $value )
+    {
+        $number = absint( $value );
+        return ( $number === 0 ? 1 : $number );
     }
     
     /**

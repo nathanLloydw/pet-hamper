@@ -195,13 +195,15 @@ class Settings
             'class' => 'dgwt-wcas-sgs-header',
         ),
             200  => array(
-            'name'    => 'min_chars',
-            'label'   => __( 'Minimum characters', 'ajax-search-for-woocommerce' ),
-            'type'    => 'number',
-            'size'    => 'small',
-            'class'   => 'js-dgwt-wcas-adv-settings',
-            'desc'    => __( 'Min characters to show autocomplete', 'ajax-search-for-woocommerce' ),
-            'default' => 3,
+            'name'              => 'min_chars',
+            'label'             => __( 'Minimum characters', 'ajax-search-for-woocommerce' ),
+            'type'              => 'number',
+            'size'              => 'small',
+            'number_min'        => 1,
+            'class'             => 'js-dgwt-wcas-adv-settings',
+            'sanitize_callback' => array( '\\DgoraWcas\\Admin\\SettingsAPI', 'sanitize_natural_numbers' ),
+            'desc'              => __( 'Min characters to show autocomplete', 'ajax-search-for-woocommerce' ),
+            'default'           => 3,
         ),
             300  => array(
             'name'    => 'max_form_width',
@@ -242,10 +244,11 @@ class Settings
             'default' => '',
         ),
             600  => array(
-            'name'    => 'search_placeholder',
-            'label'   => __( 'Search input placeholder', 'ajax-search-for-woocommerce' ),
-            'type'    => 'text',
-            'default' => __( 'Search for products...', 'ajax-search-for-woocommerce' ),
+            'name'              => 'search_placeholder',
+            'label'             => __( 'Search input placeholder', 'ajax-search-for-woocommerce' ),
+            'type'              => 'text',
+            'sanitize_callback' => array( '\\DgoraWcas\\Admin\\SettingsAPI', 'strip_all_tags' ),
+            'default'           => __( 'Search for products...', 'ajax-search-for-woocommerce' ),
         ),
             630  => array(
             'name'  => 'layout_head',
@@ -323,6 +326,13 @@ class Settings
             'label' => __( 'Other colors', 'ajax-search-for-woocommerce' ),
             'type'  => 'head',
             'class' => 'dgwt-wcas-sgs-header js-dgwt-wcas-adv-settings',
+        ),
+            790  => array(
+            'name'    => 'bg_input_underlay_color',
+            'label'   => __( 'Search bar underlay', 'ajax-search-for-woocommerce' ),
+            'type'    => 'color',
+            'class'   => 'js-dgwt-wcas-adv-settings',
+            'default' => '',
         ),
             800  => array(
             'name'    => 'bg_input_color',
@@ -430,10 +440,11 @@ class Settings
             'default' => 'off',
         ),
             900  => array(
-            'name'    => 'search_see_all_results_text',
-            'label'   => __( 'More results label', 'ajax-search-for-woocommerce' ),
-            'type'    => 'text',
-            'default' => __( 'See all products...', 'ajax-search-for-woocommerce' ),
+            'name'              => 'search_see_all_results_text',
+            'label'             => __( 'More results label', 'ajax-search-for-woocommerce' ),
+            'type'              => 'text',
+            'sanitize_callback' => array( '\\DgoraWcas\\Admin\\SettingsAPI', 'strip_all_tags' ),
+            'default'           => __( 'See all products...', 'ajax-search-for-woocommerce' ),
         ),
             1000 => array(
             'name'  => 'non_products_in_autocomplete_head',
@@ -736,13 +747,6 @@ class Settings
             );
         }
         
-        foreach ( $settingsFields as $key => $sections ) {
-            foreach ( $sections as $option ) {
-                if ( !empty($option['name']) ) {
-                    $this->defaults[$option['name']] = ( isset( $option['default'] ) ? $option['default'] : '' );
-                }
-            }
-        }
         if ( !dgoraAsfwFs()->is_premium() ) {
             foreach ( $settingsFields as $key => $sections ) {
                 foreach ( $sections as $keyl2 => $option ) {
@@ -753,6 +757,14 @@ class Settings
             }
         }
         $settingsFields = apply_filters( 'dgwt/wcas/settings', $settingsFields );
+        // Set defaults
+        foreach ( $settingsFields as $sections ) {
+            foreach ( $sections as $option ) {
+                if ( !empty($option['name']) ) {
+                    $this->defaults[$option['name']] = ( isset( $option['default'] ) ? $option['default'] : '' );
+                }
+            }
+        }
         foreach ( $settingsFields as $key => $sections ) {
             ksort( $settingsFields[$key] );
         }

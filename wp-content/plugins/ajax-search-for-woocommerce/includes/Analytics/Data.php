@@ -253,6 +253,7 @@ class Data {
                                      FROM $wpdb->dgwt_wcas_stats
                                      WHERE 1=1
                                      AND created_at > %s AND created_at < %s
+                                     AND autocomplete = 1
                                      AND solved = 0
                                      AND hits = 0
                                      $where
@@ -287,6 +288,7 @@ class Data {
                                      FROM $wpdb->dgwt_wcas_stats
                                      WHERE hits = 0
                                      AND created_at > %s AND created_at < %s
+                                     AND autocomplete = 1
                                      AND solved = 0
                                      $where
                                      GROUP BY phrase
@@ -320,7 +322,7 @@ class Data {
 	 *
 	 * @return array
 	 */
-	private function getPhrases( $dateFrom, $dateTo, $context, $hasResults, $solved = null, $limit = 10, $offset = 0 ) {
+	public function getPhrases( $dateFrom, $dateTo, $context, $hasResults, $solved = null, $limit = 10, $offset = 0 ) {
 		global $wpdb;
 
 		$output = array();

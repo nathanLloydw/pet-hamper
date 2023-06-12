@@ -52,17 +52,21 @@ if (
 			<td><b>Is the maintenance task scheduled?</b></td>
 			<td><?php echo wp_next_scheduled( \DgoraWcas\Analytics\Maintenance::HOOK ) ? 'yes' : 'no'; ?></td>
 		</tr>
-		<?php if ( defined( 'DGWT_WCAS_ANALYTICS_ONLY_CRITICAL' ) ) { ?>
-			<tr>
-				<td><b>Constant <code>DGWT_WCAS_ANALYTICS_ONLY_CRITICAL</code></b></td>
-				<td><?php echo DGWT_WCAS_ANALYTICS_ONLY_CRITICAL; ?></td>
-			</tr>
-		<?php } ?>
-		<?php if ( defined( 'DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS' ) ) { ?>
-			<tr>
-				<td><b>Constant <code>DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS</code></b></td>
-				<td><?php echo DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS; ?></td>
-			</tr>
-		<?php } ?>
+		<tr>
+			<td><b>Constant <code>DGWT_WCAS_ANALYTICS_ONLY_CRITICAL</code></b></td>
+			<?php if ( defined( 'DGWT_WCAS_ANALYTICS_ONLY_CRITICAL' ) ) { ?>
+				<td>Is defined. <b><?php var_dump( DGWT_WCAS_ANALYTICS_ONLY_CRITICAL ); ?></b></td>
+			<?php } else { ?>
+				<td>not defined</td>
+			<?php } ?>
+		</tr>
+		<tr>
+			<td><b>Constant <code>DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS</code></b></td>
+			<?php if ( defined( 'DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS' ) ) { ?>
+				<td>Is defined. Days: <b><?php echo DGWT_WCAS_ANALYTICS_EXPIRATION_IN_DAYS; ?></b></td>
+			<?php } else { ?>
+				<td>not defined</td>
+			<?php } ?>
+		</tr>
 	</table>
 <?php

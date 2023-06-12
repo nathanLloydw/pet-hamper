@@ -110,7 +110,7 @@ class Product
                     $output = Helpers::makeShortDescription(
                         $desc,
                         $wordsLimit,
-                        '</br><b><strong>',
+                        '<br><b><strong>',
                         false
                     );
                 } elseif ( $type === 'suggestions' ) {

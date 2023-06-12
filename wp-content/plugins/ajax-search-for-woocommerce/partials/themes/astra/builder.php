@@ -54,18 +54,6 @@ if ( ! function_exists( 'astra_get_search_form' ) ) {
 	}
 }
 
-// Astra cut our search using wp_kses(), so we need overwrite whole function.
-if ( ! function_exists( 'astra_addon_get_search_form' ) ) {
-	function astra_addon_get_search_form( $echo = true ) {
-		$result = apply_filters( 'astra_get_search_form', '' );
-		if ( $echo ) {
-			echo $result;
-		} else {
-			return $result;
-		}
-	}
-}
-
 add_filter( 'astra_get_search_form', function ( $form ) {
 	return dgwt_wcas_astra_search_form();
 } );

@@ -78,170 +78,183 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 </div>
 
-<div class="dgwt-wcas-analytics-module-tiles">
-	<h3><?php printf( __( 'Searches stats (last %d days)', 'ajax-search-for-woocommerce' ), $vars['days'] ); ?></h3>
+<?php if ( ! defined( 'DGWT_WCAS_ANALYTICS_ONLY_CRITICAL' ) || ! DGWT_WCAS_ANALYTICS_ONLY_CRITICAL ): ?>
+	<div class="dgwt-wcas-analytics-module-tiles">
+		<h3><?php printf( __( 'Searches stats (last %d days)', 'ajax-search-for-woocommerce' ), $vars['days'] ); ?></h3>
 
-	<div class="dgwt-wcas-analytics-tiles">
-		<div class="dgwt-wcas-analytics-tile">
-			<div class="dgwt-wcas-analytics-tile__values">
-				<span><?php _e( 'Total searches', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php _e( 'autocomplete', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php echo esc_html( $vars['autocomplete']['total-results'] ); ?></span>
+		<div class="dgwt-wcas-analytics-tiles">
+			<div class="dgwt-wcas-analytics-tile">
+				<div class="dgwt-wcas-analytics-tile__values">
+					<span><?php _e( 'Total searches', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php _e( 'autocomplete', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php echo esc_html( $vars['autocomplete']['total-results'] ); ?></span>
+				</div>
+				<div class="dgwt-wcas-analytics-tile__icon">
+					<?php echo \DgoraWcas\Helpers::getIcon( 'magnifier-pirx' ) ?>
+				</div>
 			</div>
-			<div class="dgwt-wcas-analytics-tile__icon">
-				<?php echo \DgoraWcas\Helpers::getIcon( 'magnifier-pirx' ) ?>
-			</div>
-		</div>
 
-		<div class="dgwt-wcas-analytics-tile">
-			<div class="dgwt-wcas-analytics-tile__values">
-				<span><?php _e( 'Total searches', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php _e( 'search results page', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php echo esc_html( $vars['search-page']['total-results'] ); ?></span>
+			<div class="dgwt-wcas-analytics-tile">
+				<div class="dgwt-wcas-analytics-tile__values">
+					<span><?php _e( 'Total searches', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php _e( 'search results page', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php echo esc_html( $vars['search-page']['total-results'] ); ?></span>
+				</div>
+				<div class="dgwt-wcas-analytics-tile__icon">
+					<?php echo \DgoraWcas\Helpers::getIcon( 'magnifier-pirx' ) ?>
+				</div>
 			</div>
-			<div class="dgwt-wcas-analytics-tile__icon">
-				<?php echo \DgoraWcas\Helpers::getIcon( 'magnifier-pirx' ) ?>
-			</div>
-		</div>
 
-		<div class="dgwt-wcas-analytics-tile">
-			<div class="dgwt-wcas-analytics-tile__values">
-				<span><?php _e( 'Searches', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php _e( 'returning results', 'ajax-search-for-woocommerce' ); ?></span>
-				<span><?php echo esc_html( $vars['returning-results-percent'] ); ?>%</span>
-			</div>
-			<div class="dgwt-wcas-analytics-tile__icon">
-				<?php
-				if ( ! empty( $vars['returning-results-percent'] ) ) {
-					if ( $vars['returning-results-percent-satisfying'] ) {
-						echo \DgoraWcas\Helpers::getIcon( 'face-smile', 'dgwt-wcas-stats-icon-smile' );
-					} else {
-						echo \DgoraWcas\Helpers::getIcon( 'face-sad', 'dgwt-wcas-stats-icon-sad' );
+			<div class="dgwt-wcas-analytics-tile">
+				<div class="dgwt-wcas-analytics-tile__values">
+					<span><?php _e( 'Searches', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php _e( 'returning results', 'ajax-search-for-woocommerce' ); ?></span>
+					<span><?php echo esc_html( $vars['returning-results-percent'] ); ?>%</span>
+				</div>
+				<div class="dgwt-wcas-analytics-tile__icon">
+					<?php
+					if ( ! empty( $vars['returning-results-percent'] ) ) {
+						if ( $vars['returning-results-percent-satisfying'] ) {
+							echo \DgoraWcas\Helpers::getIcon( 'face-smile', 'dgwt-wcas-stats-icon-smile' );
+						} else {
+							echo \DgoraWcas\Helpers::getIcon( 'face-sad', 'dgwt-wcas-stats-icon-sad' );
+						}
 					}
-				}
-				?>
+					?>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<br/>
+	<br/>
 
-<div class="dgwt-wcas-analytics-module-tables">
-	<div class="dgwt-wcas-analytics-module-table">
-		<h3><?php _e( 'Top searches - autocomplete', 'ajax-search-for-woocommerce' ); ?></h3>
-		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'The list of phrases with results is displayed to users as a drop down list with auto suggestions.', 'ajax-search-for-woocommerce' ); ?></p>
+	<div class="dgwt-wcas-analytics-module-tables">
+		<div class="dgwt-wcas-analytics-module-table">
+			<h3><?php _e( 'Top searches - autocomplete', 'ajax-search-for-woocommerce' ); ?></h3>
+			<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'The list of phrases with results is displayed to users as a drop down list with auto suggestions.', 'ajax-search-for-woocommerce' ); ?></p>
 
-		<table class="widefat fixed dgwt-wcas-analytics-table">
-			<thead>
-			<tr>
-				<th>#</th>
-				<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
-				<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
-			</tr>
+			<table class="widefat fixed dgwt-wcas-analytics-table">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
+					<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
+				</tr>
 
-			</thead>
-			<tbody>
-			<?php if ( ! empty( $vars['autocomplete']['with-results'] ) ): ?>
+				</thead>
+				<tbody>
+				<?php if ( ! empty( $vars['autocomplete']['with-results'] ) ): ?>
 
-				<?php
-				$i = 1;
-				foreach ( $vars['autocomplete']['with-results'] as $row ) {
-					require DGWT_WCAS_DIR . 'partials/admin/stats/ac-searches-row.php';
-					$i ++;
-				}
+					<?php
+					$i = 1;
+					foreach ( $vars['autocomplete']['with-results'] as $row ) {
+						require DGWT_WCAS_DIR . 'partials/admin/stats/ac-searches-row.php';
+						$i ++;
+					}
 
-				if ( $vars['autocomplete']['total-with-results-uniq'] > count( $vars['autocomplete']['with-results'] ) ): ?>
-					<tr class="dgwt-wcas-analytics-load-more-row">
-						<td colspan="3">
-							<div>
+					if ( $vars['autocomplete']['total-with-results-uniq'] > count( $vars['autocomplete']['with-results'] ) ): ?>
+						<tr class="dgwt-wcas-analytics-load-more-row">
+							<td colspan="3">
+								<div>
 						<span class="js-dgwt-wcas-autocomplete-with-results-load-more">
 							<span><?php _e( 'show top 100 phrases', 'ajax-search-for-woocommerce' ); ?></span>
 							<span class="dashicons dashicons-arrow-down-alt2"></span>
 						</span>
-							</div>
+								</div>
+							</td>
+						</tr>
+					<?php endif; ?>
+
+				<?php else: ?>
+					<tr>
+						<td colspan="3">
+							<?php _e( '0 searches with results', 'ajax-search-for-woocommerce' ); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
+				</tbody>
+			</table>
+			<?php
+			if ( ! empty( $vars['autocomplete']['with-results'] ) ) {
+				printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="autocomplete" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+			}
+			?>
 
-			<?php else: ?>
+		</div>
+		<div class="dgwt-wcas-analytics-module-table">
+
+			<h3><?php _e( 'Top searches - WooCommerce search results page', 'ajax-search-for-woocommerce' ); ?></h3>
+			<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'Here is the list of phrases that were typed by users who followed the pattern: type the phrase into the bar → clicked “See all results” or just hit enter/return (for Mac users)', 'ajax-search-for-woocommerce' ); ?></p>
+
+
+			<table class="widefat fixed dgwt-wcas-analytics-table">
+				<thead>
 				<tr>
-					<td colspan="3">
-						<?php _e( '0 searches with results', 'ajax-search-for-woocommerce' ); ?>
-					</td>
+					<th>#</th>
+					<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
+					<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
 				</tr>
-			<?php endif; ?>
-			</tbody>
-		</table>
-		<?php
-		if ( ! empty( $vars['autocomplete']['with-results'] ) ) {
-			printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="autocomplete" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
-		}
-		?>
 
-	</div>
-	<div class="dgwt-wcas-analytics-module-table">
+				</thead>
+				<tbody>
+				<?php if ( ! empty( $vars['search-page']['with-results'] ) ): ?>
 
-		<h3><?php _e( 'Top searches - WooCommerce search results page', 'ajax-search-for-woocommerce' ); ?></h3>
-		<p class="dgwt-wcas-analytics-subtitle"><?php _e( 'Here is the list of phrases that were typed by users who followed the pattern: type the phrase into the bar → clicked “See all results” or just hit enter/return (for Mac users)', 'ajax-search-for-woocommerce' ); ?></p>
+					<?php
+					$i = 1;
+					foreach ( $vars['search-page']['with-results'] as $row ) {
+						require DGWT_WCAS_DIR . 'partials/admin/stats/sp-searches-row.php';
+						$i ++;
+					}
 
-
-		<table class="widefat fixed dgwt-wcas-analytics-table">
-			<thead>
-			<tr>
-				<th>#</th>
-				<th><?php _e( 'Phrase', 'ajax-search-for-woocommerce' ); ?></th>
-				<th><?php _e( 'Repetitions', 'ajax-search-for-woocommerce' ); ?></th>
-			</tr>
-
-			</thead>
-			<tbody>
-			<?php if ( ! empty( $vars['search-page']['with-results'] ) ): ?>
-
-				<?php
-				$i = 1;
-				foreach ( $vars['search-page']['with-results'] as $row ) {
-					require DGWT_WCAS_DIR . 'partials/admin/stats/sp-searches-row.php';
-					$i ++;
-				}
-
-				if ( $vars['search-page']['total-with-results-uniq'] > count( $vars['search-page']['with-results'] ) ): ?>
-					<tr class="dgwt-wcas-analytics-load-more-row">
-						<td colspan="3">
-							<div>
+					if ( $vars['search-page']['total-with-results-uniq'] > count( $vars['search-page']['with-results'] ) ): ?>
+						<tr class="dgwt-wcas-analytics-load-more-row">
+							<td colspan="3">
+								<div>
 						<span class="js-dgwt-wcas-search-page-with-results-load-more">
 							<span><?php _e( 'show top 100 phrases', 'ajax-search-for-woocommerce' ); ?></span>
 							<span class="dashicons dashicons-arrow-down-alt2"></span>
 						</span>
-							</div>
+								</div>
+							</td>
+						</tr>
+					<?php endif; ?>
+
+				<?php else: ?>
+					<tr>
+						<td colspan="3">
+							<?php _e( '0 searches with results', 'ajax-search-for-woocommerce' ); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
-
-			<?php else: ?>
-				<tr>
-					<td colspan="3">
-						<?php _e( '0 searches with results', 'ajax-search-for-woocommerce' ); ?>
-					</td>
-				</tr>
-			<?php endif; ?>
-			</tbody>
-		</table>
-		<?php
-		if ( ! empty( $vars['search-page']['with-results'] ) ) {
-			printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="search-results-page" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
-		}
-		?>
+				</tbody>
+			</table>
+			<?php
+			if ( ! empty( $vars['search-page']['with-results'] ) ) {
+				printf( '<a class="js-dgwt-wcas-analytics-export-csv" data-context="search-results-page" href="#">%s</a>', __( 'Export CSV', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
+			}
+			?>
+		</div>
 	</div>
-</div>
+
+<?php endif; ?>
+
 
 <div class="dgwt-wcas-analytics-module-reset">
 	<h3><?php _e( 'Maintenance', 'ajax-search-for-woocommerce' ) ?></h3>
+	<?php if ( defined( 'DGWT_WCAS_ANALYTICS_ONLY_CRITICAL' ) && DGWT_WCAS_ANALYTICS_ONLY_CRITICAL ): ?>
+		<p class="dgwt-wcas-analytics-subtitle">
+			<span class="dgwt-wcas-analytics-red-color"><b><?php _e( 'Warning:', 'ajax-search-for-woocommerce' ); ?></b> </span>
+			<?php
+			/* Translators: %s PHP constant name. */
+			printf( __( "You have defined %s constant and it's set to <code>true</code>. It means only critical searches will be stored in the database. Other modules than Critical Searches are not visible in this mode.", 'ajax-search-for-woocommerce' ), '<code>DGWT_WCAS_ANALYTICS_ONLY_CRITICAL</code>' ) ?>
+		</p>
+	<?php endif; ?>
 	<p class="dgwt-wcas-analytics-subtitle">
 		<?php
 		$reset = sprintf( '<a class="js-dgwt-wcas-analytics-reset" href="#">%s</a>', __( 'reset your stats', 'ajax-search-for-woocommerce' ) ) . '<span class="dgwt-wcas-ajax-loader"></span>';
 		$size  = $vars['autocomplete']['total-results'] > 0 ? $vars['table-info']['data'] + $vars['table-info']['index'] : 0;
 		?>
-		<?php printf( _x( 'The stats older than %d days are removed from your database on a daily basis. Now you have %d records in the DB that weigh %.2fMB. You can %s now and start collecting them all over again.', 'The last placeholder is a button with text "reset your stats"', 'ajax-search-for-woocommerce' ), $vars['days'], esc_html( $vars['autocomplete']['total-results'] ), $size, $reset ); ?>
+		<?php printf( _x( 'The stats older than %d days are removed from your database on a daily basis. Now you have %d records in the DB that weigh %.2fMB. You can %s now and start collecting them all over again.', 'The last placeholder is a button with text "reset your stats"', 'ajax-search-for-woocommerce' ),
+			$vars['days'], esc_html( $vars['autocomplete']['total-results'] ), $size, $reset ); ?>
 	</p>
 </div>

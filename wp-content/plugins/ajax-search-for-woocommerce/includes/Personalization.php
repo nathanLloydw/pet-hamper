@@ -40,12 +40,13 @@ class Personalization {
 	 */
 	public function getStyle() {
 		// Search form
-		$show_submit        = DGWT_WCAS()->settings->getOption( 'show_submit_button' );
-		$bg_search_input    = DGWT_WCAS()->settings->getOption( 'bg_input_color' );
-		$text_input_color   = DGWT_WCAS()->settings->getOption( 'text_input_color' );
-		$border_input_color = DGWT_WCAS()->settings->getOption( 'border_input_color' );
-		$bg_submit_color    = DGWT_WCAS()->settings->getOption( 'bg_submit_color' );
-		$text_submit_color  = DGWT_WCAS()->settings->getOption( 'text_submit_color' );
+		$show_submit             = DGWT_WCAS()->settings->getOption( 'show_submit_button' );
+		$bg_input_underlay_color = DGWT_WCAS()->settings->getOption( 'bg_input_underlay_color' ); // Pirx
+		$bg_search_input         = DGWT_WCAS()->settings->getOption( 'bg_input_color' );
+		$text_input_color        = DGWT_WCAS()->settings->getOption( 'text_input_color' );
+		$border_input_color      = DGWT_WCAS()->settings->getOption( 'border_input_color' );
+		$bg_submit_color         = DGWT_WCAS()->settings->getOption( 'bg_submit_color' );
+		$text_submit_color       = DGWT_WCAS()->settings->getOption( 'text_submit_color' );
 
 		// Suggestions
 		$sug_hover_color     = DGWT_WCAS()->settings->getOption( 'sug_hover_color' );
@@ -71,6 +72,10 @@ class Personalization {
 		<?php if(!empty($max_form_width)): ?> max-width: <?php echo $max_form_width; ?>px;
 		<?php endif; ?>
 		}
+
+		<?php if ( ! empty( $bg_input_underlay_color ) ): ?>
+			.dgwt-wcas-style-pirx .dgwt-wcas-sf-wrapp {background-color: <?php echo sanitize_text_field( $bg_input_underlay_color ) ?>;}
+		<?php endif; ?>
 
 		<?php if ( !empty( $bg_search_input ) || !empty( $text_input_color ) || !empty( $border_input_color ) ): ?>
 		.dgwt-wcas-search-wrapp .dgwt-wcas-sf-wrapp input[type="search"].dgwt-wcas-search-input,

@@ -9,3 +9,13 @@ add_filter( 'hfg_template_locations', function ( $locations ) {
 
 	return $locations;
 } );
+
+add_action( 'wp_head', function () { ?>
+	<style>
+		html[data-neve-theme="dark"] .header .dgwt-wcas-search-icon svg,
+		html[data-neve-theme="dark"] .header .dgwt-wcas-search-icon path {
+			fill: white;
+		}
+	</style>
+	<?php
+} );

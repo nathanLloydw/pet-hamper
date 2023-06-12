@@ -4,7 +4,7 @@ Tags: woocommerce search, ajax search, search by sku, product search, woocommerc
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 1.23.0
+Stable tag: 1.24.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,7 +107,7 @@ We have prepared a one-click replacement of the search bar for the following the
 *  Astra
 *  Avada
 *  Sailent
-*  and 42 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
+*  and 43 more... See a complete list of integrated themes on [our documentation](https://fibosearch.com/documentation/themes-integrations/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=theme-integrations).
 
 
 If you want to replace your search bar in another theme, please [contact our support team](https://fibosearch.com/contact/?utm_source=readme&utm_medium=referral&utm_campaign=asfw&utm_content=contact&utm_gen=utmdc).
@@ -144,10 +144,37 @@ You can read more and compare Pro and Free features here: [Full comparison - Pro
 
 == Changelog ==
 
+= 1.24.0, May 25, 2023 =
+* ADDED: Integration with the “Minimog” theme
+* ADDED: Posts, pages, and taxonomy terms are included in the FiboSearch Analytics module
+* ADDED: Taking into account a new feature of the dark theme in the Nave theme
+* ADDED: Possibility to change the color of a search bar underlay. Only for the Pirx style
+* ADDED: New search widget and extended search results for Elementor
+* ADDED: TheGem theme - “Header Builder” support
+
+* FIXED: Wrong position of search icons in the history search module
+* FIXED: Broken suggestions layout and a details panel visibility when there was a “Minimum characters” option set to less than 1
+* FIXED: Compatibility with PHP 8.1
+* FIXED: Hide unnecessary modules when constant `DGWT_WCAS_ANALYTICS_ONLY_CRITICAL` is set to true in the FiboSearch Analytics module
+* FIXED: Incorrect display of information about constants on the debug page
+* FIXED: Other minor bugs in the FiboSearch Analytics module
+* FIXED: Integration with the Astra theme - support for version 4.1.0 of the Astra Addon
+* FIXED: Integration with the Minimog theme - wrong position of the search history wrapper
+* FIXED: Integration with the Enfold theme - the search engine icon disappears when the page finishes loading
+* FIXED: A HTML tag `<br>` was stripped but it shouldn't in the description in the details panel
+* FIXED: The voice search feature - overlapping icons and disabling functionality on Safari
+
+* UPDATED: French translation
+* UPDATED: Freemius SDK v2.5.8
+* TESTS: Two integration tests that check saving phrases in a database table
+* TESTS: Fix assertion in “Analytics/Critical searches without result”
+* REFACTOR: Change order if set settings defaults. Now the defaults are set after calling the `dgwt/wcas/settings` filter
+* SECURITY: Added escaping for a “Search input placeholder” option
+
 = 1.23.0, April 05, 2023 =
-* ADDED: Integration with “Blocksy” theme
-* ADDED: Integration with “Qwery” theme
-* ADDED: Integration with “StoreBiz” theme
+* ADDED: Integration with the “Blocksy” theme
+* ADDED: Integration with the “Qwery” theme
+* ADDED: Integration with the “StoreBiz” theme
 * ADDED: Allows the `Shop manager` role to manage the plugin settings by adding a constant to the `wp.config.php` file
 * ADDED: Allows creating HTML templates instead of displaying simple “No results” message
 

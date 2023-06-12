@@ -285,6 +285,9 @@ a.dgwt-wcas-product-details-readmore:hover {
 .dgwt-wcas-suggestion-history-search .dgwt-wcas-si svg {
 	max-width: 18px;
 }
+.dgwt-wcas-has-img:not(.dgwt-wcas-has-img-forced) .dgwt-wcas-suggestion-history-product .dgwt-wcas-si > svg {
+	margin-left:10px;
+}
 
 .dgwt-wcas-content-wrapp {
 	display: flex;
@@ -2022,7 +2025,7 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 	fill: #111;
 }
 
-.dgwt-wcas-search-filled .dgwt-wcas-voice-search {
+.dgwt-wcas-voice-search-supported.dgwt-wcas-search-filled .dgwt-wcas-voice-search {
 	display: none;
 }
 
@@ -2069,4 +2072,9 @@ html:not(.dgwt-wcas-overlay-mobile-on) .dgwt-wcas-search-wrapp.dgwt-wcas-layout-
 
 .dgwt-wcas-suggestions-wrapp-fixed {
 	position: fixed !important;
+}
+
+/* Elementor - prevent display image ratio in Posts widget */
+.elementor-widget-fibosearch-posts::after {
+	content: "" !important;
 }

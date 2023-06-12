@@ -71,7 +71,7 @@ add_action( 'wp_head', function () { ?>
 
 add_action( 'wp_footer', function () {
 	// Overwriting search icon.
-	if ( get_theme_mod( 'header_search_style' ) === 'dropdown' ) {
+	if ( get_theme_mod( 'header_search_style', 'dropdown' ) === 'dropdown' ) {
 		echo '<div id="wcas-theme-search" style="display: block;"><li>' . do_shortcode( '[fibosearch layout="icon"]' ) . '</li></div>';
 		?>
 		<style>
@@ -158,7 +158,7 @@ add_action( 'wp_footer', function () {
 					positioning = true;
 				});
 
-				$(document).on('click', '.header-search-lightbox > a', function () {
+				$(document).on('click', '.header-search-lightbox > a, .header-search-lightbox > .header-button > a', function () {
 					var formWrapper = $('#search-lightbox').find('.dgwt-wcas-search-wrapp');
 					setTimeout(function () {
 						if (formWrapper.find('.dgwt-wcas-close')[0]) {
@@ -167,7 +167,7 @@ add_action( 'wp_footer', function () {
 
 						formWrapper.removeClass('dgwt-wcas-flatsome-up');
 						formWrapper.find('.dgwt-wcas-search-input').focus();
-					}, 100);
+					}, 300);
 				});
 
 				// Mobile

@@ -256,7 +256,7 @@ class DetailsBox
             
             if ( $showMore ) {
                 $showMoreUrl = get_term_link( $termID, $taxonomy );
-                echo  '<a class="dgwt-wcas-details-more-products" href="' . esc_url( $showMoreUrl ) . '">' . Helpers::getLabel( 'show_more_details' ) . ' (' . $totalProducts . ')</a>' ;
+                echo  '<a class="dgwt-wcas-details-more-products" href="' . esc_url( $showMoreUrl ) . '">' . esc_html( Helpers::getLabel( 'show_more_details' ) ) . ' (' . $totalProducts . ')</a>' ;
             }
             
             do_action( 'dgwt/wcas/details_panel/term_products/container_after' );

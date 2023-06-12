@@ -1044,7 +1044,7 @@
                 e.preventDefault();
                 var relativeX = e.pageX - 100,
                     relativeY = e.pageY + 10,
-                    tooltipHTML = '<div class="dgwt-wcas-click-alert">No interaction! This is only a preview.</div>';
+                    tooltipHTML = '<div class="dgwt-wcas-click-alert">' + window.dgwt_wcas.adminLabels.preview + '</div>';
 
                 if (typeof timeout != 'undefined') {
                     clearTimeout(timeout);
@@ -1148,6 +1148,7 @@
             var _this = this,
                 options = [
                     'search_icon_color',
+                    'bg_input_underlay_color',
                     'bg_input_color',
                     'text_input_color',
                     'border_input_color',
@@ -1596,7 +1597,10 @@
             $('.js-dgwt-wcas-preview').addClass('dgwt-wcas-open-' + value);
             $('.js-dgwt-wcas-search-wrapp').addClass('dgwt-wcas-style-' + value);
 
+            $('label[for*="bg_input_underlay_color"]').closest('tr').removeClass('dgwt-wcas-hidden');
+
             if (value === 'solaris') {
+                $('label[for*="bg_input_underlay_color"]').closest('tr').addClass('dgwt-wcas-hidden');
                 $('label[for*="show_submit_button"] .js-dgwt-wcas-tooltip').addClass('dgwt-wcas-hidden');
                 $('label[for*="search_submit_text"]').closest('tr').removeClass('dgwt-wcas-hidden');
                 $('input[id*="search_submit_text"]').prop("disabled", false);
@@ -1605,6 +1609,11 @@
                 $('label[for*="text_submit_color"] > span:nth-child(2)').addClass('dgwt-wcas-hidden');
                 $inputSubmitButton.prop("disabled", false);
                 $('.js-dgwt-wcas-submit-button-pirx-tooltip').removeClass('dgwt-wcas-hidden');
+                $('.dgwt-wcas-sf-wrapp').css('background-color', '');
+                var $biucPicker = $('input[id*="bg_input_underlay_color"]').closest('tr').find('.wp-picker-clear');
+                if ($biucPicker.length > 0) {
+                    $biucPicker[0].click();
+                }
 
                 setTimeout(function () {
                     _this.positionPreloader();
@@ -1698,6 +1707,15 @@
                 _this.searchInput.css('background-color', value);
             } else {
                 _this.searchInput.css('background-color', '');
+            }
+        },
+        onColorBgInputUnderlayColor: function ($el, value) {
+            var _this = this,
+                $underlayEl = $('.dgwt-wcas-style-pirx .dgwt-wcas-sf-wrapp');
+            if (_this.isColor(value)) {
+                $underlayEl.css('background-color', value);
+            } else {
+                $underlayEl.css('background-color', '');
             }
         },
         onColorTextInputColor: function ($el, value) {

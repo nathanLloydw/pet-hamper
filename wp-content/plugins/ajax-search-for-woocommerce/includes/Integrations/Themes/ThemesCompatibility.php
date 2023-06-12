@@ -341,6 +341,10 @@ class ThemesCompatibility {
 					'forceMobileOverlayBreakpoint' => 767,
 				),
 			),
+			'minimog'         => array(
+				'slug' => 'minimog',
+				'name' => 'Minimog',
+			),
 		);
 	}
 

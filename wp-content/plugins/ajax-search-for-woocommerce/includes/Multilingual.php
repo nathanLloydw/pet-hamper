@@ -594,7 +594,11 @@ class Multilingual {
 		 * Some plugins (e.g. Permalink Manager for WooCommerce) use the get_the_terms() function,
 		 * which caches terms related to the product, and we need to clear this cache when changing the language.
 		 */
-		wp_cache_flush_group( 'product_cat_relationships' );
+		if ( function_exists( 'wp_cache_flush_group' ) ) {
+			wp_cache_flush_group( 'product_cat_relationships' );
+		} else {
+			wp_cache_flush();
+		}
 
 		do_action( 'dgwt/wcas/multilingual/switch-language', $lang );
 	}

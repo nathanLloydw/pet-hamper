@@ -1208,6 +1208,7 @@ class Helpers
     {
         $noResults = DGWT_WCAS()->settings->getOption( 'search_no_results_text', __( 'No results', 'ajax-search-for-woocommerce' ) );
         $noResults = json_encode( Helpers::ksesNoResults( $noResults ), JSON_UNESCAPED_SLASHES );
+        $showMore = esc_html( DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ) );
         return apply_filters( 'dgwt/wcas/labels', array(
             'post'               => __( 'Post' ),
             'page'               => __( 'Page' ),
@@ -1224,8 +1225,8 @@ class Helpers
             'read_more'          => __( 'continue reading', 'ajax-search-for-woocommerce' ),
             'no_results'         => $noResults,
             'no_results_default' => __( 'No results', 'ajax-search-for-woocommerce' ),
-            'show_more'          => DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ),
-            'show_more_details'  => DGWT_WCAS()->settings->getOption( 'search_see_all_results_text', __( 'See all products...', 'ajax-search-for-woocommerce' ) ),
+            'show_more'          => $showMore,
+            'show_more_details'  => $showMore,
             'search_placeholder' => DGWT_WCAS()->settings->getOption( 'search_placeholder', __( 'Search for products...', 'ajax-search-for-woocommerce' ) ),
             'submit'             => DGWT_WCAS()->settings->getOption( 'search_submit_text', '' ),
             'search_hist'        => __( 'Your search history', 'ajax-search-for-woocommerce' ),
@@ -1328,19 +1329,6 @@ class Helpers
     public static function isProductSearchPage()
     {
         if ( isset( $_GET['dgwt_wcas'] ) && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'product' && isset( $_GET['s'] ) ) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Check if this is a remote search request
-     *
-     * @return bool
-     */
-    public static function isRemoteSearchRequest()
-    {
-        if ( isset( $_GET['wc-ajax'] ) && $_GET['wc-ajax'] === DGWT_WCAS_SEARCH_ACTION && !empty($_GET['remote']) && isset( $_GET['s'] ) ) {
             return true;
         }
         return false;
@@ -1611,25 +1599,10 @@ class Helpers
      */
     public static function searchProducts( $phrase )
     {
-        $postIn = array();
-        $urlPhrase = str_replace( "\\'", "'", $phrase );
-        $urlPhrase = str_replace( '\\"', '"', $urlPhrase );
-        $args = array(
-            's'      => urlencode( $urlPhrase ),
-            'remote' => 1,
-        );
-        if ( Multilingual::isMultilingual() ) {
-            $args['l'] = Multilingual::getCurrentLanguage();
-        }
-        $url = add_query_arg( $args, Helpers::getAjaxSearchEndpointUrl() );
-        $r = wp_remote_retrieve_body( wp_remote_get( $url, array(
-            'timeout' => 120,
-        ) ) );
-        $decR = json_decode( $r );
-        if ( json_last_error() == JSON_ERROR_NONE ) {
-            if ( is_object( $decR ) && property_exists( $decR, 'suggestions' ) && is_array( $decR->suggestions ) ) {
-                $postIn = wp_list_pluck( $decR->suggestions, 'ID' );
-            }
+        $postIn = [];
+        $results = DGWT_WCAS()->nativeSearch->getSearchResults( $phrase, true, 'product-ids' );
+        if ( isset( $results['suggestions'] ) && is_array( $results['suggestions'] ) ) {
+            $postIn = wp_list_pluck( $results['suggestions'], 'ID' );
         }
         return $postIn;
     }
@@ -1680,26 +1653,6 @@ class Helpers
         }
         
         return $authorization;
-    }
-    
-    /**
-     * Get AJAX search endpoint URL
-     *
-     * @param null $scheme
-     *
-     * @return string
-     *
-     * @see \WC_AJAX::get_endpoint() - Almost the same, but you can choose a scheme
-     */
-    public static function getAjaxSearchEndpointUrl( $scheme = null )
-    {
-        return esc_url_raw( apply_filters( 'woocommerce_ajax_get_endpoint', add_query_arg( 'wc-ajax', DGWT_WCAS_SEARCH_ACTION, remove_query_arg( array(
-            'remove_item',
-            'add-to-cart',
-            'added-to-cart',
-            'order_again',
-            '_wpnonce'
-        ), home_url( '/', $scheme ) ) ), DGWT_WCAS_SEARCH_ACTION ) );
     }
     
     /**

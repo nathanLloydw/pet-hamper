@@ -1877,7 +1877,8 @@ h3.dgwt-wcas-troubleshooting-issue-title {
 	color: #4caf50;
 }
 
-.dgwt-wcas-troubleshooting-wrapper .dgwt-wcas-async-action-message.error {
+.dgwt-wcas-troubleshooting-wrapper .dgwt-wcas-async-action-message.error,
+.dgwt-wcas-analytics-red-color {
 	color: #f04124;
 }
 
