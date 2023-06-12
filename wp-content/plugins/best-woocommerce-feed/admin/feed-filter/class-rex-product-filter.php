@@ -1,7 +1,6 @@
 <?php
-
 /**
- * The admin-specific functionality of the plugin.
+ * Class Rex_Product_Filter
  *
  * @link       https://rextheme.com
  * @since      1.1.10
@@ -19,14 +18,11 @@
  * @subpackage Rex_Product_Feed/admin
  * @author     RexTheme <info@rextheme.com>
  */
-
-
-
 class Rex_Product_Filter {
 
 
     /**
-     * The Feed Attributes.
+     * The Feed Attributes
      *
      * @since    1.1.10
      * @access   protected
@@ -35,7 +31,7 @@ class Rex_Product_Filter {
     protected $product_meta_keys;
 
     /**
-     * The Feed Attributes.
+     * The Feed Attributes
      *
      * @access   protected
      * @var      Rex_Product_Filter    attributes    Feed Attributes.
@@ -54,7 +50,7 @@ class Rex_Product_Filter {
 
 
     /**
-     * The Feed Condition Then.
+     * The Feed Condition Then
      *
      * @since    1.1.10
      * @access   protected
@@ -74,7 +70,7 @@ class Rex_Product_Filter {
 
 
     /**
-     * The Feed Filter Mappings Attributes and associated value and other constraints.
+     * The Feed Filter Mappings Attributes and associated value and other constraints
      *
      * @since    1.1.10
      * @access   protected
@@ -93,7 +89,7 @@ class Rex_Product_Filter {
 
 
     /**
-     * Set the filter and condition.
+     * Set the filter and condition
      *
      * @since    1.1.10
      * @param bool $feed_filter
@@ -107,7 +103,7 @@ class Rex_Product_Filter {
 
 
     /**
-     * Initialize Filter from feed post_meta.
+     * Initialize Filter from feed post_meta
      *
      * @since    1.1.10
      * @param string $feed_filter The Conditions Of Feeds
@@ -122,6 +118,7 @@ class Rex_Product_Filter {
 
     /**
      * Get Filter Attributes
+     *
      * @return array $attributes
      */
     protected function getFilterAttribute () {
@@ -162,7 +159,6 @@ class Rex_Product_Filter {
     protected function init_product_meta_keys() {
         $this->product_meta_keys   = $this->getFilterAttribute();
         $product_attributes        = self::get_product_attributes();
-        //$product_custom_attributes = self::get_product_custom_attributes();
 
         $this->product_meta_keys = array_merge( $this->product_meta_keys, $product_attributes );
 
@@ -207,7 +203,7 @@ class Rex_Product_Filter {
 
 
     /**
-     * Initialize Default Filter Mappings with Attributes.
+     * Initialize Default Filter Mappings with Attributes
      *
      * @since    1.1.10
      */
@@ -293,297 +289,25 @@ class Rex_Product_Filter {
 
 
     /**
-     * Print Prefix input.
+     * Print Prefix input
+     *
+     * @param string $key Input field name key.
+     * @param string $name Input field name.
+     * @param string $val Input field value.
      *
      * @since    1.0.0
-     * @param $key
-     * @param string $name
-     * @param string $val
      */
     public function printInput( $key, $name, $name_prefix = 'ff', $val = '', $class = '', $style = '' ){
         echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.esc_html( $name_prefix ).'['.esc_attr( $key ).'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
     }
 
-
-
     /**
-     * Return the  product is allowed or not
-     * @param WC_Product $product
-     * @param $filter_mappings
-     * @return bool
+     * Create data for custom filter
+     *
+     * @param array $filter_mappings Filter mappings.
+     *
+     * @return array[]
      */
-    public static function allowedProduct( WC_Product $product, $filter_mappings ){
-        $allowed = 0;
-        $temp = [];
-        foreach ($filter_mappings as $key=>$value) {
-            $subject = self::getSubject($value['if'], $product);
-
-            switch ($value['condition']){
-                case($value['condition'] = "contain"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-                        $temp[$key]['allowed'] = 0;
-                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-                        $temp[$key]['allowed'] = 1;
-                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-                        $temp[$key]['allowed'] = 1;
-                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-                        $temp[$key]['allowed'] = 0;
-                    }
-                    break;
-                case($value['condition'] = "dn_contain"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-                        $allowed = 1;
-                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-                        $allowed = 0;
-                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-                        $allowed = 0;
-                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-                        $allowed = 1;
-                    }
-                    break;
-                case($value['condition'] = "equal_to"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
-                        $temp[$key]['allowed'] = 0;
-                    }elseif (($value['value'] != $subject) && $value['then'] == 'exc') {
-                        $temp[$key]['allowed'] = 1;
-                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
-                        $temp[$key]['allowed'] = 1;
-                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
-                        $temp[$key]['allowed'] = 0;
-                    }
-                    break;
-                case($value['condition'] = "nequal_to"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
-                        $allowed = 1;
-                    }elseif (($value['value'] != $subject)  && $value['then'] == 'exc') {
-                        $allowed = 0;
-                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
-                        $allowed = 0;
-                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
-                        $allowed = 1;
-                    }
-                    break;
-                case($value['condition'] = "greater_than"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (is_numeric($value['value']) && is_numeric($subject)) {
-                        if (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-                        if ($subject) {
-                            if (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 0;
-                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 0;
-                            }
-                        }else{
-                            $allowed = 0;
-                        }
-                    }else {
-                        if (($subject > $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (($subject <= $value['value']) && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }
-
-                    break;
-                case($value['condition'] = "greater_than_equal"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (is_numeric($value['value']) && is_numeric($subject)) {
-                        if (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-                        if ($subject) {
-                            if (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 0;
-                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 0;
-                            }
-                        }else{
-                            $allowed = 0;
-                        }
-                    }else {
-                        if (($subject >= $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (($subject < $value['value']) && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }
-
-                    break;
-                case($value['condition'] = "less_than"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (is_numeric($value['value']) && is_numeric($subject)) {
-                        if (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-                        if ($subject) {
-                            if (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 0;
-                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 0;
-                            }
-                        }else{
-                            $allowed = 0;
-                        }
-                    }else {
-                        if (($subject < $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (($subject >= $value['value']) && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }
-                    break;
-                case($value['condition'] = "less_than_equal"):
-                    $temp[$key]['rules'] = $value['rules'];
-                    if (is_numeric($value['value']) && is_numeric($subject)) {
-                        if (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-                        if ($subject) {
-                            if (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 0;
-                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 1;
-                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
-                                $allowed = 0;
-                            }
-                        }else{
-                            $allowed = 0;
-                        }
-                    }else {
-                        if (($subject <= $value['value'])  && $value['then'] == 'exc') {
-                            $allowed = 0;
-                        }elseif (($subject > $value['value']) && $value['then'] == 'exc') {
-                            $allowed = 1;
-                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 1;
-                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
-                            $allowed = 0;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        $filter_length = count($temp);
-
-        $relation_array = [];
-        foreach ($temp as $key=>$t) {
-            if(($key+1) >= $filter_length ) {
-                if( $filter_length%2 ==! 0) {
-                    if(!($filter_length > 1)) {
-                        $relation_array[] = array(
-                            'relation' => $t['rules'],
-                            'value' => array($t['allowed']),
-                        );
-                    }else if($filter_length == 1) {
-                        $relation_array[] = array(
-                            'relation' => $t['rules'],
-                            'value' => array($t['allowed']),
-                        );
-                    }
-                }
-            }else {
-                if(array_key_exists('allowed', $temp[$key+1])) {
-                    $relation_array[] = array(
-                        'relation' => $t['rules'],
-                        'value' => array($t['allowed'], $temp[$key+1]['allowed']),
-                    );
-                }
-
-            }
-        }
-
-
-        foreach ($relation_array as $key => $relation) {
-            if($relation['relation'] == 'or') {
-                if(in_array(1, $relation['value'])) {
-                    $allowed = 1;
-                    break;
-                }else {
-                    $allowed = 0;
-                }
-            }elseif ($relation['relation'] == 'and') {
-                if(in_array(0, $relation['value'])) {
-                    $allowed = 0;
-                    break;
-                }else {
-                    $allowed = 1;
-                }
-            }
-        }
-
-
-        if ($allowed) {
-            return true;
-        }else {
-            return false;
-        }
-
-    }
-
-
     public static function createFilterQueryParams($filter_mappings) {
         global $wpdb;
         $filter_args          = [];
@@ -2827,170 +2551,6 @@ class Rex_Product_Filter {
             'args' => $filter_args
         );
     }
-
-
-    /**
-     * Get the product attribute
-     * @param $key
-     * @param WC_Product $product
-     * @return string
-     */
-    public static function getSubject( $key, WC_Product $product ){
-        switch ( $key ) {
-            case 'id':
-                return $product->get_id(); break;
-
-            case 'sku':
-                return $product->get_sku(); break;
-
-            case 'title':
-                return $product->get_title(); break;
-
-            case 'price':
-                return number_format((float)$product->get_regular_price(), 2, '.', '');
-                break;
-
-            case 'featured_image':
-                return wp_get_attachment_url(  $product->get_image_id() ); break;
-
-            case 'sale_price':
-
-                if ($product->get_sale_price()) {
-                    return number_format((float)$product->get_sale_price(), 2, '.', '');
-                }
-                break;
-
-            case 'description':
-                if ($product->post->post_parent) {
-                    $_product = wc_get_product( $product->post->post_parent );
-                    $_product_desc =  $_product->get_description();
-                    return $_product_desc;
-                }else{
-                    return $product->get_description();
-                }
-                break;
-
-            case 'short_description':
-                if ($product->post->post_parent) :
-                    $_product = wc_get_product( $product->post->post_parent );
-                    $_product_desc =  $_product->get_short_description();
-                    return $_product_desc;
-                else:
-                    return $product->get_short_description();
-                endif;
-                break;
-
-            case 'product_cats':
-
-                if($product->post->post_parent) {
-                    $terms = get_the_terms( $product->get_parent_id(), 'product_cat' );
-                }else {
-                    $terms = get_the_terms( $product->get_id(), 'product_cat' );
-                }
-                if ( empty( $terms ) || is_wp_error( $terms ) ){
-                    return '';
-                }
-                $term_names = array();
-                foreach ( $terms as $term ) {
-                    $term_names[] = $term->name;
-                }
-                ksort($term_names);
-                return join( ',', $term_names );
-                break;
-
-            case 'product_tags':
-                if($product->post->post_parent) {
-                    $terms = get_the_terms( $product->get_parent_id(), 'product_tag' );
-                }else {
-                    $terms = get_the_terms( $product->get_id(), 'product_tag' );
-                }
-                if ( empty( $terms ) || is_wp_error( $terms ) ){
-                    return '';
-                }
-                $term_names = array();
-                foreach ( $terms as $term ) {
-                    $term_names[] = $term->name;
-                }
-                ksort($term_names);
-                return join( ',', $term_names );
-                break;
-
-            case 'link':
-                return $product->get_permalink(); break;
-
-            case 'condition':
-                return 'New'; break;
-
-            case 'availability':
-                if ( $product->is_in_stock() == TRUE ) {
-                    return 'in stock';
-                } else {
-                    return 'out of stock';
-                }
-
-            case 'quantity':
-                return $product->get_stock_quantity(); break;
-
-            case 'weight':
-                return $product->get_weight(); break;
-
-            case 'width':
-                return $product->get_width(); break;
-
-            case 'height':
-                return $product->get_height(); break;
-
-            case 'length':
-                return $product->get_length(); break;
-
-            case 'type':
-                return $product->get_type(); break;
-
-            case 'rating_average':
-                return $product->get_average_rating(); break;
-
-            case 'rating_total':
-                return $product->get_rating_count(); break;
-
-            case 'sale_price_dates_from':
-
-                $sale_date_from = $product->get_date_on_sale_from();
-                if ($sale_date_from) {
-                    return date( get_option( 'date_format' ), $sale_date_from->getTimestamp() );
-                }else {
-                    return null;
-
-                }
-                break;
-
-            case 'sale_price_dates_to':
-                $sale_date_to = $product->get_date_on_sale_to();
-                if ($sale_date_to) {
-                    return date( get_option( 'date_format' ), $sale_date_to->getTimestamp() );
-                }else {
-                    return null;
-                }
-                break;
-
-            case 'sale_price_effective_date':
-                $sale_price_dates_to        = ( $date = get_post_meta( $product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
-                $sale_price_dates_from      = ( $date = get_post_meta( $product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
-
-                if ( ! empty( $sale_price_dates_to ) && ! empty( $sale_price_dates_from ) ) {
-                    $from   = date( "c", strtotime( $sale_price_dates_from ) );
-                    $to     = date( "c", strtotime( $sale_price_dates_to ) );
-
-
-                    return $from . '/' . $to;
-                }else {
-                    return '';
-                }
-
-            default:
-                break;
-        }
-    }
-
 
     /**
      * @desc Gets WooCommerce product attributes [Global]

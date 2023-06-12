@@ -101,13 +101,25 @@ class Feed
 
     protected $stand_alone = false;
     protected $attr;
+    protected $additional_offer_info;
     protected $product;
 
     /**
-     * Feed constructor
+     * Feed constructor the initializes the value
+     *
+     * @param bool|string $wrapper XML Feed Wrapper.
+     * @param string $itemlName Attribute item name.
+     * @param string|null|bool $namespace Namespace.
+     * @param string|int|float $version XML version.
+     * @param string $rss RSS tag.
+     * @param bool|string $stand_alone Stand alone.
+     * @param string $wrapperel XML Wrapper element.
+     * @param string $namespace_prefix Prefix for namespace.
+     *
+     * @return void
+     * @since 7.2.35
      */
-    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix = '')
-    {
+    public function __construct( $wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix = '' ) {
         $this->namespace   = $namespace;
         $this->version     = $version;
         $this->wrapper     = $wrapper;
@@ -115,13 +127,7 @@ class Feed
         $this->itemlName   = $itemlName;
         $this->rss         = $rss;
 
-        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
-        $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
-        $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
-        
-        $date = date("Y-m-d H:i");
         $this->feed = new SimpleXMLElement('<import></import>');
-       // $this->feed = new SimpleXMLElement('<rss version="' . $this->version . '"></rss>');
     }
 
     /**
@@ -238,33 +244,52 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
+    {
         $productNodes = $this->feed->addChild('products');
         $feedItemNodes = $this->feed->addChild('offers');
+
         foreach ($this->items as $item) {
+            $nodes = $item->nodes();
             $this->product = $productNodes->addChild('product');
             $feedItemNode = $feedItemNodes->addChild('offer');
-            foreach ($item->nodes() as $itemNode) {
-                if (is_array($itemNode)) {
-                    foreach ($itemNode as $node) {
-                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
-                    }
-                } else {
-                    if( 0 === strpos($itemNode->get('name'),'attribute_')){
-                        
-                        if( 0 === strpos($itemNode->get('name'),'attribute_code_')){
-                            $this->attr = $this->product->addChild('attribute');
-                            $this->attr->addChild('code',$itemNode->get('value'));
-                        }else{
-                            $this->attr->addChild('value',$itemNode->get('value'));
+
+            if( !empty( $nodes ) ) {
+                foreach ($nodes as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                        }
+                    } else {
+                        if(  stristr( $itemNode->get( 'name' ), 'attribute_' ) ){
+
+                            if( stristr( $itemNode->get( 'name' ), 'attribute_code_' ) ){
+                                $this->attr = $this->product->addChild('attribute');
+                                $this->attr->addChild('code',$itemNode->get('value'));
+                            }else{
+                                $this->attr->addChild('value',$itemNode->get('value'));
+                            }
+                        }
+                        elseif( !stristr( $itemNode->get( 'name' ), 'offer_additional_field_code_' ) && !stristr($itemNode->get('name'),'offer_additional_field_value') ) {
+                            $itemNode->attachNodeTo( $feedItemNode );
                         }
                     }
-                    if( 0 !== strpos($itemNode->get('name'),'attribute_') ){
-                        $itemNode->attachNodeTo($feedItemNode);
+                }
+
+                $feed_item_node_offer = $feedItemNode->addChild( 'offer-additional-fields' );
+
+                foreach( $nodes as $itemNode ) {
+                    if( !is_array( $itemNode ) && stristr( $itemNode->get( 'name' ), 'offer_additional_field_' ) ) {
+                        if( stristr( $itemNode->get( 'name' ), 'offer_additional_field_code_' ) ) {
+                            $this->additional_offer_info = $feed_item_node_offer->addChild( 'offer-additional-field' );
+                            $this->additional_offer_info->addChild( 'code', $itemNode->get( 'value' ) );
+                        }
+                        else {
+                            $this->additional_offer_info->addChild( 'value', $itemNode->get( 'value' ) );
+                        }
                     }
                 }
             }
-        } 
+        }
     }
 
 

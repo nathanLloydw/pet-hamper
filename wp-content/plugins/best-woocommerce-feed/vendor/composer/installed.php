@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0c5c0342d4263590b21dacaad65d52acca4ffe13',
+        'reference' => 'b4cfeaf9ca7762cce56a4b24552220392d2c5367',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
     'versions' => array(
         'appsero/client' => array(
-            'pretty_version' => 'v1.2.2',
-            'version' => '1.2.2.0',
+            'pretty_version' => 'v1.2.3',
+            'version' => '1.2.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../appsero/client',
             'aliases' => array(),
-            'reference' => 'fba140030f7141ed71eeba192b5437b2f30d81a8',
+            'reference' => 'ddfaa9ce62618e0aee4f95ddeb37a27ebd9a3508',
             'dev_requirement' => false,
         ),
         'composer/installers' => array(
@@ -29,12 +29,12 @@
             'dev_requirement' => false,
         ),
         'deliciousbrains/wp-background-processing' => array(
-            'pretty_version' => '1.0.2',
-            'version' => '1.0.2.0',
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../deliciousbrains/wp-background-processing',
             'aliases' => array(),
-            'reference' => '2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800',
+            'reference' => 'd5ef95cecba7f792ddca3e3bd70ebfb90dc4996d',
             'dev_requirement' => false,
         ),
         'johnbillion/extended-cpts' => array(
@@ -56,12 +56,12 @@
             'dev_requirement' => false,
         ),
         'rextheme/best-woocommerce-feed' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0c5c0342d4263590b21dacaad65d52acca4ffe13',
+            'reference' => 'b4cfeaf9ca7762cce56a4b24552220392d2c5367',
             'dev_requirement' => false,
         ),
         'roundcube/plugin-installer' => array(

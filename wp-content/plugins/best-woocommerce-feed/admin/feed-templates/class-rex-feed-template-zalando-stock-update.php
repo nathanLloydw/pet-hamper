@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Class Rex_Feed_Template_Zalando_stock_update
+ *
+ * @package    Rex_Product_Feed
+ * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Zalando_Stock_Update
+ * @author     RexTheme <info@rextheme.com>
+ */
 
 /**
- *
- * Defines the attributes and template for zalando stock update feed.
+ * Defines the attributes and template for zalando stock update feed
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Zalando_Stock_Update
@@ -11,7 +16,12 @@
  */
 class Rex_Feed_Template_Zalando_stock_update extends Rex_Feed_Abstract_Template {
 
-	protected function init_atts(){
+	/**
+	 * Define merchant's required and optional/additional attributes
+	 *
+	 * @return void
+	 */
+	protected function init_atts() {
 		$this->attributes = array(
 			'Zalando Stock Update Information' => array(
 				'store'                  => 'Store',
@@ -24,12 +34,17 @@ class Rex_Feed_Template_Zalando_stock_update extends Rex_Feed_Abstract_Template 
 				'product_name'           => 'Product Name',
 				'article_color'          => 'Article Color',
 				'article_size'           => 'Article Size',
-				'store_article_location' => 'Store Article Location'
-			)
+				'store_article_location' => 'Store Article Location',
+			),
 		);
 	}
 
-	protected function init_default_template_mappings(){
+	/**
+	 * Define merchant's default attributes
+	 *
+	 * @return void
+	 */
+	protected function init_default_template_mappings() {
 		$this->template_mappings = array(
 			array(
 				'attr'     => 'store',
@@ -140,8 +155,7 @@ class Rex_Feed_Template_Zalando_stock_update extends Rex_Feed_Abstract_Template 
 				'suffix'   => '',
 				'escape'   => 'default',
 				'limit'    => 0,
-			)
+			),
 		);
 	}
-
 }

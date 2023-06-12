@@ -1,7 +1,90 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 /*--------transition property-------*/
 /*--------transform property-------*/
 /*---------------------------*/
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Black.woff") format("woff2"), url("../fonts/Roboto-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-BlackItalic.woff2") format("woff2"), url("../fonts/Roboto-BlackItalic.woff") format("woff");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Bold.woff2") format("woff2"), url("../fonts/Roboto-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-BoldItalic.woff2") format("woff2"), url("../fonts/Roboto-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Italic.woff2") format("woff2"), url("../fonts/Roboto-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Light.woff2") format("woff2"), url("../fonts/Roboto-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-MediumItalic.woff2") format("woff2"), url("../fonts/Roboto-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Medium.woff2") format("woff2"), url("../fonts/Roboto-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-LightItalic.woff2") format("woff2"), url("../fonts/Roboto-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-ThinItalic.woff2") format("woff2"), url("../fonts/Roboto-ThinItalic.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Regular.woff2") format("woff2"), url("../fonts/Roboto-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Thin.woff2") format("woff2"), url("../fonts/Roboto-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
 body,
 html {
   height: auto;
@@ -62,7 +145,7 @@ body.product-feed_page_category_mapping {
 .rex-onboarding h5,
 .rex-onboarding h6,
 .rex-onboarding p,
-.rex-onboarding figur,
+.rex-onboarding figure,
 .rex-onboarding a {
   margin: 0px;
 }
@@ -641,17 +724,17 @@ a,
 }
 
 #send-to-google {
+  display: inline-block;
+  font-size: 13px;
   height: 40px;
   line-height: 40px;
-  font-size: 13px;
-  padding: 0 20px;
-  background: #1fb3fb;
-  color: #fff;
-  display: inline-block;
-  border-radius: 3px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  background: #1fb3fb;
+  color: #fff;
+  border-radius: 3px;
   margin-top: 20px;
+  padding: 0 20px;
   float: right;
 }
 
@@ -659,13 +742,13 @@ a,
   padding-bottom: 0;
 }
 #cmb2-metabox-rex_feed_google_merchant .nice-select {
-  border: 1px solid #e8e8e8;
-  border-radius: 3px;
   display: inline-block;
-  float: none;
   font-size: 14px;
   height: 40px;
   line-height: 40px;
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
+  float: none;
   padding-left: 12px;
   padding-right: 25px;
   min-width: 240px;
@@ -725,11 +808,10 @@ a,
   display: flex;
   flex-flow: row;
   align-items: flex-start;
-  margin: 0 -15px;
   background: rgb(255, 255, 255);
+  margin: 0 -15px 30px;
   padding: 70px 70px;
   border-radius: 8px;
-  margin-bottom: 30px;
 }
 @media (max-width: 1599px) {
   .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area {
@@ -774,21 +856,21 @@ a,
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__text-area .rex-licenes__single-block {
   position: relative;
   max-width: 350px;
-  padding-left: 60px;
   margin-left: 50px;
+  padding-left: 60px;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__text-area .rex-licenes__single-block .rex-licenes__icon {
-  background-color: rgb(240, 241, 243);
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 40px;
   height: 40px;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
+  background-color: rgb(240, 241, 243);
   border-radius: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__text-area .rex-licenes__single-block h4 {
   font-size: 20px;
@@ -820,26 +902,26 @@ a,
   display: flex;
   flex-flow: row;
   align-items: flex-start;
-  margin-top: 70px;
-  max-width: 735px;
   width: 100%;
+  max-width: 735px;
+  margin-top: 70px;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__input-field {
-  padding-right: 10px;
   width: calc(100% - 162px);
+  padding-right: 10px;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__input-field input[type=password],
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__input-field input[type=text] {
+  width: 100%;
+  height: 46px;
   display: block;
   font-size: 14px;
   font-weight: 400;
-  color: rgb(54, 59, 78);
   padding: 10px 15px;
-  width: 100%;
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
+  color: rgb(54, 59, 78);
   border: 1px solid rgb(229, 232, 243);
-  height: 46px;
   transition: all 0.3s ease;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__input-field input[type=password]:focus,
@@ -851,7 +933,7 @@ a,
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__btn-field .button-secondary {
   display: inline-block;
   border: 1px solid #216df0;
-  height: 50px;
+  height: 47px;
   line-height: 47px;
   padding: 0px 20px;
   font-size: 15px;
@@ -921,11 +1003,11 @@ a,
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__single-category .single-block {
   width: 33.3333333333%;
-  margin-right: 30px;
   align-self: stretch;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0px 6px 60px 0px rgba(2, 0, 105, 0.08);
+  margin-right: 30px;
   padding: 25px 33px 33px;
 }
 @media (max-width: 1399px) {
@@ -940,9 +1022,9 @@ a,
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__single-category .single-block .header {
   display: flex;
-  background-color: #fff;
   flex-flow: column;
   align-items: flex-start;
+  background-color: #fff;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__single-category .single-block .header h4 {
   font-size: 16px;
@@ -951,12 +1033,12 @@ a,
   padding: 15px 0;
 }
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__single-category .single-block .body .btn-default {
-  color: #fff;
   display: inline-block;
   font-size: 15px;
-  text-transform: capitalize;
   height: 40px;
   line-height: 40px;
+  text-transform: capitalize;
+  color: #fff;
   margin-top: 30px;
   border-radius: 5px;
 }
@@ -1005,9 +1087,9 @@ a,
 .rex-accordion .mapper-name p,
 .category-mapper-wrapper .mapper-name p {
   font-size: 16px;
-  color: #363b4e;
   font-family: "Roboto";
   font-weight: 500;
+  color: #363b4e;
   padding-right: 20px;
   margin-right: 60px;
 }
@@ -1015,13 +1097,13 @@ a,
 .category-mapper-wrapper .mapper-name input {
   width: 375px;
   height: 50px;
-  border-radius: 5px;
-  background-color: #ffffff;
   font-size: 14px;
-  color: #363b4e;
   font-family: "Roboto";
   font-weight: 400;
+  background-color: #ffffff;
+  color: #363b4e;
   padding: 8px 15px;
+  border-radius: 5px;
   transition: all 0.3s ease;
 }
 .rex-accordion .mapper-name input:focus,
@@ -1031,35 +1113,35 @@ a,
 }
 .rex-accordion .cat-map,
 .category-mapper-wrapper .cat-map {
-  background: #fff;
   margin-top: 20px;
   border-radius: 5px;
+  background: #fff;
 }
 .rex-accordion .cat-map-header,
 .category-mapper-wrapper .cat-map-header {
-  border-radius: 5px 5px 0 0;
   filter: drop-shadow(0px 2px 2px rgba(226, 226, 238, 0.54));
-  background-color: #ffffff;
   display: flex;
   flex-flow: row;
   align-items: center;
+  background-color: #ffffff;
   padding: 10px 20px;
+  border-radius: 5px 5px 0 0;
 }
 .rex-accordion .cat-map-header h5,
 .category-mapper-wrapper .cat-map-header h5 {
   font-size: 14px;
-  letter-spacing: 1px;
-  color: #363b4e;
   font-family: "Roboto";
   font-weight: 500;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #363b4e;
 }
 .rex-accordion .categories,
 .category-mapper-wrapper .categories {
-  padding: 20px 20px 0;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  padding: 20px 20px 0;
 }
 @media (max-width: 1199px) {
   .rex-accordion .categories,
@@ -1083,12 +1165,12 @@ a,
 }
 .rex-accordion .categories .single-category .label,
 .category-mapper-wrapper .categories .single-category .label {
+  width: 180px;
   font-size: 14px;
   color: #363b4e;
   font-family: "Roboto";
   font-weight: 500;
   padding-right: 15px;
-  width: 180px;
 }
 .rex-accordion .categories .single-category .input-field,
 .category-mapper-wrapper .categories .single-category .input-field {
@@ -1108,10 +1190,10 @@ a,
 .category-mapper-wrapper select,
 .category-mapper-wrapper textarea,
 .category-mapper-wrapper input {
+  width: 100%;
   height: 40px;
   box-shadow: none !important;
   border-radius: 3px;
-  width: 100%;
   border: 1px solid #e8e8e8;
 }
 .rex-accordion select:focus,
@@ -1128,10 +1210,11 @@ a,
 }
 .rex-accordion .cat-map-actions button.btn-large,
 .category-mapper-wrapper .cat-map-actions button.btn-large {
+  font-size: 16px;
   height: 44px;
   line-height: 44px;
+  font-weight: 500;
   background-color: #40b4fb;
-  font-size: 16px;
   color: #fff;
   padding: 0 20px;
   border: none;
@@ -1139,7 +1222,6 @@ a,
   min-width: 120px;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
   margin-right: 10px;
 }
 .rex-accordion .cat-map-actions button.btn-large:last-child,
@@ -1228,8 +1310,8 @@ a,
 }
 
 .ui-autocomplete .ui-menu-item {
-  padding: 10px;
   border-bottom: 1px solid grey;
+  padding: 10px;
 }
 
 .merchant-settings {
@@ -1237,8 +1319,8 @@ a,
   flex-flow: row;
   align-items: flex-start;
   background-color: #ededf3;
-  padding: 55px;
   border-radius: 12px;
+  padding: 55px;
   margin-top: 20px;
 }
 @media (max-width: 1199px) {
@@ -1284,27 +1366,27 @@ a,
   flex-direction: column;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .single-merchant_pdf__link a {
+  display: inline-block;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 1.5;
-  display: inline-block;
   text-decoration: underline;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .btn-default {
   display: inline-block;
-  border: 1px solid rgb(31, 179, 251);
-  height: 50px;
-  line-height: 47px;
-  padding: 0px 20px;
   font-size: 15px;
   font-weight: 500;
+  line-height: 47px;
   color: #787890;
   text-align: center;
   border-radius: 5px;
   text-transform: capitalize;
   background-color: transparent;
+  border: 1px solid rgb(31, 179, 251);
+  padding: 0px 20px;
+  height: 50px;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .btn-default:hover {
   background-color: #1fb3fb;
@@ -1328,17 +1410,17 @@ a,
 }
 .merchant-settings .single-merchant-area .single-merchant-block .rex-google-merchant .button-area .btn-default {
   display: inline-block;
-  border: 1px solid #216df0;
-  height: 50px;
-  line-height: 47px;
-  padding: 0px 20px;
   font-size: 15px;
   font-weight: 500;
-  color: #787890;
+  line-height: 47px;
   text-align: center;
-  border-radius: 5px;
+  height: 50px;
   text-transform: capitalize;
+  border: 1px solid #216df0;
   background-color: transparent;
+  color: #787890;
+  padding: 0px 20px;
+  border-radius: 5px;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .rex-google-merchant .button-area .btn-default:hover {
   background-color: #216df0;
@@ -1360,10 +1442,10 @@ a,
   color: #cf0504;
 }
 .merchant-settings .title {
-  color: #3c3e4a;
   font-size: 1.37rem;
   font-weight: 500;
   line-height: 1.25;
+  color: #3c3e4a;
 }
 .merchant-settings > .col {
   width: 50%;
@@ -1383,10 +1465,10 @@ a,
 .merchant-settings select,
 .merchant-settings textarea,
 .merchant-settings input {
+  width: 100%;
   height: 40px;
   box-shadow: none !important;
   border-radius: 3px;
-  width: 100%;
   border: 1px solid #e8e8e8;
 }
 .merchant-settings select:focus,
@@ -1409,14 +1491,14 @@ a,
 }
 .merchant-settings .merchant-action .rex-card .card-title {
   font-size: 20px;
-  border-bottom: 1px solid #e6dbb5;
-  padding: 7px 20px;
   font-weight: 500;
   color: #856404;
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #e6dbb5;
+  padding: 7px 20px;
 }
 .merchant-settings .merchant-action .rex-card .rex-p {
   font-size: 15px;
@@ -1465,10 +1547,11 @@ a,
   height: 465px;
 }
 .merchant-settings button.btn {
+  font-size: 16px;
+  font-weight: 500;
   height: 44px;
   line-height: 44px;
   background: #1fb3fb;
-  font-size: 16px;
   color: #fff;
   padding: 0 20px;
   border: none;
@@ -1476,12 +1559,11 @@ a,
   min-width: 120px;
   border-radius: 3px;
   cursor: pointer;
-  font-weight: 500;
   margin-right: 10px;
 }
 .merchant-settings button.btn i {
-  margin-left: 5px;
   font-size: 15px;
+  margin-left: 5px;
 }
 .merchant-settings button.btn:last-child {
   margin-right: 0;
@@ -1499,10 +1581,10 @@ a,
 
 .rex-onboarding .premium-merchant-alert {
   position: fixed;
-  z-index: 9;
-  background: rgba(0, 0, 0, 0.4);
   left: 0;
   top: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.4);
   width: 100%;
   height: 100%;
   display: flex;
@@ -1511,13 +1593,13 @@ a,
   justify-content: center;
 }
 .rex-onboarding .premium-merchant-alert .alert-box {
+  position: relative;
   background-color: #fff;
   border-radius: 5px;
   text-align: center;
   margin: auto;
   overflow-x: hidden;
   overflow-y: auto;
-  position: relative;
   max-width: 100%;
   width: 500px;
   padding: 32px 20px 40px 20px;
@@ -1578,14 +1660,14 @@ a,
   font-size: 14px;
   font-weight: 500;
   font-family: "Roboto";
+  text-transform: uppercase;
+  letter-spacing: 1px;
   display: inline-flex;
   flex-flow: row;
   align-items: center;
   padding: 13px 34px;
   cursor: pointer;
-  text-transform: uppercase;
   border-radius: 6px 6px 0 0;
-  letter-spacing: 1px;
   color: #a8a7be;
   height: 48px;
 }
@@ -1622,7 +1704,7 @@ a,
   top: -2px;
 }
 .rex-onboarding .rex-settings-tabs li.active {
-  background: #f6f6f8;
+  background-color: #f6f6f8;
   color: #216df0;
 }
 .rex-onboarding .rex-settings-tabs li.active:last-child:after {
@@ -1961,8 +2043,8 @@ a,
   font-size: 20px;
   font-weight: 500;
   text-transform: capitalize;
-  margin-bottom: 8px;
   color: rgb(60, 62, 74);
+  margin-bottom: 8px;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .upgrade .rex-upgrade > ul li {
   position: relative;
@@ -2005,27 +2087,25 @@ a,
   margin-left: -25px;
 }
 .rex-onboarding .rex-settings-tab-content .rex-merchant .merchant-title {
-  font-size: 20px;
-  line-height: normal;
-  color: #363b4e;
-  font-weight: 500;
   width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: normal;
   text-transform: capitalize;
-  margin-bottom: 20px;
-  margin-left: 20px;
+  color: #363b4e;
+  margin: 0 0 20px 20px;
 }
 .rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant {
   position: relative;
+  width: calc(25% - 20px);
   display: flex;
   flex-flow: row;
   align-items: center;
-  padding: 10px 20px;
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
-  margin-bottom: 20px;
-  width: calc(25% - 20px);
-  margin-left: 20px;
+  margin: 0 0 20px 20px;
+  padding: 10px 20px;
 }
 @media (max-width: 1399px) {
   .rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant {
@@ -2051,8 +2131,8 @@ a,
   display: block;
   width: calc(100% - 60px);
   min-height: 21px;
-  padding-right: 10px;
   margin-bottom: 0;
+  padding-right: 10px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-size: 14px;
@@ -2287,10 +2367,10 @@ a,
   font-style: normal;
   font-weight: 400;
   line-height: 1;
-  color: #fff;
   padding: 9px 14px;
   margin-left: 15px;
   background-color: #216df0;
+  color: #fff;
   border-radius: 5px;
   border: none;
 }
@@ -2407,7 +2487,6 @@ a,
   right: 0;
   width: calc(100% - 160px);
   height: 100%;
-  z-index: 999;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -2415,6 +2494,7 @@ a,
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.3);
   overflow: auto;
+  z-index: 999;
 }
 .rex-onboarding .rex-export-popup pre {
   display: flex;
@@ -2627,22 +2707,22 @@ a,
   height: 18px;
   line-height: normal;
   font-size: 13px;
+  font-weight: 500;
   border-radius: 100%;
   text-align: center;
-  font-weight: 500;
 }
 .cmb2-id-rex-feed-features-text a.btn {
+  display: inline-block;
+  font-size: 13px;
   height: 40px;
   line-height: 40px;
-  font-size: 13px;
-  padding: 0 20px;
   background: #062c80;
   color: #fff;
-  display: inline-block;
-  margin-left: 30px;
+  padding: 0 20px;
   border-radius: 3px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-left: 30px;
   margin-top: 20px;
 }
 .cmb2-id-rex-feed-features-text a.btn:hover {
@@ -2652,20 +2732,20 @@ a,
 /*----Shepherd style --------*/
 body.post-type-product-feed.shepherd-active::after {
   content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
   display: block;
   background-color: #000;
   opacity: 0.4;
-  position: fixed;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
   z-index: 10;
 }
 body.post-type-product-feed.shepherd-active .shepherd-element.shepherd-open,
 body.post-type-product-feed.shepherd-active .shepherd-target.shepherd-enabled {
-  z-index: 100;
   position: relative;
+  z-index: 100;
 }
 body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-content .shepherd-header {
   background-color: #216df0;
@@ -2682,8 +2762,8 @@ body.post-type-product-feed.shepherd-active .shepherd-button {
 }
 body.post-type-product-feed.shepherd-active .shepherd-button:hover {
   background-color: #eef4ff;
-  border: 1px solid #b0cdff;
   color: #333333;
+  border: 1px solid #b0cdff;
 }
 body.post-type-product-feed.shepherd-active .shepherd-element.shepherd-theme-arrows-plain-buttons.shepherd-element-attached-top.shepherd-element-attached-center .shepherd-content {
   margin-top: 20px;
@@ -2699,7 +2779,28 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   color: #fff;
 }
 
-/*----01.wpfm dashborad style --------*/
+/*----01.wpfm dashboard style --------*/
+.post-type-product-feed div#wpcontent {
+  background-color: #f6f5fa;
+}
+.post-type-product-feed #titlewrap input {
+  border: unset;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
+}
+.post-type-product-feed #titlediv #title-prompt-text {
+  position: absolute;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #666666;
+  padding: 15px 8px 10px;
+}
 .post-type-product-feed .combined-dropdown {
   display: flex;
   flex-direction: column;
@@ -2736,8 +2837,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed .wrap .page-title-action:active {
   border: 1px solid #56b2fb;
   border-radius: 5px;
-  color: #fff;
   background: #56b2fb;
+  color: #fff;
   cursor: pointer;
 }
 .post-type-product-feed .wrap .add-new-h2:hover,
@@ -2757,9 +2858,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed #screen-meta-links .show-settings {
   margin-bottom: 20px;
 }
-.post-type-product-feed div#wpcontent {
-  background-color: #f6f5fa;
-}
 .post-type-product-feed.folded .rex-feed-review {
   width: calc(100% - 30px);
 }
@@ -2769,12 +2867,12 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed .rex-feed-review {
   position: fixed;
   bottom: 0;
-  padding: 15px 15px 15px 20px;
   background-color: #ffffff;
-  box-shadow: 0px -10px 40px rgba(0, 28, 39, 0.1);
   width: calc(100% - 160px);
   z-index: 1111;
   margin-left: -20px;
+  padding: 15px 15px 15px 20px;
+  box-shadow: 0px -10px 40px rgba(0, 28, 39, 0.1);
 }
 .post-type-product-feed .rex-feed-review__wrapper {
   display: flex;
@@ -2793,12 +2891,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   font-size: 18px;
   font-weight: 700;
   color: #333;
+  margin-right: 5px;
 }
 .post-type-product-feed .rex-feed-review p {
   font-size: 14px;
-  color: #333333;
-  letter-spacing: 0;
   line-height: 1.45;
+  letter-spacing: 0;
+  color: #333333;
 }
 .post-type-product-feed .rex-feed-review__btn-area {
   display: flex;
@@ -2806,12 +2905,54 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   flex-wrap: wrap;
   gap: 10px;
 }
+.post-type-product-feed a#rex_rate_not_now {
+  font-size: 13px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #3c3c3c;
+  border: 1px solid #d2d2d2;
+  padding: 10px;
+}
+.post-type-product-feed a#rex_rate_not_now:hover {
+  background-color: #56b2fb;
+  border: 1px solid #56b2fb;
+  color: #fff;
+}
+.post-type-product-feed a#view_changes_btn,
+.post-type-product-feed a#rex_rate_now {
+  display: inline-block;
+  font-size: 10pt;
+  background-color: #56b2fb;
+  border: 1px solid #56b2fb;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.post-type-product-feed a#view_changes_btn:hover,
+.post-type-product-feed a#rex_rate_now:hover {
+  background-color: #fff;
+  color: #3c3c3c;
+  border: 1px solid #d2d2d2;
+}
+.post-type-product-feed a#view_changes_btn {
+  width: 130px;
+  font-size: 16px;
+  text-align: center;
+}
+.post-type-product-feed a#rex_rated_already {
+  display: block;
+  font-size: 14px;
+  color: #333333;
+}
+.post-type-product-feed a#rex_rated_already:hover {
+  color: #56b2fb;
+}
 .post-type-product-feed div#rex_feed_new_changes_msg_content {
+  width: calc(100% - 20px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 20px);
   background: #ffffff;
   box-shadow: 0 1px 2px 0 rgba(190, 190, 215, 0.2);
   border-radius: 10px;
@@ -2852,8 +2993,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   padding-left: 10px;
 }
 .post-type-product-feed div#rex_feed_new_changes_msg_content {
-  padding: 10px 15px 10px 20px;
   margin-top: 20px;
+  padding: 10px 15px 10px 20px;
 }
 .post-type-product-feed div#rex_feed_new_changes_msg_btn,
 .post-type-product-feed div#rex_feed_review_request_btn {
@@ -2863,66 +3004,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed div#rex_feed_new_changes_msg_btn a,
 .post-type-product-feed div#rex_feed_review_request_btn a {
   margin-right: 10px;
-}
-.post-type-product-feed a#view_changes_btn,
-.post-type-product-feed a#rex_rate_now {
-  background-color: #56b2fb;
-  border: 1px solid #56b2fb;
-  padding: 10px;
-  font-size: 10pt;
-  color: #fff;
-  border-radius: 5px;
-  display: inline-block;
-}
-.post-type-product-feed a#view_changes_btn {
-  font-size: 16px;
-  text-align: center;
-  width: 130px;
-}
-.post-type-product-feed a#view_changes_btn:hover,
-.post-type-product-feed a#rex_rate_now:hover {
-  background-color: #fff;
-  border: 1px solid #d2d2d2;
-  color: #3c3c3c;
-}
-.post-type-product-feed a#rex_rate_not_now {
-  background-color: #fff;
-  border: 1px solid #d2d2d2;
-  padding: 10px;
-  font-size: 10pt;
-  color: #3c3c3c;
-  border-radius: 5px;
-}
-.post-type-product-feed a#rex_rate_not_now:hover {
-  background-color: #56b2fb;
-  border: 1px solid #56b2fb;
-  color: #fff;
-}
-.post-type-product-feed a#rex_rated_already {
-  display: block;
-  color: #333333;
-  font-size: 14px;
-}
-.post-type-product-feed a#rex_rated_already:hover {
-  color: #56b2fb;
-}
-.post-type-product-feed #titlewrap input {
-  border: unset;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
-}
-.post-type-product-feed #titlediv #title-prompt-text {
-  position: absolute;
-  font-size: 14px;
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  padding: 15px 8px 10px;
-  line-height: 16px;
-  text-align: center;
-  letter-spacing: 0.2px;
-  color: #666666;
 }
 .post-type-product-feed #poststuff #post-body.columns-2 {
   margin-right: 370px;
@@ -2954,13 +3035,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_google_merchant.postbox,
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_file_link.postbox,
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #submitdiv.postbox {
-  padding: 25px 27px;
   position: relative;
   min-width: auto;
   border: none;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   background: #fff;
   border-radius: 10px;
+  padding: 25px 27px;
 }
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_google_merchant.postbox .inside,
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_file_link.postbox .inside,
@@ -2982,15 +3063,15 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   border: none;
 }
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text h2 {
+  font-size: 18px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 18px;
   line-height: 1.16;
-  color: #216df0;
   padding: 10px 20px;
   border-radius: 5px;
   background-color: #eef4ff;
+  color: #216df0;
   text-transform: capitalize;
 }
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text .parent li {
@@ -2998,10 +3079,10 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   gap: 13px;
   grid-template-columns: 1fr 13fr;
   align-items: start;
+  font-size: 15px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 15px;
   color: #697385;
   line-height: 1.2;
   padding-top: 19px;
@@ -3193,7 +3274,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .post-type-product-feed h5#rex-feed-config-heading {
   display: none;
 }
-
 .post-type-product-feed #rex_feed_how_to_guide .inside {
   padding: unset;
   margin: unset !important;
@@ -3232,9 +3312,9 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   font-size: 14px;
   font-weight: 500;
   font-style: normal;
-  color: #333333;
   line-height: 1.14;
   background: #ffffff;
+  color: #333333;
   box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
   border-radius: 10px;
   padding: 10px 20px;
@@ -3244,8 +3324,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   margin-right: 9px;
 }
 #rex_feed_head_btn .rex-fill-button:hover {
-  color: #fff;
   background: #216df0;
+  color: #fff;
   box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
   transition: all 0.5s;
 }
@@ -3280,7 +3360,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 #rex_feed_conf {
   border: 0;
-  background: #ffffff;
+  background-color: #ffffff;
   box-shadow: 0px 15px 20px rgba(202, 202, 224, 0.25);
   border-radius: 10px;
   margin-bottom: 30px;
@@ -3574,7 +3654,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   position: relative;
   min-width: 255px;
   border: 0;
-  background: #ffffff;
+  background-color: #ffffff;
   box-shadow: 0px 15px 20px rgba(202, 202, 224, 0.25);
   border-radius: 10px;
   display: none;
@@ -3582,18 +3662,18 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 /*----05.Progress bar style --------*/
 #rex_feed_progress_bar.postbox .inside {
+  font-size: 14px;
   padding: 10px;
   line-height: 1.4;
-  font-size: 14px;
 }
 #rex_feed_progress_bar.postbox .inside .rex-feed-progressbar {
   position: relative;
 }
 #rex_feed_progress_bar.postbox .inside .rex-feed-progressbar .progressbar-bar-percent {
   position: absolute;
-  z-index: 11;
   right: 10px;
   top: 5px;
+  z-index: 11;
 }
 #rex_feed_progress_bar.postbox .inside .progress-msg {
   display: flex;
@@ -3602,10 +3682,10 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   padding: 5px 0;
 }
 #rex_feed_progress_bar.postbox .inside .progress-msg .feed-msg {
-  color: #1fb3fa;
+  display: flex;
   font-size: 16px;
   font-weight: 600;
-  display: flex;
+  color: #1fb3fa;
 }
 #rex_feed_progress_bar.postbox .inside .progress-msg .feed-msg i {
   margin-right: 10px;
@@ -3631,8 +3711,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   font-weight: 500;
   font-size: 18px;
   line-height: 1.16;
-  color: #216df0;
   background-color: #f7faff;
+  color: #216df0;
   border-bottom: 1px solid #e0ebff;
   border-radius: 10px 10px 0px 0px;
   padding: 13px 25px;
@@ -3649,6 +3729,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   gap: 15px;
 }
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_target__content label {
+  display: block;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -3657,7 +3738,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   color: #333333;
   margin-bottom: 7px;
   text-transform: capitalize;
-  display: block;
 }
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_target__content select,
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_target__content input {
@@ -3674,15 +3754,15 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   margin-top: 20px;
 }
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .google-status-area p.google-status {
-  background: #fffcef;
-  border: 1px solid #ffefb6;
-  border-radius: 7px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
   color: #697385;
+  background: #fffcef;
+  border: 1px solid #ffefb6;
+  border-radius: 7px;
   padding: 4px 20px;
 }
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .google-status-area a {
@@ -4135,13 +4215,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 .rex-contnet-filter__header,
 .rex-contnet-setting__header {
+  position: relative;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: space-between;
   padding: 32px 28px 32px 26px;
   border-bottom: 1px solid #f4f4f8;
-  position: relative;
   z-index: 1;
 }
 
@@ -4152,20 +4232,20 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 .rex-contnet-setting__header .rex-contnet-setting__close-icon,
 .rex-contnet-filter__header .rex-contnet-filter__close-icon {
-  display: block;
-  padding: 20px;
-  height: 24px;
-  cursor: pointer;
   position: relative;
   top: -2px;
-  background-color: #3fb3fb;
-  border: 1px solid #3fb3fb;
-  color: #fff;
-  border-radius: 8px;
   font-size: 15px;
   font-weight: 400;
   border-radius: 10px;
   line-height: 0;
+  display: block;
+  padding: 20px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #3fb3fb;
+  border: 1px solid #3fb3fb;
+  color: #fff;
+  border-radius: 8px;
   transition: all 0.3s ease;
 }
 .rex-contnet-setting__header .rex-contnet-setting__close-icon:hover,
@@ -4182,13 +4262,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   top: 32px;
   right: -190px;
   background-color: #fff;
-  z-index: 99;
   width: 100%;
   max-width: 984px;
   height: calc(100vh - 32px);
   transition: all 0.3s ease;
   opacity: 0;
   visibility: hidden;
+  z-index: 99;
 }
 
 #rex_feed_product_settings .postbox-header,
@@ -4338,9 +4418,9 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   color: #666666;
 }
 #rex_feed_product_settings .rex-contnet-setting-content-area i {
+  font-size: 14px;
   color: #1eb2fb;
   padding-left: 6px;
-  font-size: 14px;
 }
 #rex_feed_product_settings .rex-contnet-setting-content-area ul {
   display: flex;
@@ -4419,13 +4499,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 }
 
 .rex-content-filter__area label {
-  padding-right: 10px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
   color: #333333;
+  padding-right: 10px;
 }
 
 .inside .rex-contnet-setting__icon h2 {
@@ -4471,9 +4551,9 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   justify-content: space-between;
   font-size: 14px !important;
   font-weight: 500 !important;
+  line-height: 16px;
   padding: 0 !important;
   margin-bottom: 15px !important;
-  line-height: 16px;
   color: #333333;
 }
 
@@ -4587,7 +4667,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 #rex-feed-config-filter a#rex-new-filter {
   font-size: 15px;
   font-weight: 400;
-  border-radius: 10px;
   line-height: 16px;
   padding: 10px 20px;
   color: #fff;
@@ -4595,6 +4674,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   text-transform: capitalize;
   background-color: #3fb3fb;
   border: 1px solid #3fb3fb;
+  border-radius: 10px;
   transition: all 0.3s ease;
   display: inline-block;
   margin-top: 20px;
@@ -4963,11 +5043,11 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 .wpfm-pro-tag {
   position: absolute;
-  background: #1fb3fb;
-  color: #fff;
+  font-size: 12px;
   line-height: normal;
   text-transform: uppercase;
-  font-size: 12px;
+  background-color: #1fb3fb;
+  color: #fff;
   padding: 4px 6px 2px;
   border-radius: 3px;
   z-index: 1;
@@ -5089,8 +5169,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   letter-spacing: 0;
   text-align: center;
   cursor: pointer;
-  color: #fff;
   background: #216df0;
+  color: #fff;
   border: none;
   border-radius: 15px;
   transition: all 0.5s;
@@ -5117,20 +5197,20 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 .rex-setup-wizard__button {
   display: block;
-  margin: 0 0 70px auto;
-  background: #ffffff;
+  font-size: 14px;
+  background-color: #ffffff;
   box-shadow: 0px 10px 40px rgba(4, 29, 71, 0.2);
   border-radius: 10px;
-  font-size: 14px;
   border: none;
   padding: 11px 15px;
+  margin: 0 0 70px auto;
 }
 .rex-setup-wizard__button a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #062458;
   font-size: 14px;
+  color: #062458;
 }
 .rex-setup-wizard__button a svg {
   margin-left: 10px;
@@ -5142,26 +5222,26 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   align-items: center;
 }
 .rex-setup-wizard__content-area span {
+  font-size: 18px;
   font-family: "Outfit", sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
   line-height: 32px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(6, 36, 88, 0.6);
 }
 .rex-setup-wizard__content-area h6 {
-  font-weight: 500;
   font-size: 30px;
+  font-weight: 500;
   line-height: 1.13;
   color: #216df0;
   margin: 30px 0;
 }
 .rex-setup-wizard__content-area p {
+  font-size: 20px;
   font-family: "Lato", sans-serif;
   font-weight: 400;
-  font-size: 20px;
   line-height: 30px;
   color: #6c798f;
   margin: 20px 0 30px;
@@ -5173,26 +5253,26 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 }
 .rex-setup-wizard__content-area form .rex-setup-wizard__search-from__input {
   border-radius: 10px;
-  background: #ffffff;
+  background-color: #ffffff;
   border: 1.5px solid #216df0;
   box-shadow: 0px 10px 60px rgba(16, 36, 71, 0.1);
   padding: 8px 9px 8px 20px;
 }
 .rex-setup-wizard__content-area form button {
-  background: #216df0;
-  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
-  border-radius: 6px;
+  font-size: 18px;
   font-family: "Outfit", sans-serif;
   font-weight: 500;
-  font-size: 18px;
   line-height: 30px;
   text-align: center;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border: none;
   padding: 17px 18px;
-  color: #ffffff;
   cursor: pointer;
+  background-color: #216df0;
+  color: #ffffff;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
 }
 .rex-setup-wizard__content-area form span.select2-container {
   width: calc(100% - 20px) !important;
@@ -5270,22 +5350,22 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 /* The outer-div to move the elements */
 .box-video {
   position: relative;
+  left: 105px;
   width: 100%;
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0px 20px 120px rgba(3, 2, 53, 0.3);
   border-radius: 14px;
-  left: 105px;
 }
 
 /* Set Cover aka Background-Image */
 .box-video .bg-video {
-  background-image: url(../icon/video-overlays.png);
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-image: url(../icon/video-overlays.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -5492,13 +5572,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   padding: 15px 0;
 }
 .rex-setup-wizard-price-area .rex-setup-wizard-price__button-area span {
-  background: #e4eeff;
-  border-radius: 15px;
-  padding: 14px 25px;
   font-weight: 500;
   font-size: 30px;
   line-height: 1.33;
   color: #216df0;
+  background: #e4eeff;
+  border-radius: 15px;
+  padding: 14px 25px;
   margin-right: 15px;
 }
 .rex-setup-wizard-price-area .rex-setup-wizard-price__list__layout {
@@ -5585,8 +5665,8 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  padding: 15px;
   background: rgba(51, 51, 51, 0.4);
+  padding: 15px;
 }
 .rex-take-alert__wrapper {
   width: 100%;

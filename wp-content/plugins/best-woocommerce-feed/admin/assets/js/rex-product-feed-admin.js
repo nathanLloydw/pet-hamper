@@ -1007,7 +1007,7 @@
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
         $( '#rex-feed-progress' ).show();
-        var $payload = {
+        const $payload = {
             merchant: $( '#rex_feed_merchant' ).find( ':selected' ).val(),
             feed_format: $( '#rex_feed_feed_format' ).find( ':selected' ).val(),
             localization: $( '#rex_feed_ebay_mip_localization' ).find( ':selected' ).val(),
@@ -1033,13 +1033,13 @@
             feed_config: $( 'form' ).serialize(),
         };
 
-        var batches = total_batch;
+        const batches = total_batch;
         console.log( 'Total Batch: ' + batches );
         console.log( 'Total Product(s): ' + product );
         console.log( 'Processing Batch Number: ' + batch );
         console.log( 'Offset Number: ' + offset );
 
-        var progressbar = 100 / batches;
+        const progressbar = 100 / batches;
         progressWidth = progressWidth + progressbar;
         if ( progressWidth > 100 ) {
             progressWidth = 100;
@@ -1055,8 +1055,6 @@
 
         wpAjaxHelperRequest( 'generate-feed', $payload )
             .done( function ( response ) {
-                console.log( 'Woohoo!' );
-                var msg = '<div id="message" class="error notice notice-error is-dismissible rex-feed-notice"><p>Your feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if ( response == 'false' || response == '' ) {
                     generate_feed( product, offset, batch, per_batch, total_batch );
                 }
@@ -1139,7 +1137,7 @@
     function save_google_merchant_settings( event ) {
         event.preventDefault();
         $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'flex' );
-        var payload = {
+        const payload = {
             client_id: $( this ).find( '#client_id' ).val(),
             client_secret: $( this ).find( '#client_secret' ).val(),
             merchant_id: $( this ).find( '#merchant_id' ).val(),

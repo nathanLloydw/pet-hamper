@@ -4,11 +4,11 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads, facebook feed,  facebook,  google dynamic search ads
+Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  facebook,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.2
-Requires PHP: 7.0
-Stable tag:  7.2.31
+Requires PHP: 7.3
+Stable tag:  7.2.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,12 +108,51 @@ You can use the smooth filter options to include or exclude the required product
 **Schedule Auto Update Of the Product Feed**
 Any changes you make to product data, you can set a schedule for your product feed to be updated automatically. You do not need to manually update the product feed every time you make changes to your products.
 
+**Various Product Data Feed File Types**
+With our WooCommerce product feed plugin, you can create different types of feed files according to your merchant needs.
+
+With selecting your merchant, you can also select what type of feed you want to generate.
+
+Our supported feed type includes:
+
+- XML feed
+- CSV feed
+- TEXT feed
+- TSV feed
+- RSS feed
+
 **Advanced Custom Fields**
 WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Gender, etc. Many merchant shops require these data. Hence, Product Feed Manager for WooCommerce creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
 
 You will have many more features to help you generate product feed at ease.
 
 You should use this plugin because it will save you time and create clean quality product feed to promote through other merchant shopping channels.
+
+**Exclusive WooCommerce Variable Product & Variation Options**
+
+If you have variable products in your WooCommerce site, you can easily choose between parent products and variations to show in your feed.
+
+In our WooCommerce product feed plugin, you’ll get these options -
+
+- Include Only Parent ProductS (without variations)
+- Include Variation Name In The Product Title
+- Include All Variable Products Variations
+
+You can just select the option and include variable products with or without parent products however you want.
+
+**Create A Custom Feed For Any Merchant**
+
+The custom feed option will allow you to create a personalized feed for any marketplace you want. 
+
+The custom WooCommerce feed option will help you to -
+
+- Select your preferred feed attributes
+- Choose custom feed type
+- Include/Exclude XML header
+- Add Wrapper Element
+- Add Item Wrapper
+
+So, if you’re wondering how to create a localized feed or a complex feed with specific attributes you can do this easily with the option.
 
 **Google Analytics Support**
 You can add and configure Google Analytics UTM tracking-codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
@@ -184,11 +223,22 @@ With Facebook Pixel, you can track:
 
 == GOOGLE SHOPPING & OTHER GOOGLE DESTINATIONS ==
 
-As you already know, Product Feed Manager for WooCommerce is best known for generating Google Shopping feed also known as Google product feed.
+With our product feed plugin, you can accurately generate Google Shopping feeds, also known as Google product feeds.
 
-However, providing Google Merchant Center feed template is not the only thing. You can also generate google product feed in the right format for most other Google Destinations as well.
+This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
 
-The plugin comes with Google feed generation templates for almost all destinations that you will find on Surfaces Across Google to promote your WooCommerce products.
+With the category mapping, you can map your WooCommerce product categories with google product categories.
+
+Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not.
+
+Moreover, you can set auto-feed update timing so your google merchant center feed always remains accurate and updated.
+
+With our woocommerce product feed plugin, you can generate google xml feed and google text feed.
+
+However, that's not all we offer. In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
+
+Here is a list of google shopping feed destinations we support:
+
 
 - Google Shopping feed (Google Product Feed)
 - Google Local Products Inventory feed
@@ -772,10 +822,11 @@ Check out the tutorial to generate an WooCommerce facebook product feed:
 = What file formats does this plugin generate? =
 This plugin generates product feeds in the following file formats:
 
-- XML
-- TXT
-- CSV
-- TSV
+- XML feed
+- CSV feed
+- TEXT feed
+- TSV feed
+- RSS feed
 
 = What is the feed auto-update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
@@ -822,6 +873,21 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.35 (2023-05-17) =
+* Fixed: Updated the Mirakl merchant XML feed format
+
+= 7.2.34 (2023-05-17) =
+* Added: Divi builder support for product description attribute
+* Fixed: Wrong warning message for Product Feed Manager for WooCommerce Pro incompatible version
+
+= 7.2.33 (2023-05-16) =
+* Fixed: Missing files updated
+
+= 7.2.32 (2023-05-16) =
+* Fixed: Google merchant API settings field saving issue
+* Fixed: Category/Tag filter saving issue while duplicating/save as draft
+* Fixed: Text file saving issue
 
 = 7.2.31 (2023-05-04) =
 * Compatibility: Compatible with WooCommerce HPOS / High-Performance Order Storage

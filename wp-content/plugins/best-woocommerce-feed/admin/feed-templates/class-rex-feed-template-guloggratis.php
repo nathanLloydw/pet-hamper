@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The Google Dynamic Search Feed Template class.
  *
@@ -11,7 +10,6 @@
  */
 
 /**
- *
  * Defines the attributes and template for google feed.
  *
  * @package    Rex_Product_Feed
@@ -20,7 +18,12 @@
  */
 class Rex_Feed_Template_Gulog_gratis extends Rex_Feed_Abstract_Template {
 
-	protected function init_atts(){
+	/**
+	 * Define merchant's required and optional/additional attributes
+	 *
+	 * @return void
+	 */
+	protected function init_atts() {
 		$this->attributes = array(
 			'Required Information' => array(
 				'last_updated'   => 'Last Updated [last_updated]',
@@ -36,19 +39,24 @@ class Rex_Feed_Template_Gulog_gratis extends Rex_Feed_Abstract_Template {
 				'images'     => 'Images [images]',
 				'link'       => 'Ad Link [link]',
 			),
-			'Address Information' => array(
+			'Address Information'  => array(
 				'road'        => 'Road [road]',
 				'housenumber' => 'House Number [housenumber]',
 				'floor'       => 'Floor [floor]',
 				'door'        => 'Flat No. [door]',
 				'zipcode'     => 'Zip Code [zipcode]',
 				'city'        => 'City [city]',
-				'countrycode' => 'Country Code [countrycode]'
-			)
+				'countrycode' => 'Country Code [countrycode]',
+			),
 		);
 	}
 
-	protected function init_default_template_mappings(){
+	/**
+	 * Define merchant's default attributes
+	 *
+	 * @return void
+	 */
+	protected function init_default_template_mappings() {
 		$this->template_mappings = array(
 			array(
 				'attr'     => 'last_updated',
@@ -119,7 +127,7 @@ class Rex_Feed_Template_Gulog_gratis extends Rex_Feed_Abstract_Template {
 				'suffix'   => '',
 				'escape'   => 'default',
 				'limit'    => 0,
-			)
+			),
 		);
 	}
 }

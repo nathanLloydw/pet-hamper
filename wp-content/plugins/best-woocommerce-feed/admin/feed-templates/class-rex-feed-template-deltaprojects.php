@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The Deltaprojects Feed Template class.
  *
@@ -11,7 +10,6 @@
  */
 
 /**
- *
  * Defines the attributes and template for Deltaprojects feed.
  *
  * @package    Rex_Product_Feed
@@ -20,50 +18,59 @@
  */
 class Rex_Feed_Template_Deltaprojects extends Rex_Feed_Abstract_Template {
 
-    protected function init_atts(){
-        $this->attributes = array(
-            'Required Information' =>  array(
-                'id'            => 'id',
-            ),
+	/**
+	 * Define merchant's required and optional/additional attributes
+	 *
+	 * @return void
+	 */
+	protected function init_atts() {
+		$this->attributes = array(
+			'Required Information'   => array(
+				'id' => 'id',
+			),
 
-            'Additional Information' => array(
-                'availability'       => 'Availability',
-                'condition'          => 'Condition',
-                'description'        => 'Description',
-                'extras'             => 'Extras',
-                'image'              => 'Image',
-                'price'              => 'Price',
-                'title'              => 'Title',
-                'url'                => 'URL',
-            ),
+			'Additional Information' => array(
+				'availability' => 'Availability',
+				'condition'    => 'Condition',
+				'description'  => 'Description',
+				'extras'       => 'Extras',
+				'image'        => 'Image',
+				'price'        => 'Price',
+				'title'        => 'Title',
+				'url'          => 'URL',
+			),
 
-        );
-    }
+		);
+	}
 
-    protected function init_default_template_mappings(){
-        $this->template_mappings = array(
-            array(
-                'attr'     => 'id',
-                'type'     => 'meta',
-                'meta_key' => 'id',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'title',
-                'type'     => 'meta',
-                'meta_key' => 'title',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+	/**
+	 * Define merchant's default attributes
+	 *
+	 * @return void
+	 */
+	protected function init_default_template_mappings() {
+		$this->template_mappings = array(
+			array(
+				'attr'     => 'id',
+				'type'     => 'meta',
+				'meta_key' => 'id',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
+			array(
+				'attr'     => 'title',
+				'type'     => 'meta',
+				'meta_key' => 'title',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
 
-        );
-    }
-
+		);
+	}
 }

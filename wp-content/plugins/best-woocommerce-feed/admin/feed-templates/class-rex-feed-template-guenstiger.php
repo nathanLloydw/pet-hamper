@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The Guenstiger Feed Template class.
  *
@@ -11,7 +10,6 @@
  */
 
 /**
- *
  * Defines the attributes and template for Guenstiger feed.
  *
  * @package    Rex_Product_Feed
@@ -20,52 +18,61 @@
  */
 class Rex_Feed_Template_Guenstiger extends Rex_Feed_Abstract_Template {
 
-    protected function init_atts(){
-        $this->attributes = array(
-            'Required Information' =>  array(
-                'hersteller'        => 'Hersteller',
-                'ean'                => 'EAN',
-            ),
+	/**
+	 * Define merchant's required and optional/additional attributes
+	 *
+	 * @return void
+	 */
+	protected function init_atts() {
+		$this->attributes = array(
+			'Required Information' => array(
+				'hersteller' => 'Hersteller',
+				'ean'        => 'EAN',
+			),
 
-            'Recommended' => array(
-                'category'            => 'Category',
-                'click_out_url'       => 'Click-out-URL',
-                'ISBN'                => 'ISBN',
-                'description'         => 'Description',
-                'delivery_time'       => 'Delivery Time',
-                'image_url'           => 'Image URL',
-                'price'               => 'Price',
-                'product_name'        => 'Product Name',
-                'ground_shipping'     => 'Ground Shipping',
-            ),
+			'Recommended'          => array(
+				'category'        => 'Category',
+				'click_out_url'   => 'Click-out-URL',
+				'ISBN'            => 'ISBN',
+				'description'     => 'Description',
+				'delivery_time'   => 'Delivery Time',
+				'image_url'       => 'Image URL',
+				'price'           => 'Price',
+				'product_name'    => 'Product Name',
+				'ground_shipping' => 'Ground Shipping',
+			),
 
-        );
-    }
+		);
+	}
 
-    protected function init_default_template_mappings(){
-        $this->template_mappings = array(
-            array(
-                'attr'     => 'hersteller',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'ean',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+	/**
+	 * Define merchant's default attributes
+	 *
+	 * @return void
+	 */
+	protected function init_default_template_mappings() {
+		$this->template_mappings = array(
+			array(
+				'attr'     => 'hersteller',
+				'type'     => 'static',
+				'meta_key' => '',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
+			array(
+				'attr'     => 'ean',
+				'type'     => 'static',
+				'meta_key' => '',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
 
-        );
-    }
-
+		);
+	}
 }

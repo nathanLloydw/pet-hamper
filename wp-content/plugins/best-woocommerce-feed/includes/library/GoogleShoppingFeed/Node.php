@@ -78,7 +78,7 @@ class Node
     }
 
     /**
-     * Attachs actual node to a parent node
+     * Attaches actual node to a parent node
      * @param \SimpleXMLElement $parent
      */
     public function attachNodeTo(\SimpleXMLElement $parent)

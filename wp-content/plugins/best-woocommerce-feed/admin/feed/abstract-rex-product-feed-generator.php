@@ -64,8 +64,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     public $wcml;
     public $product_meta_keys;
     public $product_condition;
-    public $feed_merchant;
-    private $private_product = false;
+
     /**
      * The Product/Feed Config.
      *
@@ -302,7 +301,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $custom_filter_var_exclude = false;
 
     /**
-     * @desc Variable to store country to retrieve
+     * Variable to store country to retrieve
      * shipping and tax related values
      * @since 7.2.9
      * @var $feed_country
@@ -310,28 +309,28 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $feed_country;
 
     /**
-     * @desc Variable to store wrapper value for custom xml feed
+     * Variable to store wrapper value for custom xml feed
      * @since 7.2.18
      * @var $custom_wrapper
      */
     protected $custom_wrapper;
 
     /**
-     * @desc Variable to store items wrapper value for custom xml feed
+     * Variable to store items wrapper value for custom xml feed
      * @since 7.2.18
      * @var $custom_items_wrapper
      */
     protected $custom_items_wrapper;
 
     /**
-     * @desc Variable to store wrapper element value for custom xml feed
+     * Variable to store wrapper element value for custom xml feed
      * @since 7.2.18
      * @var $custom_wrapper_el
      */
     protected $custom_wrapper_el;
 
     /**
-     * @desc Variable to store custom
+     * Variable to store custom
      * xml file header option to exclude/include
      * @since 7.2.19
      * @var $custom_xml_header
@@ -339,7 +338,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $custom_xml_header;
 
     /**
-     * @desc Variable to store country to retrieve
+     * Variable to store country to retrieve
      * shipping and tax related values
      * @since 7.2.9
      * @var $feed_zip_code
@@ -347,7 +346,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $feed_zip_code;
 
     /**
-     * @desc Variable to store
+     * Variable to store
      * company name for yandex xml feed
      * @since 7.2.21
      * @var $yandex_company_name
@@ -355,7 +354,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $yandex_company_name;
 
     /**
-     * @desc Variable to store option to
+     * Variable to store option to
      * include/exclude old price for yandex xml feed
      * @since 7.2.21
      * @var $yandex_company_name
@@ -381,41 +380,41 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->is_logging_enabled = is_wpfm_logging_enabled();
         $this->bypass             = $bypass;
         if ( $this->bypass ) {
-            $this->id                      = isset( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
-            $this->title                   = isset( $config[ 'info' ][ 'title' ] ) && '' !== $config[ 'info' ][ 'title' ] ? $config[ 'info' ][ 'title' ] : get_bloginfo();
-            $this->desc                    = isset( $config[ 'info' ][ 'desc' ] ) && '' !== $config[ 'info' ][ 'desc' ] ? $config[ 'info' ][ 'desc' ] : get_bloginfo();
-            $this->batch                   = isset( $config[ 'info' ][ 'batch' ] ) ? (int)$config[ 'info' ][ 'batch' ] : 1;
-            $this->tbatch                  = isset( $config[ 'info' ][ 'total_batch' ] ) ? (int)$config[ 'info' ][ 'total_batch' ] : 1;
+            $this->id                      = !empty( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
+            $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) && '' !== $config[ 'info' ][ 'title' ] ? $config[ 'info' ][ 'title' ] : get_bloginfo();
+            $this->desc                    = !empty( $config[ 'info' ][ 'desc' ] ) && '' !== $config[ 'info' ][ 'desc' ] ? $config[ 'info' ][ 'desc' ] : get_bloginfo();
+            $this->batch                   = !empty( $config[ 'info' ][ 'batch' ] ) ? (int)$config[ 'info' ][ 'batch' ] : 1;
+            $this->tbatch                  = !empty( $config[ 'info' ][ 'total_batch' ] ) ? (int)$config[ 'info' ][ 'total_batch' ] : 1;
             $this->offset                  = isset( $config[ 'info' ][ 'offset' ] ) ? (int)$config[ 'info' ][ 'offset' ] : -1;
-            $this->posts_per_page          = isset( $config[ 'info' ][ 'per_page' ] ) ? (int)$config[ 'info' ][ 'per_page' ] : 0;
-            $this->feed_config             = isset( $config[ 'feed_config' ] ) ? $config[ 'feed_config' ] : [];
-            $this->feed_filters            = isset( $config[ 'feed_filter' ] ) ? $config[ 'feed_filter' ] : [];
-            $this->feed_rules              = isset( $config[ 'feed_rules' ] ) ? $config[ 'feed_rules' ] : [];
-            $this->variations              = isset( $config[ 'include_variations' ] ) ? $config[ 'include_variations' ] : '';
-            $this->parent_product          = isset( $config[ 'parent_product' ] ) ? $config[ 'parent_product' ] : '';
-            $this->variable_product        = isset( $config[ 'variable_product' ] ) ? $config[ 'variable_product' ] : '';
-            $this->append_variation        = isset( $config[ 'append_variations' ] ) ? $config[ 'append_variations' ] : '';
-            $this->include_out_of_stock    = isset( $config[ 'include_out_of_stock' ] ) && $config[ 'include_out_of_stock' ] === 'yes' ? true : false;
-            $this->include_zero_priced     = isset( $config[ 'include_zero_price_products' ] ) && $config[ 'include_zero_price_products' ] === 'yes' ? true : false;
-            $this->exclude_hidden_products = isset( $config[ 'exclude_hidden_products' ] ) ? $config[ 'exclude_hidden_products' ] : '';
-            $this->feed_separator          = isset( $config[ 'feed_separator' ] ) ? $config[ 'feed_separator' ] : '';
-            $this->rex_feed_skip_product   = isset( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
-            $this->rex_feed_skip_row       = isset( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
-            $this->wpml_language           = isset( $config[ 'wpml_language' ] ) ? $config[ 'wpml_language' ] : '';
-            $this->wcml                    = isset( $config[ 'wcml' ] ) ? $config[ 'wcml' ] : '';
-            $this->wcml_currency           = isset( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';;
-            $this->analytics            = isset( $config[ 'analytics' ] ) ? $config[ 'analytics' ] : '';
-            $this->analytics_params     = isset( $config[ 'analytics_params' ] ) ? $config[ 'analytics_params' ] : '';
-            $this->product_condition    = isset( $config[ 'product_condition' ] ) ? $config[ 'product_condition' ] : '';
-            $this->aelia_currency       = isset( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
-            $this->feed_country         = isset( $config[ 'feed_country' ] ) ? $config[ 'feed_country' ] : '';
-            $this->custom_wrapper       = isset( $config[ 'custom_wrapper' ] ) ? $config[ 'custom_wrapper' ] : '';
-            $this->custom_wrapper_el    = isset( $config[ 'custom_wrapper_el' ] ) ? $config[ 'custom_wrapper_el' ] : '';
-            $this->custom_items_wrapper = isset( $config[ 'custom_items_wrapper' ] ) ? $config[ 'custom_items_wrapper' ] : '';
-	        $this->feed_zip_code        = isset( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
-	        $this->custom_xml_header    = isset( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
-	        $this->yandex_company_name  = isset( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
-	        $this->yandex_old_price     = isset( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
+            $this->posts_per_page          = !empty( $config[ 'info' ][ 'per_page' ] ) ? (int)$config[ 'info' ][ 'per_page' ] : 200;
+            $this->feed_config             = !empty( $config[ 'feed_config' ] ) ? $config[ 'feed_config' ] : [];
+            $this->feed_filters            = !empty( $config[ 'feed_filter' ] ) ? $config[ 'feed_filter' ] : [];
+            $this->feed_rules              = !empty( $config[ 'feed_rules' ] ) ? $config[ 'feed_rules' ] : [];
+            $this->variations              = !empty( $config[ 'include_variations' ] ) ? $config[ 'include_variations' ] : '';
+            $this->parent_product          = !empty( $config[ 'parent_product' ] ) ? $config[ 'parent_product' ] : '';
+            $this->variable_product        = !empty( $config[ 'variable_product' ] ) ? $config[ 'variable_product' ] : '';
+            $this->append_variation        = !empty( $config[ 'append_variations' ] ) ? $config[ 'append_variations' ] : '';
+            $this->include_out_of_stock    = !empty( $config[ 'include_out_of_stock' ] ) && $config[ 'include_out_of_stock' ] === 'yes';
+            $this->include_zero_priced     = !empty( $config[ 'include_zero_price_products' ] ) && $config[ 'include_zero_price_products' ] === 'yes';
+            $this->exclude_hidden_products = !empty( $config[ 'exclude_hidden_products' ] ) ? $config[ 'exclude_hidden_products' ] : '';
+            $this->feed_separator          = !empty( $config[ 'feed_separator' ] ) ? $config[ 'feed_separator' ] : '';
+            $this->rex_feed_skip_product   = !empty( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
+            $this->rex_feed_skip_row       = !empty( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
+            $this->wpml_language           = !empty( $config[ 'wpml_language' ] ) ? $config[ 'wpml_language' ] : '';
+            $this->wcml                    = !empty( $config[ 'wcml' ] ) ? $config[ 'wcml' ] : '';
+            $this->wcml_currency           = !empty( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';
+            $this->analytics            = !empty( $config[ 'analytics' ] ) ? $config[ 'analytics' ] : '';
+            $this->analytics_params     = !empty( $config[ 'analytics_params' ] ) ? $config[ 'analytics_params' ] : '';
+            $this->product_condition    = !empty( $config[ 'product_condition' ] ) ? $config[ 'product_condition' ] : '';
+            $this->aelia_currency       = !empty( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
+            $this->feed_country         = !empty( $config[ 'feed_country' ] ) ? $config[ 'feed_country' ] : '';
+            $this->custom_wrapper       = !empty( $config[ 'custom_wrapper' ] ) ? $config[ 'custom_wrapper' ] : '';
+            $this->custom_wrapper_el    = !empty( $config[ 'custom_wrapper_el' ] ) ? $config[ 'custom_wrapper_el' ] : '';
+            $this->custom_items_wrapper = !empty( $config[ 'custom_items_wrapper' ] ) ? $config[ 'custom_items_wrapper' ] : '';
+	        $this->feed_zip_code        = !empty( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
+	        $this->custom_xml_header    = !empty( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
+	        $this->yandex_company_name  = !empty( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
+	        $this->yandex_old_price     = !empty( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
             $this->link                 = esc_url( home_url( '/' ) );
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
@@ -1066,13 +1065,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
 
-//        add_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
         add_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ), 10, 2 );
         add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
-        /*if ( $this->variations ) {
-            add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
-            add_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
-        }*/
 
         $result         = new WP_Query( $this->products_args );
         $this->products = $result->posts;
@@ -1082,24 +1076,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if ( $condition ) {
                 update_post_meta( $this->id, '_rex_feed_product_condition', $condition );
             }
-            $result         = new WP_Query( $this->products_args );
-            $this->products = $result->posts;
-        }
-        else {
-            if ( $condition ) {
-                update_post_meta( $this->id, '_rex_feed_product_condition', $condition );
-            }
-            $result         = new WP_Query( $this->products_args );
-            $this->products = $result->posts;
         }
 
-//        remove_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
         remove_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ) );
         remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
-        /*if( $this->variations ) {
-            remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
-            remove_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
-        }*/
 
         if ( is_array( $this->products ) ) {
             $this->products = array_unique( $this->products );
@@ -1348,7 +1328,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where         .= ' AND (';
             foreach ( $title_contain as $title ) {
                 $query = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%'%s'%'", $wpdb->esc_like( $title ) );
-                $post_id = $wpdb->get_results(  );
+                $post_id = $wpdb->get_results( $query );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
                     $op    = ( $i > 1 ) ? 'AND' : '';
@@ -1489,8 +1469,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 )
             );
             $query   = new WP_Query( $args );
-            $post_id = $query->get_posts();
-            return $post_id;
+            return $query->get_posts();
         }
     }
 
@@ -1518,12 +1497,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             )
         );
         $query    = new WP_Query( $args );
-        $post_id  = $query->get_posts();
-        return $post_id;
+        return $query->get_posts();
     }
 
     /**
-     * @desc Gets feed id.
+     * Gets feed id.
      *
      * @return mixed
      */
@@ -1534,27 +1512,21 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
     public function cleanString( $string )
     {
-        // allow only letters
+        // allow only letters.
         $res = preg_replace( "/[^a-zA-Z]/", "", $string );
 
-        // trim what's left to 8 chars
+        // trim what's left to 8 chars.
         $res = substr( $res, 0, 8 );
 
-        // make lowercase
-        $res = strtolower( $res );
-
-        // return
-        return $res;
+        // make lowercase.
+        return strtolower( $res );
     }
 
     /**
-     * Responsible for creating the feed.
-     * @return string
-     **/
-    abstract public function make_feed();
-
-    /**
-     * Setup the variable products from products array.
+     * Setup the variable products from products array
+     *
+     * @param $product_id
+     * @return bool
      */
     protected function is_grouped_product( $product_id = false )
     {
@@ -1575,6 +1547,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     /**
      * Get product data
      * @param WC_Product $product
+     * @param $product_meta_keys
      * @return string
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys )
@@ -1598,7 +1571,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     }
 
     /**
-     * @desc Converts all additional image link
+     * Converts all additional image link
      * as one string for pinterest.
      *
      * @param $data
@@ -1606,14 +1579,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function additional_img_link_pinterest( $data )
     {
-        $additional_image_link_keys   = array();
         $additional_image_link_values = array();
         $additional_image_link_keys   = $this->preg_array_key_exists( '/^additional_image_link_/', $data );
 
         if ( !empty( $additional_image_link_keys ) ) {
 
             foreach ( $additional_image_link_keys as $key ) {
-                array_push( $additional_image_link_values, $data[ $key ] );
+                $additional_image_link_values[] = $data[ $key ];
                 unset( $data[ $key ] );
             }
 
@@ -1626,7 +1598,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     }
 
     /**
-     * @desc Returns keys of an array with matching pattern.
+     * Returns keys of an array with matching pattern.
      *
      * @param $pattern
      * @param $array
@@ -1638,15 +1610,15 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $keys = array_keys( $array );
 
         // convert the preg_grep() returned array to int..and return.
-        // the ret value of preg_grep() will be an array of values
+        // the ret value of preg_grep() will be an array of values.
         // that match the pattern.
         return preg_grep( $pattern, $keys );
     }
 
     /**
-     * Save the feed as XML file.
+     * Save the feed as XML file
      *
-     * @return bool
+     * @return string
      */
     protected function save_feed( $format )
     {
@@ -1732,7 +1704,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         elseif ( $format === 'text' ) {
             if( $this->feed ) {
-                //$this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
                 $file = trailingslashit( $path ) . "{$feed_file_name}.txt";
 
                 if( (int) $this->batch === 1 && file_exists( $file ) ) {
@@ -1763,12 +1734,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 else {
                     file_put_contents( $file, $this->feed );
                 }
-                if( $this->batch === $this->tbatch ) {
-                    if( 'publish' === $publish_btn ) {
-                        $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
-                    }
-                    update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+            }
+            
+            if( $this->batch === $this->tbatch ) {
+                if( 'publish' === $publish_btn ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
                 }
+                update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.txt" );
             }
             return 'true';
         }
@@ -1779,7 +1751,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( file_exists( $file ) ) {
                 if ( $this->batch == 1 ) {
-                    file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                    file_put_contents( $file, $this->feed );
                 }
                 else {
                     $feed = $this->feed;
@@ -1787,12 +1759,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = ltrim(str_replace( $first_element, '', $feed ));
 
                     if ( $feed ) {
-                        file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
+                        file_put_contents( $file, $feed, FILE_APPEND );
                     }
                 }
             }
             else {
-                file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                file_put_contents( $file, $this->feed );
             }
             if( $this->batch === $this->tbatch ) {
                 if( 'publish' === $publish_btn ) {
@@ -1849,10 +1821,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
     }
 
-    abstract public function footer_replace();
-
     /**
-     * get feed item as string
+     * Get feed item as string
      *
      * @return string
      */
@@ -1975,7 +1945,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             || $this->merchant === 'listupp'
             || $this->merchant === 'adform'
             || $this->merchant === 'clubic'
-            || $this->merchant === 'drezzy'
             || $this->merchant === 'drm'
             || $this->merchant === 'job_board_io'
             || $this->merchant === 'kleding'
@@ -2119,9 +2088,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
         elseif ( $this->merchant === 'mirakl' ) {
-            $node = $feed->getElementsByTagName( "import" );
+            $node = $feed->getElementsByTagName( "offer" );
             if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<import>';
+                $this->item_wrapper = '<offer>';
                 $this->feed_string_footer .= '</import>';
             }
         }
@@ -2200,7 +2169,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
     }
 
     /**
-     * Gets the feed format of current feed.
+     * Gets the feed format of current feed
+     *
      * @return mixed|Rex_Product_Feed_Abstract_Generator
      */
     public function get_feed_format() {
@@ -2208,27 +2178,30 @@ abstract class Rex_Product_Feed_Abstract_Generator
     }
 
     /**
-     * @desc Gets selected country for the feed.
-     * @since 7.2.9
+     * Gets selected country for the feed
+     *
      * @return mixed|string
+     * @since 7.2.9
      */
     public function get_shipping() {
         return $this->feed_country;
     }
 
     /**
-     * @desc Gets zip code country for the feed.
-     * @since 7.2.18
+     * Gets zip code country for the feed
+     *
      * @return mixed|string
+     * @since 7.2.18
      */
     public function get_zip_code() {
         return $this->feed_zip_code;
     }
 
     /**
-     * @desc get previously save for the current feed
-     * @since 7.2.12
+     * Get previously save for the current feed
+     *
      * @return string
+     * @since 7.2.12
      */
     private function get_prev_feed_file_name() {
         $prev_feed_url = get_post_meta( $this->id, '_rex_feed_xml_file', true ) ?: get_post_meta( $this->id, 'rex_feed_xml_file', true );
@@ -2238,16 +2211,31 @@ abstract class Rex_Product_Feed_Abstract_Generator
     }
 
     /**
-     * @desc Delete previous feed file incase of new feed title/format
-     * @since 7.2.12
+     * Delete previous feed file incase of new feed title/format
+     *
      * @param $new_name
      * @param $prev_name
      * @param $path
      * @return void
+     * @since 7.2.12
      */
     private function delete_prev_feed_file( $new_name, $prev_name, $path ) {
         if( $prev_name !== $new_name ) {
             unlink( trailingslashit( $path ) . $prev_name );
         }
     }
+
+    /**
+     * Responsible for creating the feed
+     *
+     * @return string
+     **/
+    abstract public function make_feed();
+
+    /**
+     * Responsible for replacing feed's footer in every batch
+     *
+     * @return string
+     **/
+    abstract public function footer_replace();
 }

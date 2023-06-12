@@ -1,4 +1,15 @@
+<?php
+/**
+ * This file is responsible for displaying review request body section
+ *
+ * @link       https://rextheme.com
+ * @since      1.0.0
+ *
+ * @package    Rex_Product_Feed
+ * @subpackage Rex_Product_Feed/admin/partials
+ */
 
+?>
 <!-- `rex-feed-review` block -->
 <section class="rex-feed-review">
 	<div class="rex-feed-review__wrapper">
@@ -9,7 +20,7 @@
 				</h2>
 
 				<a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">
-					<img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/star-rating.png' )?>"  alt="star-rating">
+					<img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/star-rating.png' ); ?>"  alt="star-rating">
 				</a>
 			</div>
 
@@ -20,15 +31,15 @@
 
 		<div class="rex-feed-review__btn-area">
 			<a id="rex_rated_already">
-				<?php esc_html_e( 'Already Rated', 'rex-product-feed' ) ?>
+				<?php esc_html_e( 'Already Rated', 'rex-product-feed' ); ?>
 			</a>
 
 			<a id="rex_rate_now" href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">
-				<?php esc_html_e( 'Rate Now', 'rex-product-feed' ) ?>
+				<?php esc_html_e( 'Rate Now', 'rex-product-feed' ); ?>
 			</a>
 
 			<a id="rex_rate_not_now">
-				<?php esc_html_e( 'Not Now', 'rex-product-feed' ) ?>
+				<?php esc_html_e( 'Not Now', 'rex-product-feed' ); ?>
 			</a>
 			
 		</div>

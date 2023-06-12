@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The Bipp Feed Template class.
  *
@@ -11,7 +10,6 @@
  */
 
 /**
- *
  * Defines the attributes and template for Bipp feed.
  *
  * @package    Rex_Product_Feed
@@ -20,46 +18,55 @@
  */
 class Rex_Feed_Template_Bipp extends Rex_Feed_Abstract_Template {
 
-    protected function init_atts(){
-        $this->attributes = array(
-            'Required Information' =>  array(
-                'CatalogueNumber'   => 'Catalogue Number',
-            ),
+	/**
+	 * Define merchant's required and optional/additional attributes
+	 *
+	 * @return void
+	 */
+	protected function init_atts() {
+		$this->attributes = array(
+			'Required Information'    => array(
+				'CatalogueNumber' => 'Catalogue Number',
+			),
 
-            'Recommended Information' => array(
-                'available'                => 'Available',
-                'BIPPPRice'                => 'BIPPPRice',
-                'CataloguePrice'           => 'Catalogue Price',
-                'DeliveryTime'             => 'Delivery Time',
-                'Description'              => 'Description',
-                'EANNumber'                => 'EAN Number',
-                'ManufacturerName'         => 'Manufacturer Name',
-                'Name'                     => 'Name',
-                'PhotoURL'                 => 'Photo URL',
-                'ProvideLicense'           => 'Provide License',
-                'SupplierClassification'   => 'Supplier Classification',
-                'SupplierStockCondition'   => 'Supplier Stock Condition',
-                'UNSPSCCode'               => 'UNSPSC Code',
-                'Unit'                     => 'Unit',
-                'VAT'                      => 'VAT',
-            ),
+			'Recommended Information' => array(
+				'available'              => 'Available',
+				'BIPPPRice'              => 'BIPPPRice',
+				'CataloguePrice'         => 'Catalogue Price',
+				'DeliveryTime'           => 'Delivery Time',
+				'Description'            => 'Description',
+				'EANNumber'              => 'EAN Number',
+				'ManufacturerName'       => 'Manufacturer Name',
+				'Name'                   => 'Name',
+				'PhotoURL'               => 'Photo URL',
+				'ProvideLicense'         => 'Provide License',
+				'SupplierClassification' => 'Supplier Classification',
+				'SupplierStockCondition' => 'Supplier Stock Condition',
+				'UNSPSCCode'             => 'UNSPSC Code',
+				'Unit'                   => 'Unit',
+				'VAT'                    => 'VAT',
+			),
 
-        );
-    }
+		);
+	}
 
-    protected function init_default_template_mappings(){
-        $this->template_mappings = array(
-            array(
-                'attr'     => 'CatalogueNumber',
-                'type'     => 'meta',
-                'meta_key' => 'CatalogueNumber',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-        );
-    }
-
+	/**
+	 * Define merchant's default attributes
+	 *
+	 * @return void
+	 */
+	protected function init_default_template_mappings() {
+		$this->template_mappings = array(
+			array(
+				'attr'     => 'CatalogueNumber',
+				'type'     => 'meta',
+				'meta_key' => 'CatalogueNumber',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
+		);
+	}
 }
