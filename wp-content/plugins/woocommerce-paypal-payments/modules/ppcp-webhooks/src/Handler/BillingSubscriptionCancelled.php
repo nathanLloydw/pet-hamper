@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles the Webhook VAULT.CREDIT-CARD.CREATED
+ * Handles the Webhook BILLING.SUBSCRIPTION.CANCELLED
  *
  * @package WooCommerce\PayPalCommerce\Webhooks\Handler
  */
@@ -14,33 +14,24 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * Class VaultCreditCardCreated
+ * Class BillingSubscriptionCancelled
  */
-class VaultCreditCardCreated implements RequestHandler {
+class BillingSubscriptionCancelled implements RequestHandler {
 
 	/**
 	 * The logger.
 	 *
 	 * @var LoggerInterface
 	 */
-	protected $logger;
+	private $logger;
 
 	/**
-	 * The prefix.
-	 *
-	 * @var string
-	 */
-	protected $prefix;
-
-	/**
-	 * VaultCreditCardCreated constructor.
+	 * BillingSubscriptionCancelled constructor.
 	 *
 	 * @param LoggerInterface $logger The logger.
-	 * @param string          $prefix The prefix.
 	 */
-	public function __construct( LoggerInterface $logger, string $prefix ) {
+	public function __construct( LoggerInterface $logger ) {
 		$this->logger = $logger;
-		$this->prefix = $prefix;
 	}
 
 	/**
@@ -50,7 +41,7 @@ class VaultCreditCardCreated implements RequestHandler {
 	 */
 	public function event_types(): array {
 		return array(
-			'VAULT.CREDIT-CARD.CREATED',
+			'BILLING.SUBSCRIPTION.CANCELLED',
 		);
 	}
 
@@ -73,15 +64,30 @@ class VaultCreditCardCreated implements RequestHandler {
 	 * @return WP_REST_Response
 	 */
 	public function handle_request( WP_REST_Request $request ): WP_REST_Response {
-		// TODO currently this webhook is not triggered from PayPal, implement it once is available.
+		$response = array( 'success' => false );
+		if ( is_null( $request['resource'] ) ) {
+			return new WP_REST_Response( $response );
+		}
 
-		$message = 'VAULT.CREDIT-CARD.CREATED received.';
-		$this->logger->log( 'info', $message );
-		$response = array(
-			'success' => true,
-			'message' => $message,
-		);
+		$subscription_id = wc_clean( wp_unslash( $request['resource']['id'] ?? '' ) );
+		if ( $subscription_id ) {
+			$args          = array(
+				// phpcs:ignore WordPress.DB.SlowDBQuery
+				'meta_query' => array(
+					array(
+						'key'     => 'ppcp_subscription',
+						'value'   => $subscription_id,
+						'compare' => '=',
+					),
+				),
+			);
+			$subscriptions = wcs_get_subscriptions( $args );
+			foreach ( $subscriptions as $subscription ) {
+				$subscription->update_status( 'cancelled' );
+			}
+		}
 
+		$response['success'] = true;
 		return new WP_REST_Response( $response );
 	}
 }

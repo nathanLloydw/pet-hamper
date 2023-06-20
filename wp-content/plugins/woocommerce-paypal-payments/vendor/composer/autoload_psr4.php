@@ -20,6 +20,7 @@ return array(
     'WooCommerce\\PayPalCommerce\\Onboarding\\' => array($baseDir . '/modules/ppcp-onboarding/src'),
     'WooCommerce\\PayPalCommerce\\Compat\\' => array($baseDir . '/modules/ppcp-compat/src'),
     'WooCommerce\\PayPalCommerce\\Button\\' => array($baseDir . '/modules/ppcp-button/src'),
+    'WooCommerce\\PayPalCommerce\\Blocks\\' => array($baseDir . '/modules/ppcp-blocks/src'),
     'WooCommerce\\PayPalCommerce\\ApiClient\\' => array($baseDir . '/modules/ppcp-api-client/src'),
     'WooCommerce\\PayPalCommerce\\AdminNotices\\' => array($baseDir . '/modules/ppcp-admin-notices/src'),
     'WooCommerce\\PayPalCommerce\\' => array($baseDir . '/src'),
