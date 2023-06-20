@@ -83,110 +83,6 @@ if ( !function_exists( 'wpfm_get_feed_list' ) ) {
 }
 
 
-if ( !function_exists( 'wpfm_run_schedule_update' ) ) {
-	/**
-	 * Run schedule update for
-	 * feeds
-	 *
-	 * @param $feeds
-	 * @param string $schedule
-	 */
-	function wpfm_run_schedule_update( $feeds, $schedule = 'hourly' ) {
-		 $count     = 0;
-		$batch_size = 20;
-		if ( $feeds ) {
-			$total_feeds = count( $feeds );
-			foreach ( $feeds as $key => $feed_id ) {
-				$products_info = Rex_Product_Feed_Ajax::get_product_number( array() );
-				$per_batch     = $products_info[ 'per_batch' ];
-				$total_batches = $products_info[ 'total_batch' ];
-				$offset        = 0;
-				$terms_array   = array();
-
-				for ( $i = 1; $i <= $total_batches; $i++ ) {
-					if ( $i === 1 ) {
-						update_post_meta( $feed_id, '_rex_feed_status', 'processing' );
-					}
-					if ( $i === $total_batches ) {
-						update_post_meta( $feed_id, '_rex_feed_status', 'completed' );
-					}
-
-					$merchant                = get_post_meta( $feed_id, '_rex_feed_merchant', true ) ?: get_post_meta( $feed_id, 'rex_feed_merchant', true );
-					$feed_config             = get_post_meta( $feed_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config', true );
-					$feed_filter             = get_post_meta( $feed_id, '_rex_feed_feed_config_filter', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
-					$product_scope           = get_post_meta( $feed_id, '_rex_feed_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_products', true );
-					$include_variations      = get_post_meta( $feed_id, '_rex_feed_variations', true ) ?: get_post_meta( $feed_id, 'rex_feed_variations', true );
-					$include_variations      = 'yes' === $include_variations;
-					$variable_product        = get_post_meta( $feed_id, '_rex_feed_variable_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_variable_product', true );
-					$variable_product        = $variable_product === 'yes';
-					$parent_product          = get_post_meta( $feed_id, '_rex_feed_parent_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_parent_product', true );
-					$parent_product          = $parent_product === 'yes';
-					$exclude_hidden_products = get_post_meta( $feed_id, '_rex_feed_hidden_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_hidden_products', true );
-					$exclude_hidden_products = $exclude_hidden_products === 'yes';
-					$append_variations       = get_post_meta( $feed_id, '_rex_feed_variation_product_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_variation_product_name', true );
-					$append_variations       = $append_variations === 'yes';
-					$wpml                    = get_post_meta( $feed_id, '_rex_feed_wpml_language', true ) ?: get_post_meta( $feed_id, 'rex_feed_wpml_language', true );
-					$feed_format             = get_post_meta( $feed_id, '_rex_feed_feed_format', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_format', true );
-					$feed_format             = $feed_format ?: 'xml';
-					$aelia_currency          = get_post_meta( $feed_id, '_rex_feed_aelia_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
-					$wmc_currency            = get_post_meta( $feed_id, '_rex_feed_wmc_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
-					$skip_row                = get_post_meta( $feed_id, '_rex_feed_skip_row', true ) ?: get_post_meta( $feed_id, 'rex_feed_skip_row', true );
-					$feed_separator          = get_post_meta( $feed_id, '_rex_feed_separator', true ) ?: get_post_meta( $feed_id, 'rex_feed_separator', true );
-
-					if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
-						$terms = wp_get_post_terms( $feed_id, $product_scope );
-						if ( $terms ) {
-							foreach ( $terms as $term ) {
-								$terms_array[] = $term->slug;
-							}
-						}
-					}
-
-					$payload = array(
-						'merchant'                => $merchant,
-						'feed_format'             => $feed_format,
-						'feed_config'             => $feed_config,
-						'append_variations'       => $append_variations,
-						'info'                    => array(
-							'post_id'        => $feed_id,
-							'title'          => get_the_title( $feed_id ),
-							'desc'           => get_the_title( $feed_id ),
-							'total_batch'    => $total_batches,
-							'batch'          => $i,
-							'per_page'       => $per_batch,
-							'offset'         => $offset,
-							'products_scope' => $product_scope,
-							'cats'           => $terms_array,
-							'tags'           => $terms_array,
-						),
-						'feed_filter'             => $feed_filter,
-						'include_variations'      => $include_variations,
-						'variable_product'        => $variable_product,
-						'parent_product'          => $parent_product,
-						'exclude_hidden_products' => $exclude_hidden_products,
-						'wpml_language'           => $wpml,
-						'aelia_currency'          => $aelia_currency,
-						'wmc_currency'            => $wmc_currency,
-						'skip_row'                => $skip_row,
-						'feed_separator'          => $feed_separator,
-					);
-					try {
-						$merchant = Rex_Product_Feed_Factory::build( $payload, true );
-						$merchant->make_feed();
-						$offset += (int) $per_batch;
-					}
-					catch ( Exception $e ) {
-						$log = wc_get_logger();
-						$log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
-					}
-				}
-				$count++;
-			}
-		}
-	}
-}
-
-
 if ( !function_exists( 'wpfm_get_cached_data' ) ) {
 	/**
 	 * Get wpfm transient by key
@@ -225,10 +121,27 @@ if ( !function_exists( 'wpfm_set_cached_data' ) ) {
 
 
 if ( ! function_exists( 'wpfm_purge_cached_data' ) ) {
-	function wpfm_purge_cached_data() {
-		global $wpdb;
-        $wpdb->query( "DELETE FROM $wpdb->options WHERE ({$wpdb->options}.option_name LIKE '_transient_timeout__wpfm_cache%') OR ({$wpdb->options}.option_name LIKE '_transient__wpfm_cache_%')" ); // phpcs:ignore
-	}
+    /**
+     * @desc Remove cached data from transient
+     * @param $key
+     * @return void
+     * @since 7.3.0
+     */
+    function wpfm_purge_cached_data( $key = false ) {
+        global $wpdb;
+        if( $key ) {
+            $query = "DELETE FROM $wpdb->options WHERE `option_name` = %s";
+            $wpdb->query( $wpdb->prepare( $query, "_transient_timeout__wpfm_cache_{$key}" ) );
+
+            $query = "DELETE FROM $wpdb->options WHERE option_name = %s";
+            $wpdb->query( $wpdb->prepare( $query, "_transient__wpfm_cache_{$key}" ) );
+        }
+        else {
+            $query = "DELETE FROM $wpdb->options WHERE ({$wpdb->options}.option_name LIKE %s) OR ({$wpdb->options}.option_name LIKE %s)";
+            $query = $wpdb->prepare( $query, '_transient_timeout__wpfm_cache%', '_transient__wpfm_cache_%' );
+            $wpdb->query( $query ); // phpcs:ignore
+        }
+    }
 }
 
 
@@ -634,26 +547,6 @@ if ( !function_exists( 'rex_feed_is_valid_xml' ) ) {
 }
 
 
-if ( !function_exists( 'rex_feed_get_wc_shipping_state_country' ) ) {
-	/**
-	 * @desc Check if a given xml file is valid.
-	 * @since 7.2.9
-	 * @param $file_url
-	 * @return mixed|void
-	 */
-	function rex_feed_get_wc_shipping_state_country() {
-		global $wpdb;
-		$query                 = "SELECT DISTINCT `location_code`, `location_type` FROM {$wpdb->prefix}woocommerce_shipping_zone_locations WHERE `location_type` IN( 'country', 'state', 'continent' ) ORDER BY `location_code` ASC";
-		$wc_shipping_locations = $wpdb->get_results( $query, ARRAY_A );
-
-		if ( !is_wp_error( $wc_shipping_locations ) && is_array( $wc_shipping_locations ) && !empty( $wc_shipping_locations ) ) {
-			return $wc_shipping_locations;
-		}
-		return array();
-	}
-}
-
-
 if ( !function_exists( 'rex_feed_is_wpfm_pro_active' ) ) {
 	/**
 	 * @desc Check if WPFM Pro is activated
@@ -669,19 +562,20 @@ if ( !function_exists( 'rex_feed_is_wpfm_pro_active' ) ) {
 
 
 if ( ! function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) ) {
-	/**
-	 * @desc check if Discount Rules and Dynamic Pricing for WooCommerce
-	 * by Asana Plugins is active.
-	 *
-	 * @return bool
-	 * @since 7.2.20
-	 */
-	function wpfm_is_discount_rules_asana_plugins_active() {
-		$active_plugings = get_option( 'active_plugins' );
-		$asana_plugin    = 'easy-woocommerce-discounts/easy-woocommerce-discounts.php';
+    /**
+     * @desc check if Discount Rules and Dynamic Pricing for WooCommerce
+     * by Asana Plugins is active.
+     *
+     * @return bool
+     * @since 7.2.20
+     */
+    function wpfm_is_discount_rules_asana_plugins_active() {
+        $active_plugings  = get_option( 'active_plugins', [] );
+        $asana_plugin     = 'easy-woocommerce-discounts/easy-woocommerce-discounts.php';
+        $asana_plugin_pro = 'easy-woocommerce-discounts-pro/easy-woocommerce-discounts.php';
 
-		return in_array( $asana_plugin, $active_plugings ) || is_plugin_active_for_network( $asana_plugin );
-	}
+        return in_array( $asana_plugin, $active_plugings ) || in_array( $asana_plugin_pro, $active_plugings ) || is_plugin_active_for_network( $asana_plugin ) || is_plugin_active_for_network( $asana_plugin_pro );
+    }
 }
 
 
@@ -740,6 +634,30 @@ if ( !function_exists( 'wpfm_get_woocommerce_shop_name' ) ) {
 	}
 }
 
+if( !function_exists( 'wpfm_get_woocommerce_shop_name' ) ) {
+    /**
+     * @desc Get the WooCommerce shop name
+     * @return string
+     * @since 7.2.21
+     */
+    function wpfm_get_woocommerce_shop_name() {
+        $wc_shop_page_id = get_option( 'woocommerce_shop_page_id' );
+        return get_the_title( $wc_shop_page_id );
+    }
+}
+
+if( !function_exists( 'wpfm_restructure_custom_filter_args' ) ) {
+    /**
+     * Restructure old version custom filter args structure
+     *
+     * @param array $filters Custom filter options
+     * @return array
+     * @since 7.3.0
+     */
+    function wpfm_restructure_custom_filter_args( $filters ) {
+        return isset( $filters[ 0 ][ 0 ] ) ? $filters : [ $filters ];
+    }
+}
 if ( !function_exists( 'wpfm_get_the_term_path' ) ) {
 
 	/**

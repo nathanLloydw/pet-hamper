@@ -63,12 +63,13 @@ class Rex_Product_CPT {
 			'title'            => __( 'Title', 'rex-product-feed' ),
 			'merchant'         => __( 'Merchant', 'rex-product-feed' ),
 			'xml_feed'         => __( 'Feed File', 'rex-product-feed' ),
-			'refresh_interval' =>__( 'Refresh Interval', 'rex-product-feed' ),
-			'feed_status'      =>__( 'Status', 'rex-product-feed' ),
-			'view_feed'        =>__( 'View/Download', 'rex-product-feed' ),
-			'total_products'   =>__( 'Total Products', 'rex-product-feed' ),
-			'date'             =>__( 'Date', 'rex-product-feed' ),
-			'scheduled'        =>__( 'Updated', 'rex-product-feed' ),
+			'refresh_interval' => __( 'Refresh Interval', 'rex-product-feed' ),
+			'feed_status'      => __( 'Status', 'rex-product-feed' ),
+			'update_feed'      => __( 'Update Feed', 'rex-product-feed' ),
+			'view_feed'        => __( 'View/Download', 'rex-product-feed' ),
+			'total_products'   => __( 'Total Products', 'rex-product-feed' ),
+			'date'             => __( 'Date', 'rex-product-feed' ),
+			'scheduled'        => __( 'Updated', 'rex-product-feed' ),
 		);
 	}
 
@@ -80,6 +81,13 @@ class Rex_Product_CPT {
 	 * @since 6.1.2
 	 */
 	public function fill_product_feed_columns( $column, $post_id ) {
+		$feed_update_status = get_post_meta( $post_id, '_rex_feed_status', true ) ?: get_post_meta( $post_id, 'rex_feed_status', true );
+		$disabled = '';
+		
+		if( 'processing' === $feed_update_status || 'In queue' === $feed_update_status ) {
+			$disabled = 'disabled="disabled" style="pointer-events: none;"';
+		}
+
 		switch ( $column ) {
 			case 'merchant':
 				$feed_merchant = get_post_meta( $post_id, '_rex_feed_merchant', true ) ?: get_post_meta( $post_id, 'rex_feed_merchant', true );
@@ -107,7 +115,6 @@ class Rex_Product_CPT {
 				}
 				break;
 			case 'feed_status':
-				$feed_update_status = get_post_meta( $post_id, '_rex_feed_status', true ) ?: get_post_meta( $post_id, 'rex_feed_status', true );
 				if ( $feed_update_status ) {
 					if ( 'processing' === $feed_update_status ) {
 						?>
@@ -122,21 +129,24 @@ class Rex_Product_CPT {
 							})(jQuery);
 						</script>
 						<?php
-						echo '<div class="blink">' . esc_html( ucwords( $feed_update_status ) ) . '<span>.</span><span>.</span><span>.</span></div>';
+						echo '<div class="blink">' . esc_html( ucfirst( $feed_update_status ) ) . '<span>.</span><span>.</span><span>.</span></div>';
 					}
 					else {
-						echo esc_html( ucwords( $feed_update_status ) );
+						echo esc_html( ucfirst( $feed_update_status ) );
 					}
 				}
 				else {
 					echo 'Completed';
 				}
 				break;
+			case 'update_feed' :
+				echo '<a class="button rex-feed-update-single-feed" data-feed-id="' . $post_id . '" ' . $disabled . '>' . __( 'Update', 'rex-product-feed' ) .  '</a> ';
+				break;
 			case 'view_feed':
 				$url = get_post_meta( $post_id, '_rex_feed_xml_file', true ) ?: get_post_meta( $post_id, 'rex_feed_xml_file', true );
 				$url = esc_url( $url );
-				echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '">View</a> ';
-				echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '" download>Download</a>';
+				echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '" ' . $disabled . '>' . __( 'View', 'rex-product-feed' ) . '</a> ';
+				echo '<a target="_blank" class="button" href="' . esc_url( $url ) . '" ' . $disabled . ' download>' . __( 'Download', 'rex-product-feed' ) . '</a>';
 				break;
 			case 'total_products':
 				$total_products = get_post_meta( $post_id, '_rex_feed_total_products', true ) ?: get_post_meta( $post_id, 'rex_feed_total_products', true );

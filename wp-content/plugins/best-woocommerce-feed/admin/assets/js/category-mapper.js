@@ -2,14 +2,10 @@
 jQuery(document).ready(function($){
 
     $(function() {
-        var $payload = {};
-        wpAjaxHelperRequest( 'rex-wpfm-fetch-google-category', $payload )
+        wpAjaxHelperRequest( 'rex-wpfm-fetch-google-category' )
             .success( function( data ) {
-                var googleCatArray = $.parseJSON(data);
-                var dataCountry = {};
-                // for (var i = 0; i < googleCatArray.length; i++) {
-                //     dataCountry[googleCatArray[i]]= null;
-                // }
+                const googleCatArray = $.parseJSON(data);
+
                 $('.category-suggest').autocomplete({
                     source: googleCatArray,
                     classes: {
@@ -50,16 +46,17 @@ jQuery(document).ready(function($){
     /**
      * Category Map Save
      */
-    function category_mapping(event) {
+    function save_category_mapping(event) {
         event.preventDefault();
-        var $payload = {
+        let $payload = {
             map_name: $('#map_name').val(),
             cat_map: $('.add_cat_map').serialize(),
         };
-        console.log($('.add_cat_map').serialize())
+
         if ($('#map_name').val().length != 0){
             $('.rex-loading-spinner').css('display', 'flex');
-            wpAjaxHelperRequest( 'category-mapping', $payload )
+
+            wpAjaxHelperRequest( 'save-category-mapping', $payload )
                 .success( function( response ) {
                     $('.rex-loading-spinner').css('display', 'none');
                     setTimeout(function(){// wait for 5 secs(2)
@@ -73,13 +70,14 @@ jQuery(document).ready(function($){
                     console.log( 'Uh, oh!' );
                     console.log( response.statusText );
                 });
-        }else {
+        }
+        else {
             alert('Please Insert Category Map Name')
         }
         return false;
 
     }
-    $(document).on('click', '#save_mapping_cat', category_mapping);
+    $(document).on('click', '#save_mapping_cat', save_category_mapping);
 
 
     /**
@@ -87,18 +85,18 @@ jQuery(document).ready(function($){
      */
     function category_mapping_update(event) {
         event.preventDefault();
-        var form = $(this).closest('form');
-        var container = $(this).closest('.acordion-item');
-        var map_name = container.find('.mapper_name_update');
-        var btn_id = $(this).attr('id');
-        var $payload = {
+        let form = $(this).closest('form');
+        let container = $(this).closest('.acordion-item');
+        let map_name = container.find('.mapper_name_update');
+        let btn_id = $(this).attr('id');
+        let $payload = {
             map_name: map_name.text(),
             cat_map: form.serialize(),
             map_key: map_name.attr('data-id')
         };
         $('.rex-loading-spinner').css('display', 'flex');
 
-        wpAjaxHelperRequest( 'category-mapping-update', $payload )
+        wpAjaxHelperRequest( 'update-category-mapping', $payload )
             .success( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Woohoo!' );
@@ -121,13 +119,15 @@ jQuery(document).ready(function($){
      */
     function delete_mapping(event) {
         event.preventDefault();
-        var container = $(this).closest('.acordion-item');
-        var map_name = container.find('.mapper_name_update');
-        var $payload = {
+        let container = $(this).closest('.acordion-item');
+        let map_name = container.find('.mapper_name_update');
+        let $payload = {
             map_key: map_name.attr('data-id')
         };
+
         $('.rex-loading-spinner').css('display', 'flex');
-        wpAjaxHelperRequest( 'category-mapping-delete', $payload )
+
+        wpAjaxHelperRequest( 'delete-category-mapping', $payload )
             .success( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 container.fadeOut();

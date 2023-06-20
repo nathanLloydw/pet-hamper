@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.2.35
+ * Version:           7.3.1
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -33,14 +33,12 @@
  * WC tested up to: 7.5.0
  */
 
-
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.2.35' );
+    define( 'WPFM_VERSION', '7.3.1' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -60,8 +58,8 @@ if ( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER' ) && defined( 'WPFM_PLUGIN_DIR_URL' )
 if ( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER_PATH' ) && defined( 'WPFM_PLUGIN_DIR_PATH' ) ) {
 	define( "WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH . 'admin/assets/' );
 }
-if ( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
-	define( 'WPFM_PRO_REQUIRED_VERSION', '6.3.10' );
+if( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
+    define( 'WPFM_PRO_REQUIRED_VERSION', '6.4.0' );
 }
 if ( !defined( 'WPFM_ETSY_REQUIRED_VERSION' ) ) {
 	define( 'WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
@@ -80,6 +78,21 @@ if ( !defined( 'WPFM_SLUG' ) ) {
 }
 if ( !defined( 'WPFM_BASE' ) && defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM_BASE', plugin_basename( WPFM__FILE__ ) );
+}
+if( !defined( 'HOURLY_SCHEDULE_HOOK' ) ) {
+    define( 'HOURLY_SCHEDULE_HOOK', 'rex_feed_hourly_update' );
+}
+if( !defined( 'DAILY_SCHEDULE_HOOK' ) ) {
+    define( 'DAILY_SCHEDULE_HOOK', 'rex_feed_daily_update' );
+}
+if( !defined( 'WEEKLY_SCHEDULE_HOOK' ) ) {
+    define( 'WEEKLY_SCHEDULE_HOOK', 'rex_feed_weekly_update' );
+}
+if( !defined( 'SINGLE_SCHEDULE_HOOK' ) ) {
+    define( 'SINGLE_SCHEDULE_HOOK', 'rex_feed_regenerate_feed_batch' );
+}
+if( !defined( 'WC_SINGLE_SCHEDULER' ) ) {
+    define( 'WC_SINGLE_SCHEDULER', 'rex_feed_update_abandoned_child_list' );
 }
 
 
@@ -226,23 +239,12 @@ function deactivate_rex_product_feed() {
 register_activation_hook( __FILE__, 'activate_rex_product_feed' );
 register_deactivation_hook( __FILE__, 'deactivate_rex_product_feed' );
 
-
-
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-rex-product-feed.php';
 require plugin_dir_path( __FILE__ ) . 'includes/helper.php';
-
-function wpfm_plugin_redirect() {
-	if ( get_option( 'rex_wpfm_plugin_do_activation_redirect', false ) ) {
-		delete_option( 'rex_wpfm_plugin_do_activation_redirect' );
-		$url = "admin.php?page=bwfm-dashboard";
-		$url = filter_var( $url, FILTER_SANITIZE_URL );
-		exit( wp_redirect( $url ) );
-	}
-}
 
 
 /**

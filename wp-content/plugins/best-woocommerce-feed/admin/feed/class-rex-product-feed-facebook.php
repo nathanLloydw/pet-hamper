@@ -176,7 +176,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     private function add_to_feed( $product, $meta_keys, $product_type = '' )
     {
         $attributes = $this->get_product_data( $product, $meta_keys );
-        //$attributes = $this->process_attributes_for_shipping_tax( $attributes );
 
         if( ( $this->rex_feed_skip_product && empty( array_keys( $attributes, '' ) ) ) || !$this->rex_feed_skip_product ) {
             $item = GoogleShopping::createItem();

@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.2.35
+Stable tag:  7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,13 +44,13 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
+><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get 30% off on Product Feed Manager for WooCommerce - Pro</a>
 
 
 <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">All Features</a> | <a target="_blank" href="https://rextheme.com/product-feed-manager-for-woocommerce-survey/?utm_source=repo&utm_medium=repo&utm_campaign=repo_survey&utm_id=repo_survey">Give Your Feedback</a>
 
 
-[youtube https://www.youtube.com/watch?v=9-Q65zMYvfg]
+[youtube https://youtu.be/7VVuLP6bkoM?utm_source=repo&utm_medium=repo&utm_campaign=repo_relaunchvdo&utm_id=repo_relaunchvdo]
 
 == Best Plugin To Generate WooCommerce Google Product Feed ==
 
@@ -142,7 +142,7 @@ You can just select the option and include variable products with or without par
 
 **Create A Custom Feed For Any Merchant**
 
-The custom feed option will allow you to create a personalized feed for any marketplace you want. 
+The custom feed option will allow you to create a personalized feed for any marketplace you want.
 
 The custom WooCommerce feed option will help you to -
 
@@ -172,6 +172,14 @@ With Facebook Pixel, you can track:
 
 
 >  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
+
+**Combine Multiple Attributes In The Feed**
+
+You can now merge different attributes in a single attribute, to show in your feed.
+
+For example, in the product title you can add brand name to attract your targeted audience. This feature removes the hassle of manually doing it.
+
+By combining different attributes, you can create more descriptive and keyword-rich product titles, which can help your  products rank higher in search engines and attract more organic traffic to your sites.
 
 == Free Features ==
 
@@ -873,6 +881,19 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.3.1 (2023-06-16) =
+* Enhancement: Optimized custom filtering process
+* Fixed: Polylang compatibility
+
+= 7.3.0 (2023-06-15) =
+* Enhancement: New improved feed configuration UI
+* Enhancement: New improved custom filter UI
+* Enhancement: New improved attribute mapping UI
+* Enhancement: Introducing Action Scheduler by WooCommerce
+* Enhancement: Improved shipping value for Google/Facebook
+* Enhancement: Improved tax value for Google/Facebook
+* Fixed: Google category mapping issue
 
 = 7.2.35 (2023-05-17) =
 * Fixed: Updated the Mirakl merchant XML feed format

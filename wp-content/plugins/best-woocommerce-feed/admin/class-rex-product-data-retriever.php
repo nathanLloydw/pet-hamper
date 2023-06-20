@@ -142,6 +142,14 @@ class Rex_Product_Data_Retriever {
 	protected $feed_country;
 
 	/**
+	 * Variable for feed tax id
+	 *
+	 * @since 7.3.1
+	 * @var string
+	 */
+	protected $feed_tax_id;
+
+	/**
 	 * Variable for feed zip code
 	 *
 	 * @since 7.2.18
@@ -149,6 +157,11 @@ class Rex_Product_Data_Retriever {
 	 * @var mixed|string
 	 */
 	protected $feed_zip_codes;
+
+    /**
+     * @var bool
+     */
+    public $feed_rules_option;
 
 	/**
 	 * Initialize the class and set its properties
@@ -166,7 +179,8 @@ class Rex_Product_Data_Retriever {
 		$this->analytics_params   = $feed->analytics_params;
 		$this->feed_config        = $feed->feed_config;
 		$this->feed_rules         = $feed->feed_rules;
-		$this->product_meta_keys  = $product_meta_keys;
+        $this->feed_rules_option  = $feed->feed_rules_option;
+        $this->product_meta_keys  = $product_meta_keys;
 		$this->append_variation   = $feed->append_variation;
 		$this->aelia_currency     = $feed->aelia_currency;
 		$this->wmc_currency       = $feed->wmc_currency;
@@ -176,6 +190,7 @@ class Rex_Product_Data_Retriever {
 		$this->feed_format        = $feed->get_feed_format();
 		$this->feed_country       = $feed->get_shipping();
 		$this->feed_zip_codes     = $feed->get_zip_code();
+		$this->feed_tax_id        = $feed->get_tax_id();
 
 		$log = wc_get_logger();
 		if ( $this->is_logging_enabled ) {
@@ -243,14 +258,14 @@ class Rex_Product_Data_Retriever {
 	 * @throws Exception Exception.
 	 * @since 1.0.0
 	 */
-	public function set_val( $rule ) {
+	protected function set_val( $rule ) {
 		$val = '';
 
 		if ( isset( $rule[ 'meta_key' ] ) && isset( $rule[ 'type' ] ) ) {
 			if ( 'static' === $rule[ 'type' ] ) {
 				$val = $rule[ 'st_value' ];
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_primary_attr( $rule[ 'meta_key' ] ) ) {
-				$escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
+				$escape = !empty( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
 				$val    = $this->set_pr_att( $rule[ 'meta_key' ], $escape );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_woodmart_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
@@ -831,7 +846,8 @@ class Rex_Product_Data_Retriever {
 		$attr_val = '';
 		switch ( $key ) {
 			case 'shipping':
-				$methods  = $this->get_shipping_methods();
+                $rex_feed_shipping = new Rex_Product_Feed_Shipping( $this->feed_country );
+				$methods  = $rex_feed_shipping->get_shipping_zones( $this->product );
 				$attr_val = $this->add_class_no_class_cost( $methods, $rule );
 				break;
 
@@ -1580,458 +1596,28 @@ class Rex_Product_Data_Retriever {
 				return $sale_price > 0 ? wc_format_decimal( $sale_price, wc_get_price_decimals() ) : '';
 
 			case 'price_with_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
-
-						// if WCML price is set manually.
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_regular_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = rex_feed_get_grouped_price( $this->product, '_regular_price' );
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-
-						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
-						} else {
-							$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
-						}
-
-						// if WCML price is set manually.
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_regular_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = $_pr->get_composite_price();
-							$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-							$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-							$_price = $_price > 0 ? $_price : '';
-							return wc_format_decimal( $_price, wc_get_price_decimals() );
-						} else {
-							$_price = $_pr->get_composite_regular_price();
-							$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-							$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-							$_price = $_price > 0 ? $_price : '';
-							return wc_format_decimal( $_price, wc_get_price_decimals() );
-						}
-					}
-				}
-				if ( $this->wcml ) {
-					global $woocommerce_wpml;
-					$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-					// if WCML price is set manually.
-					$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-					if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-						$_price = $_custom_prices[ '_regular_price' ];
-					}
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					return $_price > 0 ? $_price : '';
-				} else {
-					$_price = $this->product->get_regular_price();
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-					$_price = $_price > 0 ? $_price : '';
-					return wc_format_decimal( $_price, wc_get_price_decimals() );
-				}
+                $_price = $this->set_price_attr( 'price', $rule );
+                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
 
 			case 'current_price_with_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
-
-						// if WCML price is set manually.
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = rex_feed_get_grouped_price( $this->product, '_price' );
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = $_pr->get_composite_price();
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-				if ( $this->wcml ) {
-					global $woocommerce_wpml;
-					$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-					// if WCML price is set manually
-					$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-					if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-						$_price = $_custom_prices[ '_price' ];
-					}
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					return $_price > 0 ? $_price : '';
-				} else {
-					$_price = $this->product->get_price();
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-					$_price = $_price > 0 ? $_price : '';
-					return wc_format_decimal( $_price, wc_get_price_decimals() );
-				}
+                $_price = $this->set_price_attr( 'current_price', $rule );
+                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
 
 			case 'sale_price_with_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = rex_feed_get_grouped_price( $this->product, '_sale_price' );
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = $_pr->get_sale_price();
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-				$sale_price = $this->product->get_sale_price();
-				if ( $sale_price > 0 ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-
-				$sale_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
-				return $sale_price > 0 ? $sale_price : '';
+                $_price = $this->set_price_attr( 'sale_price', $rule );
+                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
 
 			case 'price_excl_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_regular_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-
-						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
-						} else {
-							$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
-						}
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-
-						if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_regular_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = $_pr->get_composite_price();
-							$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-							$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-
-							$_price = $_price > 0 ? $_price : '';
-							return wc_format_decimal( $_price, wc_get_price_decimals() );
-						} else {
-							$_price = $_pr->get_composite_regular_price();
-							$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-							$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-
-							$_price = $_price > 0 ? $_price : '';
-							return wc_format_decimal( $_price, wc_get_price_decimals() );
-						}
-					}
-				}
-				if ( $this->wcml ) {
-					global $woocommerce_wpml;
-					$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-					// if WCML price is set manually
-					$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-					if ( !empty( $_custom_prices[ '_regular_price' ] ) && $_custom_prices[ '_regular_price' ] > 0 ) {
-						$_price = $_custom_prices[ '_regular_price' ];
-					}
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					return $_price > 0 ? $_price : '';
-				} else {
-					$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) );
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_regular_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					$_price = $_price > 0 ? $_price : '';
-					return wc_format_decimal( $_price, wc_get_price_decimals() );
-				}
+                $_price = $this->set_price_attr( 'price', $rule );
+                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
 
 			case 'current_price_excl_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = $_pr->get_composite_price();
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-				if ( $this->wcml ) {
-					global $woocommerce_wpml;
-					$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-					// if WCML price is set manually
-					$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-					if ( !empty( $_custom_prices[ '_price' ] ) && $_custom_prices[ '_price' ] > 0 ) {
-						$_price = $_custom_prices[ '_price' ];
-					}
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					$_price = $_price > 0 ? $_price : '';
-					return wc_format_decimal( $_price, wc_get_price_decimals() );
-				} else {
-					$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) );
-					$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_price' );
-
-					$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-					$_price = $_price > 0 ? $_price : '';
-					return wc_format_decimal( $_price, wc_get_price_decimals() );
-				}
+                $_price = $this->set_price_attr( 'current_price', $rule );
+                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
 
 			case 'sale_price_excl_tax':
-				if ( $this->product->is_type( 'grouped' ) ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					}
-				} elseif ( $this->product->is_type( 'composite' ) ) {
-					$_pr = class_exists( 'WC_Product_Composite' ) ? new WC_Product_Composite( $this->product->get_id() ) : null;
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = $_pr->get_sale_price();
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-				$sale_price = $this->product->get_sale_price();
-				if ( $sale_price > 0 ) {
-					if ( $this->wcml ) {
-						global $woocommerce_wpml;
-						$_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
-
-						// if WCML price is set manually
-						$_custom_prices = $woocommerce_wpml ? $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency ) : $_price;
-						if ( !empty( $_custom_prices[ '_sale_price' ] ) && $_custom_prices[ '_sale_price' ] > 0 ) {
-							$_price = $_custom_prices[ '_sale_price' ];
-						}
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						return $_price > 0 ? $_price : '';
-					} else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
-						$_price = $this->get_converted_price( $this->product->get_id(), $_price, '_sale_price' );
-
-						$_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
-						$_price = $_price > 0 ? $_price : '';
-						return wc_format_decimal( $_price, wc_get_price_decimals() );
-					}
-				}
-
-				$sale_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
-				return $sale_price > 0 ? $sale_price : '';
+                $_price = $this->set_price_attr( 'sale_price', $rule );
+                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
 
 			case 'price_db':
 				if ( $this->wcml ) {
@@ -3793,68 +3379,6 @@ class Rex_Product_Data_Retriever {
 		}
 		return 'no';
 	}
-
-
-	/**
-	 * Get shipping method(s)
-	 * available for the selected feed country
-	 *
-	 * @return bool
-	 * @since 7.2.11
-	 */
-	public function get_shipping_methods() {
-		$feed_location          = explode( ':', $this->feed_country );
-		$state                  = isset( $feed_location[ 0 ] ) ? $feed_location[ 0 ] : '';
-		$country                = isset( $feed_location[ 1 ] ) ? $feed_location[ 1 ] : '';
-		$continent              = isset( $feed_location[ 2 ] ) ? $feed_location[ 2 ] : '';
-		$default_shipping_zones = wpfm_get_cached_data( 'wc_shipping_zones_' . $continent . $country . $state . $this->feed_zip_codes );
-
-		if ( 'all' !== $this->feed_country && !$default_shipping_zones ) {
-			$wc_shipping_zones = WC_Shipping_Zones::get_zones();
-
-			foreach ( $wc_shipping_zones as $zone ) {
-				if ( isset( $zone[ 'zone_locations' ] ) && is_array( $zone[ 'zone_locations' ] ) && !empty( $zone[ 'zone_locations' ] ) ) {
-					$zone_locations = array_column( $zone[ 'zone_locations' ], 'code' );
-
-					if ( !empty( $zone_locations ) && isset( $zone[ 'shipping_methods' ] ) && ( in_array( $country, $zone_locations ) || in_array( $this->feed_zip_codes, $zone_locations ) ) ) {
-						foreach ( $zone[ 'shipping_methods' ] as $method ) {
-							if ( $method->is_enabled() ) {
-								$service  = '';
-								$price    = 0;
-								$instance = array();
-
-								if ( isset( $method->instance_settings[ 'cost' ] ) ) {
-									$price = (float) $method->instance_settings[ 'cost' ];
-								}
-
-								if ( isset( $zone[ 'zone_name' ] ) ) {
-									$service .= $zone[ 'zone_name' ];
-								}
-								if ( isset( $method->instance_settings[ 'title' ] ) ) {
-									$service .= ' ' . $method->instance_settings[ 'title' ];
-
-									if ( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
-										$instance = $method->instance_settings;
-									}
-								}
-
-								$default_shipping_zones[] = array(
-									'country'  => $country,
-									'region'   => $state,
-									'service'  => $service . ' ' . $country,
-									'price'    => $price,
-									'instance' => $instance,
-								);
-							}
-						}
-					}
-				}
-			}
-			wpfm_set_cached_data( 'wc_shipping_zones_' . $continent . $country . $state . $this->feed_zip_codes, $default_shipping_zones );
-		}
-		return $default_shipping_zones;
-	}
-
 
 	/**
 	 * Add shipping class price/ no class price with base class

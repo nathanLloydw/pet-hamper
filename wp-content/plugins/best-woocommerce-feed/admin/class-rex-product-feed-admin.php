@@ -21,414 +21,373 @@
  */
 class Rex_Product_Feed_Admin {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
-	private $plugin_name;
+    /**
+     * The ID of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string $plugin_name The ID of this plugin.
+     */
+    private $plugin_name;
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    3.0
-	 * @access   private
-	 * @var      string $plugin_basename The ID of this plugin.
-	 */
-	private $plugin_basename;
+    /**
+     * The ID of this plugin.
+     *
+     * @since    3.0
+     * @access   private
+     * @var      string $plugin_basename The ID of this plugin.
+     */
+    private $plugin_basename;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
-	 */
-	private $version;
+    /**
+     * The version of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string $version The current version of this plugin.
+     */
+    private $version;
 
-	/**
-	 * Cron Handler
-	 *
-	 * @since    1.3.2
-	 * @access   private
-	 * @var      object $cron The current cron of this plugin.
-	 */
-	private $cron;
+    /**
+     * Cron Handler
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      object $cron The current cron of this plugin.
+     */
+    private $cron;
 
-	/**
-	 * Google merchant page
-	 *
-	 * @since    1.3.2
-	 * @access   private
-	 * @var      string
-	 */
-	private $google_screen_hook_suffix = null;
+    /**
+     * Google merchant page
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $google_screen_hook_suffix = null;
 
-	/**
-	 * Category Mapping page
-	 *
-	 * @since    1.3.2
-	 * @access   private
-	 * @var      string
-	 */
-	private $category_mapping_screen_hook_suffix = null;
+    /**
+     * Category Mapping page
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $category_mapping_screen_hook_suffix = null;
 
-	/**
-	 * Dashboard
-	 *
-	 * @since    1.3.2
-	 * @access   private
-	 * @var      string
-	 */
-	private $dashboard_screen_hook_suffix = null;
+    /**
+     * Dashboard
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $dashboard_screen_hook_suffix = null;
 
-	/**
-	 * WPFM pro
-	 *
-	 * @since    3.0
-	 * @access   private
-	 * @var      string
-	 */
-	private $wpfm_pro_submenu = null;
+    /**
+     * WPFM pro
+     *
+     * @since    3.0
+     * @access   private
+     * @var      string
+     */
+    private $wpfm_pro_submenu = null;
 
-	/**
-	 * Setup Wizard menu
-	 *
-	 * @since    7.3.0
-	 * @access   private
-	 * @var      string
-	 */
-	private $setup_wizard_hook_suffix = null;
+    /**
+     * Setup Wizard menu
+     *
+     * @since    7.3.0
+     * @access   private
+     * @var      string
+     */
+    private $setup_wizard_hook_suffix = null;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 * @since    1.0.0
-	 */
-	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name     = $plugin_name;
-		$this->plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
-		$this->version         = $version;
-		$this->cron            = new Rex_Feed_Scheduler();
-	}
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @param string $plugin_name The name of this plugin.
+     * @param string $version The version of this plugin.
+     * @since    1.0.0
+     */
+    public function __construct( $plugin_name, $version ) {
+        $this->plugin_name     = $plugin_name;
+        $this->plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
+        $this->version         = $version;
+        $this->cron            = new Rex_Feed_Scheduler();
+    }
 
-	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @param string $hook Hook.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles( $hook ) {
+    /**
+     * Register the stylesheets for the admin area.
+     *
+     * @param string $hook Hook.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_styles( $hook ) {
 
-		// Global CSS file.
-		wp_enqueue_style( $this->plugin_name . '-global', WPFM_PLUGIN_ASSETS_FOLDER . 'css/global.css', array(), $this->version );
+        // Global CSS file.
+        wp_enqueue_style( $this->plugin_name . '-global', WPFM_PLUGIN_ASSETS_FOLDER . 'css/global.css', array(), $this->version );
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Rex_Product_Feed_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Rex_Product_Feed_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-		$screen = get_current_screen();
-		if ( 'edit.php' === $hook ) {
-			return;
-		}
-		$pages = array( $this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix, $this->wpfm_pro_submenu );
-		$pages = apply_filters( 'wpfm_page_hooks', $pages );
-		if ( 'product-feed' === $screen->post_type || in_array( $screen->id, $pages, true ) ) {
-			wp_enqueue_style( $this->plugin_name . '-font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
-			wp_enqueue_style( $this->plugin_name . '-wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version );
-			wp_enqueue_style( $this->plugin_name . '-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version );
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Rex_Product_Feed_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Rex_Product_Feed_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+        $screen = get_current_screen();
+        if ( 'edit.php' === $hook ) {
+            return;
+        }
+        $pages = array( $this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix, $this->wpfm_pro_submenu );
+        $pages = apply_filters( 'wpfm_page_hooks', $pages );
+        if ( 'product-feed' === $screen->post_type || in_array( $screen->id, $pages, true ) ) {
+            wp_enqueue_style( $this->plugin_name . '-font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
+            wp_enqueue_style( $this->plugin_name . '-wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version );
+            wp_enqueue_style( $this->plugin_name . '-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version );
 
-			$_get = rex_feed_get_sanitized_get_post();
-			$_get = !empty( $_get[ 'get' ] ) ? $_get[ 'get' ] : array();
+            $_get = rex_feed_get_sanitized_get_post();
+            $_get = !empty( $_get[ 'get' ] ) ? $_get[ 'get' ] : array();
 
-			if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && 1 === (int) $_get[ 'tour_guide' ] ) {
-				wp_enqueue_style( $this->plugin_name . '-shepherd', WPFM_PLUGIN_ASSETS_FOLDER . 'css/shepherd.css', array(), $this->version );
-			}
+            if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && 1 === (int) $_get[ 'tour_guide' ] ) {
+                wp_enqueue_style( $this->plugin_name . '-shepherd', WPFM_PLUGIN_ASSETS_FOLDER . 'css/shepherd.css', array(), $this->version );
+            }
 
-			wp_enqueue_style( $this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version );
-			wp_style_add_data( $this->plugin_name . '-style-css', 'rtl', 'replace' );
-		}
-	}
+            wp_enqueue_style( $this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version );
+            wp_style_add_data( $this->plugin_name . '-style-css', 'rtl', 'replace' );
+        }
+    }
 
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @param string $hook Hook.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts( $hook ) {
+    /**
+     * Register the JavaScript for the admin area.
+     *
+     * @param string $hook Hook.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_scripts( $hook ) {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Rex_Product_Feed_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Rex_Product_Feed_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-		$db_version = get_option( 'rex_wpfm_db_version' );
-		$data       = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
-		$get_data   = !empty( $data[ 'get' ] ) ? $data[ 'get' ] : array();
-		if ( $db_version < 3 ) {
-			$current_screen = get_current_screen();
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Rex_Product_Feed_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Rex_Product_Feed_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+        $db_version = get_option( 'rex_wpfm_db_version' );
+        $data       = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
+        $get_data   = !empty( $data[ 'get' ] ) ? $data[ 'get' ] : array();
+        if ( $db_version < 3 ) {
+            $current_screen = get_current_screen();
 
-			if ( gettype( $current_screen ) === 'object' && property_exists( $current_screen, 'base' ) && property_exists( $current_screen, 'post_type' ) ) {
-				if ( 'post' === $current_screen->base && 'product-feed' === $current_screen->post_type ) {
-					if ( 'add' === $current_screen->action ) {
-						$current_screen = 'add';
-					} elseif ( isset( $get_data[ 'action' ] ) && 'edit' === $get_data[ 'action' ] ) {
-						$current_screen = 'rex_feed_edit';
-					} else {
-						$current_screen = '';
-					}
-				} elseif ( 'product-feed_page_wpfm_dashboard' === $current_screen->base ) {
-					$current_screen = $current_screen->base;
-				}
-			} else {
-				$current_screen = '';
-			}
+            if ( gettype( $current_screen ) === 'object' && property_exists( $current_screen, 'base' ) && property_exists( $current_screen, 'post_type' ) ) {
+                if ( 'post' === $current_screen->base && 'product-feed' === $current_screen->post_type ) {
+                    if ( 'add' === $current_screen->action ) {
+                        $current_screen = 'add';
+                    } elseif ( isset( $get_data[ 'action' ] ) && 'edit' === $get_data[ 'action' ] ) {
+                        $current_screen = 'rex_feed_edit';
+                    } else {
+                        $current_screen = '';
+                    }
+                } elseif ( 'product-feed_page_wpfm_dashboard' === $current_screen->base ) {
+                    $current_screen = $current_screen->base;
+                }
+            } else {
+                $current_screen = '';
+            }
 
-			wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, false );
-			wp_localize_script(
-				'rex-wpfm-global-js',
-				'rex_wpfm_ajax',
-				array(
-					'ajax_url'             => admin_url( 'admin-ajax.php' ),
-					'ajax_nonce'           => wp_create_nonce( 'rex-wpfm-ajax' ),
-					'is_premium'           => apply_filters( 'wpfm_is_premium', false ),
-					'feed_id'              => get_the_ID(),
-					'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
-					'current_screen'       => $current_screen,
-				)
-			);
-		}
+            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, false );
+            wp_localize_script(
+                'rex-wpfm-global-js',
+                'rex_wpfm_ajax',
+                array(
+                    'ajax_url'             => admin_url( 'admin-ajax.php' ),
+                    'ajax_nonce'           => wp_create_nonce( 'rex-wpfm-ajax' ),
+                    'is_premium'           => apply_filters( 'wpfm_is_premium', false ),
+                    'feed_id'              => get_the_ID(),
+                    'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
+                    'current_screen'       => $current_screen,
+                )
+            );
+        }
 
-		$screen = get_current_screen();
-		if ( 'edit.php' === $hook ) {
-			return;
-		}
-		$pages = array( $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu, $this->setup_wizard_hook_suffix );
-		$pages = apply_filters( 'wpfm_page_hooks', $pages );
-		if ( 'product-feed' === $screen->post_type || in_array( $screen->id, $pages, true ) ) {
-			wp_enqueue_script( 'jquery-ui-autocomplete' );
-			wp_enqueue_script(
-				'jquery-stop-watch',
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.stopwatch.js',
-				array( 'jquery' ),
-				$this->version,
-				true
-			);
-			wp_enqueue_script(
-				'jquery-nice-select',
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.nice-select.min.js',
-				array( 'jquery' ),
-				$this->version,
-				true
-			);
-			wp_enqueue_script(
-				$this->plugin_name . '-select2',
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/select2.min.js',
-				array( 'jquery' ),
-				$this->version
-			);
-			wp_enqueue_script(
-				$this->plugin_name,
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-admin.js',
-				array( 'jquery' ),
-				$this->version,
-				true
-			);
-			wp_localize_script(
-				$this->plugin_name,
-				'rex_wpfm_admin_translate_strings',
-				array(
-					'google_cat_map_btn'    => __( 'Configure Category Mapping', 'rex-product-feed' ),
-					'optimize_pr_title_btn' => __( 'Optimize Product Title', 'rex-product-feed' ),
-				)
-			);
-			wp_enqueue_script(
-				'jquery-cookie',
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/js.cookie.min.js',
-				array( 'jquery' ),
-				$this->version,
-				true
-			);
+        $screen = get_current_screen();
+        if ( 'edit.php' === $hook ) {
+            return;
+        }
+        $pages = array( $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu, $this->setup_wizard_hook_suffix );
+        $pages = apply_filters( 'wpfm_page_hooks', $pages );
+        if ( 'product-feed' === $screen->post_type || in_array( $screen->id, $pages, true ) ) {
+            wp_enqueue_script( 'jquery-ui-autocomplete' );
+            wp_enqueue_script(
+                'jquery-stop-watch',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.stopwatch.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
+            wp_enqueue_script(
+                'jquery-nice-select',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.nice-select.min.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
+            wp_enqueue_script(
+                $this->plugin_name . '-select2',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/select2.min.js',
+                array( 'jquery' ),
+                $this->version
+            );
+            wp_enqueue_script(
+                $this->plugin_name,
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-admin.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
+            wp_localize_script(
+                $this->plugin_name,
+                'rex_wpfm_admin_translate_strings',
+                array(
+                    'google_cat_map_btn'    => __( 'Configure Category Mapping', 'rex-product-feed' ),
+                    'optimize_pr_title_btn' => __( 'Optimize Product Title', 'rex-product-feed' ),
+                )
+            );
+            wp_enqueue_script(
+                'jquery-cookie',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/js.cookie.min.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
 
-			$_get = rex_feed_get_sanitized_get_post();
-			$_get = !empty( $_get[ 'get' ] ) ? $_get[ 'get' ] : array();
+            $_get = rex_feed_get_sanitized_get_post();
+            $_get = !empty( $_get[ 'get' ] ) ? $_get[ 'get' ] : array();
 
-			if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && 1 === (int) $_get[ 'tour_guide' ] ) {
-				wp_enqueue_script(
-					$this->plugin_name . '-shepherd',
-					WPFM_PLUGIN_ASSETS_FOLDER . 'js/shepherd.min.js',
-					array( 'jquery' ),
-					$this->version,
-					true
-				);
-				wp_enqueue_script(
-					$this->plugin_name . '-on-boarding',
-					WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-on-boarding.js',
-					array( 'jquery', $this->plugin_name . '-shepherd' ),
-					$this->version,
-					true
-				);
-			}
-		}
+            if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && 1 === (int) $_get[ 'tour_guide' ] ) {
+                wp_enqueue_script(
+                    $this->plugin_name . '-shepherd',
+                    WPFM_PLUGIN_ASSETS_FOLDER . 'js/shepherd.min.js',
+                    array( 'jquery' ),
+                    $this->version,
+                    true
+                );
+                wp_enqueue_script(
+                    $this->plugin_name . '-on-boarding',
+                    WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-on-boarding.js',
+                    array( 'jquery', $this->plugin_name . '-shepherd' ),
+                    $this->version,
+                    true
+                );
+            }
+        }
 
-		if ( $screen->id === $this->category_mapping_screen_hook_suffix ) {
-			wp_enqueue_script(
-				'category-map',
-				WPFM_PLUGIN_ASSETS_FOLDER . 'js/category-mapper.js',
-				array( 'jquery', 'jquery-ui-autocomplete' ),
-				$this->version,
-				true
-			);
-			wp_localize_script(
-				'category-map',
-				'rex_wpfm_cat_map_translate_strings',
-				array(
-					'update_btn'           => __( 'Update', 'rex-product-feed' ),
-					'update_and_close_btn' => __( 'Update & Close', 'rex-product-feed' ),
-					'delete_btn'           => __( 'Delete', 'rex-product-feed' ),
-				)
-			);
-		}
-	}
+        if ( $screen->id === $this->category_mapping_screen_hook_suffix ) {
+            wp_enqueue_script(
+                'category-map',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/category-mapper.js',
+                array( 'jquery', 'jquery-ui-autocomplete' ),
+                $this->version,
+                true
+            );
+            wp_localize_script(
+                'category-map',
+                'rex_wpfm_cat_map_translate_strings',
+                array(
+                    'update_btn'           => __( 'Update', 'rex-product-feed' ),
+                    'update_and_close_btn' => __( 'Update & Close', 'rex-product-feed' ),
+                    'delete_btn'           => __( 'Delete', 'rex-product-feed' ),
+                )
+            );
+        }
+    }
 
-	/**
-	 * Register Plugin Admin Pages
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_admin_pages() {
-		add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
+    /**
+     * Register Plugin Admin Pages
+     *
+     * @since    1.0.0
+     */
+    public function load_admin_pages() {
+        add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
 
-		add_submenu_page( 'product-feed', __( 'Add New Feed', 'rex-product-feed' ), __( 'Add New Feed', 'rex-product-feed' ), 'manage_woocommerce', esc_url( admin_url( 'post-new.php?post_type=product-feed' ) ) );
-		$this->category_mapping_screen_hook_suffix = add_submenu_page(
-			'product-feed',
-			__( 'Category Mapping', 'rex-product-feed' ),
-			__( 'Category Mapping', 'rex-product-feed' ),
-			'manage_woocommerce',
-			'category_mapping',
-			function() {
-				require_once plugin_dir_path( __FILE__ ) . '/partials/category_mapping.php';
-			}
-		);
-		$this->google_screen_hook_suffix           = add_submenu_page(
-			'product-feed',
-			__( 'Google Merchant Settings', 'rex-product-feed' ),
-			__( 'Google Merchant Settings', 'rex-product-feed' ),
-			'manage_woocommerce',
-			'merchant_settings',
-			function() {
-				require_once plugin_dir_path( __FILE__ ) . '/partials/merchant_settings.php';
-			}
-		);
-		$this->dashboard_screen_hook_suffix        = add_submenu_page(
-			'product-feed',
-			__( 'Settings', 'rex-product-feed' ),
-			__( 'Settings', 'rex-product-feed' ),
-			'manage_woocommerce',
-			'wpfm_dashboard',
-			function() {
-				require_once plugin_dir_path( __FILE__ ) . '/partials/on_boarding.php';
-			}
-		);
-		$is_premium                                = apply_filters( 'wpfm_is_premium_activate', false );
-		add_submenu_page( 'product-feed', __( 'Support', 'rex-product-feed' ), '<span id="rex-feed-support-submenu">' . __( 'Support', 'rex-product-feed' ) . '</span>', 'manage_woocommerce', esc_url( 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0' ) );
+        add_submenu_page( 'product-feed', __( 'Add New Feed', 'rex-product-feed' ), __( 'Add New Feed', 'rex-product-feed' ), 'manage_woocommerce', esc_url( admin_url( 'post-new.php?post_type=product-feed' ) ) );
+        $this->category_mapping_screen_hook_suffix = add_submenu_page(
+            'product-feed',
+            __( 'Category Mapping', 'rex-product-feed' ),
+            __( 'Category Mapping', 'rex-product-feed' ),
+            'manage_woocommerce',
+            'category_mapping',
+            function() {
+                require_once plugin_dir_path( __FILE__ ) . '/partials/category_mapping.php';
+            }
+        );
+        $this->google_screen_hook_suffix           = add_submenu_page(
+            'product-feed',
+            __( 'Google Merchant Settings', 'rex-product-feed' ),
+            __( 'Google Merchant Settings', 'rex-product-feed' ),
+            'manage_woocommerce',
+            'merchant_settings',
+            function() {
+                require_once plugin_dir_path( __FILE__ ) . '/partials/merchant_settings.php';
+            }
+        );
+        $this->dashboard_screen_hook_suffix        = add_submenu_page(
+            'product-feed',
+            __( 'Settings', 'rex-product-feed' ),
+            __( 'Settings', 'rex-product-feed' ),
+            'manage_woocommerce',
+            'wpfm_dashboard',
+            function() {
+                require_once plugin_dir_path( __FILE__ ) . '/partials/on_boarding.php';
+            }
+        );
+        $is_premium                                = apply_filters( 'wpfm_is_premium_activate', false );
+        add_submenu_page( 'product-feed', __( 'Support', 'rex-product-feed' ), '<span id="rex-feed-support-submenu">' . __( 'Support', 'rex-product-feed' ) . '</span>', 'manage_woocommerce', esc_url( 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0' ) );
 
-		if ( !$is_premium ) {
-			$this->wpfm_pro_submenu = add_submenu_page(
-				'product-feed',
-				'',
-				'<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ),
-				'manage_woocommerce',
-				esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' )
-			);
-		} else {
-			$this->wpfm_pro_submenu = apply_filters( 'rex_feed_license_submenu', array() );
-		}
+        if ( !$is_premium ) {
+            $this->wpfm_pro_submenu = add_submenu_page(
+                'product-feed',
+                '',
+                '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ),
+                'manage_woocommerce',
+                esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' )
+            );
+        } else {
+            $this->wpfm_pro_submenu = apply_filters( 'rex_feed_license_submenu', array() );
+        }
 
-		$this->setup_wizard_hook_suffix = add_submenu_page(
-			'product-feed',
-			__( 'Get Started', 'rex-product-feed' ),
-			__( 'Get Started', 'rex-product-feed' ),
-			'manage_woocommerce',
-			'setup-wizard',
-			function() {
-				require_once plugin_dir_path( __FILE__ ) . '/partials/setup-wizard.php';
-			},
-			10
-		);
+        $this->setup_wizard_hook_suffix = add_submenu_page(
+            'product-feed',
+            __( 'Get Started', 'rex-product-feed' ),
+            __( 'Get Started', 'rex-product-feed' ),
+            'manage_woocommerce',
+            'setup-wizard',
+            function() {
+                require_once plugin_dir_path( __FILE__ ) . '/partials/setup-wizard.php';
+            },
+            10
+        );
 
-		// PFM actions.
-		add_filter( 'plugin_action_links_' . $this->plugin_basename, array( new Rex_Product_Feed_Actions(), 'plugin_action_links' ) );
-	}
+        // PFM actions.
+        add_filter( 'plugin_action_links_' . $this->plugin_basename, array( new Rex_Product_Feed_Actions(), 'plugin_action_links' ) );
+    }
 
-	/**
-	 * Register background schedulers
-	 *
-	 * @return void
-	 */
-	public function register_cron_schedules() {
-		if ( !wp_next_scheduled( 'rex_feed_schedule_update' ) ) {
-			wp_schedule_event( time(), 'hourly', 'rex_feed_schedule_update' );
-		}
-
-		if ( !wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
-			wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
-		}
-		if ( !wp_next_scheduled( 'rex_feed_daily_update' ) ) {
-			wp_schedule_event( time(), 'daily', 'rex_feed_daily_update' );
-		}
-	}
-
-	/**
-	 *  Feed Cron handler
-	 *
-	 * @since    1.3.2
-	 */
-	public function activate_schedule_update() {
-		$this->cron->rex_feed_cron_handler();
-	}
-
-	/**
-	 * Weekly cron handler
-	 */
-	public function activate_weekly_update() {
-		$this->cron->rex_feed_weekly_cron_handler();
-	}
-
-	/**
-	 * Daily cron handler
-	 */
-	public function activate_daily_update() {
-		$this->cron->rex_feed_daily_cron_handler();
-	}
-
-	/**
-	 * Admin Footer Styles
-	 *
-	 * @return void
-	 */
-	public function rex_admin_footer_style() {
-		echo '<style>
+    /**
+     * Admin Footer Styles
+     *
+     * @return void
+     */
+    public function rex_admin_footer_style() {
+        echo '<style>
 
                 .wpfm-bf-wrapper {
                     display: flex;
@@ -595,75 +554,62 @@ class Rex_Product_Feed_Admin {
                 font-size: 20px;
             }
         </style>';
-	}
+    }
 
-	/**
-	 * Loads custom styles for setup wizard
-	 *
-	 * @return void
-	 * @since 7.2.5
-	 */
-	public function load_custom_styles() {
-		if ( !is_plugin_active( 'best-woocommerce-feed-pro/rex-product-feed-pro.php' ) ) {
-			?>
-			<style>
+    /**
+     * Loads custom styles for setup wizard
+     *
+     * @return void
+     * @since 7.2.5
+     */
+    public function load_custom_styles() {
+        if ( !is_plugin_active( 'best-woocommerce-feed-pro/rex-product-feed-pro.php' ) ) {
+            ?>
+            <style>
 
-				.rex-setup-wizard-cta-area {
-					padding: 370px 10px 125px;
-				}
+                .rex-setup-wizard-cta-area {
+                    padding: 370px 10px 125px;
+                }
 
-				@media (max-width: 1399px) {
-					.rex-setup-wizard-cta-area {
-						padding: 200px 10px 100px;
-					}
-				}
+                @media (max-width: 1399px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 200px 10px 100px;
+                    }
+                }
 
-				@media (max-width: 1199px) {
-					.rex-setup-wizard-cta-area {
-						padding: 150px 10px 100px;
-					}
-				}
+                @media (max-width: 1199px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 150px 10px 100px;
+                    }
+                }
 
-				@media (max-width: 991px) {
-					.rex-setup-wizard-cta-area {
-						padding: 120px 10px 80px;
-					}
-				}
-			</style>
-			<?php
-		} else {
-			?>
-			<style>
-				.rex-setup-wizard-cta-area {
-					padding: 125px 10px 125px;
-				}
+                @media (max-width: 991px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 120px 10px 80px;
+                    }
+                }
+            </style>
+            <?php
+        } else {
+            ?>
+            <style>
+                .rex-setup-wizard-cta-area {
+                    padding: 125px 10px 125px;
+                }
 
-				@media (max-width: 1399px) {
-					.rex-setup-wizard-cta-area {
-						padding: 100px 10px 100px;
-					}
-				}
+                @media (max-width: 1399px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 100px 10px 100px;
+                    }
+                }
 
-				@media (max-width: 991px) {
-					.rex-setup-wizard-cta-area {
-						padding: 80px 10px 80px;
-					}
-				}
-			</style>
-			<?php
-		}
-	}
-
-	/**
-	 * Register single cron schedule (on hourly schedule) to update
-	 * abandoned child lists
-	 *
-	 * @return void
-	 * @since 7.2.23
-	 */
-	public function register_single_cron_schedule() {
-		if ( !wp_next_scheduled( 'rex_feed_update_wc_abandoned_child' ) ) {
-			wp_schedule_single_event( time(), 'rex_feed_update_wc_abandoned_child' );
-		}
-	}
+                @media (max-width: 991px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 80px 10px 80px;
+                    }
+                }
+            </style>
+            <?php
+        }
+    }
 }

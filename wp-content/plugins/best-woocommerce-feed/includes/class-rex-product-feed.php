@@ -142,72 +142,71 @@ class Rex_Product_Feed {
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
+	 * Register all the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
-		global $rex_product_feed_database_update;
-		$rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
-		$plugin_admin                     = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
-		$feed_actions                     = new Rex_Product_Feed_Actions();
-		$cpt                              = new Rex_Product_CPT();
-		$ajax                             = new Rex_Product_Feed_Ajax();
-		$metabox                          = new Rex_Product_Metabox();
-		$rollback                         = new Rex_Feed_Rollback();
-		$appsero_data                     = new Rex_Product_Appsero_Data();
+    private function define_admin_hooks() {
+        $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
+        $feed_actions = new Rex_Product_Feed_Actions();
+        $cpt          = new Rex_Product_CPT();
+        $ajax         = new Rex_Product_Feed_Ajax();
+        $metabox      = new Rex_Product_Metabox();
+        $rollback     = new Rex_Feed_Rollback();
+        $appsero_data = new Rex_Product_Appsero_Data();
+        $scheduler    = new Rex_Feed_Scheduler();
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'init', $cpt, 'register_cpt' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        $this->loader->add_action( 'init', $cpt, 'register_cpt' );
 
-		$this->loader->add_action( 'admin_init', $metabox, 'register_metaboxes' );
+        $this->loader->add_action( 'admin_init', $metabox, 'register_metaboxes' );
 
-		$this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages' );
-		$this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style' );
+        $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
+        $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages' );
+        $this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style' );
 
-		$this->loader->add_action( 'post_submitbox_start', $feed_actions, 'register_purge_button' );
-		// remove bulk edit and quick edit for our feed cpt.
-		$this->loader->add_filter( 'bulk_actions-edit-product-feed', $feed_actions, 'remove_bulk_edit' );
-		$this->loader->add_filter( 'post_row_actions', $feed_actions, 'remove_quick_edit' );
-		// Trigger review request on new feed publish.
-		$this->loader->add_action( 'publish_product-feed', $feed_actions, 'show_review_request_markups', 99999 );
-		$this->loader->add_action( 'draft_product-feed', $feed_actions, 'save_draft_feed_meta', 99999, 2 );
-		$this->loader->add_action( 'after_delete_post', $feed_actions, 'delete_feed_files' );
-		$this->loader->add_action( 'admin_init', $feed_actions, 'remove_logs' );
-		$this->loader->add_action( 'admin_notices', $feed_actions, 'render_xml_error_message' );
-		// Duplicate feed item.
-		$this->loader->add_action( 'admin_action_wpfm_duplicate_post_as_draft', $feed_actions, 'duplicate_feed_as_draft' );
-		$this->loader->add_filter( 'page_row_actions', $feed_actions, 'duplicate_feed_link', 10, 2 );
-		$this->loader->add_action( 'wp_footer', $feed_actions, 'enable_facebook_pixel' );
+        $this->loader->add_action( 'post_submitbox_start', $feed_actions, 'register_purge_button' );
+        // remove bulk edit and quick edit for our feed cpt.
+        $this->loader->add_filter( 'bulk_actions-edit-product-feed', $feed_actions, 'remove_bulk_edit' );
+        $this->loader->add_filter( 'post_row_actions', $feed_actions, 'remove_quick_edit' );
+        // Trigger review request on new feed publish.
+        $this->loader->add_action( 'publish_product-feed', $feed_actions, 'show_review_request_markups', 99999 );
+        $this->loader->add_action( 'draft_product-feed', $feed_actions, 'save_draft_feed_meta', 99999, 2 );
+        $this->loader->add_action( 'after_delete_post', $feed_actions, 'delete_feed_files' );
+        $this->loader->add_action( 'admin_init', $feed_actions, 'remove_logs' );
+        $this->loader->add_action( 'admin_notices', $feed_actions, 'render_xml_error_message' );
+        // Duplicate feed item.
+        $this->loader->add_action( 'admin_action_wpfm_duplicate_post_as_draft', $feed_actions, 'duplicate_feed_as_draft' );
+        $this->loader->add_filter( 'page_row_actions', $feed_actions, 'duplicate_feed_link', 10, 2 );
+        $this->loader->add_action( 'wp_footer', $feed_actions, 'enable_facebook_pixel' );
 
-		// Custom ajax for data base update.
-		$this->loader->add_action( 'wp_ajax_rex_wpfm_database_update', 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update' );
+        // Custom ajax for data base update.
+        $this->loader->add_action( 'wp_ajax_rex_wpfm_database_update', 'Rex_Product_Feed_Ajax', 'database_update' );
 
-		// Register scheduler the corn way.
-		$this->loader->add_action( 'init', $plugin_admin, 'register_cron_schedules' );
-		$this->loader->add_action( 'rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update' );
-		$this->loader->add_action( 'rex_feed_daily_update', $plugin_admin, 'activate_daily_update' );
-		$this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
-		$this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'register_single_cron_schedule' );
-		$this->loader->add_action( 'rex_feed_update_wc_abandoned_child', 'Rex_Product_Feed_Ajax', 'rex_feed_update_abandoned_child_list' );
+        $this->loader->add_action( 'wp_ajax_nopriv_check_for_missing_attributes', $ajax, 'check_for_missing_attributes' );
+        $this->loader->add_action( 'wp_ajax_check_for_missing_attributes', $ajax, 'check_for_missing_attributes' );
 
-		$this->loader->add_action( 'wp_ajax_nopriv_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
-		$this->loader->add_action( 'wp_ajax_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
+        $this->loader->add_action( 'admin_post_rex_feed_rollback', $rollback, 'feeds_rollback' );
 
-		$this->loader->add_action( 'admin_post_rex_feed_rollback', $rollback, 'feeds_rollback' );
+        $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
 
-		$this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
+        $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $appsero_data, 'send_merchant_info' );
 
-		$this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $appsero_data, 'send_merchant_info' );
-	}
+        $this->loader->add_action( 'init', $scheduler, 'register_background_schedulers' );
+        $this->loader->add_action( HOURLY_SCHEDULE_HOOK, $scheduler, 'hourly_cron_handler' );
+        $this->loader->add_action( DAILY_SCHEDULE_HOOK, $scheduler, 'daily_cron_handler' );
+        $this->loader->add_action( DAILY_SCHEDULE_HOOK, $scheduler, 'register_wc_abandoned_child_update_scheduler' );
+        $this->loader->add_action( WC_SINGLE_SCHEDULER, $scheduler, 'update_wc_abandoned_child_list' );
+        $this->loader->add_action( WEEKLY_SCHEDULE_HOOK, $scheduler, 'weekly_cron_handler' );
+        $this->loader->add_action( SINGLE_SCHEDULE_HOOK, $scheduler, 'regenerate_feed_batch' );
+    }
 
 
 	/**
-	 * Register all of the hooks related to the public-facing functionality
+	 * Register all the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
@@ -220,11 +219,12 @@ class Rex_Product_Feed {
 		$this->loader->add_action( 'wp_ajax_nopriv_wpfm_add_to_cart', $plugin_public, 'wpfm_add_to_cart' );
 	}
 
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
+    /**
+     * Run the loader to execute all the hooks with WordPress.
+     *
+     * @since    1.0.0
+     * @return void
+     */
 	public function run() {
 		$this->loader->run();
 	}
@@ -259,5 +259,4 @@ class Rex_Product_Feed {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

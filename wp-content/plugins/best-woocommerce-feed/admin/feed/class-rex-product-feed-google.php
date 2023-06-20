@@ -180,11 +180,9 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      */
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
-        $attributes = $this->process_attributes_for_shipping_tax( $attributes );
 
-        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+        if( ( $this->rex_feed_skip_product && empty( array_keys( $attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = GoogleShopping::createItem();
-            $shipping_labels = array( 'shipping_1', 'shipping_2', 'shipping_3', 'shipping_4' );
 
             if ( $product_type === 'variation' ) {
                 $check_item_group_id = 0;
@@ -235,50 +233,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 $item->item_group_id($product->get_parent_id());
             }
         }
-    }
-
-
-    /**
-     * @param $attributes
-     * @return array
-     */
-    private function process_attributes_for_shipping_tax( $attributes ) {
-        $shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
-        $backup_attr = array();
-
-        foreach ( $attributes as $key => $value ) {
-            $count = 1;
-            if( in_array( $key, $shipping_attr ) ) {
-                if ( is_array( $value ) && ! empty( $value ) ) {
-                    foreach ( $value as $val ) {
-                        $attributes[ 'shipping_' . $count++ ] = array();
-                    }
-                }
-                else {
-                    $attributes['shipping'][$key] = $value;
-                }
-                $backup_attr[ $key ] = $value;
-                unset( $attributes[ $key ] );
-            }
-        }
-
-        if( in_array( $key, $shipping_attr ) ) {
-            for ( $i = 0; $i <= count( $backup_attr ); $i++ ) {
-                if ( isset( $backup_attr[ 'shipping_country' ][ $i ] ) ) {
-                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_country' ] = $backup_attr[ 'shipping_country' ][ $i ];
-                }
-                if ( isset( $backup_attr[ 'shipping_region' ][ $i ] ) ) {
-                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_region' ] = $backup_attr[ 'shipping_region' ][ $i ];
-                }
-                if ( isset( $backup_attr[ 'shipping_service' ][ $i ] ) ) {
-                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_service' ] = $backup_attr[ 'shipping_service' ][ $i ];
-                }
-                if ( isset( $backup_attr[ 'shipping_price' ][ $i ] ) ) {
-                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_price' ] = $backup_attr[ 'shipping_price' ][ $i ];
-                }
-            }
-        }
-        return $attributes;
     }
 
 

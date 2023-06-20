@@ -65,47 +65,18 @@
     }
     $(document).on('click', '#rex-wpfm-update-db', wpfm_update_database);
 
-
-    /**
-     * Stop Notices
-     *
-     */
-    function stop_notice(event) {
-        event.preventDefault();
-        var $payload = {};
-        var link = $(this).attr('href');
-        var cls = $(this).attr('class');
-
-        wpAjaxHelperRequest( 'stop-notices', $payload )
-            .success( function( response ) {
-                console.log( 'Woohoo!' );
-                // 'response' will be the response from the handle's callback function, as either a string or JSON.
-                console.log( response );
-                $(".bwfm-review-notice").hide();
-            })
-            .error( function( response ) {
-
-            });
-
-    }
-    $(document).on('click', '.stop-bwfm-notice, .bwfm-dismiss-notice', stop_notice);
-
-
-
     function wpfm_bf_notice_dismiss(event) {
         event.preventDefault();
         var $payload = {};
         var link = $(this).attr('href');
         var cls = $(this).attr('class');
         $("#wpfm-black-friday-notice").hide();
-        wpAjaxHelperRequest( 'wpfm_bf_notice_dismiss', $payload )
+        wpAjaxHelperRequest( 'black-friday-notice-dismiss', $payload )
             .success( function( response ) {
                 console.log( 'Woohoo!' );
                 console.log( response );
             })
-            .error( function( response ) {
-
-            });
+            .error( function( response ) {});
 
     }
     $(document).on('click', '#wpfm-black-friday-notice .notice-dismiss', wpfm_bf_notice_dismiss);
@@ -171,6 +142,27 @@
         }
     } );
 
+    // Ajax function to update single feed.
+    $( document ).on( 'click', '.rex-feed-update-single-feed', function ( e ) {
+        e.preventDefault();
+        let $this = $( this );
+        let feed_id = $this.data( 'feed-id' );
+
+        wpAjaxHelperRequest('rex-feed-update-single-feed', feed_id)
+            .success(function (response) {
+                $( 'tr#post-' + feed_id + ' td.feed_status' ).text( 'In queue' );
+                $this.attr( 'disabled', 'true' );
+                $this.css( 'pointer-events', 'none' );
+                $this.siblings().attr( 'disabled', true );
+                $this.parent().siblings( 'td.view_feed' ).children().attr( 'disabled', true );
+                $this.parent().siblings( 'td.view_feed' ).children().css( 'pointer-events', 'none' );
+                console.log('Success');
+            })
+            .error(function (response) {
+                console.log('Failed');
+            });
+    } )
+
     $( document ).ready( function ( e ) {
         if ( window.location.href.includes('edit.php') ) {
             $( '#rex_feed_new_changes_msg_content' ).hide();
@@ -178,7 +170,7 @@
         $( '#rex-feed-support-submenu, #rex-feed-gopro-submenu' ).parent().attr( 'target', '_blank' );
     } );
 
-
 })( jQuery );
+
 
 

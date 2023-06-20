@@ -1,83 +1,81 @@
 <?php
-/**
- * This file is responsible for displaying feed filters body content
- *
- * @link       https://rextheme.com
- * @since      1.0.0
- *
- * @package    Rex_Product_Feed
- * @subpackage Rex_Product_Feed/admin/partials
- */
 
-// Exit if $feed_template obj isn't available.
-if ( !isset( $feed_filter ) ) {
-	return;
-}
-
-unset( $feed_filter->getFilterMappings()[ 'Primary Attributes' ][ 'product_cats' ] );
-unset( $feed_filter->getFilterMappings()[ 'Primary Attributes' ][ 'product_tags' ] );
-
-$is_premium    = apply_filters( 'wpfm_is_premium_activate', false );
-$icon_question = 'icon/icon-svg/icon-question.php';
+$status = get_post_meta( get_the_ID(), '_rex_feed_custom_filter_option', true );
+$style  = 'added' !== $status ? 'style="display: none;"' : '';
 
 if ( wpfm_pro_compatibility() ) {
-	do_action( 'wpfm_pro_filter_rules' );
+    do_action( 'wpfm_pro_filter_rules' );
 }
 ?>
-<div class="filer-rules-header">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'cats'; ?>">
-		<?php echo esc_html__( 'Custom Filter', 'rex-product-feed' ); ?>
-		<span class="rex_feed-tooltip">
-			<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question; ?>
-			<p>
-				<?php esc_html_e( 'Filter your feed products with your preferred condition', 'rex-product-feed' ); ?>
-			</p>
-		</span>
-	</label>
-	<a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-custom-filter-generating-product-feed/?utm_source=plugin&utm_medium=custom_filter_link&utm_campaign=pfm_plugin' ); ?>" target="_blank">
-	<?php esc_html_e( 'Learn How', 'rex-product-feed' ); ?></a>
-</div>
+<div id="rex-feed-config-filter" class="rex-feed-config-filter" <?php echo $style; ?>>
+    <div class="rex-feed-custom-filter">
+        <div class="rex-feed-custom-filter__content">
 
-<div class="rex__filter-table">
-	<table id="config-table" class="filter-config-table responsive-table">
-		<thead>
-			<tr>
-				<th class="large-col"><?php echo esc_html__( 'If', 'rex-product-feed' ); ?><span>*</span></th>
-				<th class="large-col"><?php echo esc_html__( 'Condition', 'rex-product-feed' ); ?><span>*</span></th>
-				<th class="large-col"><?php echo esc_html__( 'Value', 'rex-product-feed' ); ?></th>
-				<th class="2"><?php echo esc_html__( 'Then', 'rex-product-feed' ); ?></th>
-				<th class="2"><?php echo esc_html__( 'Action', 'rex-product-feed' ); ?></th>
-			</tr>
-		</thead>
+            <div class="rex-feed-custom-filter__fine-replace rex-feed-custom-filter__fine-brp">
+                <div class="rex-feed-custom-filter__delete">
+                    <?php include plugin_dir_path(__FILE__) . '../assets/icon/icon-svg/section-delete.php';?>
+                </div>
+                <!-- .rex-feed-custom-filter__delete end -->
 
-		<tbody>
+                <div class="accordion__list">
+                    <div class="accordion">
+                    <span class="accordion__title">
+                        <span class="accordion__arrow"></span>
+                        <label for="<?php echo 'rex_feed_custom-filter';?>">
+                            <?php _e('Custom Filter', 'rex-product-feed' )?>
+                            <span class="rex_feed-tooltip">
+                                <?php include plugin_dir_path(__FILE__) . '../assets/icon/icon-svg/icon-question.php';?>
+                                <p><?php esc_html_e( 'Filter your feed products with your preferred condition', 'rex-product-feed' ); ?></p>
+                            </span>
+                        </label>
+                    </span>
+                        <!-- .accordion__title end -->
 
-		<?php $keyt = wp_rand( 999, 3000 ); ?>
-			<tr data-row-id="<?php echo esc_html( $keyt ); ?>" style="display: none;">
-				<td data-title="If : "><?php $feed_filter->printSelectDropdown( $keyt, 'if', 'ff', '' ); ?></td>
-				<td data-title="condition : "><?php $feed_filter->printSelectDropdown( $keyt, 'condition', 'ff', '' ); ?></td>
-				<td data-title="value : " ><?php $feed_filter->printInput( $keyt, 'value', 'ff', '' ); ?></td>
-				<td data-title="then : "><?php $feed_filter->printSelectDropdown( $keyt, 'then', 'ff', '' ); ?></td>
-				<td>
-					<a class="delete-row" title="Delete">
-						<i class="fa fa-trash"></i>
-					</a>
-				</td>
-			</tr>
+                        <div class="accordion__content-wrap">
+                            <div class="accordion__content">
+                                <div class="accordion__table-container" role="table" aria-label="condition table">
 
-			<?php foreach ( $feed_filter->getFilterMappings() as $key => $item ) : ?>
-				<tr data-row-id="<?php echo esc_html( $key ); ?>">
-					<td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', 'ff', $item['if'] ); ?></td>
-					<td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', 'ff', $item['condition'] ); ?></td>
-					<td data-title="value : "><?php $feed_filter->printInput( $key, 'value', 'ff', $item['value'] ); ?></td>
-					<td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', 'ff', $item['then'] ); ?></td>
-					<td>
-						<a class="delete-row" title="Delete">
-							<i class="fa fa-trash"></i>
-						</a>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+                                    <div class="flex-table-header" role="rowgroup">
+                                        <div class="flex-row" role="columnheader">
+                                            <?php echo __('If', 'rex-product-feed') ?><span>*</span>
+                                        </div>
+
+                                        <div class="flex-row" role="columnheader">
+                                            <?php echo __('Condition', 'rex-product-feed') ?><span>*</span>
+                                        </div>
+
+                                        <div class="flex-row" role="columnheader">
+                                            <?php echo __('Value', 'rex-product-feed') ?>
+                                        </div>
+
+                                        <div class="flex-row" role="columnheader">
+                                            <?php echo __('Then', 'rex-product-feed') ?><span>*</span>
+                                        </div>
+
+                                        <div class="flex-row" role="columnheader">
+                                            <?php echo __('Action', 'rex-product-feed') ?>
+                                        </div>
+
+                                    </div>
+                                    <!-- .flex-table-header end -->
+
+                                    <div class="flex-table-body" role="rowgroup"></div>
+                                    <!-- .flex-table-body end -->
+                                </div>
+
+                            </div>
+                            <!-- .accordion__content end -->
+                        </div>
+                        <!-- .accordion__content-wrap end -->
+
+                    </div>
+                </div>
+                <!-- .accordion__list end -->
+            </div>
+            <!-- .rex-feed-custom-filter__fine-replace end -->
+
+        </div>
+        <!-- .rex-feed-custom-filter__content end -->
+    </div>
+    <!-- .rex-feed-custom-filter end -->
 </div>

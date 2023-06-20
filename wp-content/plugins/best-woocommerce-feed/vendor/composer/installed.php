@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b4cfeaf9ca7762cce56a4b24552220392d2c5367',
+        'reference' => 'aa7a8903edef176e1ff2101c737c6bb5bdd7c039',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
@@ -28,15 +28,6 @@
             'reference' => '894a0b5c5d34c88b69b097f2aae1439730fa6836',
             'dev_requirement' => false,
         ),
-        'deliciousbrains/wp-background-processing' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../deliciousbrains/wp-background-processing',
-            'aliases' => array(),
-            'reference' => 'd5ef95cecba7f792ddca3e3bd70ebfb90dc4996d',
-            'dev_requirement' => false,
-        ),
         'johnbillion/extended-cpts' => array(
             'pretty_version' => '3.2.1',
             'version' => '3.2.1.0',
@@ -56,12 +47,12 @@
             'dev_requirement' => false,
         ),
         'rextheme/best-woocommerce-feed' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b4cfeaf9ca7762cce56a4b24552220392d2c5367',
+            'reference' => 'aa7a8903edef176e1ff2101c737c6bb5bdd7c039',
             'dev_requirement' => false,
         ),
         'roundcube/plugin-installer' => array(
