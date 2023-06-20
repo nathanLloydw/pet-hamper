@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Geolocate condition class.
  *
  * @class    WC_PRL_Condition_Geolocate
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Geolocate extends WC_PRL_Condition {
 
@@ -93,26 +93,26 @@ class WC_PRL_Condition_Geolocate extends WC_PRL_Condition {
 			$countries = (array) $condition_data[ 'value' ];
 		}
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value select-field">
-				<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Select countries&hellip;', 'woocommerce-product-recommendations' ); ?>">
+				<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select countries&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 						foreach ( $list_countries as $key => $val ) {
-							echo '<option value="' . esc_attr( $key ) . '" ' . selected( in_array( $key, $countries ), true, false ) . '>' . $val . '</option>';
+							echo '<option value="' . esc_attr( $key ) . '" ' . selected( in_array( $key, $countries ), true, false ) . '>' . esc_html( $val ) . '</option>';
 						}
 					?>
 				</select>
 				<span class="os_form_row">
-					<a class="os_select_all button" href="#"><?php _e( 'All', 'woocommerce' ); ?></a>
-					<a class="os_select_none button" href="#"><?php _e( 'None', 'woocommerce' ); ?></a>
+					<a class="os_select_all button" href="#"><?php esc_html_e( 'All', 'woocommerce' ); ?></a>
+					<a class="os_select_none button" href="#"><?php esc_html_e( 'None', 'woocommerce' ); ?></a>
 				</span>
 			</div>
 		</div>

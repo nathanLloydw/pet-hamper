@@ -12,7 +12,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  1.1.1
+ * @version  2.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,15 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( $deployment && $products ) : ?>
-
-	<div class="<?php echo $container_class; ?>" <?php echo $container_attributes; ?> id="wc-prl-deployment-<?php echo $deployment->get_id(); ?>">
+	<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	<div class="<?php echo esc_attr( $container_class ); ?>" <?php echo $container_attributes; ?> id="wc-prl-deployment-<?php echo esc_attr( $deployment->get_id() ); ?>">
 
 		<?php if ( ! empty( $deployment->get_title() ) ) : ?>
-			<h<?php echo $title_level; ?> class="<?php echo esc_attr( $title_class ); ?>"><?php echo esc_html( $deployment->get_title() ); ?></h<?php echo $title_level; ?>>
+			<h<?php echo esc_attr( $title_level ); ?> class="<?php echo esc_attr( $title_class ); ?>"><?php echo wp_kses_post( $deployment->get_title() ); ?></h<?php echo esc_attr( $title_level ); ?>>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $deployment->get_description() ) ) : ?>
-			<div><?php echo $deployment->get_description( true ); ?></div>
+			<div><?php echo wp_kses_post( $deployment->get_description( true ) ); ?></div>
 		<?php endif; ?>
 
 		<?php woocommerce_product_loop_start(); ?>

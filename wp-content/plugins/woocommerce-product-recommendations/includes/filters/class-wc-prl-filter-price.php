@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Price class for filtering products based on their price.
  *
  * @class    WC_PRL_Filter_Price
- * @version  1.1.2
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Price extends WC_PRL_Filter {
 
@@ -92,18 +92,18 @@ class WC_PRL_Filter_Price extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<input type="text" class="wc_input_price" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value]" value="<?php echo $price; ?>" placeholder="<?php _e( 'Enter a price&hellip;"', 'woocommerce-product-recommendations' ); ?>" step="any" min="0" />
-				<span class="os_value--suffix"><?php echo get_woocommerce_currency_symbol() ?></span>
+				<input type="text" class="wc_input_price" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value]" value="<?php echo esc_attr( $price ); ?>" placeholder="<?php esc_attr_e( 'Enter a price&hellip;', 'woocommerce-product-recommendations' ); ?>" step="any" min="0" />
+				<span class="os_value--suffix"><?php echo esc_html( get_woocommerce_currency_symbol() ); ?></span>
 			</div>
 		</div>
 		<?php

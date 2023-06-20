@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Notice handling.
  *
  * @class    WC_PRL_Notices
- * @version  1.4.4
+ * @version  2.4.0
  */
 class WC_PRL_Notices {
 
@@ -262,7 +262,7 @@ class WC_PRL_Notices {
 	 * @return void
 	 */
 	public static function add_page_cache_test_data() {
-		echo '<script>var prl_page_cache_test=' . gmdate( 'U' ) . ';</script>';
+		echo '<script>var prl_page_cache_test=' . esc_html( gmdate( 'U' ) ) . ';</script>';
 	}
 
 	/**

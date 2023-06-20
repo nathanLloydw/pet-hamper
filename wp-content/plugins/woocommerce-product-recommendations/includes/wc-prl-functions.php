@@ -4,7 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  2.2.1
+ * @version  2.4.0
  */
 
 // Exit if accessed directly.
@@ -406,13 +406,13 @@ function wc_prl_print_taxonomy_tree_options( $terms, $selected_ids = array(), $a
 		}
 
 		// Print option element.
-		echo '<option value="' . $term->$key . '" ' . selected( in_array( $term->$key, $selected_ids ), true, false ) . '>';
+		echo '<option value="' . esc_attr( $term->$key ) . '" ' . selected( in_array( $term->$key, $selected_ids ), true, false ) . '>';
 
 		if ( $args[ 'shorten_text' ] && count( $term_path ) > $args[ 'shorten_level' ] ) {
 			/* translators: 1: before term separator 2: after term separator*/
-			echo sprintf( _x( '%1$s&nbsp;&gt;&nbsp;&hellip;&nbsp;&gt;&nbsp;%2$s', 'many terms separator', 'woocommerce-product-recommendations' ), $term_path[ 0 ], $term_path[ count( $term_path ) - 1 ] );
+			echo esc_html( sprintf( _x( '%1$s&nbsp;&gt;&nbsp;&hellip;&nbsp;&gt;&nbsp;%2$s', 'many terms separator', 'woocommerce-product-recommendations' ), $term_path[ 0 ], $term_path[ count( $term_path ) - 1 ] ) );
 		} else {
-			echo $option_text;
+			echo esc_html( $option_text );
 		}
 
 		echo '</option>';
@@ -459,7 +459,12 @@ function wc_prl_get_attribute_taxonomies() {
  */
 function wc_prl_get_formatted_screen_id( $screen_id ) {
 
-	$prefix = sanitize_title( __( 'WooCommerce', 'woocommerce' ) );
+	if ( version_compare( WC()->version, '7.3.0' ) < 0 ) {
+		$prefix = sanitize_title( __( 'WooCommerce', 'woocommerce' ) );
+	} else {
+		$prefix = 'woocommerce';
+	}
+
 	if ( 0 === strpos( $screen_id, 'woocommerce_' ) ) {
 		$screen_id = str_replace( 'woocommerce_', $prefix . '_', $screen_id );
 	}

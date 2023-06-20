@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Popularity class for amplifying products based on their order number in a given time span.
  *
  * @class    WC_PRL_Amplifier_Popularity
- * @version  2.2.0
+ * @version  2.4.0
  */
 class WC_PRL_Amplifier_Popularity extends WC_PRL_Amplifier {
 
@@ -246,21 +246,21 @@ class WC_PRL_Amplifier_Popularity extends WC_PRL_Amplifier {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_semi_value">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][value]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][value]">
 						<?php
 						foreach ( $options as $option_value => $option_data ) {
-							echo '<option value="' . $option_value . '" ' . selected( $option_value === $selected, true, false ) . '>' . $option_data[ 'label' ] . '</option>';
+							echo '<option value="' . esc_attr( $option_value ) . '" ' . selected( $option_value === $selected, true, false ) . '>' . esc_html( $option_data[ 'label' ] ) . '</option>';
 						}
 						?>
 					</select>

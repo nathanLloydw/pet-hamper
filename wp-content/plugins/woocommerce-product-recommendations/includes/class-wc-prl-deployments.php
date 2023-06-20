@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Deployments Factory class.
  *
  * @class    WC_PRL_Deployments
- * @version  1.1.0
+ * @version  2.4.0
  */
 class WC_PRL_Deployments {
 
@@ -44,14 +44,14 @@ class WC_PRL_Deployments {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -207,18 +207,18 @@ class WC_PRL_Deployments {
 		if ( $ajax ) {
 			$state = 'open';
 		}
-		?><div class="<?php echo $ajax ? 'wc-prl-deployments__row--added ' : '' ?>wc-prl-deployments__row wc-metabox <?php echo $state ?>" data-index="<?php echo $index + 1; ?>" data-deployment_id="<?php echo absint( $options[ 'id' ] ) ?>">
+		?><div class="<?php echo $ajax ? 'wc-prl-deployments__row--added ' : ''; ?>wc-prl-deployments__row wc-metabox <?php echo esc_attr( $state ); ?>" data-index="<?php echo absint( $index ) + 1; ?>" data-deployment_id="<?php echo absint( $options[ 'id' ] ); ?>">
 
 			<h3>
 				<div class="deployment_title">
 					<?php $toggle_class = 'on' === $options[ 'active' ] ? 'woocommerce-input-toggle--enabled' : 'woocommerce-input-toggle--disabled';?>
-					<span id="active-toggle" class="woocommerce-input-toggle <?php echo $toggle_class; ?>"></span>
-					<span class="deployment_title_index_container">#<span class="deployment_title_index"><?php echo $index + 1; ?></span></span>
+					<span id="active-toggle" class="woocommerce-input-toggle <?php echo esc_attr( $toggle_class ); ?>"></span>
+					<span class="deployment_title_index_container">#<span class="deployment_title_index"><?php echo absint( $index ) + 1; ?></span></span>
 					<span class="deployment_title_inner">
-						<?php echo isset( $options[ 'title' ] ) ? $options[ 'title' ] : '' ?>
+						<?php echo isset( $options[ 'title' ] ) ? esc_html( $options[ 'title' ] ) : ''; ?>
 					</span>
 					<?php
-						echo isset( $options[ 'page_cache_tip' ] ) ? sprintf( '<span class="woocommerce-help-tip deployment-affected-by-page-cache-help-tip" data-tip="%s"></span>', $options[ 'page_cache_tip' ] ) : '';
+						echo isset( $options[ 'page_cache_tip' ] ) ? wp_kses_post( sprintf( '<span class="woocommerce-help-tip deployment-affected-by-page-cache-help-tip" data-tip="%s"></span>', esc_attr( $options[ 'page_cache_tip' ] ) ) ) : '';
 					?>
 				</div>
 				<div class="handle">
@@ -229,10 +229,10 @@ class WC_PRL_Deployments {
 			</h3>
 
 			<div class="wc-prl-deployments__row__form wc-metabox-content" <?php echo $ajax ? '' : 'style="display: none;"' ?>>
-				<input type="hidden" name="deployment[<?php echo $form_index; ?>][id]" value="<?php echo absint( $options[ 'id' ] ) ?>"/>
-				<input type="hidden" name="deployment[<?php echo $form_index; ?>][form_index]" class="form_index" value="<?php echo $form_index; ?>"/>
-				<input type="hidden" name="deployment[<?php echo $form_index; ?>][active]" class="form_active" value="<?php echo 'on' === $options[ 'active' ] ? 'on' : 'off'; ?>"/>
-				<input type="hidden" name="deployment[<?php echo $form_index; ?>][display_order]" class="form_display_order" value="<?php echo $options[ 'display_order' ]; ?>"/>
+				<input type="hidden" name="deployment[<?php echo esc_attr( $form_index ); ?>][id]" value="<?php echo absint( $options[ 'id' ] ) ?>"/>
+				<input type="hidden" name="deployment[<?php echo esc_attr( $form_index ); ?>][form_index]" class="form_index" value="<?php echo esc_attr( $form_index ); ?>"/>
+				<input type="hidden" name="deployment[<?php echo esc_attr( $form_index ); ?>][active]" class="form_active" value="<?php echo 'on' === $options[ 'active' ] ? 'on' : 'off'; ?>"/>
+				<input type="hidden" name="deployment[<?php echo esc_attr( $form_index ); ?>][display_order]" class="form_display_order" value="<?php echo esc_attr( $options[ 'display_order' ] ); ?>"/>
 
 				<div class="sw-form<?php echo $ajax ? ' sw-form--no-engine' : ''; ?>">
 
@@ -241,7 +241,7 @@ class WC_PRL_Deployments {
 							<?php esc_html_e( 'Title', 'woocommerce-product-recommendations' ); ?>
 						</label>
 						<div class="sw-form-content">
-							<input type="text" name="deployment[<?php echo $form_index; ?>][title]" class="form_deployment_title" placeholder="<?php _e( 'e.g. &quot;You may also like&hellip;&quot;', 'woocommerce-product-recommendations' ); ?>"<?php echo isset( $options[ 'title' ] ) ? ' value="' . esc_attr( $options[ 'title' ] ) . '"' : ''; ?>"/>
+							<input type="text" name="deployment[<?php echo esc_attr( $form_index ); ?>][title]" class="form_deployment_title" placeholder="<?php esc_attr_e( 'e.g. &quot;You may also like&hellip;&quot;', 'woocommerce-product-recommendations' ); ?>"<?php echo isset( $options[ 'title' ] ) ? ' value="' . esc_attr( $options[ 'title' ] ) . '"' : ''; ?>"/>
 						</div>
 					</div>
 
@@ -250,7 +250,7 @@ class WC_PRL_Deployments {
 							<?php esc_html_e( 'Description', 'woocommerce-product-recommendations' ); ?>
 						</label>
 						<div class="sw-form-content">
-							<textarea type="text" name="deployment[<?php echo $form_index; ?>][description]"><?php echo isset( $options[ 'description' ] ) ? esc_textarea( $options[ 'description' ] ) : ''; ?></textarea>
+							<textarea type="text" name="deployment[<?php echo esc_attr( $form_index ); ?>][description]"><?php echo isset( $options[ 'description' ] ) ? esc_textarea( $options[ 'description' ] ) : ''; ?></textarea>
 						</div>
 					</div>
 
@@ -259,22 +259,22 @@ class WC_PRL_Deployments {
 							<?php esc_html_e( 'Engine', 'woocommerce-product-recommendations' ); ?>
 						</label>
 						<div class="sw-form-content">
-							<select class="wc-engine-search" name="deployment[<?php echo $form_index; ?>][engine_id]" data-placeholder="<?php _e( 'Search for an Engine&hellip;', 'woocommerce-product-recommendations' ); ?>" data-limit="100"<?php echo ( $options[ 'filter_type' ] ) ? ' data-filter_type="' . implode( ',', $options[ 'filter_type' ] ) . '"' : '' ?>>
+							<select class="wc-engine-search" name="deployment[<?php echo esc_attr( $form_index ); ?>][engine_id]" data-placeholder="<?php esc_attr_e( 'Search for an Engine&hellip;', 'woocommerce-product-recommendations' ); ?>" data-limit="100"<?php echo ( $options[ 'filter_type' ] ) ? ' data-filter_type="' . esc_attr( implode( ',', $options[ 'filter_type' ] ) ) . '"' : '' ?>>
 								<?php
 								$engine = isset( $options[ 'engine_id' ] ) ? wc_prl_get_engine( absint( $options[ 'engine_id' ] ) ) : false;
 								if ( $engine ) {
 									$title = $engine->get_name() ? $engine->get_name() : __( '(no title)', 'woocommerce-product-recommendations' );
-									echo '<option value="' . $engine->get_id() . '" selected="selected">' . $title . '</option>';
+									echo '<option value="' . esc_attr( $engine->get_id() ) . '" selected="selected">' . esc_html( $title ) . '</option>';
 								}
 								?>
 							</select>
 							<span class="description">
 								<?php
 									/* translators: %s engine type name */
-									echo sprintf( __( 'Supported Engine Types: %s', 'woocommerce-product-recommendations' ), '<strong>' . implode( ', ', array_map( 'wc_prl_get_engine_type_label', $options[ 'filter_type' ] ) ) . '</strong>' );
+									echo wp_kses_post( sprintf( __( 'Supported Engine Types: %s', 'woocommerce-product-recommendations' ), '<strong>' . implode( ', ', array_map( 'wc_prl_get_engine_type_label', $options[ 'filter_type' ] ) ) . '</strong>' ) );
 								?>
 							</span>
-							<input type="hidden" class="locations_type_select" value="<?php echo $options[ 'engine_type' ] ?>">
+							<input type="hidden" class="locations_type_select" value="<?php echo esc_attr( $options[ 'engine_type' ] ); ?>">
 						</div>
 					</div>
 
@@ -283,7 +283,7 @@ class WC_PRL_Deployments {
 							<?php esc_html_e( 'Product columns', 'woocommerce-product-recommendations' ); ?>
 						</label>
 						<div class="sw-form-content">
-							<input type="number" name="deployment[<?php echo $form_index; ?>][columns]" class="form_columns"<?php echo isset( $options[ 'columns' ] ) ? ' value="' . $options[ 'columns' ] . '"' : ''; ?> placeholder="4" />
+							<input type="number" name="deployment[<?php echo esc_attr( $form_index ); ?>][columns]" class="form_columns"<?php echo isset( $options[ 'columns' ] ) ? ' value="' . esc_attr( $options[ 'columns' ] ) . '"' : ''; ?> placeholder="4" />
 						</div>
 					</div>
 
@@ -292,7 +292,7 @@ class WC_PRL_Deployments {
 							<?php esc_html_e( 'Product rows', 'woocommerce-product-recommendations' ); ?>
 						</label>
 						<div class="sw-form-content">
-							<input type="number" name="deployment[<?php echo $form_index; ?>][rows]" class="form_rows"<?php echo isset( $options[ 'rows' ] ) ? ' value="' . $options[ 'rows' ] . '"' : ''; ?> placeholder="1" />
+							<input type="number" name="deployment[<?php echo esc_attr( $form_index ); ?>][rows]" class="form_rows"<?php echo isset( $options[ 'rows' ] ) ? ' value="' . esc_attr( $options[ 'rows' ] ) . '"' : ''; ?> placeholder="1" />
 						</div>
 					</div>
 

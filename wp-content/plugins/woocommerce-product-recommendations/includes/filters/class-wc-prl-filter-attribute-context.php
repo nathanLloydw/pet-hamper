@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Attribute_Context class for filtering products based on category.
  *
  * @class    WC_PRL_Filter_Attribute_Context
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Attribute_Context extends WC_PRL_Filter {
 
@@ -156,22 +156,22 @@ class WC_PRL_Filter_Attribute_Context extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][context]" value="yes" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][context]" value="yes" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][attribute][]" class="prl_attribute_selector sw-select2" data-placeholder="<?php _e( 'Select attribute&hellip;', 'woocommerce-product-recommendations' ); ?>">
+				<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][attribute][]" class="prl_attribute_selector sw-select2" data-placeholder="<?php esc_attr_e( 'Select attribute&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 					if ( ! empty( $global_attributes ) ) {
 						foreach ( $global_attributes as $attribute_slug => $attribute_name ) {
-							echo '<option value="' . $attribute_slug . '" ' . selected( $attribute_slug === $attribute, true, false ) . '>' . $attribute_name . '</option>';
+							echo '<option value="' . esc_attr( $attribute_slug ) . '" ' . selected( $attribute_slug === $attribute, true, false ) . '>' . esc_html( $attribute_name ) . '</option>';
 						}
 					}
 					?>

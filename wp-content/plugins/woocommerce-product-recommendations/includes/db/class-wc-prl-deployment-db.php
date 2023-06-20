@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Deployments DB API class.
  *
  * @class    WC_PRL_Deployment_DB
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Deployment_DB {
 
@@ -23,14 +23,14 @@ class WC_PRL_Deployment_DB {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -49,11 +49,12 @@ class WC_PRL_Deployment_DB {
 	 *         - 'all': entire row casted to array,
 	 *         - 'ids': delpoyments ids only,
 	 *         - 'objects': WC_PRL_Deployment_Data objects.
+	 *         - 'count': integer total number of records fetched.
 	 *
 	 *     @type  int|array  $location_id      Deployment location id(s) in WHERE clause.
 	 *     @type  int|array  $hook             Deployment hook(s) in WHERE clause.
 	 *     @type  int|array  $engine_id        Deployment engine id(s) in WHERE clause.
-	 *     @type  array      $order_by         ORDER BY field => order pairs.
+	 *     @type  array      $order_by         ORDER BY field => order (what => who) pairs.
 	 *     @type  array      $meta_query       Deployment meta query parameters, uses 'WP_Meta_Query' - see https://codex.wordpress.org/Class_Reference/WP_Meta_Query .
 	 * }
 	 *
@@ -63,7 +64,7 @@ class WC_PRL_Deployment_DB {
 		global $wpdb;
 
 		$args = wp_parse_args( $args, array(
-			'return'          => 'all', // 'ids' | 'objects'
+			'return'          => 'all', // 'ids' | 'objects' | 'count'
 			'active'          => '',
 			'engine_id'       => 0,
 			'location_id'     => '',
@@ -77,10 +78,17 @@ class WC_PRL_Deployment_DB {
 
 		$table = $wpdb->prefix . 'woocommerce_prl_deployments';
 
-		if ( in_array( $args[ 'return' ], array( 'ids', 'objects' ) ) ) {
-			$select = $table . '.id';
+		if ( 'count' === $args[ 'return' ] ) {
+
+			$select = "COUNT( {$table}.id )";
+
 		} else {
-			$select = '*';
+
+			if ( in_array( $args[ 'return' ], array( 'ids', 'objects' ) ) ) {
+				$select = $table . '.id';
+			} else {
+				$select = '*';
+			}
 		}
 
 		// Build the query.
@@ -90,6 +98,7 @@ class WC_PRL_Deployment_DB {
 		$order_by = '';
 
 		$where_clauses    = array( '1=1' );
+		$where_values     = array();
 		$order_by_clauses = array();
 
 		// WHERE clauses.
@@ -97,7 +106,8 @@ class WC_PRL_Deployment_DB {
 			$engine_ids = array_map( 'absint', is_array( $args[ 'engine_id' ] ) ? $args[ 'engine_id' ] : array( $args[ 'engine_id' ] ) );
 			$engine_ids = array_map( 'esc_sql', $engine_ids );
 
-			$where_clauses[] = "{$table}.engine_id IN ('" . implode( "', '", $engine_ids ) . "')";
+			$where_clauses[] = "{$table}.engine_id IN ('" . implode( ', ', array_fill( 0, count( $engine_ids ), '%d' ) ) . "')";
+			$where_values    = array_merge( $where_values, $engine_ids );
 		}
 
 		if ( $args[ 'hook' ] ) {
@@ -105,7 +115,8 @@ class WC_PRL_Deployment_DB {
 			$hooks = is_array( $args[ 'hook' ] ) ? $args[ 'hook' ] : array( $args[ 'hook' ] );
 			$hooks = array_map( 'esc_sql', $hooks );
 
-			$where_clauses[] = "{$table}.hook IN ('" . implode( "', '", $hooks ) . "')";
+			$where_clauses[] = "{$table}.hook IN ('" . implode( ', ', array_fill( 0, count( $hooks ), '%s' ) ) . "')";
+			$where_values    = array_merge( $where_values, $hooks );
 		}
 
 		if ( $args[ 'location_id' ] ) {
@@ -113,13 +124,15 @@ class WC_PRL_Deployment_DB {
 			$location_ids = is_array( $args[ 'location_id' ] ) ? $args[ 'location_id' ] : array( $args[ 'location_id' ] );
 			$location_ids = array_map( 'esc_sql', $location_ids );
 
-			$where_clauses[] = "{$table}.location_id IN ('" . implode( "', '", $location_ids ) . "')";
+			$where_clauses[] = "{$table}.location_id IN ('" . implode( ', ', array_fill( 0, count( $location_ids ), '%s' ) ) . "')";
+			$where_values    = array_merge( $where_values, $location_ids );
 		}
 
 		if ( ! empty( $args[ 'active' ] ) ) {
 
 			$active          = ( 'on' === $args[ 'active' ] ) ? 'on' : 'off';
-			$where_clauses[] = "{$table}.active = '" . $active . "'";
+			$where_clauses[] = "{$table}.active = %s";
+			$where_values    = array_merge( $where_values, array( $active ) );
 		}
 
 		// ORDER BY clauses.
@@ -129,6 +142,7 @@ class WC_PRL_Deployment_DB {
 			}
 		}
 
+		// Default to order by to id.
 		$order_by_clauses = empty( $order_by_clauses ) ? array( $table . '.id, ASC' ) : $order_by_clauses;
 
 		// Build SQL query components.
@@ -141,8 +155,39 @@ class WC_PRL_Deployment_DB {
 
 		$sql .= $join . $where . $order_by . $limit . $offset;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$results = $wpdb->get_results( $sql );
+		/**
+		 * WordPress.DB.PreparedSQL.NotPrepared explained.
+		 *
+		 * The sniff isn't smart enough to follow $sql variable back to its source. So it doesn't know whether the query in $sql incorporates user-supplied values or not.
+		 *
+		 * @see https://github.com/WordPress/WordPress-Coding-Standards/issues/469
+		 */
+
+		// Allocate ref.
+		$db = $wpdb;
+		if ( 'count' === $args[ 'return' ] ) {
+
+			if ( empty( $where_values ) ) {
+				$count = absint( $db->get_var( $sql ) ); // @phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			} else {
+				$count = absint( $db->get_var( $db->prepare( $sql, $where_values ) ) ); // @phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			}
+
+			// Deallocate ref.
+			unset( $db );
+
+			return $count;
+		} else {
+
+			if ( empty( $where_values ) ) {
+				$results = $db->get_results( $sql ); // @phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			} else {
+				$results = $db->get_results( $db->prepare( $sql, $where_values ) ); // @phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			}
+
+			// Deallocate ref.
+			unset( $db );
+		}
 
 		if ( empty( $results ) ) {
 			return array();
@@ -156,9 +201,9 @@ class WC_PRL_Deployment_DB {
 			}
 		} elseif ( 'ids' === $args[ 'return' ] ) {
 			foreach ( $results as $result ) {
-				$a[] = $result->id;
+				$a[] = (int) $result->id;
 			}
-		} else {
+		} elseif ( 'all' === $args[ 'return' ] ) {
 			foreach ( $results as $result ) {
 				$a[] = (array) $result;
 			}
@@ -236,12 +281,13 @@ class WC_PRL_Deployment_DB {
 			throw new Exception( __( 'Invalid engine.', 'woocommerce-product-recommendations' ) );
 		}
 
-		// Invalid engine type.
+		// Invalid location.
 		$location = WC_PRL()->locations->get_location_by_hook( $args[ 'hook' ] );
 		if ( ! $location ) {
 			throw new Exception( __( 'Invalid location.', 'woocommerce-product-recommendations' ) );
 		}
 
+		// Invalid engine type.
 		if ( ! in_array( $engine->get_type(), $location->get_current_supported_engine_types() ) ) {
 			throw new Exception( __( 'Invalid engine type.', 'woocommerce-product-recommendations' ) );
 		}

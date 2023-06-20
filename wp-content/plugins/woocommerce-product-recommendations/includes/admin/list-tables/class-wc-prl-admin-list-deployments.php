@@ -19,7 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Adds a custom deployments list table.
  *
  * @class    WC_PRL_Deployments_List_Table
- * @version  2.2.3
+ * @version  2.4.0
  */
 class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
@@ -103,11 +103,11 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
 		printf(
 			'<a class="row-title" href="%s" aria-label="%s">%s</a>%s%s',
-			admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=' . $item[ 'id' ] ),
+			esc_url( admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=' . $item[ 'id' ] ) ),
 			esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)', 'woocommerce-product-recommendations' ), $title ) ),
 			$title,
-			isset( $item[ 'active' ] ) && 'on' !== $item[ 'active' ] ? $inactive_label : '',
-			$this->row_actions( $actions )
+			isset( $item[ 'active' ] ) && 'on' !== $item[ 'active' ] ? wp_kses_post( $inactive_label ) : '',
+			wp_kses_post( $this->row_actions( $actions ) )
 		);
 	}
 
@@ -118,9 +118,9 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $item ) {
 		?><label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php
-			printf( __( 'Select %s', 'woocommerce-product-recommendations' ), $item[ 'title' ] );
+			printf( esc_html__( 'Select %s', 'woocommerce-product-recommendations' ), esc_html( $item[ 'title' ] ) );
 		?></label>
-		<input id="cb-select-<?php echo $item[ 'id' ]; ?>" type="checkbox" name="deployment[]" value="<?php echo $item[ 'id' ]; ?>" />
+		<input id="cb-select-<?php echo esc_attr( $item[ 'id' ] ); ?>" type="checkbox" name="deployment[]" value="<?php echo esc_attr( $item[ 'id' ] ); ?>" />
 		<?php
 	}
 
@@ -134,9 +134,9 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 		$locations   = WC_PRL()->locations->get_locations();
 
 		if ( $location_id && isset( $locations[ $location_id ] ) ) {
-			echo $locations[ $location_id ]->get_title();
+			echo esc_html( $locations[ $location_id ]->get_title() );
 		} else {
-			echo __( 'N/A', 'woocommerce-product-recommendations' );
+			echo esc_html__( 'N/A', 'woocommerce-product-recommendations' );
 		}
 	}
 
@@ -165,7 +165,7 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 			);
 		}
 
-		echo apply_filters( 'manage_prl_deployments_location_column', $output, $location, $item );
+		echo wp_kses_post( apply_filters( 'manage_prl_deployments_location_column', $output, $location, $item ) );
 	}
 
 	/**
@@ -177,7 +177,7 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 		$engine_id = $item[ 'engine_id' ] ? $item[ 'engine_id' ] : 0;
 		$engine    = new WC_PRL_Engine( absint( $engine_id ) );
 
-		echo '<a href="' . admin_url( sprintf( 'post.php?post=%d&action=edit', $engine->get_id() ) ) . '" title="' . esc_attr__( 'Edit engine', 'woocommerce-product-recommendations' ) . '">' . ( $engine->get_name() ? $engine->get_name() : __( '(untitled)', 'woocommerce-product-recommendations' ) ) . '</a>';
+		echo '<a href="' . esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $engine->get_id() ) ) ) . '" title="' . esc_attr__( 'Edit engine', 'woocommerce-product-recommendations' ) . '">' . ( $engine->get_name() ? esc_html( $engine->get_name() ) : esc_html__( '(untitled)', 'woocommerce-product-recommendations' ) ) . '</a>';
 	}
 
 	/**
@@ -189,9 +189,9 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 		?>
 		<p>
 		<?php if ( ! wc_prl_is_cpt_hook( $item[ 'hook' ] ) ) { ?>
-			<a class="button wc-action-button edit" href="<?php echo admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=' . $item[ 'id' ] ) ?>" aria-label="<?php esc_attr_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Edit', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?></a>
+			<a class="button wc-action-button edit" href="<?php echo esc_url( admin_url( 'admin.php?page=prl_locations&section=deploy&deployment=' . $item[ 'id' ] ) ) ?>" aria-label="<?php esc_attr_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Edit', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Edit deployment', 'woocommerce-product-recommendations' ) ?></a>
 		<?php } ?>
-			<a id="<?php echo $item[ 'id' ] ?>" class="button wc-action-button wc-action-button-regenerate" href="#" aria-label="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?></a>
+			<a id="<?php echo esc_attr( $item[ 'id' ] ); ?>" class="button wc-action-button wc-action-button-regenerate" href="#" aria-label="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?></a>
 			<a class="button wc-action-button delete" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=prl_locations&delete=' . $item[ 'id' ] ), 'wc_prl_delete_location_action', '_wc_prl_admin_nonce' ) ) ?>" aria-label="<?php esc_attr_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Delete', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Delete deployment', 'woocommerce-product-recommendations' ) ?></a>
 		</p>
 		<?php
@@ -270,11 +270,13 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
 		$total_items = WC_PRL()->db->deployment->count();
 
-		$paged   = isset( $_REQUEST[ 'paged' ] ) ? max( 0, intval( $_REQUEST[ 'paged' ] ) - 1 ) : 0;
+		$paged   = isset( $_REQUEST[ 'paged' ] ) ? max( 0, absint( $_REQUEST[ 'paged' ] ) - 1 ) : 0;
 		$orderby = ( isset( $_REQUEST[ 'orderby' ] ) && in_array( $_REQUEST[ 'orderby' ], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST[ 'orderby' ] ) : 'id';
 
 		$order = ( isset( $_REQUEST[ 'order' ] ) && in_array( $_REQUEST[ 'order' ], array( 'asc', 'desc' ) ) ) ? sanitize_text_field( $_REQUEST[ 'order' ] ) : 'desc';
 
+		// It's safe to ignore semgrep warning, as everything is properly escaped.
+		// nosemgrep: audit.php.wp.security.sqli.input-in-sinks
 		$this->items = WC_PRL()->db->deployment->query( array(
 			'order_by' => array( $orderby => $order ),
 			'limit'    => $per_page,
@@ -304,8 +306,8 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 				<p>
 					<?php esc_html_e( 'Deploy an Engine now to offer product recommendations at a Location of your store.', 'woocommerce-product-recommendations' ); ?>
 				</p>
-				<div class="quick-deploy__search" data-action="<?php echo admin_url( 'admin.php?page=prl_locations&section=deploy&quick=1&engine=%%engine_id%%' ); ?>">
-					<select class="wc-engine-search" data-swtheme="woo" data-placeholder="<?php _e( 'Search for an Engine&hellip;', 'woocommerce-product-recommendations' ); ?>" data-limit="100" name="engine">
+				<div class="quick-deploy__search" data-action="<?php echo esc_url( admin_url( 'admin.php?page=prl_locations&section=deploy&quick=1&engine=%%engine_id%%' ) ); ?>">
+					<select class="wc-engine-search" data-swtheme="woo" data-placeholder="<?php esc_attr_e( 'Search for an Engine&hellip;', 'woocommerce-product-recommendations' ); ?>" data-limit="100" name="engine">
 					</select>
 				</div>
 			</div><?php
@@ -319,7 +321,7 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 					<br/>
 					<?php esc_html_e( 'Start by creating an Engine &mdash; then, return here to deploy it.', 'woocommerce-product-recommendations' ); ?>
 				</p>
-				<a class="button sw-button-primary sw-button-primary--woo" id="sw-button-primary" href="<?php echo admin_url( 'post-new.php?post_type=prl_engine' ); ?>"><?php esc_html_e( 'Create engine', 'woocommerce-product-recommendations' ); ?></a>
+				<a class="button sw-button-primary sw-button-primary--woo" id="sw-button-primary" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=prl_engine' ) ); ?>"><?php esc_html_e( 'Create engine', 'woocommerce-product-recommendations' ); ?></a>
 			</div><?php
 		}
 	}

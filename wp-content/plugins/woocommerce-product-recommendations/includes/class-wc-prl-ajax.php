@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Front-end AJAX filters.
  *
  * @class    WC_PRL_Ajax
- * @version  2.0.0
+ * @version  2.4.0
  */
 class WC_PRL_Ajax {
 
@@ -112,7 +112,7 @@ class WC_PRL_Ajax {
 		}
 
 		$url = remove_query_arg( array( 'wc-ajax', 'prl_track' ), add_query_arg( 'add-to-cart', $product->get_id(), self::$current_url ) );
-		return $url;
+		return $url; // nosemgrep: audit.php.wp.security.xss.query-arg
 	}
 
 	/*

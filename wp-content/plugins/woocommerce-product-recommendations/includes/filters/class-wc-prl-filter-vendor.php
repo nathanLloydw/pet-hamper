@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Vendor class for filtering products based on Vendor.
  *
  * @class    WC_PRL_Filter_Vendor
- * @version  1.4.1
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Vendor extends WC_PRL_Filter {
 
@@ -97,20 +97,20 @@ class WC_PRL_Filter_Vendor extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Select vendors&hellip;', 'woocommerce-product-recommendations' ); ?>">
+				<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select vendors&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 						foreach ( $product_vendors as $vendor ) {
-							echo '<option value="' . $vendor->slug . '" ' . selected( in_array( $vendor->slug, $vendors ), true, false ) . '>' . $vendor->name . '</option>';
+							echo '<option value="' . esc_attr( $vendor->slug ) . '" ' . selected( in_array( $vendor->slug, $vendors ), true, false ) . '>' . esc_html( $vendor->name ) . '</option>';
 						}
 					?>
 				</select>

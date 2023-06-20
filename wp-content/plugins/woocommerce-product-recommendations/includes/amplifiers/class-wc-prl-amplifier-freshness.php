@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Freshness class for amplifying products based on their freshness.
  *
  * @class    WC_PRL_Amplifier_Freshness
- * @version  1.0.0
+ * @version  2.4.0
  */
 class WC_PRL_Amplifier_Freshness extends WC_PRL_Amplifier {
 
@@ -79,11 +79,11 @@ class WC_PRL_Amplifier_Freshness extends WC_PRL_Amplifier {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>

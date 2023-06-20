@@ -4,6 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
+ * @version  2.4.0
  */
 
 // Exit if accessed directly.
@@ -27,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				if ( version_compare( $debug_data[ 'db_version' ], WC_PRL()->get_plugin_version( true ), '==' ) ) {
 					echo '<mark class="yes">' . esc_html( $debug_data[ 'db_version' ] ) . '</mark>';
 				} else {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . esc_html( $debug_data[ 'db_version' ] ) . ' - ' . __( 'Database version mismatch.', 'woocommerce-product-recommendations' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . esc_html( $debug_data[ 'db_version' ] ) . ' - ' . esc_html__( 'Database version mismatch.', 'woocommerce-product-recommendations' ) . '</mark>';
 				}
 			?>
 			</td>
@@ -43,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				} elseif ( '' === $debug_data[ 'loopback_test_result' ] ) {
 					echo '<mark class="no">&ndash;</mark>';
 				} else {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Loopback test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Loopback test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
 				}
 			?>
 			</td>
@@ -57,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				if ( 'pass' === $debug_data[ 'queue_test_result' ] ) {
 					echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>';
 				} else {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Task queueing test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Task queueing test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
 				}
 			?>
 			</td>
@@ -69,11 +70,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 
 				if ( 'cached' === $debug_data[ 'page_cache_test_result' ] ) {
-					echo __( 'Cache in use', 'woocommerce-product-recommendations' );
+					echo esc_html__( 'Cache in use', 'woocommerce-product-recommendations' );
 				} elseif ( 'not-cached' === $debug_data[ 'page_cache_test_result' ] ) {
-					echo __( 'No cache detected', 'woocommerce-product-recommendations' );
+					echo esc_html__( 'No cache detected', 'woocommerce-product-recommendations' );
 				} elseif ( 'test-failed' === $debug_data[ 'page_cache_test_result' ] ) {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Test failed.', 'woocommerce-product-recommendations' ) . '</mark>';
 				} else {
 					echo '&ndash;';
 				}

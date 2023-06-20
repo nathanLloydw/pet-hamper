@@ -12,6 +12,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
+ * @version  2.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,10 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( $deployment ) : ?>
 
-	<div class="<?php echo $container_class; ?>">
+	<div class="<?php echo esc_attr( $container_class ); ?>">
 
-		<div class="<?php echo $message_class; ?>" style="margin: 15px 0;">
-			<?php echo $message; ?>
+		<div class="<?php echo esc_attr($message_class); ?>" style="margin: 15px 0;">
+			<?php echo wp_kses_post( $message ); ?>
 		</div>
 
 	</div>

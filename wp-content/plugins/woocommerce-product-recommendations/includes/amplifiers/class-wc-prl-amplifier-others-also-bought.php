@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Others_Also_Bought class for amplifying products based on their price.
  *
  * @class    WC_PRL_Amplifier_Others_Also_Bought
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Amplifier_Others_Also_Bought extends WC_PRL_Amplifier {
 
@@ -446,8 +446,8 @@ class WC_PRL_Amplifier_Others_Also_Bought extends WC_PRL_Amplifier {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][id]" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][context]" value="yes" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][context]" value="yes" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="os--disabled"></div>

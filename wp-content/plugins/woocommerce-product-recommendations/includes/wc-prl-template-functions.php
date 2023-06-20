@@ -4,7 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  1.4.16
+ * @version  2.4.0
  */
 
 // Exit if accessed directly.
@@ -16,7 +16,7 @@ function wc_prl_print_weight_select( $weight, $input_name ) {
 	?><div class="sw-enhanced-weight">
 		<button type="button" class="button dec"></button>
 		<div class="points">
-			<input type="hidden" value="<?php echo $weight ?>" name="<?php echo $input_name; ?>">
+			<input type="hidden" value="<?php echo esc_attr( $weight ); ?>" name="<?php echo esc_attr( $input_name ); ?>">
 			<?php for ( $i = 0; $i < $weight; $i++ ) { ?>
 				<span class="active"></span>
 			<?php } ?>

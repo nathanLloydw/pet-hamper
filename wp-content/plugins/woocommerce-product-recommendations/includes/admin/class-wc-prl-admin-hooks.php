@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Hooks Class.
  *
  * @class    WC_PRL_Admin_Hooks
- * @version  2.2.3
+ * @version  2.4.0
  */
 class WC_PRL_Admin_Hooks {
 
@@ -137,6 +137,8 @@ class WC_PRL_Admin_Hooks {
 			'order_by'    => array( 'display_order' => 'ASC' )
 		);
 
+		// It's safe to ignore semgrep warning, as everything is properly escaped.
+		// nosemgrep: audit.php.wp.security.sqli.input-in-sinks
 		$deployments = WC_PRL()->db->deployment->query( $args );
 		$map         = array();
 

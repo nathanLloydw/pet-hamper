@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Attribute class for filtering products based on category.
  *
  * @class    WC_PRL_Filter_Attribute
- * @version  1.3.0
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Attribute extends WC_PRL_Filter {
 
@@ -125,38 +125,38 @@ class WC_PRL_Filter_Attribute extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
 				<div class="os_value--attribute">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][attribute][]" class="prl_attribute_selector sw-select2" data-placeholder="<?php _e( 'Select attribute&hellip;', 'woocommerce-product-recommendations' ); ?>">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][attribute][]" class="prl_attribute_selector sw-select2" data-placeholder="<?php esc_attr_e( 'Select attribute&hellip;', 'woocommerce-product-recommendations' ); ?>">
 						<?php
 						if ( ! empty( $global_attributes ) ) {
 							foreach ( $global_attributes as $attribute_slug => $attribute_name ) {
-								echo '<option value="' . $attribute_slug . '" ' . selected( $attribute_slug === $attribute, true, false ) . '>' . $attribute_name . '</option>';
+								echo '<option value="' . esc_attr( $attribute_slug ) . '" ' . selected( $attribute_slug === $attribute, true, false ) . '>' . esc_html( $attribute_name ) . '</option>';
 							}
 						}
 						?>
 					</select>
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Select terms&hellip;', 'woocommerce-product-recommendations' ); ?>">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select terms&hellip;', 'woocommerce-product-recommendations' ); ?>">
 						<?php
 						if ( ! empty( $all_terms ) ) {
 							foreach ( $all_terms as $term ) {
-								echo '<option value="' . $term->slug . '" ' . selected( in_array( $term->slug, $selected_terms ), true, false ) . '>' . $term->name . '</option>';
+								echo '<option value="' . esc_attr( $term->slug ) . '" ' . selected( in_array( $term->slug, $selected_terms ), true, false ) . '>' . esc_html( $term->name ) . '</option>';
 							}
 						}
 						?>
 					</select>
 					<div class="os_value--tools">
-						<a class="select_all button" href="#"><?php _e( 'All', 'woocommerce' ); ?></a>
-						<a class="select_none button" href="#"><?php _e( 'None', 'woocommerce' ); ?></a>
+						<a class="select_all button" href="#"><?php esc_html_e( 'All', 'woocommerce' ); ?></a>
+						<a class="select_none button" href="#"><?php esc_html_e( 'None', 'woocommerce' ); ?></a>
 					</div>
 				</div>
 			</div>

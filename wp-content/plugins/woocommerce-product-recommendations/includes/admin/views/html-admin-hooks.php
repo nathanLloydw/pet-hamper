@@ -4,16 +4,16 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
- * @version  2.2.3
+ * @version  2.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="wrap woocommerce prl-locations-wrap <?php echo WC_PRL_Core_Compatibility::get_versions_class(); ?>">
+<div class="wrap woocommerce prl-locations-wrap <?php echo esc_attr( WC_PRL_Core_Compatibility::get_versions_class() ); ?>">
 
-	<h1><?php echo __( 'Locations', 'woocommerce-product-recommendations' ); ?></h1>
+	<h1><?php echo esc_html__( 'Locations', 'woocommerce-product-recommendations' ); ?></h1>
 
 	<?php include dirname( __FILE__ ) . '/partials/html-admin-locations-tabs.php'; ?>
 
@@ -25,16 +25,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$current = $selected_hook === $hook ? ' wc-prl-hooks__tab--active' : '';
 			$url     = add_query_arg( 'hook', $hook, $base_url );
 			?>
-			<a href="<?php echo $url; ?>" class="wc-prl-hooks__tab<?php echo $current; ?>">
-				<h4><?php echo $data[ 'label' ]; ?></h4>
+			<a href="<?php echo esc_url( $url ); ?>" class="wc-prl-hooks__tab<?php echo esc_attr( $current ); ?>">
+				<h4><?php echo esc_html( $data[ 'label' ] ); ?></h4>
 				<span class="status">
 					<?php
 					$count = sprintf(
 						' <span class="current_count">%d</span> ',
 						isset( $map[ $hook ] ) ? count( $map[ $hook ][ 'deployments' ] ) : 0
 					);
-					/* translators: %s deployments counter */
-					echo sprintf( esc_html__( '%s', 'woocommerce-product-recommendations' ), $count );
+					echo wp_kses_post( $count );
 					?>
 				</span>
 			</a>
@@ -47,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				/* translators: %s deployed engines counter */
 				$count = isset( $map[ $selected_hook ] ) ? count( $map[ $selected_hook ][ 'deployments' ] ) : 0;
 				if ( $count > 0 ) {
-					echo sprintf( esc_html__( _n( '%s engine deployed','%s engines deployed', $count,'woocommerce-product-recommendations' ) ), $count );
+					echo sprintf( esc_html( _n( '%s engine deployed', '%s engines deployed', $count, 'woocommerce-product-recommendations' ) ), (int) $count );
 				}
 			?></span>
 			<span class="bulk_toggle_wrapper<?php echo ! isset( $map[ $selected_hook ] ) ? ' disabled' : '' ; ?>">
@@ -56,9 +55,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</span>
 		</div>
 
-		<form method="post" id="mainform" action="<?php echo add_query_arg( 'hook', $selected_hook, $base_url ); ?>" enctype="multipart/form-data">
+		<form method="post" id="mainform" action="<?php echo esc_url( add_query_arg( 'hook', $selected_hook, $base_url ) ); ?>" enctype="multipart/form-data">
 
-			<div class="wc-prl-deployments__list wc-metaboxes ui-sortable" data-filter_type="<?php echo implode( ',', $selected_hook_data[ 'engine_type' ] ) ?>">
+			<div class="wc-prl-deployments__list wc-metaboxes ui-sortable" data-filter_type="<?php echo esc_attr( implode( ',', $selected_hook_data[ 'engine_type' ] ) ) ?>">
 
 				<?php
 				if ( ! empty( $map[ $selected_hook ] ) ) {
@@ -104,8 +103,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<div class="wc-prl-deployments__boarding <?php echo ! empty( $map[ $selected_hook ] ) ? 'wc-prl-deployments__boarding--hidden' : '' ; ?>">
 					<div class="wc-prl-deployments__boarding__message">
-						<h3><?php echo __( 'No Engines found', 'woocommerce-product-recommendations' ); ?></h3>
-						<p><?php echo __( 'You have not added Engines to this location. Deploy an Engine now?', 'woocommerce-product-recommendations' ); ?></p>
+						<h3><?php echo esc_html__( 'No Engines found', 'woocommerce-product-recommendations' ); ?></h3>
+						<p><?php echo esc_html__( 'You have not added Engines to this location. Deploy an Engine now?', 'woocommerce-product-recommendations' ); ?></p>
 					</div>
 				</div>
 

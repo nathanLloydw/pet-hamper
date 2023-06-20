@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Loads admin scripts, includes admin classes and adds admin hooks.
  *
  * @class    WC_PRL_Admin
- * @version  2.1.2
+ * @version  2.4.0
  */
 class WC_PRL_Admin {
 
@@ -373,7 +373,7 @@ class WC_PRL_Admin {
 		if ( is_wp_error( $result ) ) {
 
 			if ( did_action( 'admin_head' ) && ! empty( $_GET[ 'action' ] ) && 'prl_reschedule_page_cache_test' === $_GET[ 'action' ] ) {
-				echo '<div class="error inline"><p>' . sprintf( __( 'Could not reschedule page cache test: %s', 'woocommerce-product-recommendations' ), $result->get_error_message() ) . '</p></div>';
+				echo '<div class="error inline"><p>' . sprintf( esc_html__( 'Could not reschedule page cache test: %s', 'woocommerce-product-recommendations' ), esc_html( $result->get_error_message() ) ) . '</p></div>';
 			}
 
 			return 1;

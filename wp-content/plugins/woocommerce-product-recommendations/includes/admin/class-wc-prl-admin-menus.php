@@ -17,9 +17,16 @@ use Automattic\WooCommerce\Admin\Features\Navigation\Screen;
  * Setup PRL menus in WP admin.
  *
  * @class    WC_PRL_Admin_Menus
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Admin_Menus {
+
+	/**
+	 * The CSS classes used to hide the submenu items in navigation.
+	 *
+	 * @var string
+	 */
+	protected static $HIDE_CSS_CLASS = 'hide-if-js';
 
 	/**
 	 * Setup.
@@ -38,7 +45,6 @@ class WC_PRL_Admin_Menus {
 
 		// Menu.
 		add_action( 'admin_menu', array( __CLASS__, 'prl_menu' ), 10 );
-		add_action( 'current_screen', array( __CLASS__, 'prl_remove_submenu_link' ), 10 );
 		add_filter( 'parent_file', array( __CLASS__, 'prl_fix_menu_highlight' ) );
 
 		// Tweak title.
@@ -260,22 +266,6 @@ class WC_PRL_Admin_Menus {
 	}
 
 	/**
-	 * Removes multiple submenu links for Recommendations that are not being used as a menu item.
-	 */
-	public static function prl_remove_submenu_link() {
-
-		$submenu_slugs = array();
-
-		if ( wc_prl_tracking_enabled() ) {
-			$submenu_slugs[] = 'prl_locations';
-		}
-
-		foreach ( $submenu_slugs as $slug ) {
-			remove_submenu_page( 'woocommerce', $slug );
-		}
-	}
-
-	/**
 	 * Add menu items.
 	 */
 	public static function prl_menu() {
@@ -289,6 +279,9 @@ class WC_PRL_Admin_Menus {
 		}
 
 		$locations_page = add_submenu_page( 'woocommerce', __( 'Locations', 'woocommerce-product-recommendations' ), wc_prl_tracking_enabled() ? null : __( 'Recommendations', 'woocommerce-product-recommendations' ), 'manage_woocommerce', 'prl_locations', array( __CLASS__, 'locations_page' ) );
+
+		// Hide pages.
+		self::hide_submenu_page( 'woocommerce', 'prl_locations' );
 
 		add_action( 'load-' . $locations_page, array( __CLASS__, 'locations_page_init' ) );
 	}
@@ -477,6 +470,71 @@ class WC_PRL_Admin_Menus {
 		);
 
 		Screen::register_post_type( 'prl_engine' );
+	}
+
+	/**
+	 * Hide the submenu page based on slug and return the item that was hidden.
+	 *
+	 * @since 2.4.0
+	 *
+	 * Instead of actually removing the submenu item, a safer approach is to hide it and filter it in the API response.
+	 * In this manner we'll avoid breaking third-party plugins depending on items that no longer exist.
+	 *
+	 * @param string $menu_slug The parent menu slug.
+	 * @param string $submenu_slug The submenu slug that should be hidden.
+	 * @return false|array
+	 */
+	protected static function hide_submenu_page( $menu_slug, $submenu_slug ) {
+		global $submenu;
+
+		if ( ! isset( $submenu[ $menu_slug ] ) ) {
+			return false;
+		}
+
+		foreach ( $submenu[ $menu_slug ] as $i => $item ) {
+			if ( $submenu_slug !== $item[2] ) {
+				continue;
+			}
+
+			self::hide_submenu_element( $i, $menu_slug, $item );
+
+			return $item;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Apply the hide-if-js CSS class to a submenu item.
+	 *
+	 * @since 2.4.0
+	 * 
+	 * @param int    $index The position of a submenu item in the submenu array.
+	 * @param string $parent_slug The parent slug.
+	 * @param array  $item The submenu item.
+	 */
+	protected static function hide_submenu_element( $index, $parent_slug, $item ) {
+		global $submenu;
+
+		$css_classes = empty( $item[4] ) ? self::$HIDE_CSS_CLASS : $item[4] . ' ' . self::$HIDE_CSS_CLASS;
+
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$submenu[ $parent_slug ][ $index ][4] = $css_classes;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Deprecated methods.
+	|--------------------------------------------------------------------------
+	*/
+
+	/**
+	 * Removes multiple submenu links for Recommendations that are not being used as a menu item.
+	 * 
+	 * @deprecated
+	 */
+	public static function prl_remove_submenu_link() {
+		_deprecated_function( __METHOD__ . '()', '2.4.0' );
 	}
 }
 

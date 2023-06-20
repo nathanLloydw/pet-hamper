@@ -4,6 +4,7 @@
  *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
+ * @version  2.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,12 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( ! $deployment ) { ?>
 
-		<h1 class="wp-heading-inline"><?php echo sprintf( __( 'Deploy &quot;%s&quot;</span>', 'woocommerce-product-recommendations' ), $engine->get_name() ? $engine->get_name() : __( '(untitled)', 'woocommerce-product-recommendations' ) ); ?></h1>
-		<a href="<?php echo ! $is_quick ? admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) : admin_url( 'admin.php?page=prl_locations' ) ?>" class="page-title-action"><?php esc_html_e( 'Back', 'woocommerce-product-recommendations' ); ?></a>
+		<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<h1 class="wp-heading-inline"><?php echo sprintf( esc_html__( 'Deploy &quot;%s&quot;', 'woocommerce-product-recommendations' ), $engine->get_name() ? esc_html( $engine->get_name() ) : esc_html__( '(untitled)', 'woocommerce-product-recommendations' ) ); ?></h1>
+		<a href="<?php echo ! $is_quick ? esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) ) : esc_url( admin_url( 'admin.php?page=prl_locations' ) ) ?>" class="page-title-action"><?php esc_html_e( 'Back', 'woocommerce-product-recommendations' ); ?></a>
 
 	<?php } else { ?>
 		<h1 class="wp-heading-inline"><?php esc_html_e( 'Edit deployment', 'woocommerce-product-recommendations' ); ?></h1>
-		<a href="<?php echo admin_url( 'admin.php?page=prl_locations' ) ?>" class="page-title-action"><?php esc_html_e( 'All deployments', 'woocommerce-product-recommendations' ); ?></a>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=prl_locations' ) ); ?>" class="page-title-action"><?php esc_html_e( 'All deployments', 'woocommerce-product-recommendations' ); ?></a>
 	<?php } ?>
 
 	<hr class="wp-header-end">
@@ -28,8 +30,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<form method="post" id="mainform" action="" enctype="multipart/form-data">
 			<?php wp_nonce_field( 'woocommerce-prl-deploy' ); ?>
-			<input type="hidden" name="prl_deploy[engine_id]" value="<?php echo $engine->get_id() ?>">
-			<input type="hidden" name="prl_deploy[engine_type]" id="prl_engine_type" value="<?php echo $engine->get_type() ?>">
+			<input type="hidden" name="prl_deploy[engine_id]" value="<?php echo esc_attr( $engine->get_id() ); ?>">
+			<input type="hidden" name="prl_deploy[engine_type]" id="prl_engine_type" value="<?php echo esc_attr( $engine->get_type() ); ?>">
 
 			<?php if ( ! $deployment ) { ?>
 				<div class="sw-form sw-form--stepper wc-prl-deploy_form">
@@ -46,8 +48,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="sw-form-field">
 						<div class="sw-form-content">
 							<span class="text">
-								<span class="text--editable"><?php echo $engine->get_name() ? $engine->get_name() : __( '(untitled)', 'woocommerce-product-recommendations' ); ?></span>
-								<a href="<?php echo admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) ?>"><?php _e( 'Edit', 'woocommerce-product-recommendations' ); ?></a>
+								<span class="text--editable"><?php echo $engine->get_name() ? esc_html( $engine->get_name() ) : esc_html__( '(untitled)', 'woocommerce-product-recommendations' ); ?></span>
+								<a href="<?php echo esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) ); ?>"><?php esc_html_e( 'Edit', 'woocommerce-product-recommendations' ); ?></a>
 							</span>
 						</div>
 					</div>
@@ -73,7 +75,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<?php esc_html_e( 'Title', 'woocommerce-product-recommendations' ); ?>
 					</label>
 					<div class="sw-form-content">
-						<input type="text" name="prl_deploy[title]" id="prl_deploy_title" placeholder="<?php _e( 'e.g. &quot;You may also like&hellip;&quot;', 'woocommerce-product-recommendations' ); ?>" value="<?php echo $deployment ? esc_attr( $deployment->get_title() ) : ''; ?>"/>
+						<input type="text" name="prl_deploy[title]" id="prl_deploy_title" placeholder="<?php esc_attr_e( 'e.g. &quot;You may also like&hellip;&quot;', 'woocommerce-product-recommendations' ); ?>" value="<?php echo $deployment ? esc_attr( $deployment->get_title() ) : ''; ?>"/>
 					</div>
 				</div>
 
@@ -91,7 +93,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<?php esc_html_e( 'Product columns', 'woocommerce-product-recommendations' ); ?>
 					</label>
 					<div class="sw-form-content">
-						<input type="number" name="prl_deploy[columns]" id="prl_deploy_columns" value="<?php echo $deployment ? $deployment->get_columns() : ''; ?>" placeholder="4" />
+						<input type="number" name="prl_deploy[columns]" id="prl_deploy_columns" value="<?php echo $deployment ? (int) $deployment->get_columns() : ''; ?>" placeholder="4" />
 					</div>
 				</div>
 
@@ -117,13 +119,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 						?>
 						<div class="sw-form-radio_group">
 							<div class="sw-form-radio_group_name">
-								<?php echo $location_info[ 'title' ]; ?>
+								<?php echo esc_html( $location_info[ 'title' ] ); ?>
 							</div>
 							<div class="sw-form-radio_group_list">
 								<?php foreach ( $location_info[ 'hooks' ] as $hook => $label ) { ?>
 									<p>
-										<input name="prl_deploy[hook]" type="radio" id="wc_prl_hook-<?php echo $hook ?>" value="<?php echo $hook ?>" <?php echo $deployment && $deployment->get_hook() == $hook ? 'checked="checked"' : '' ?>/>
-										<label for="wc_prl_hook-<?php echo $hook ?>"><?php echo $label ?></label>
+										<input name="prl_deploy[hook]" type="radio" id="wc_prl_hook-<?php echo esc_attr( $hook ); ?>" value="<?php echo esc_attr( $hook ); ?>" <?php echo $deployment && $deployment->get_hook() == $hook ? 'checked="checked"' : '' ?>/>
+										<label for="wc_prl_hook-<?php echo esc_attr( $hook ); ?>"><?php echo esc_html( $label ); ?></label>
 									</p>
 								<?php } ?>
 							</div>
@@ -154,9 +156,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="sw-form-submit">
 						<?php if ( ! $deployment ) { ?>
 							<button name="save" class="button button-primary sw-button-primary" id="sw-button-primary" type="submit" value="<?php esc_attr_e( 'Deploy', 'woocommerce-product-recommendations' ); ?>"><?php esc_html_e( 'Deploy', 'woocommerce-product-recommendations' ); ?></button>
-							<a href="<?php echo ! $is_quick ? admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) : admin_url( 'admin.php?page=prl_locations' ) ?>" class="sw-form-cancel"><?php esc_html_e( 'Cancel', 'woocommerce-product-recommendations' ); ?></a>
+							<a href="<?php echo ! $is_quick ? esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $engine_id ) ) ) : esc_url( admin_url( 'admin.php?page=prl_locations' ) ); ?>" class="sw-form-cancel"><?php esc_html_e( 'Cancel', 'woocommerce-product-recommendations' ); ?></a>
 						<?php } else { ?>
-							<input type="hidden" name="prl_deploy[id]" value="<?php echo $deployment->get_id() ?>">
+							<input type="hidden" name="prl_deploy[id]" value="<?php echo esc_attr( $deployment->get_id() ); ?>">
 							<button name="save" class="button button-primary sw-button-primary" id="sw-button-primary" type="submit" value="<?php esc_attr_e( 'Save changes', 'woocommerce-product-recommendations' ); ?>"><?php esc_html_e( 'Save changes', 'woocommerce-product-recommendations' ); ?></button>
 						<?php } ?>
 					</div>

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Vendor_Context class for filtering products based on Vendor.
  *
  * @class    WC_PRL_Filter_Vendor_Context
- * @version  1.4.1
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Vendor_Context extends WC_PRL_Filter {
 
@@ -130,12 +130,12 @@ class WC_PRL_Filter_Vendor_Context extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][context]" value="yes" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][context]" value="yes" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
@@ -143,10 +143,10 @@ class WC_PRL_Filter_Vendor_Context extends WC_PRL_Filter {
 			<div class="os_value">
 				<div class="os--disabled" data-modifiers="in,not-in"<?php echo in_array( $modifier, array( 'in', 'not-in' ) ) ? '' : ' style="display:none;"'; ?>></div>
 				<div data-modifiers="intersect,exclude"<?php echo in_array( $modifier, array( 'intersect', 'exclude' ) ) ? '' : ' style="display:none;"'; ?>>
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Limit current vendors to&hellip;', 'woocommerce-product-recommendations' ); ?>">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Limit current vendors to&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 						foreach ( $product_vendors as $vendor ) {
-							echo '<option value="' . $vendor->slug . '" ' . selected( in_array( $vendor->slug, $vendors ), true, false ) . '>' . $vendor->name . '</option>';
+							echo '<option value="' . esc_attr( $vendor->slug ) . '" ' . selected( in_array( $vendor->slug, $vendors ), true, false ) . '>' . esc_html( $vendor->name ) . '</option>';
 						}
 					?>
 				</select>

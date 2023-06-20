@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Tag_Context class for filtering products based on category.
  *
  * @class    WC_PRL_Filter_Tag_Context
- * @version  1.4.6
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Tag_Context extends WC_PRL_Filter {
 
@@ -141,12 +141,12 @@ class WC_PRL_Filter_Tag_Context extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][context]" value="yes" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][context]" value="yes" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
@@ -154,16 +154,16 @@ class WC_PRL_Filter_Tag_Context extends WC_PRL_Filter {
 			<div class="os_value">
 				<div class="os--disabled" data-modifiers="in,not-in"<?php echo in_array( $modifier, array( 'in', 'not-in' ) ) ? '' : ' style="display:none;"'; ?>></div>
 				<div class="select-field" data-modifiers="intersect,exclude"<?php echo in_array( $modifier, array( 'intersect', 'exclude' ) ) ? '' : ' style="display:none;"'; ?>>
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Limit current tags to&hellip;', 'woocommerce-product-recommendations' ); ?>">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Limit current tags to&hellip;', 'woocommerce-product-recommendations' ); ?>">
 						<?php
 							foreach ( $product_tags as $product_tag ) {
-								echo '<option value="' . $product_tag->slug . '" ' . selected( in_array( $product_tag->slug, $tags ), true, false ) . '>' . $product_tag->name . '</option>';
+								echo '<option value="' . esc_attr( $product_tag->slug ) . '" ' . selected( in_array( $product_tag->slug, $tags ), true, false ) . '>' . esc_html( $product_tag->name ) . '</option>';
 							}
 						?>
 					</select>
 					<span class="os_form_row">
-						<a class="os_select_all button" href="#"><?php _e( 'All', 'woocommerce' ); ?></a>
-						<a class="os_select_none button" href="#"><?php _e( 'None', 'woocommerce' ); ?></a>
+						<a class="os_select_all button" href="#"><?php esc_html_e( 'All', 'woocommerce' ); ?></a>
+						<a class="os_select_none button" href="#"><?php esc_html_e( 'None', 'woocommerce' ); ?></a>
 					</span>
 				</div>
 			</div>

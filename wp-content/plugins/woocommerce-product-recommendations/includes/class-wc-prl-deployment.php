@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Deployment class.
  *
  * @class    WC_PRL_Deployment
- * @version  1.4.14
+ * @version  2.4.0
  */
 class WC_PRL_Deployment {
 
@@ -381,11 +381,11 @@ class WC_PRL_Deployment {
 				$this->set_expired( true );
 				WC_PRL()->deployments->schedule_deployment_generation( $this );
 				if ( wc_prl_debug_enabled() ) {
-					echo '<!-- Scheduling regeneration for deployment #' . $this->get_id() . ' -->';
+					echo '<!-- Scheduling regeneration for deployment #' . esc_html( $this->get_id() ) . ' -->';
 				}
 			} else {
 				if ( wc_prl_debug_enabled() ) {
-					echo '<!-- Fetching cached results from meta key: `' . $this->get_cache_key() . '` -->';
+					echo '<!-- Fetching cached results from meta key: `' . esc_html( $this->get_cache_key() ) . '` -->';
 				}
 			}
 

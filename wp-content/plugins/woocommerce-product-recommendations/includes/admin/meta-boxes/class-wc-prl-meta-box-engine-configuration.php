@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Engine details meta-box.
  *
  * @class    WC_PRL_Meta_Box_Engine_Configuration
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Meta_Box_Engine_Configuration extends WC_PRL_Meta_Box {
 
@@ -71,7 +71,7 @@ class WC_PRL_Meta_Box_Engine_Configuration extends WC_PRL_Meta_Box {
 
 			?><p class="sw-notice-box">
 				<span class="sw-notice-block left"><?php esc_html_e( 'This engine has not been deployed to any locations yet. Deploy this engine now?', 'woocommerce-product-recommendations' ); ?></span>
-				<span class="sw-notice-block sw-notice-block--actioned right"><a class="button button-primary" href="<?php echo admin_url( 'admin.php?page=prl_locations&section=deploy&engine=' . $engine->get_id() ) ?>"><?php esc_html_e( 'Deploy', 'woocommerce-product-recommendations' ); ?></a></span>
+				<span class="sw-notice-block sw-notice-block--actioned right"><a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=prl_locations&section=deploy&engine=' . $engine->get_id() ) ) ?>"><?php esc_html_e( 'Deploy', 'woocommerce-product-recommendations' ); ?></a></span>
 			</p><?php
 
 			$notice = ob_get_clean();
@@ -130,11 +130,12 @@ class WC_PRL_Meta_Box_Engine_Configuration extends WC_PRL_Meta_Box {
 			<div class="wc-prl-field wc-prl-field--half">
 				<div class="wc-prl-field_content">
 					<div class="sw-enhanced-select">
-						<select name="prl_engine[type]" id="prl_engine_type"<?php echo $disabled_type; ?>>
+						<select name="prl_engine[type]" id="prl_engine_type"<?php echo esc_attr( $disabled_type ); ?>>
 							<?php
 							foreach ( $types as $slug => $type ) {
 								$selected = $slug === $engine->get_type() ? ' selected="selected"' : '';
-								echo '<option value="' . wc_clean( $slug ) . '"' . $selected . '>' . esc_html( $type ) . '</option>';
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo '<option value="' . esc_attr( wc_clean( $slug ) ) . '"' . $selected . '>' . esc_html( $type ) . '</option>';
 							}
 							?>
 						</select>
@@ -164,7 +165,7 @@ class WC_PRL_Meta_Box_Engine_Configuration extends WC_PRL_Meta_Box {
 									$location_types = array_merge( $location_types, (array) $data[ 'engine_type' ] );
 								}
 								$location_types = array_unique( $location_types );
-								echo '<span data-engine_type="' . implode( ',', $location_types ) . '">' . $location->get_title() . '</span>';
+								echo '<span data-engine_type="' . esc_attr( implode( ',', $location_types ) ) . '">' . esc_html( $location->get_title() ) . '</span>';
 							} ?>
 						</div>
 					</div>
@@ -186,7 +187,7 @@ class WC_PRL_Meta_Box_Engine_Configuration extends WC_PRL_Meta_Box {
 						$deploy_label = $is_new_engine ? esc_html__( 'Create and deploy', 'woocommerce-product-recommendations' ) : esc_html__( 'Update and deploy', 'woocommerce-product-recommendations' );
 
 						if ( ! $is_new_engine && $engine->is_active() ) { ?>
-							<button name="save_and_deploy" class="button wc_prl_save_and_deploy"><?php echo $deploy_label; ?></button>
+							<button name="save_and_deploy" class="button wc_prl_save_and_deploy"><?php echo esc_html( $deploy_label ); ?></button>
 						<?php } ?>
 					</div>
 				</div>

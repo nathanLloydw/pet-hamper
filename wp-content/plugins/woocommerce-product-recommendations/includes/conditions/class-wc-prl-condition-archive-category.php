@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Archive Category condition class.
  *
  * @class    WC_PRL_Condition_Archive_Category
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Archive_Category extends WC_PRL_Condition {
 
@@ -105,20 +105,20 @@ class WC_PRL_Condition_Archive_Category extends WC_PRL_Condition {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Select categories&hellip;', 'woocommerce-product-recommendations' ); ?>">
+				<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select categories&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 						foreach ( $product_categories as $product_category ) {
-							echo '<option value="' . $product_category->term_id . '" ' . selected( in_array( $product_category->term_id, $categories ), true, false ) . '>' . $product_category->name . '</option>';
+							echo '<option value="' . esc_attr( $product_category->term_id ) . '" ' . selected( in_array( $product_category->term_id, $categories ), true, false ) . '>' . esc_html( $product_category->name ) . '</option>';
                         }
 					?>
 				</select>

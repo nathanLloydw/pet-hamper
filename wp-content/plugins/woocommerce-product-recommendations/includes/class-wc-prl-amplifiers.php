@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Amplifiers Collection class.
  *
  * @class    WC_PRL_Amplifiers
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Amplifiers {
 
@@ -30,14 +30,14 @@ class WC_PRL_Amplifiers {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -132,19 +132,19 @@ class WC_PRL_Amplifiers {
 		?>
 		<div class="sw-hr-section">
 			<?php
-			echo __( 'Amplifiers', 'woocommerce-product-recommendations' );
-			echo wc_help_tip( __( 'Use amplifiers to adjust the display order of filtered recommendations. Add multiple weighted amplifiers to perform advanced sort operations.', 'woocommerce-product-recommendations' ) );
+			echo esc_html__( 'Amplifiers', 'woocommerce-product-recommendations' );
+			echo wc_help_tip( esc_html__( 'Use amplifiers to adjust the display order of filtered recommendations. Add multiple weighted amplifiers to perform advanced sort operations.', 'woocommerce-product-recommendations' ) );
 			?>
 		</div>
 		<?php
 		$amplifiers_data  = empty( $options[ 'amplifiers' ] ) ? $engine->get_amplifiers_data() : $options[ 'amplifiers' ];
 		$amplifiers_count = count( $amplifiers_data );
-		?><div id="os-container" class="widefat wc-prl-amplifiers-container" data-os_count="<?php echo $amplifiers_count; ?>">
+		?><div id="os-container" class="widefat wc-prl-amplifiers-container" data-os_count="<?php echo (int) $amplifiers_count; ?>">
 			<div class="os_boarding<?php echo $amplifiers_count ? '' : ' active'; ?>">
 				<div class="icon">
 					<i class="prl-icon prl-amps"></i>
 				</div>
-				<div class="text"><?php _e( 'No amplifiers found. Add one now?', 'woocommerce-product-recommendations' ); ?></div>
+				<div class="text"><?php esc_html_e( 'No amplifiers found. Add one now?', 'woocommerce-product-recommendations' ); ?></div>
 			</div>
 			<div id="os-list"<?php echo $amplifiers_count ? '' : ' class="hidden"'; ?>><?php
 
@@ -157,7 +157,7 @@ class WC_PRL_Amplifiers {
 
 							if ( array_key_exists( $amplifier_id, $amplifiers ) ) {
 
-								?><div class="os_row" data-os_index="<?php echo $amplifier_index; ?>">
+								?><div class="os_row" data-os_index="<?php echo esc_attr( $amplifier_index ); ?>">
 
 									<div class="os_select">
 										<div class="sw-enhanced-select"><?php
@@ -168,7 +168,7 @@ class WC_PRL_Amplifiers {
 										$amplifiers[ $amplifier_id ]->get_admin_fields_html( null, $amplifier_index, $amplifier_data );
 									?></div>
 									<div class="os_remove column-wc_actions">
-										<a href="#" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>" class="button wc-action-button trash help_tip"></a>
+										<a href="#" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>" class="button wc-action-button trash help_tip"></a>
 									</div>
 								</div><?php
 							}
@@ -208,14 +208,14 @@ class WC_PRL_Amplifiers {
 			if ( ! empty( $additional_options ) ) {
 				$selected_id = null;
 				foreach ( $additional_options as $key => $value ) {
-					?><option value="<?php echo $key ?>" selected="selected"><?php echo $value ?></option><?php
+					?><option value="<?php echo esc_attr( $key ); ?>" selected="selected"><?php echo esc_html( $value ); ?></option><?php
 				}
 			}
 
 			// Hint: Contextual amplifiers need to support in general mode (non-context) the current engine type in order to show up properly.
 			foreach ( $amplifiers as $amplifier_id => $amplifier ) {
-				?><option value="<?php echo $amplifier_id ?>" <?php echo $amplifier_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
-					echo $amplifier->get_title();
+				?><option value="<?php echo esc_attr( $amplifier_id ); ?>" <?php echo $amplifier_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
+					echo esc_html( $amplifier->get_title() );
 				?></option><?php
 			}
 		?></select><?php
@@ -250,7 +250,7 @@ class WC_PRL_Amplifiers {
 			$amplifiers = $this->get_supported_amplifiers( $type );
 			?>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_amplifier_row">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_amplifier_row">
 				<div class="os_row" data-os_index="{{{ data.os_index }}}">
 					<div class="os_select">
 						<div class="sw-enhanced-select"><?php
@@ -261,12 +261,12 @@ class WC_PRL_Amplifiers {
 						{{{ data.os_content }}}
 					</div>
 					<div class="os_remove column-wc_actions">
-						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>"></a>
+						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>"></a>
 					</div>
 				</div>
 			</script>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_amplifier_add_content">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_amplifier_add_content">
 				<div class="os_select">
 					<div class="sw-enhanced-select">
 						<?php $this->get_amplifiers_dropdown( $type, $amplifiers, null, array( 'add' => __( 'Add amplifier', 'woocommerce-product-recommendations' ) ) ); ?>
@@ -282,7 +282,7 @@ class WC_PRL_Amplifiers {
 			<?php
 			foreach ( $amplifiers as $amp_id => $amplifier ) {
 				// Generating for {{{ data.os_content }}}.
-				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_amplifier_<?php echo esc_attr( $amp_id ); ?>_content"><?php
+				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_amplifier_<?php echo esc_attr( $amp_id ); ?>_content"><?php
 
 				$amplifier->get_admin_fields_html( null, '{{{ data.os_index }}}', array() );
 

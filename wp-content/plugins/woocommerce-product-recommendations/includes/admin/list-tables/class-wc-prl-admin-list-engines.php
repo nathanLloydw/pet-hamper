@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Modifies the custom's post type list table.
  *
  * @class    WC_PRL_Admin_List_Table_Engines
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Admin_List_Table_Engines {
 
@@ -179,8 +179,8 @@ class WC_PRL_Admin_List_Table_Engines {
 		$types         = wc_prl_get_engine_types();
 
 		?>
-		<select name="<?php echo $taxonomy_slug ?>" id="<?php echo $taxonomy_slug ?>">
-			<option value=""><?php _e( 'Filter by type', 'woocommerce-product-recommendations' ); ?></option>
+		<select name="<?php echo esc_attr( $taxonomy_slug ); ?>" id="<?php echo esc_attr( $taxonomy_slug ); ?>">
+			<option value=""><?php esc_html_e( 'Filter by type', 'woocommerce-product-recommendations' ); ?></option>
 			<?php
 			$current_value = isset( $_GET[ $taxonomy_slug ] ) ? sanitize_text_field( $_GET[ $taxonomy_slug ] ) : '';
 
@@ -188,9 +188,9 @@ class WC_PRL_Admin_List_Table_Engines {
 					printf
 						(
 						'<option value="%1$s" %2$s>%3$s</option>',
-						$slug,
+						esc_attr( $slug ),
 						$slug == $current_value ? ' selected="selected"' : '',
-						$name
+						esc_html( $name )
 					);
 				}
 			?>
@@ -202,7 +202,7 @@ class WC_PRL_Admin_List_Table_Engines {
 	 * Render column: type.
 	 */
 	public static function render_type_column() {
-		echo wc_prl_get_engine_type_label( self::$engine->get_type() );
+		echo esc_html( wc_prl_get_engine_type_label( self::$engine->get_type() ) );
 	}
 
 	/**
@@ -220,8 +220,8 @@ class WC_PRL_Admin_List_Table_Engines {
 		$disabled = ! self::$engine->is_active() ? ' button-disabled' : '';
 		?>
 		<p>
-			<a id="<?php echo self::$engine->get_id() ?>" class="button<?php echo $disabled ?> wc-action-button wc-action-button-regenerate" href="#" aria-label="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?></a>
-			<a class="button<?php echo $disabled ?> wc-action-button wc-action-button-deploy" href="<?php echo admin_url( 'admin.php?page=prl_locations&section=deploy&engine=' . self::$engine->get_id() ) ?>" aria-label="<?php esc_attr_e( 'Deploy', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Deploy engine', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Deploy', 'woocommerce-product-recommendations' ) ?></a>
+			<a id="<?php echo esc_attr( self::$engine->get_id() ); ?>" class="button<?php echo esc_attr( $disabled ); ?> wc-action-button wc-action-button-regenerate" href="#" aria-label="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Regenerate recommendations', 'woocommerce-product-recommendations' ) ?></a>
+			<a class="button<?php echo esc_attr( $disabled ); ?> wc-action-button wc-action-button-deploy" href="<?php echo esc_url( admin_url( 'admin.php?page=prl_locations&section=deploy&engine=' . self::$engine->get_id() ) ) ?>" aria-label="<?php esc_attr_e( 'Deploy', 'woocommerce-product-recommendations' ) ?>" title="<?php esc_attr_e( 'Deploy engine', 'woocommerce-product-recommendations' ) ?>"><?php esc_html_e( 'Deploy', 'woocommerce-product-recommendations' ) ?></a>
 		</p>
 		<?php
 	}

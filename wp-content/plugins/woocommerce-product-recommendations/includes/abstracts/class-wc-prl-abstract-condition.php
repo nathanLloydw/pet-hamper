@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Abstract class used for managing deployment visibility conditions.
  *
  * @class    WC_PRL_Condition
- * @version  1.2.5
+ * @version  2.4.0
  */
 abstract class WC_PRL_Condition {
 
@@ -160,9 +160,9 @@ abstract class WC_PRL_Condition {
 	public function get_modifiers_select_options( $selected ) {
 
 		foreach ( $this->supported_modifiers as $value => $label ) {
-			echo '<option value="' . $value . '" ';
+			echo '<option value="' . esc_attr( $value ) . '" ';
 			selected( $selected, $value, true );
-			echo '>' . $label . '</<option>';
+			echo '>' . esc_html( $label ) . '</<option>';
 		}
 	}
 

@@ -2,16 +2,16 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Product Recommendations 2.3.0\n"
+"Project-Id-Version: WooCommerce Product Recommendations 2.4.0\n"
 "Report-Msgid-Bugs-To: https://woocommerce.com/my-account/create-a-ticket/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-08T11:37:17+00:00\n"
+"POT-Creation-Date: 2023-06-19T09:19:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Domain: woocommerce-product-recommendations\n"
 
@@ -36,10 +36,10 @@ msgid "https://somewherewarm.com/"
 msgstr ""
 
 #: includes/admin/analytics/class-wc-prl-admin-analytics.php:108
-#: includes/admin/class-wc-prl-admin-menus.php:92
-#: includes/admin/class-wc-prl-admin-menus.php:288
-#: includes/admin/class-wc-prl-admin-menus.php:291
-#: includes/admin/class-wc-prl-admin-menus.php:431
+#: includes/admin/class-wc-prl-admin-menus.php:98
+#: includes/admin/class-wc-prl-admin-menus.php:278
+#: includes/admin/class-wc-prl-admin-menus.php:281
+#: includes/admin/class-wc-prl-admin-menus.php:424
 #: includes/admin/settings/class-wc-prl-admin-settings.php:30
 msgid "Recommendations"
 msgstr ""
@@ -184,130 +184,130 @@ msgstr ""
 msgid "Deployment deleted."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:107
-#: includes/admin/class-wc-prl-admin-menus.php:195
-#: includes/admin/class-wc-prl-admin-menus.php:291
-#: includes/admin/class-wc-prl-admin-menus.php:380
-#: includes/admin/class-wc-prl-admin-menus.php:471
+#: includes/admin/class-wc-prl-admin-menus.php:113
+#: includes/admin/class-wc-prl-admin-menus.php:201
+#: includes/admin/class-wc-prl-admin-menus.php:281
+#: includes/admin/class-wc-prl-admin-menus.php:373
+#: includes/admin/class-wc-prl-admin-menus.php:464
 #: includes/admin/views/html-admin-hooks.php:16
 #: includes/admin/views/html-admin-locations.php:16
 msgid "Locations"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:126
+#: includes/admin/class-wc-prl-admin-menus.php:132
 msgid "View Location"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:138
-#: includes/admin/class-wc-prl-admin-menus.php:190
-#: includes/admin/class-wc-prl-admin-menus.php:459
+#: includes/admin/class-wc-prl-admin-menus.php:144
+#: includes/admin/class-wc-prl-admin-menus.php:196
+#: includes/admin/class-wc-prl-admin-menus.php:452
 #: includes/class-wc-prl-post-types.php:81
 #: includes/class-wc-prl-post-types.php:83
 msgid "Engines"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:149
+#: includes/admin/class-wc-prl-admin-menus.php:155
 msgid "Add New"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:159
+#: includes/admin/class-wc-prl-admin-menus.php:165
 msgid "Edit Engine"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:184
-#: includes/admin/class-wc-prl-admin-menus.php:288
-#: includes/admin/class-wc-prl-admin-menus.php:439
+#: includes/admin/class-wc-prl-admin-menus.php:190
+#: includes/admin/class-wc-prl-admin-menus.php:278
+#: includes/admin/class-wc-prl-admin-menus.php:432
 #: includes/admin/views/html-admin-performance.php:17
 msgid "Performance"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:392
+#: includes/admin/class-wc-prl-admin-menus.php:385
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:224
 msgid "Deploy engine"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:347
+#: includes/admin/class-wc-prl-admin-notices.php:346
 msgid "<strong>WooCommerce Product Recommendations</strong> is updating your database.%s"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:352
+#: includes/admin/class-wc-prl-admin-notices.php:351
 msgid "<strong>WooCommerce Product Recommendations</strong> has been updated! To keep things running smoothly, your database needs to be updated, as well."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:353
+#: includes/admin/class-wc-prl-admin-notices.php:352
 msgid "Before you proceed, please take a few minutes to <a href=\"%s\" target=\"_blank\">learn more</a> about best practices when updating."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:358
+#: includes/admin/class-wc-prl-admin-notices.php:357
 msgid "<strong>WooCommerce Product Recommendations</strong> has not finished updating your database.%s"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:367
+#: includes/admin/class-wc-prl-admin-notices.php:366
 msgid "<strong>WooCommerce Product Recommendations</strong> database update complete. Thank you for updating to the latest version!"
 msgstr ""
 
 #. translators: onboarding url
-#: includes/admin/class-wc-prl-admin-notices.php:396
+#: includes/admin/class-wc-prl-admin-notices.php:395
 msgid "Thank you for installing <strong>WooCommerce Product Recommendations</strong>. Ready to get started? <a href=\"%s\">Click here to create and deploy your first recommendation Engine</a>."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:466
+#: includes/admin/class-wc-prl-admin-notices.php:465
 msgid "Loopback test passed!"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:468
+#: includes/admin/class-wc-prl-admin-notices.php:467
 msgid "Loopback test failed!"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:493
+#: includes/admin/class-wc-prl-admin-notices.php:492
 msgid "Product Recommendations ran a quick check-up on your site, and found that loopback requests might be failing to complete. Loopback requests are used by WooCommerce to run scheduled events, such as database upgrades. To keep your site in top shape, please ask the host or administrator of your server to look into this for you."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:494
+#: includes/admin/class-wc-prl-admin-notices.php:493
 msgid "Repeat test"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:529
+#: includes/admin/class-wc-prl-admin-notices.php:528
 msgid "Product Recommendations ran a quick check-up on your site, and found that your catalog pages are probably served from a full page cache. While this ensures a snappier experience for your visitors, it also prevents <a href=\"%1$s\" target=\"_blank\">some advanced features</a> in Product Recommendations from working correctly. As a workaround, you may enable <strong>Deployments rendering > Use AJAX</strong> under <strong>WooCommerce > Settings > Recommendations</strong> &ndash; but please be aware that doing so will have an impact on server utilization and user experience."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:565
+#: includes/admin/class-wc-prl-admin-notices.php:564
 msgid "Product Recommendations ran a quick check-up on your site, and found that the task scheduler built into WooCommerce might be failing to process certain tasks in time. To keep your site in top shape, please ask the host or administrator of your server to look into this for you."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:578
+#: includes/admin/class-wc-prl-admin-notices.php:577
 msgid "Update database"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:596
+#: includes/admin/class-wc-prl-admin-notices.php:595
 msgid "run it manually"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:597
+#: includes/admin/class-wc-prl-admin-notices.php:596
 msgid " The process seems to be taking a little longer than usual, so let's try to %s."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:610
+#: includes/admin/class-wc-prl-admin-notices.php:609
 msgid "get in touch with us"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:611
+#: includes/admin/class-wc-prl-admin-notices.php:610
 msgid "If this message persists, please restore your database from a backup, or %s."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:754
+#: includes/admin/class-wc-prl-admin-notices.php:753
 msgid "<strong>Product Recommendations</strong> just got smarter!"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:755
+#: includes/admin/class-wc-prl-admin-notices.php:754
 msgid "Add a pinch of intelligence to your catalog, with automated \"Bought Together\" and \"Others Also Bought\" recommendations."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:762
+#: includes/admin/class-wc-prl-admin-notices.php:761
 msgid "A pinch of intelligence to grow your sales"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-notices.php:771
+#: includes/admin/class-wc-prl-admin-notices.php:770
 msgid "Learn more"
 msgstr ""
 
@@ -499,7 +499,7 @@ msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:88
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
-#: includes/admin/views/html-admin-deploy.php:50
+#: includes/admin/views/html-admin-deploy.php:52
 #: includes/class-wc-prl-post-types.php:87
 msgid "Edit"
 msgstr ""
@@ -538,13 +538,13 @@ msgid "Edit engine"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:180
-#: includes/admin/views/html-admin-deploy.php:17
-#: includes/admin/views/html-admin-deploy.php:49
+#: includes/admin/views/html-admin-deploy.php:19
+#: includes/admin/views/html-admin-deploy.php:51
 msgid "(untitled)"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
-#: includes/admin/views/html-admin-deploy.php:21
+#: includes/admin/views/html-admin-deploy.php:23
 msgid "Edit deployment"
 msgstr ""
 
@@ -590,40 +590,40 @@ msgstr ""
 msgid "Deployments deleted."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:302
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:304
 msgid "Ready to start your Engines?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:305
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:307
 msgid "Deploy an Engine now to offer product recommendations at a Location of your store."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:308
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:310
 #: includes/admin/views/html-admin-locations.php:29
 #: includes/class-wc-prl-deployments.php:262
 msgid "Search for an Engine&hellip;"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:315
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:317
 #: includes/class-wc-prl-post-types.php:130
 msgid "Create an Engine"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:318
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:320
 msgid "Want to add product recommendations to a Location of your store?"
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:320
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:322
 msgid "Start by creating an Engine &mdash; then, return here to deploy it."
 msgstr ""
 
-#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:322
+#: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:324
 #: includes/class-wc-prl-post-types.php:137
 msgid "Create engine"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:111
-#: includes/admin/views/html-admin-deploy.php:73
+#: includes/admin/views/html-admin-deploy.php:75
 #: includes/class-wc-prl-deployments.php:241
 msgid "Title"
 msgstr ""
@@ -648,7 +648,7 @@ msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:224
 #: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:74
-#: includes/admin/views/html-admin-deploy.php:156
+#: includes/admin/views/html-admin-deploy.php:158
 msgid "Deploy"
 msgstr ""
 
@@ -657,7 +657,7 @@ msgid "This engine has not been deployed to any locations yet. Deploy this engin
 msgstr ""
 
 #: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:88
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:177
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:178
 msgid "Engine Configuration"
 msgstr ""
 
@@ -669,23 +669,23 @@ msgstr ""
 msgid "Each engine type is designed to generate recommendations at specific locations of your store."
 msgstr ""
 
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:142
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:143
 msgid "Choose an engine type to see a list of supported locations. When you deploy this engine, you will be able to choose its precise location."
 msgstr ""
 
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:157
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:158
 msgid "Supported locations:"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:178
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:179
 msgid "Configure filters and amplifiers to generate product recommendations. Add filters to narrow down results. Use amplifiers to control their order."
 msgstr ""
 
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:186
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:187
 msgid "Create and deploy"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:186
+#: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:187
 msgid "Update and deploy"
 msgstr ""
 
@@ -753,172 +753,167 @@ msgstr ""
 msgid "Amplifier Tuning: Others Also Bought"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:17
+#: includes/admin/status/views/html-admin-page-status-report.php:18
 msgid "Product Recommendations"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:22
+#: includes/admin/status/views/html-admin-page-status-report.php:23
 msgid "Database version"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:23
+#: includes/admin/status/views/html-admin-page-status-report.php:24
 msgid "The version of Product Recommendations reported by the database. This should be the same as the plugin version."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:30
+#: includes/admin/status/views/html-admin-page-status-report.php:31
 msgid "Database version mismatch."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:36
+#: includes/admin/status/views/html-admin-page-status-report.php:37
 msgid "Loopback test"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:37
+#: includes/admin/status/views/html-admin-page-status-report.php:38
 msgid "Loopback requests are used by Product Recommendations to regenerate recommendations in the background."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:46
+#: includes/admin/status/views/html-admin-page-status-report.php:47
 msgid "Loopback test failed."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:52
+#: includes/admin/status/views/html-admin-page-status-report.php:53
 msgid "Task queueing test"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:53
+#: includes/admin/status/views/html-admin-page-status-report.php:54
 msgid "The task queue built into WooCommerce must be operating properly to process scheduled tasks and events."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:60
+#: includes/admin/status/views/html-admin-page-status-report.php:61
 msgid "Task queueing test failed."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:66
+#: includes/admin/status/views/html-admin-page-status-report.php:67
 msgid "Page cache test"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:67
+#: includes/admin/status/views/html-admin-page-status-report.php:68
 msgid "Using a page cache ensures a snappier experience for your visitors, but also prevents some advanced features in Product Recommendations from working correctly. As a workaround, you may enable <strong>Deployments rendering > Use AJAX</strong> under <strong>WooCommerce > Settings > Recommendations</strong> – but please be aware that doing so will have an impact on server utilization and user experience."
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:72
+#: includes/admin/status/views/html-admin-page-status-report.php:73
 msgid "Cache in use"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:74
+#: includes/admin/status/views/html-admin-page-status-report.php:75
 msgid "No cache detected"
 msgstr ""
 
-#: includes/admin/status/views/html-admin-page-status-report.php:76
+#: includes/admin/status/views/html-admin-page-status-report.php:77
 msgid "Test failed."
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:17
-msgid "Deploy &quot;%s&quot;</span>"
+#: includes/admin/views/html-admin-deploy.php:19
+msgid "Deploy &quot;%s&quot;"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:18
+#: includes/admin/views/html-admin-deploy.php:20
 msgid "Back"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:22
+#: includes/admin/views/html-admin-deploy.php:24
 msgid "All deployments"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:43
+#: includes/admin/views/html-admin-deploy.php:45
 #: includes/class-wc-prl-deployments.php:259
 #: includes/class-wc-prl-post-types.php:82
 #: includes/data-stores/class-wc-prl-engine-data-store-cpt.php:61
 msgid "Engine"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:57
+#: includes/admin/views/html-admin-deploy.php:59
 msgid "Configure Display Settings"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:57
+#: includes/admin/views/html-admin-deploy.php:59
 msgid "Display Settings"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:63
+#: includes/admin/views/html-admin-deploy.php:65
 msgid "Active"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:76
+#: includes/admin/views/html-admin-deploy.php:78
 #: includes/class-wc-prl-deployments.php:244
 msgid "e.g. &quot;You may also like&hellip;&quot;"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:82
+#: includes/admin/views/html-admin-deploy.php:84
 #: includes/class-wc-prl-deployments.php:250
 msgid "Description"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:91
+#: includes/admin/views/html-admin-deploy.php:93
 #: includes/class-wc-prl-deployments.php:283
 msgid "Product columns"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:100
+#: includes/admin/views/html-admin-deploy.php:102
 #: includes/class-wc-prl-deployments.php:292
 msgid "Product rows"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:108
+#: includes/admin/views/html-admin-deploy.php:110
 msgid "Choose Location"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:108
+#: includes/admin/views/html-admin-deploy.php:110
 #: includes/admin/views/html-admin-performance.php:101
 #: resources/js/admin/analytics/report/config.js:49
 msgid "Location"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:135
+#: includes/admin/views/html-admin-deploy.php:137
 msgid "Add Visibility Conditions"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:135
+#: includes/admin/views/html-admin-deploy.php:137
 msgid "Visibility Conditions"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:136
+#: includes/admin/views/html-admin-deploy.php:138
 msgid "(optional)"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:157
+#: includes/admin/views/html-admin-deploy.php:159
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/views/html-admin-deploy.php:160
-#: includes/admin/views/html-admin-hooks.php:117
+#: includes/admin/views/html-admin-deploy.php:162
+#: includes/admin/views/html-admin-hooks.php:116
 msgid "Save changes"
 msgstr ""
 
-#. translators: %s deployments counter
-#: includes/admin/views/html-admin-hooks.php:37
-msgid "%s"
-msgstr ""
-
-#: includes/admin/views/html-admin-hooks.php:50
+#: includes/admin/views/html-admin-hooks.php:49
 msgid "%s engine deployed"
 msgid_plural "%s engines deployed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/views/html-admin-hooks.php:95
+#: includes/admin/views/html-admin-hooks.php:94
 msgid "This deployment generates dynamic/personalized recommendations that some visitors may not be able to see correctly. As a workaround, you may enable <strong>Deployments rendering > Use AJAX</strong> under <strong>WooCommerce > Settings > Recommendations</strong> &ndash; but please be aware that doing so will have an impact on server utilization and user experience."
 msgstr ""
 
-#: includes/admin/views/html-admin-hooks.php:107
+#: includes/admin/views/html-admin-hooks.php:106
 msgid "No Engines found"
 msgstr ""
 
-#: includes/admin/views/html-admin-hooks.php:108
+#: includes/admin/views/html-admin-hooks.php:107
 msgid "You have not added Engines to this location. Deploy an Engine now?"
 msgstr ""
 
-#: includes/admin/views/html-admin-hooks.php:115
+#: includes/admin/views/html-admin-hooks.php:114
 #: includes/admin/views/html-admin-locations.php:24
 msgid "Deploy an Engine"
 msgstr ""
@@ -982,6 +977,10 @@ msgstr ""
 
 #: includes/admin/views/html-admin-performance.php:98
 msgid "Top Locations"
+msgstr ""
+
+#: includes/admin/views/partials/html-admin-locations-tabs.php:8
+msgid "Overview"
 msgstr ""
 
 #: includes/amplifiers/class-wc-prl-amplifier-conversion-rate.php:27
@@ -1476,7 +1475,7 @@ msgstr ""
 
 #: includes/conditions/class-wc-prl-condition-cart-item-value.php:142
 #: includes/conditions/class-wc-prl-condition-order-item-value.php:156
-msgid "Enter amount&hellip;\""
+msgid "Enter amount&hellip;"
 msgstr ""
 
 #: includes/conditions/class-wc-prl-condition-cart-product.php:130
@@ -1519,7 +1518,7 @@ msgstr ""
 
 #: includes/conditions/class-wc-prl-condition-cart-total.php:118
 #: includes/conditions/class-wc-prl-condition-order-total.php:129
-msgid "Enter cart total&hellip;\""
+msgid "Enter cart total&hellip;"
 msgstr ""
 
 #. translators: 1: month number (01, 02, etc.), 2: month abbreviation
@@ -1592,7 +1591,7 @@ msgid "Product price"
 msgstr ""
 
 #: includes/conditions/class-wc-prl-condition-product-price.php:107
-msgid "Enter product price&hellip;\""
+msgid "Enter product price&hellip;"
 msgstr ""
 
 #: includes/conditions/class-wc-prl-condition-product-stock-status.php:28
@@ -1632,8 +1631,8 @@ msgid "Recently viewed tag"
 msgstr ""
 
 #: includes/data-stores/class-wc-prl-engine-data-store-cpt.php:101
-#: includes/db/class-wc-prl-deployment-db.php:236
-#: includes/db/class-wc-prl-deployment-db.php:290
+#: includes/db/class-wc-prl-deployment-db.php:281
+#: includes/db/class-wc-prl-deployment-db.php:336
 msgid "Invalid engine."
 msgstr ""
 
@@ -1641,18 +1640,18 @@ msgstr ""
 msgid "There are active deployments using this engine. Engine type change is not allowed."
 msgstr ""
 
-#: includes/db/class-wc-prl-deployment-db.php:230
-#: includes/db/class-wc-prl-deployment-db.php:284
+#: includes/db/class-wc-prl-deployment-db.php:275
+#: includes/db/class-wc-prl-deployment-db.php:330
 msgid "Missing engine attributes."
 msgstr ""
 
-#: includes/db/class-wc-prl-deployment-db.php:242
-#: includes/db/class-wc-prl-deployment-db.php:296
+#: includes/db/class-wc-prl-deployment-db.php:287
+#: includes/db/class-wc-prl-deployment-db.php:342
 msgid "Invalid location."
 msgstr ""
 
-#: includes/db/class-wc-prl-deployment-db.php:246
-#: includes/db/class-wc-prl-deployment-db.php:300
+#: includes/db/class-wc-prl-deployment-db.php:292
+#: includes/db/class-wc-prl-deployment-db.php:346
 msgid "Invalid engine type."
 msgstr ""
 
@@ -1725,7 +1724,7 @@ msgid "Relative Price"
 msgstr ""
 
 #: includes/filters/class-wc-prl-filter-price-context.php:133
-msgid "Enter a value&hellip;\""
+msgid "Enter a value&hellip;"
 msgstr ""
 
 #: includes/filters/class-wc-prl-filter-price-context.php:134
@@ -1733,7 +1732,7 @@ msgid "% of current product"
 msgstr ""
 
 #: includes/filters/class-wc-prl-filter-price.php:105
-msgid "Enter a price&hellip;\""
+msgid "Enter a price&hellip;"
 msgstr ""
 
 #: includes/filters/class-wc-prl-filter-recently-viewed.php:28

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Abstract class used for managing engine Amplifiers.
  *
  * @class    WC_PRL_Amplifier
- * @version  1.0.0
+ * @version  2.4.0
  */
 abstract class WC_PRL_Amplifier {
 
@@ -124,9 +124,9 @@ abstract class WC_PRL_Amplifier {
 	public function get_modifiers_select_options( $selected ) {
 
 		foreach ( $this->supported_modifiers as $value => $label ) {
-			echo '<option value="' . $value . '" ';
+			echo '<option value="' . esc_attr( $value ) . '" ';
 			selected( $selected, $value, true );
-			echo '>' . $label . '</<option>';
+			echo '>' . esc_html( $label ) . '</<option>';
 		}
 	}
 

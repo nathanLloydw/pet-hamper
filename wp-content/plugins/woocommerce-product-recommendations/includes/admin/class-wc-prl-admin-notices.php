@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin notices handling.
  *
  * @class    WC_PRL_Admin_Notices
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Admin_Notices {
 
@@ -210,16 +210,15 @@ class WC_PRL_Admin_Notices {
 			foreach ( $notices as $notice ) {
 
 				$notice_classes = array( 'wc_prl_notice', 'notice', 'notice-' . $notice[ 'type' ] );
-				$dismiss_attr   = $notice[ 'dismiss_class' ] ? 'data-dismiss_class="' . $notice[ 'dismiss_class' ] . '"' : '';
+				$dismiss_attr   = $notice[ 'dismiss_class' ] ? ' data-dismiss_class="' . $notice[ 'dismiss_class' ] . '"' : '';
 
 				if ( $notice[ 'dismiss_class' ] ) {
 					$notice_classes[] = $notice[ 'dismiss_class' ];
 					$notice_classes[] = 'is-dismissible';
 				}
 
-				echo '<div class="' . implode( ' ', $notice_classes ) . '"' . $dismiss_attr . '>';
-				echo wpautop( wp_kses_post( $notice[ 'content' ] ) );
-				echo '</div>';
+				$output = '<div class="' . esc_attr( implode( ' ', $notice_classes ) ) . '"' . $dismiss_attr . '>' . wpautop( $notice[ 'content' ] ) . '</div>';
+				echo wp_kses_post( $output );
 			}
 
 			if ( function_exists( 'wc_enqueue_js' ) ) {
@@ -751,8 +750,8 @@ class WC_PRL_Admin_Notices {
 			ob_start();
 
 			?>
-			<p><?php _e( '<strong>Product Recommendations</strong> just got smarter!', 'woocommerce-product-recommendations' ); ?></p>
-			<p><?php _e( 'Add a pinch of intelligence to your catalog, with automated "Bought Together" and "Others Also Bought" recommendations.', 'woocommerce-product-recommendations' ); ?></p>
+			<p><?php echo wp_kses_post( __( '<strong>Product Recommendations</strong> just got smarter!', 'woocommerce-product-recommendations' ) ); ?></p>
+			<p><?php esc_html_e( 'Add a pinch of intelligence to your catalog, with automated "Bought Together" and "Others Also Bought" recommendations.', 'woocommerce-product-recommendations' ); ?></p>
 			<?php
 
 			$content = ob_get_clean();

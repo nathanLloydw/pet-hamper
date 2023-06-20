@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Cart Tag condition class.
  *
  * @class    WC_PRL_Condition_Cart_Tag
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Cart_Tag extends WC_PRL_Condition {
 
@@ -144,20 +144,20 @@ class WC_PRL_Condition_Cart_Tag extends WC_PRL_Condition {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php _e( 'Select tags&hellip;', 'woocommerce-product-recommendations' ); ?>">
+				<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][value][]" class="multiselect sw-select2" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select tags&hellip;', 'woocommerce-product-recommendations' ); ?>">
 					<?php
 						foreach ( $product_tags as $product_tag ) {
-							echo '<option value="' . $product_tag->term_id . '" ' . selected( in_array( $product_tag->term_id, $tags ), true, false ) . '>' . $product_tag->name . '</option>';
+							echo '<option value="' . esc_attr( $product_tag->term_id ) . '" ' . selected( in_array( $product_tag->term_id, $tags ), true, false ) . '>' . esc_html( $product_tag->name ) . '</option>';
                         }
 					?>
 				</select>

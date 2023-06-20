@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Order Product condition class.
  *
  * @class    WC_PRL_Condition_Order_Product
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Order_Product extends WC_PRL_Condition {
 
@@ -127,21 +127,21 @@ class WC_PRL_Condition_Order_Product extends WC_PRL_Condition {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<select class="sw-select2-search--products" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][value][]" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woocommerce-product-recommendations' ); ?>" data-action="woocommerce_json_search_products" multiple="multiple" data-limit="100" data-sortable="true">
+				<select class="sw-select2-search--products" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][value][]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce-product-recommendations' ); ?>" data-action="woocommerce_json_search_products" multiple="multiple" data-limit="100" data-sortable="true">
 					<?php
 					foreach ( $products as $product ) {
 						$product_extra = $product->get_sku() ? $product->get_sku() : '#' . $product->get_id();
-						echo '<option value="' . $product->get_id() . '" selected="selected">' . $product->get_name() . ' (' . $product_extra . ')</option>';
+						echo '<option value="' . esc_attr( $product->get_id() ) . '" selected="selected">' . esc_html( $product->get_name() ) . ' (' . esc_html( $product_extra ) . ')</option>';
 					}
 					?>
 				</select>

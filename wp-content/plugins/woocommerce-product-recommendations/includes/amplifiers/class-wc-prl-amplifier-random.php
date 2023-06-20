@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Random class for amplifying products based on their freshness.
  *
  * @class    WC_PRL_Amplifier_Random
- * @version  1.2.3
+ * @version  2.4.0
  */
 class WC_PRL_Amplifier_Random extends WC_PRL_Amplifier {
 
@@ -67,7 +67,7 @@ class WC_PRL_Amplifier_Random extends WC_PRL_Amplifier {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[amplifiers][<?php echo $amplifier_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[amplifiers][<?php echo esc_attr( $amplifier_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="os--disabled"></div>

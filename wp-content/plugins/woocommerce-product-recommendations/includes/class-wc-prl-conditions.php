@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Visibility Conditions Collection class.
  *
  * @class    WC_PRL_Conditions
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Conditions {
 
@@ -30,14 +30,14 @@ class WC_PRL_Conditions {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -143,20 +143,20 @@ class WC_PRL_Conditions {
 		if ( ! $hide_header ) { ?>
 			<div class="sw-hr-section">
 				<?php
-				echo __( 'Visibility conditions', 'woocommerce-product-recommendations' );
-				echo wc_help_tip( __( 'Some Locations work with multiple Engine Types. The conditions available here may change depending on the Type of the selected Engine.', 'woocommerce-product-recommendations' ) );
+				echo esc_html__( 'Visibility conditions', 'woocommerce-product-recommendations' );
+				echo wc_help_tip( esc_html__( 'Some Locations work with multiple Engine Types. The conditions available here may change depending on the Type of the selected Engine.', 'woocommerce-product-recommendations' ) );
 				?>
 			</div><?php
 		}
 		$conditions_data  = empty( $options[ 'conditions' ] ) ? array() : $options[ 'conditions' ];
 		$conditions_count = count( $conditions_data );
-		?><div id="os-container" class="widefat wc-prl-conditions-container" data-os_count="<?php echo $conditions_count; ?>" data-os_post_name="<?php echo $post_name; ?>">
+		?><div id="os-container" class="widefat wc-prl-conditions-container" data-os_count="<?php echo (int) $conditions_count; ?>" data-os_post_name="<?php echo esc_attr( $post_name ); ?>">
 			<div class="os_boarding<?php echo $conditions_count ? '' : ' active'; ?>">
 				<div class="icon">
 					<i class="prl-icon prl-eye"></i>
 				</div>
-				<div class="text"><?php _e( 'Add conditions to control the visibility of these product recommendations.', 'woocommerce-product-recommendations' ); ?></div>
-				<div class="text no_engine"><?php _e( 'To add visibility conditions, an Engine must be selected.', 'woocommerce-product-recommendations' ); ?></div>
+				<div class="text"><?php esc_html_e( 'Add conditions to control the visibility of these product recommendations.', 'woocommerce-product-recommendations' ); ?></div>
+				<div class="text no_engine"><?php esc_html_e( 'To add visibility conditions, an Engine must be selected.', 'woocommerce-product-recommendations' ); ?></div>
 			</div>
 			<div id="os-list"<?php echo $conditions_count ? '' : ' class="hidden"'; ?>><?php
 
@@ -169,7 +169,7 @@ class WC_PRL_Conditions {
 
 							if ( array_key_exists( $condition_id, $conditions ) ) {
 
-								?><div class="os_row" data-os_index="<?php echo $condition_index; ?>">
+								?><div class="os_row" data-os_index="<?php echo esc_attr( $condition_index ); ?>">
 
 									<div class="os_select">
 										<div class="sw-enhanced-select"><?php
@@ -180,7 +180,7 @@ class WC_PRL_Conditions {
 										$conditions[ $condition_id ]->get_admin_fields_html( $post_name, $condition_index, $condition_data );
 									?></div>
 									<div class="os_remove column-wc_actions">
-										<a href="#" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>" class="button wc-action-button trash help_tip"></a>
+										<a href="#" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>" class="button wc-action-button trash help_tip"></a>
 									</div>
 								</div><?php
 							}
@@ -220,14 +220,14 @@ class WC_PRL_Conditions {
 			if ( ! empty( $additional_options ) ) {
 				$selected_id = null;
 				foreach ( $additional_options as $key => $value ) {
-					?><option value="<?php echo $key ?>" selected="selected"><?php echo $value ?></option><?php
+					?><option value="<?php echo esc_attr( $key ); ?>" selected="selected"><?php echo esc_html( $value ); ?></option><?php
 				}
 			}
 
 			// Hint: Contextual filters need to support in general mode (non-context) the current engine type in order to show up properly.
 			foreach ( $conditions as $condition_id => $condition ) {
-				?><option value="<?php echo $condition_id ?>" <?php echo $condition_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
-					echo $condition->get_title();
+				?><option value="<?php echo esc_attr( $condition_id ); ?>" <?php echo $condition_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
+					echo esc_html( $condition->get_title() );
 				?></option><?php
 			}
 		?></select><?php
@@ -263,7 +263,7 @@ class WC_PRL_Conditions {
 			$conditions = $this->get_supported_conditions( $type );
 			?>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_condition_row">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_condition_row">
 				<div class="os_row" data-os_index="{{{ data.os_index }}}">
 					<div class="os_select">
 						<div class="sw-enhanced-select"><?php
@@ -274,12 +274,12 @@ class WC_PRL_Conditions {
 						{{{ data.os_content }}}
 					</div>
 					<div class="os_remove column-wc_actions">
-						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>"></a>
+						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>"></a>
 					</div>
 				</div>
 			</script>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_condition_add_content">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_condition_add_content">
 				<div class="os_select">
 					<div class="sw-enhanced-select">
 						<?php $this->get_conditions_dropdown( $type, $conditions, null, array( 'add' => __( 'Add new condition', 'woocommerce-product-recommendations' ) ) ); ?>
@@ -295,7 +295,7 @@ class WC_PRL_Conditions {
 			<?php
 			foreach ( $conditions as $condition_id => $condition ) {
 				// Generating for {{{ data.os_content }}}.
-				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_condition_<?php echo esc_attr( $condition_id ); ?>_content"><?php
+				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_condition_<?php echo esc_attr( $condition_id ); ?>_content"><?php
 
 				$condition->get_admin_fields_html( '{{{ data.os_post_name }}}', '{{{ data.os_index }}}', array() );
 

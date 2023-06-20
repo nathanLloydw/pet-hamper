@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Date condition class.
  *
  * @class    WC_PRL_Condition_Date
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Date extends WC_PRL_Condition {
 
@@ -95,11 +95,11 @@ class WC_PRL_Condition_Date extends WC_PRL_Condition {
 			$date = $condition_data[ 'value' ];
 		}
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
@@ -109,7 +109,7 @@ class WC_PRL_Condition_Date extends WC_PRL_Condition {
 					<div class="sw-enhanced-select">
 						<?php
 						global $wp_locale;
-						$month = '<select class="mm" name="' . $post_name . '[conditions][' . $condition_index . '][value][month]">\n"';
+						$month = '<select class="mm" name="' . esc_attr( $post_name ) . '[conditions][' . (int) $condition_index . '][value][month]">\n"';
 						for ( $i = 1; $i < 13; $i++ ) {
 							$monthnum  = zeroise( $i, 2 );
 							$monthtext = $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) );
@@ -118,29 +118,29 @@ class WC_PRL_Condition_Date extends WC_PRL_Condition {
 							$month .= sprintf( __( '%1$s-%2$s', 'woocommerce-product-recommendations' ), $monthnum, $monthtext ) . "</option>\n";
 						}
 						$month .= '</select></label>';
-						echo $month;
+						echo $month; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</div>
 					<div class="sw-enhanced-select">
 						<?php
-						$day = '<select class="dd" name="' . $post_name . '[conditions][' . $condition_index . '][value][day]">\n"';
+						$day = '<select class="dd" name="' . esc_attr( $post_name ) . '[conditions][' . (int) $condition_index . '][value][day]">\n"';
 						for ( $i = 1; $i < 32; $i++ ) {
 							$day .= "\t\t\t" . '<option value="' . $i . '" ' . selected( $i, $date[ 'day' ], false ) . '>';
 							$day .= $i . "</option>\n";
 						}
 						$day .= '</select>';
-						echo $day;
+						echo $day; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</div>
 					<div class="sw-enhanced-select">
 						<?php
-						$year = '<select class="yy" name="' . $post_name . '[conditions][' . $condition_index . '][value][year]">\n"';
+						$year = '<select class="yy" name="' . esc_attr( $post_name ) . '[conditions][' . (int) $condition_index . '][value][year]">\n"';
 						for ( $i = $year_now; $i < $year_now + $year_span + 1; $i++ ) {
 							$year .= "\t\t\t" . '<option value="' . $i . '" ' . selected( $i, $date[ 'year' ], false ) . '>';
 							$year .= $i . "</option>\n";
 						}
 						$year .= '</select>';
-						echo $year;
+						echo $year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</div>
 				</div>

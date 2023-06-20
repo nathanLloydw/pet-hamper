@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product Stock Status condition class.
  *
  * @class    WC_PRL_Condition_Product_Stock_Status
- * @version  1.0.0
+ * @version  2.4.0
  */
 class WC_PRL_Condition_Product_Stock_Status extends WC_PRL_Condition {
 
@@ -100,21 +100,21 @@ class WC_PRL_Condition_Product_Stock_Status extends WC_PRL_Condition {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[conditions][<?php echo $condition_index; ?>][value]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[conditions][<?php echo esc_attr( $condition_index ); ?>][value]">
 						<?php
 						foreach ( $options as $option_value => $option_label ) {
-							echo '<option value="' . $option_value . '" ' . selected( $option_value === $selected, true, false ) . '>' . $option_label . '</option>';
+							echo '<option value="' . esc_attr( $option_value ) . '" ' . selected( $option_value === $selected, true, false ) . '>' . esc_html( $option_label ) . '</option>';
 						}
 						?>
 					</select>

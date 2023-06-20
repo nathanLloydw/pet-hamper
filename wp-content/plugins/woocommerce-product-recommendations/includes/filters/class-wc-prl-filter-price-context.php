@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Price_Context class for filtering products based on their price.
  *
  * @class    WC_PRL_Filter_Price_Context
- * @version  1.3.5
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Price_Context extends WC_PRL_Filter {
 
@@ -119,19 +119,19 @@ class WC_PRL_Filter_Price_Context extends WC_PRL_Filter {
 		}
 
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][context]" value="yes" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][context]" value="yes" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
 			</div>
 			<div class="os_value">
-				<input type="number" class="wc_input_price" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][value]" value="<?php echo $percentage; ?>" placeholder="<?php _e( 'Enter a value&hellip;"', 'woocommerce-product-recommendations' ); ?>" step="1" min="0" />
-				<span class="os_value--suffix"><?php _e( '% of current product', 'woocommerce-product-recommendations' ); ?></span>
+				<input type="number" class="wc_input_price" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][value]" value="<?php echo esc_attr( $percentage ); ?>" placeholder="<?php esc_attr_e( 'Enter a value&hellip;', 'woocommerce-product-recommendations' ); ?>" step="1" min="0" />
+				<span class="os_value--suffix"><?php esc_html_e( '% of current product', 'woocommerce-product-recommendations' ); ?></span>
 			</div>
 		</div>
 		<?php

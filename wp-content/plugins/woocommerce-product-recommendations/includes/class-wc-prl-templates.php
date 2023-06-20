@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Display functions and filters.
  *
  * @class    WC_PRL_Templates
- * @version  2.0.0
+ * @version  2.4.0
  */
 class WC_PRL_Templates {
 
@@ -30,14 +30,14 @@ class WC_PRL_Templates {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -138,7 +138,7 @@ class WC_PRL_Templates {
 		if ( ! $ajax && wc_prl_render_using_ajax() ) {
 
 			$environment = WC_PRL()->locations->get_environment();
-			echo sprintf( '<div class="wc-prl-ajax-placeholder" id="%s" data-env="%s"></div>', $hook, esc_attr( json_encode( $environment ) ) );
+			echo sprintf( '<div class="wc-prl-ajax-placeholder" id="%s" data-env="%s"></div>', esc_attr( $hook ), esc_attr( json_encode( $environment ) ) );
 
 			return;
 		}
@@ -188,7 +188,7 @@ class WC_PRL_Templates {
 
 			if ( $skip_deployment ) {
 				if ( wc_prl_debug_enabled() ) {
-					echo '<!-- Deployment #' . $deployment->get_id() . ' visibility blocked -->';
+					echo '<!-- Deployment #' . esc_html( $deployment->get_id() ) . ' visibility blocked -->';
 				}
 
 				continue;
@@ -266,7 +266,7 @@ class WC_PRL_Templates {
 			), false, WC_PRL()->get_plugin_path() . '/templates/' );
 
 			$output = ob_get_clean();
-			echo $output;
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			return;
 
@@ -292,7 +292,7 @@ class WC_PRL_Templates {
 			), false, WC_PRL()->get_plugin_path() . '/templates/' );
 
 			$output = ob_get_clean();
-			echo $output;
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			return;
 		}
@@ -340,7 +340,7 @@ class WC_PRL_Templates {
 		 */
 		$output = apply_filters( 'woocommerce_prl_recommendations_html', $output, $deployment, $products );
 
-		echo $output;
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

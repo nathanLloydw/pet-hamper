@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers custom post types and taxonomies.
  *
  * @class    WC_PRL_Post_Types
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Post_Types {
 
@@ -134,7 +134,7 @@ class WC_PRL_Post_Types {
 				<br/>
 				<?php esc_html_e( 'Start by creating an Engine. Then, deploy it to one of the available Locations.', 'woocommerce-product-recommendations' ); ?>
 			</p>
-			<a class="button sw-button-primary sw-button-primary--woo" id="sw-button-primary" href="<?php echo admin_url( 'post-new.php?post_type=prl_engine' ); ?>"><?php esc_html_e( 'Create engine', 'woocommerce-product-recommendations' ); ?></a>
+			<a class="button sw-button-primary sw-button-primary--woo" id="sw-button-primary" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=prl_engine' ) ); ?>"><?php esc_html_e( 'Create engine', 'woocommerce-product-recommendations' ); ?></a>
 		</div><?php
 		$message = ob_get_clean();
 		return $message;

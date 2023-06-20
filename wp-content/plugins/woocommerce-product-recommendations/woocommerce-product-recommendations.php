@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Recommendations
 * Plugin URI: https://woocommerce.com/products/product-recommendations/
 * Description: Create smarter up-sells and cross-sells, place them anywhere, and measure their impact with in-depth analytics.
-* Version: 2.3.0
+* Version: 2.4.0
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Product_Recommendations
- * @version  2.3.0
+ * @version  2.4.0
  */
 class WC_Product_Recommendations {
 
@@ -42,7 +42,7 @@ class WC_Product_Recommendations {
 	 *
 	 * @var string
 	 */
-	private $version = '2.3.0';
+	private $version = '2.4.0';
 
 	/**
 	 * Min required WC version.
@@ -103,14 +103,14 @@ class WC_Product_Recommendations {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**

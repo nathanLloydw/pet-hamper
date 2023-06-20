@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Performance Class.
  *
  * @class    WC_PRL_Admin_Performance
- * @version  2.0.0
+ * @version  2.4.0
  */
 class WC_PRL_Admin_Performance {
 
@@ -244,8 +244,8 @@ class WC_PRL_Admin_Performance {
 		$class = $difference >= 0 ? 'up' : 'down';
 		$class = $difference == 0 ? '' : $class;
 		?>
-		<span class="difference <?php echo $class ?>">
-			<?php echo is_numeric( $difference ) ? wc_format_decimal( abs( $difference ), 0 ) . '%' : $difference; ?>
+		<span class="difference <?php echo esc_attr( $class ); ?>">
+			<?php echo is_numeric( $difference ) ? esc_html( wc_format_decimal( abs( $difference ), 0 ) ) . '%' : esc_html( $difference ); ?>
 		</span>
 		<?php
 	}
@@ -294,7 +294,7 @@ class WC_PRL_Admin_Performance {
 			'section' => 'revenue',
 		) );
 
-		return admin_url( add_query_arg( $args, 'admin.php' ) );
+		return admin_url( add_query_arg( $args, 'admin.php' ) ); // nosemgrep: audit.php.wp.security.xss.query-arg
 	}
 
 	/**

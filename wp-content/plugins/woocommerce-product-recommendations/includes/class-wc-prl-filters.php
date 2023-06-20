@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Filters Collection class.
  *
  * @class    WC_PRL_Filters
- * @version  1.4.12
+ * @version  2.4.0
  */
 class WC_PRL_Filters {
 
@@ -30,14 +30,14 @@ class WC_PRL_Filters {
 	 * Cloning is forbidden.
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Foul!', 'woocommerce-product-recommendations' ), '1.0.0' );
 	}
 
 	/**
@@ -133,19 +133,19 @@ class WC_PRL_Filters {
 		?>
 		<div class="sw-hr-section">
 			<?php
-			echo __( 'Filters', 'woocommerce-product-recommendations' );
+			echo esc_html__( 'Filters', 'woocommerce-product-recommendations' );
 			echo wc_help_tip( __( 'Add filters to narrow down recommendation results.', 'woocommerce-product-recommendations' ) );
 			?>
 		</div>
 		<?php
 		$filters_data  = empty( $options[ 'filters' ] ) ? $engine->get_filters_data() : $options[ 'filters' ];
 		$filters_count = count( $filters_data );
-		?><div id="os-container" class="widefat wc-prl-filters-container" data-os_count="<?php echo $filters_count; ?>">
+		?><div id="os-container" class="widefat wc-prl-filters-container" data-os_count="<?php echo esc_attr( $filters_count ); ?>">
 			<div class="os_boarding<?php echo $filters_count ? '' : ' active'; ?>">
 				<div class="icon">
 					<i class="prl-icon prl-filter"></i>
 				</div>
-				<div class="text"><?php _e( 'No filters found. Add one now?', 'woocommerce-product-recommendations' ); ?></div>
+				<div class="text"><?php esc_html_e( 'No filters found. Add one now?', 'woocommerce-product-recommendations' ); ?></div>
 			</div>
 			<div id="os-list"<?php echo $filters_count ? '' : ' class="hidden"'; ?>><?php
 
@@ -158,7 +158,7 @@ class WC_PRL_Filters {
 
 							if ( array_key_exists( $filter_id, $filters ) ) {
 
-								?><div class="os_row" data-os_index="<?php echo $filter_index; ?>">
+								?><div class="os_row" data-os_index="<?php echo esc_attr( $filter_index ); ?>">
 
 									<div class="os_select">
 										<div class="sw-enhanced-select"><?php
@@ -169,7 +169,7 @@ class WC_PRL_Filters {
 										$filters[ $filter_id ]->get_admin_fields_html( null, $filter_index, $filter_data );
 									?></div>
 									<div class="os_remove column-wc_actions">
-										<a href="#" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>" class="button wc-action-button trash help_tip"></a>
+										<a href="#" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>" class="button wc-action-button trash help_tip"></a>
 									</div>
 								</div><?php
 							}
@@ -209,14 +209,14 @@ class WC_PRL_Filters {
 			if ( ! empty( $additional_options ) ) {
 				$selected_id = null;
 				foreach ( $additional_options as $key => $value ) {
-					?><option value="<?php echo $key ?>" selected="selected"><?php echo $value ?></option><?php
+					?><option value="<?php echo esc_attr( $key ); ?>" selected="selected"><?php echo esc_html( $value ); ?></option><?php
 				}
 			}
 
 			// Hint: Contextual filters need to support in general mode (non-context) the current engine type in order to show up properly.
 			foreach ( $filters as $filter_id => $filter ) {
-				?><option value="<?php echo $filter_id ?>" <?php echo $filter_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
-					echo $filter->get_title();
+				?><option value="<?php echo esc_attr( $filter_id ); ?>" <?php echo $filter_id === $selected_id ? 'selected="selected"' : ''; ?>><?php
+					echo esc_html( $filter->get_title() );
 				?></option><?php
 			}
 		?></select><?php
@@ -251,7 +251,7 @@ class WC_PRL_Filters {
 			$filters = $this->get_supported_filters( $type );
 			?>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_filter_row">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_filter_row">
 				<div class="os_row" data-os_index="{{{ data.os_index }}}">
 					<div class="os_select">
 						<div class="sw-enhanced-select"><?php
@@ -262,12 +262,12 @@ class WC_PRL_Filters {
 						{{{ data.os_content }}}
 					</div>
 					<div class="os_remove column-wc_actions">
-						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo __( 'Remove', 'woocommerce-product-recommendations' ) ?>"></a>
+						<a href="#" class="button wc-action-button trash help_tip" data-tip="<?php echo esc_attr__( 'Remove', 'woocommerce-product-recommendations' ); ?>"></a>
 					</div>
 				</div>
 			</script>
 
-			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_filter_add_content">
+			<script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_filter_add_content">
 				<div class="os_select">
 					<div class="sw-enhanced-select">
 						<?php $this->get_filters_dropdown( $type, $filters, null, array( 'add' => __( 'Add filter', 'woocommerce-product-recommendations' ) ) ); ?>
@@ -283,7 +283,7 @@ class WC_PRL_Filters {
 			<?php
 			foreach ( $filters as $filter_id => $filter ) {
 				// Generating for {{{ data.os_content }}}.
-				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo $type ?>_filter_<?php echo esc_attr( $filter_id ); ?>_content"><?php
+				?><script type="text/template" id="tmpl-wc_prl_engine_<?php echo esc_attr( $type ); ?>_filter_<?php echo esc_attr( $filter_id ); ?>_content"><?php
 
 				$filter->get_admin_fields_html( null, '{{{ data.os_index }}}', array() );
 

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Filter_Recently_Viewed class for filtering products based on customer view history.
  *
  * @class    WC_PRL_Filter_Recently_Viewed
- * @version  1.4.16
+ * @version  2.4.0
  */
 class WC_PRL_Filter_Recently_Viewed extends WC_PRL_Filter {
 
@@ -104,11 +104,11 @@ class WC_PRL_Filter_Recently_Viewed extends WC_PRL_Filter {
 			$modifier = 'in';
 		}
 		?>
-		<input type="hidden" name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][id]" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][id]" value="<?php echo esc_attr( $this->id ); ?>" />
 		<div class="os_row_inner">
 			<div class="os_modifier">
 				<div class="sw-enhanced-select">
-					<select name="<?php echo $post_name; ?>[filters][<?php echo $filter_index; ?>][modifier]">
+					<select name="<?php echo esc_attr( $post_name ); ?>[filters][<?php echo esc_attr( $filter_index ); ?>][modifier]">
 						<?php $this->get_modifiers_select_options( $modifier ); ?>
 					</select>
 				</div>
