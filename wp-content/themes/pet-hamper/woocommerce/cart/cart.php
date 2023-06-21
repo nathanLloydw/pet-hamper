@@ -215,13 +215,13 @@ do_action( 'woocommerce_before_cart' ); ?>
     </form>
 
     <button id="show-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
-        Select Multiple Addresses?
+        Click here to send to multiple addresses
     </button>
 
     <div id="multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">
 
         <button id="close-multi-address-form" class="<?php if(isset($_GET["address-form"]) || isset($_GET["new"])){ echo 'hidden'; }?>">
-            Select Multiple Addresses?
+            Click here to send to multiple addresses
         </button>
 
         <button id="close-add-multi-address-form" class="<?php if(!isset($_GET["address-form"]) && !isset($_GET["new"])){ echo 'hidden'; }?>">

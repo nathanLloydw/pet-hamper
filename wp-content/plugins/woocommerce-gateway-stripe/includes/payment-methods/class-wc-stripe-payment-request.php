@@ -844,7 +844,7 @@ class WC_Stripe_Payment_Request {
 			return;
 		}
 		?>
-		<p id="wc-stripe-payment-request-button-separator" style="margin-top:1.5em;text-align:center;display:none;">&mdash; <?php esc_html_e( 'OR', 'woocommerce-gateway-stripe' ); ?> &mdash;</p>
+		<p id="wc-stripe-payment-request-button-separator" style="margin-top:1.5em;text-align:center;">&mdash; <?php esc_html_e( 'OR', 'woocommerce-gateway-stripe' ); ?> &mdash;</p>
 		<?php
 	}
 

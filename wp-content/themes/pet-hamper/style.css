@@ -3147,3 +3147,7 @@ a.added_to_cart.wc-forward {
     width: 48%;
   }
 }
+
+.cross-sells { display:none; }
+
+.coupon label { display:none; }
