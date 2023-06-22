@@ -105,6 +105,7 @@ defined( 'ABSPATH' ) || exit;
 
     <div class="wc-proceed-to-checkout">
         <?php do_action( 'twg_paypal_proceed_to_checkout_buttons' ); ?>
+        <p id="wc-stripe-payment-request-button-separator" style="margin-top:1.5em;text-align:center;">— OR —</p>
         <?php do_action( 'woocommerce_proceed_to_checkout' ); ?>
     </div>
 
