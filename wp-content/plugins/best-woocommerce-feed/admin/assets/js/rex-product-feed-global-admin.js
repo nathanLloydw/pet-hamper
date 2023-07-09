@@ -3,7 +3,7 @@
     'use strict';
 
     /**
-     * all of the code for your admin-facing javascript source
+     * All the code for your admin-facing javascript source
      * should reside in this file.
      *
      * note: it has been assumed you will write jquery code here, so the
@@ -168,7 +168,59 @@
             $( '#rex_feed_new_changes_msg_content' ).hide();
         }
         $( '#rex-feed-support-submenu, #rex-feed-gopro-submenu' ).parent().attr( 'target', '_blank' );
+
+        if ( $( 'section#rex_deal_notification' ).length ) {
+            rexfeed_deal_countdown_handler();
+        }
     } );
+
+    /**
+     * Handles count down on deal notice
+     *
+     * @since 7.3.2
+     */
+    function rexfeed_deal_countdown_handler() {
+        const second = 1000,
+            minute = second * 60,
+            hour = minute * 60,
+            day = hour * 24;
+
+        let now = new Date( rex_wpfm_ajax.current_date ).getTime();
+        const countDown = new Date( '06/26/2023' ).getTime(),
+            x = setInterval(function() {
+                const distance = countDown - now;
+                now = now + 1000;
+
+                let formattedDay = Math.floor(distance / (day)),
+                    formattedHours = Math.floor((distance % (day)) / (hour)),
+                    formattedMin =  Math.floor((distance % (hour)) / (minute));
+
+                $("#rex-feed-tb__days").text( formattedDay.toString().length > 1 ? formattedDay : '0' + formattedDay.toString() );
+                $("#rex-feed-tb__hours").text( formattedHours.toString().length > 1 ? formattedHours : '0' + formattedHours.toString() );
+                $("#rex-feed-tb__mins").text( formattedMin.toString().length > 1 ? formattedMin : '0' + formattedMin.toString() );
+
+                // do something later when date is reached
+                if ( 0 >= distance ) {
+                    $("#rex_deal_notification").hide();
+                    rexfeed_hide_deal_notice();
+                    clearInterval(x);
+                }
+                //seconds
+            }, 1000);
+    }
+
+    $( document ).on( 'click', '#rex_deal_close', rexfeed_hide_deal_notice );
+
+    /**
+     * Hide deal notice and save parameter to keep it hidden for future
+     *
+     * @since 7.3.2
+     */
+    function rexfeed_hide_deal_notice() {
+        $( '#rex_deal_notification' ).fadeOut();
+
+        wpAjaxHelperRequest( 'rex-feed-hide-deal-notice' );
+    }
 
 })( jQuery );
 

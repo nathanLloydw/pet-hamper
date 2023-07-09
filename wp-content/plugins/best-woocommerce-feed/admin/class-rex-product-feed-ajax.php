@@ -218,6 +218,10 @@ class Rex_Product_Feed_Ajax {
         wp_ajax_helper()->handle( 'rex-feed-is-settings-changed' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'is_settings_changed' ) )
                         ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'rex-feed-hide-deal-notice' )
+                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'hide_deal_notice' ) )
+                        ->with_validation( $validations );
     }
 
 
@@ -1372,5 +1376,17 @@ class Rex_Product_Feed_Ajax {
         $latest_settings_data = Rex_Product_Feed_Data_Handle::get_settings_drawer_data( $latest_data );
 
         return [ 'status' => $prev_settings_data !== $latest_settings_data ];
+    }
+
+    /**
+     * Updates an option on notice dismissal [for deal],
+     * so that deal notice doesn't appear again
+     *
+     * @return true[]
+     * @since 7.3.1
+     */
+    public static function hide_deal_notice() {
+        update_option( 'rex_feed_new_ui_2_deal_notice', 'hidden' );
+        return [ 'status' => true ];
     }
 }

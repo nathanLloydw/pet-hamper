@@ -137,6 +137,11 @@ class Rex_Product_Feed_Actions {
 			'rex_feed_update_on_product_change',
 			'rex_feed_cats_check_all_btn',
 			'rex_feed_tags_check_all_btn',
+			'rex_feed_yandex_company_name',
+			'rex_feed_yandex_old_price',
+			'rex_feed_hotline_firm_id',
+			'rex_feed_hotline_firm_name',
+			'rex_feed_hotline_exchange_rate',
 		];
 		$data_keys = !empty( $data ) ? array_keys( $data ) : [];
 

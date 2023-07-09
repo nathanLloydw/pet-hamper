@@ -510,7 +510,28 @@
     });
 
     /**
-     * Event listener for Google schedule change change functionality.
+     * Triggers on feed merchant option change to hide/show hotline attribute dropdown field
+     *
+     * @event change
+     *
+     * @since 7.3.2
+     */
+    $(document).on("change", "#rex_feed_merchant", function () {
+        let feed_merchant = $(this).find(":selected").val();
+
+        if ("hotline" === feed_merchant) {
+            $(".rex_feed_hotline_content").fadeIn();
+        } else {
+            $(".rex_feed_hotline_content").fadeOut();
+        }
+    });
+
+    /**
+     * Triggers on Google schedule change to handle dependent fields.
+     *
+     * @event change
+     *
+     * @since 7.3.2
      */
     $(document).on("change", "#rex_feed_google_schedule", function () {
         let schedule = $("#rex_feed_google_schedule").find(":selected").val();
@@ -2880,6 +2901,11 @@
             $(parent).parent().remove();
         }
     });
+
+
+    
+
+
 })(jQuery);
 
 /* When the user clicks on the button,

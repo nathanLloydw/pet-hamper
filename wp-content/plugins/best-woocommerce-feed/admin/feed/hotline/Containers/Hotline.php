@@ -13,35 +13,13 @@ class Hotline
     public static $container = null;
 
     /**
-     * Feed namespace
-     * @var Feed
+     * Feed elements
+     *
+     * @var array
+     * @since 7.3.2
      */
-    public static $namespace = null;
+    public static $elements;
 
-    /**
-     * Feed rss version
-     * @var Feed
-     */
-    public static $version = '';
-
-    /**
-     * Feed products wrapper
-     * @var Feed
-     */
-    public static $wrapper = false;
-
-    /**
-     * Feed product item wrapper
-     * @var Feed
-     */
-    public static $itemName = 'item';
-
-
-    public static $rss = 'rss';
-
-    public static $stand_alone = false;
-
-    public static $wrapperel = '';
 
     /**
      * Return feed container
@@ -50,7 +28,7 @@ class Hotline
     public static function container()
     {
         if (is_null(static::$container)) {
-            static::$container = new Feed( static::$wrapper, static::$itemName, static::$namespace, static::$version , static::$rss, static::$stand_alone, static::$wrapperel );
+            static::$container = new Feed( static::$elements );
         }
 
         return static::$container;
@@ -58,18 +36,10 @@ class Hotline
 
     /**
      * Init Feed Configuration
-     * @return Feed
      */
-    public static function init( $wrapper = false, $itemName = 'item', $namespace = null, $version = '' , $rss = 'rss', $stand_alone = false, $wrapperel = '')
+    public static function init( $elements )
     {
-        static::$namespace = $namespace;
-        static::$version   = $version;
-        static::$wrapper   = $wrapper;
-        static::$itemName  = $itemName;
-        static::$rss       = $rss;
-        static::$stand_alone = $stand_alone;
-        static::$wrapperel = $wrapperel;
-
+        static::$elements = $elements;
     }
 
     /**

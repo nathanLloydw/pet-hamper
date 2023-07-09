@@ -418,6 +418,9 @@ class Rex_Feed_Scheduler {
         $yandex_company_name         = get_post_meta( $feed_id, '_rex_feed_yandex_company_name', true );
         $yandex_old_price            = get_post_meta( $feed_id, '_rex_feed_yandex_old_price', true );
         $tax_id                      = get_post_meta( $feed_id, '_rex_feed_tax_id', true );
+        $hotline_firm_id             = get_post_meta( $feed_id, '_rex_feed_hotline_firm_id', true );
+        $hotline_firm_name           = get_post_meta( $feed_id, '_rex_feed_hotline_firm_name', true );
+        $hotline_exch_rate           = get_post_meta( $feed_id, '_rex_feed_hotline_exchange_rate', true );
         $yandex_old_price            = 'include' === $yandex_old_price;
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
@@ -484,6 +487,9 @@ class Rex_Feed_Scheduler {
             'yandex_company_name'         => $yandex_company_name,
             'yandex_old_price '           => $yandex_old_price,
             'tax_id'                      => $tax_id,
+            'hotline_firm_id'             => $hotline_firm_id,
+            'hotline_firm_name'           => $hotline_firm_name,
+            'hotline_exch_rate'           => $hotline_exch_rate,
         );
     }
 

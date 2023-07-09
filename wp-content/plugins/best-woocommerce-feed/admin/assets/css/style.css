@@ -5876,6 +5876,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 
 .rex-setup-wizard-area {
   background-image: linear-gradient(265.11deg, #ffffff -9.97%, rgba(244, 248, 253, 0) 100.85%);
+  margin-top: 30px;
 }
 .rex-setup-wizard-area h1 {
   font-size: calc(35px + 17 * (100vw - 320px) / 1600);

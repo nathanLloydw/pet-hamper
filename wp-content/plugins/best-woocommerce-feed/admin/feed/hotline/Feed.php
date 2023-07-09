@@ -3,9 +3,6 @@
 namespace RexTheme\Hotline;
 
 use SimpleXMLElement;
-use RexTheme\Hotline\Item;
-use Gregwar\Cache\Cache;
-use RexTheme\Hotline\ExchangeRate;
 
 class Feed
 {
@@ -102,23 +99,51 @@ class Feed
 
 	protected $stand_alone = false;
 
+    /**
+     * Hotline unique store id
+     *
+     * @var string|int
+     * @since 7.3.2
+     */
+    protected $firm_id;
+
+    /**
+     * Hotline store name
+     *
+     * @var string
+     * @since 7.3.2
+     */
+    protected $firm_name;
+
+    /**
+     * Exchange rate
+     *
+     * @var string|float
+     * @since 7.3.2
+     */
+    protected $exchange_rate;
+
 	/**
 	 * Feed constructor
 	 */
-	public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix = '')
-	{
-		$this->namespace   = $namespace;
-		$this->version     = $version;
-		$this->wrapper     = $wrapper;
-		$this->channelName = $wrapperel;
-		$this->itemlName   = $itemlName;
-		$this->rss         = $rss;
+    public function __construct( $elements ) {
+        $this->namespace     = !empty( $elements[ 'namespace' ] ) ? $elements[ 'namespace' ] : null;
+        $this->version       = !empty( $elements[ 'version' ] ) ? $elements[ 'version' ] : '';
+        $this->wrapper       = !empty( $elements[ 'wrapper' ] ) ? $elements[ 'wrapper' ] : false;
+        $this->channelName   = !empty( $elements[ 'wrapper_element' ] ) ? $elements[ 'wrapper_element' ] : '';
+        $this->itemlName     = !empty( $elements[ 'item_wrapper' ] ) ? $elements[ 'item_wrapper' ] : 'item';
+        $this->rss           = !empty( $elements[ 'items_wrapper' ] ) ? $elements[ 'items_wrapper' ] : 'rss';
+        $this->firm_id       = !empty( $elements[ 'firm_id' ] ) ? $elements[ 'firm_id' ] : '';
+        $this->firm_name     = !empty( $elements[ 'firm_name' ] ) ? $elements[ 'firm_name' ] : '';
+        $this->exchange_rate = !empty( $elements[ 'exchange_rate' ] ) ? $elements[ 'exchange_rate' ] : '';
+        $namespace_prefix    = !empty( $elements[ 'namespace_prefix' ] ) ? $elements[ 'namespace_prefix' ] : '';
+        $stand_alone         = !empty( $elements[ 'stand_alone' ] ) ? $elements[ 'stand_alone' ] : false;
 
-		$namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
-		$version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
-		$stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
-		$this->feed = new SimpleXMLElement("<$rss $namespace $stand_alone_text $version ></$rss>");
-	}
+        $namespace        = !empty( $this->namespace ) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
+        $version          = !empty( $this->version ) ? " version='$this->version'" : '';
+        $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
+        $this->feed       = new SimpleXMLElement( "<$this->rss $namespace $stand_alone_text $version ></$this->rss>" );
+    }
 
 	/**
 	 * @param string $title
@@ -165,12 +190,10 @@ class Feed
         if( !$this->channelCreated ) {
             $channel = $this->channelName ? $this->feed->addChild( $this->channelName ) : $this->feed;
             !$this->datetime ?: $channel->addChild( 'date', $this->datetime );
-            $channel->addChild( 'firmName', get_bloginfo() );
-            $channel->addChild( 'firmId', get_current_user_id() );
-            $wc_currency   = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
-            $exchange_rate = ExchangeRate::get_exchange_rate( $wc_currency );
-            if( $exchange_rate ) {
-                $channel->addChild( 'rate', $exchange_rate );
+            $channel->addChild( 'firmName', $this->firm_name );
+            $channel->addChild( 'firmId', $this->firm_id );
+            if( $this->exchange_rate ) {
+                $channel->addChild( 'rate', $this->exchange_rate );
             }
             $cats = get_categories( [ 'taxonomy' => [ 'category', 'product_cat' ], 'orderby' => 'id' ] );
             $categories = $channel->addChild( 'categories' );
@@ -260,40 +283,6 @@ class Feed
 					}
 				}
 				else {
-					/*if ( $itemNode->get( 'name' ) === 'id' ) {
-						$feedItemNode->addAttribute( $itemNode->get( 'name' ), $itemNode->get( 'value' ));
-					}
-					elseif ( $itemNode->get( 'name' ) === 'images' ) {
-						$imageNode = $feedItemNode->addChild( $itemNode->get( 'name' ) );
-
-						if ( strpos( $itemNode->get( 'value' ), ',' ) ) {
-							$value = explode( ',', $itemNode->get( 'value' ) );
-						}
-						elseif ( strpos( $itemNode->get( 'value' ), '|' ) ) {
-							$value = explode( '|', $itemNode->get( 'value' ) );
-						}
-						else {
-							$value = $itemNode->get( 'value' );
-						}
-
-						if ( is_array( $value ) ) {
-							foreach ( $value as $val ) {
-								$imageNode->addChild( 'image', $val );
-							}
-						}
-						else {
-							$imageNode->addChild( 'image', $itemNode->get( 'value' ) );
-						}
-					}
-					elseif ( in_array( $itemNode->get( 'name' ), $addresses ) ) {
-						if ( !array_key_exists( 'address', (array)$feedItemNode->children() ) ) {
-						     $addressNode = $feedItemNode->addChild( 'address' );
-						}
-						$addressNode->addChild( $itemNode->get( 'name' ), $itemNode->get( 'value' ) );
-					}
-					else {
-						$itemNode->attachNodeTo($feedItemNode);
-					}*/
                     $itemNode->attachNodeTo($feedItemNode);
 				}
 			}
@@ -324,9 +313,6 @@ class Feed
 				}
 				$this->items_row[] = $row;
 			}
-			// if($batch != 1){
-			//     unset($this->items_row[0]);
-			// }
 			foreach ($this->items_row as $fields) {
 				$str .= implode("\t", $fields) . "\n";
 			}
@@ -467,7 +453,6 @@ class Feed
 
 		$this->addItemsToFeed();
 
-//        $data = html_entity_decode($this->feed->asXml());
 		$data = $this->feed->asXml();
 		if ($output) {
 			header('Content-Type: application/xml; charset=utf-8');

@@ -24,7 +24,19 @@ class Rex_Product_Feed_Hotline extends Rex_Product_Feed_Other {
      * @author
      **/
     public function make_feed() {
-        Hotline::init($this->get_wrapper(), $this->get_item_wrapper(), $this->get_namespace(),  $this->get_version(), $this->get_items_wrapper(), $this->get_stand_alone(), $this->get_wrapper_el() );
+        $elements = [
+            'firm_id'         => $this->hotline_firm_id,
+            'firm_name'       => $this->hotline_firm_name,
+            'exchange_rate'   => $this->hotline_exch_rate,
+            'wrapper'         => $this->get_wrapper(),
+            'wrapper_element' => $this->get_wrapper_el(),
+            'item_wrapper'    => $this->get_item_wrapper(),
+            'items_wrapper'   => $this->get_items_wrapper(),
+            'namespace'       => $this->get_namespace(),
+            'version'         => $this->get_version(),
+            'stand_alone'     => $this->get_stand_alone()
+        ];
+        Hotline::init( $elements );
         Hotline::datetime(date("Y-m-d h:i"));
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();

@@ -3243,15 +3243,14 @@ class Rex_Product_Data_Retriever {
 				return number_format( (float) $val, 2 );
 			case 'remove_hyphen':
 				return str_replace( '-', '', $val );
-
 			case 'remove_hyphen_space':
 				return str_replace( '-', ' ', $val );
-
 			case 'replace_space_with_hyphen':
 				return str_replace( ' ', '-', $val );
-
 			case 'first_word_uppercase':
 				return ucfirst( strtolower( $val ) );
+			case 'each_word_uppercase':
+				return ucwords( strtolower( $val ) );
 			case 'comma_decimal':
 				if ( is_numeric( $val ) ) {
 					return number_format( $val, 2, ',', '' );

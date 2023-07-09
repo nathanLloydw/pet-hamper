@@ -192,6 +192,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $rollback, 'feeds_rollback' );
 
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
+        $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_deal_notices' );
 
         $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $appsero_data, 'send_merchant_info' );
 

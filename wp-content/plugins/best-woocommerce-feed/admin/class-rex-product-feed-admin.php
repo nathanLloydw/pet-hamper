@@ -204,7 +204,10 @@ class Rex_Product_Feed_Admin {
                 $current_screen = '';
             }
 
-            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version );
+            $wp_time_zone = new DateTimeZone( wp_timezone_string() );
+            $current_date = new DateTime( 'now', $wp_time_zone );
+
             wp_localize_script(
                 'rex-wpfm-global-js',
                 'rex_wpfm_ajax',
@@ -215,6 +218,7 @@ class Rex_Product_Feed_Admin {
                     'feed_id'              => get_the_ID(),
                     'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
                     'current_screen'       => $current_screen,
+                    'current_date'         => $current_date->format( 'm/d/Y H:i:s' ),
                 )
             );
         }
@@ -610,6 +614,17 @@ class Rex_Product_Feed_Admin {
                 }
             </style>
             <?php
+        }
+    }
+
+    /**
+     * Renders deal notices
+     *
+     * @return void
+     */
+    public function render_deal_notices() {
+        if( 'hidden' !== get_option( 'rex_feed_new_ui_2_deal_notice', '' ) && !defined( 'REX_PRODUCT_FEED_PRO_VERSION' ) ) {
+            include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-deal-notice-content.php';
         }
     }
 }
