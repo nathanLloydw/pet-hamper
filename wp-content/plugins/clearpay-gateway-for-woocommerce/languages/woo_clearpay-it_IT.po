@@ -1,0 +1,426 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Afterpay Gateway for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-22 22:36+0000\n"
+"PO-Revision-Date: 2021-03-23 17:17+0000\n"
+"Last-Translator: \n"
+"Language-Team: Italiano\n"
+"Language: it-IT\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.2; wp-5.6\n"
+"X-Domain: woo_clearpay"
+
+msgid " folder, which is accessible from the "
+msgstr "direttorio, accessibile da"
+
+msgid " page."
+msgstr "."
+
+msgid "2 weeks later"
+msgstr "dopo due settimane"
+
+msgid "4 weeks later"
+msgstr "dopo quattro settimane"
+
+msgid "6 weeks later"
+msgstr "dopo sei settimane"
+
+msgid ""
+"<h3 class=\"wc-settings-sub-title\">Page Builders</h3> If you use a page "
+"builder plugin, the above payment info can be placed using a shortcode "
+"instead of relying on hooks. Use [clearpay_paragraph] within a product page, "
+"or include the product ID to display the info for a specific product on any "
+"custom page. E.g.: [clearpay_paragraph id=\"99\"]"
+msgstr ""
+"<h3 class=\"wc-settings-sub-title\">Page Builders</h3> Le informazioni di "
+"pagamento qui sotto si puó impostare usando un shortcode invece di usare "
+"hooks. Usare [clearpay_paragraph] in una pagina di prodotto, o includere "
+"l'ID di prodotto per mostrare la info di un prodotto specifico. E.g.: "
+"[clearpay_paragraph id=\"99\"]"
+
+msgid ""
+"<tr><td colspan=\"100%\">or 4 fortnightly payments of <strong>[AMOUNT]"
+"</strong> with <a href=\"#clearpay-what-is-modal\" target=\"_blank\" "
+"rel=\"noopener\">[clearpay_product_logo theme=\"colour\"] <span style=\"font-"
+"size:12px\"><u>More info</u></span></a></td></tr>"
+msgstr ""
+"<tr><td colspan=\"100%\">o quattro pagamenti ogni 14 giorni <strong>[AMOUNT]"
+"</strong> con <a href=\"#clearpay-what-is-modal\" target=\"_blank\" "
+"rel=\"noopener\">[clearpay_product_logo theme=\"colour\"] <span style=\"font-"
+"size:12px\"><u>Ulteriori informazioni</u></span></a></td></tr>"
+
+msgid ""
+"<tr><td colspan=\"100%\">or 4 fortnightly payments of <strong>[AMOUNT]"
+"</strong> with <a href=\"#clearpay-what-is-modal\" target=\"_blank\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size:12px\"><u>"
+"More info</u></span></a></td></tr>"
+msgstr ""
+"<tr><td colspan=\"100%\">o 4 rate ogni 14 giorni<strong>[AMOUNT]</strong> "
+"con <a href=\"#clearpay-what-is-modal\" target=\"_blank\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size:12px\"><u>"
+"Ulteriori informazioni</u></span></a></td></tr>"
+
+msgid ""
+"<tr><td colspan=\"100%\">or 4 interest-free payments of <strong>[AMOUNT]"
+"</strong> with <a href=\"#clearpay-what-is-modal\" target=\"_blank\" "
+"rel=\"noopener\">[clearpay_product_logo theme=\"colour\"] <span style=\"font-"
+"size:12px\"><u>More info</u></span></a></td></tr>"
+msgstr ""
+"<tr><td colspan=\"100%\">o 4 rate senza interessi da <strong>[AMOUNT]"
+"</strong> con <a href=\"#clearpay-what-is-modal\" target=\"_blank\" "
+"rel=\"noopener\">[clearpay_product_logo theme=\"colour\"] <span style=\"font-"
+"size:12px\"><u>Ulteriori informazioni</u></span></a></td></tr>"
+
+msgid ""
+"[clearpay_product_logo theme=\"colour\"] available between <strong>"
+"[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong> <a href=\"#clearpay-what-"
+"is-modal\" target=\"_blank\" rel=\"noopener\"> <span style=\"font-size:"
+"12px\"><u>Learn More</u></span></a>"
+msgstr ""
+"[clearpay_product_logo theme=\"colour\"] disponibile per importi fra <strong>"
+"[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong> <a href=\"#clearpay-what-"
+"is-modal\" target=\"_blank\" rel=\"noopener\"> <span style=\"font-size:"
+"12px\"><u>Ulteriori informazioni</u></span></a>"
+
+msgid ""
+"[clearpay_product_logo theme=\"colour\"] available for orders between "
+"<strong>[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong>"
+msgstr ""
+"[clearpay_product_logo theme=\"colour\"] disponibile per importi fra <strong>"
+"[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong>"
+
+msgid ""
+"[clearpay_product_logo theme=\"colour\"] available for orders between "
+"<strong>[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong> <a "
+"href=\"#clearpay-what-is-modal\" target=\"_blank\" rel=\"noopener\"> <span "
+"style=\"font-size:12px\"><u>Learn More</u></span></a>"
+msgstr ""
+"[clearpay_product_logo theme=\"colour\"] disponibile per importi fra <strong>"
+"[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]</strong> <a href=\"#clearpay-what-"
+"is-modal\" target=\"_blank\" rel=\"noopener\"> <span style=\"font-size:"
+"12px\"><u>Ulteriori informazioni</u></span></a>"
+
+msgid ""
+"[clearpay_product_logo theme=\"colour\"] available for orders up to <strong>"
+"[MAX_LIMIT]</strong>"
+msgstr ""
+"[clearpay_product_logo theme=\"colour\"] disponibile per importi fino a "
+"<strong>[MAX_LIMIT]</strong>"
+
+msgid ""
+"[clearpay_product_logo theme=\"colour\"] available for orders up to <strong>"
+"[MAX_LIMIT]</strong> <a href=\"#clearpay-what-is-modal\" target=\"_blank\" "
+"rel=\"noopener\"> <span style=\"font-size:12px\"><u>Learn More</u></span></a>"
+msgstr ""
+"[clearpay_product_logo theme=\"colour\"] disponibile per ordini fino a "
+"<strong>[MAX_LIMIT]</strong> <a href=\"#clearpay-what-is-modal\" "
+"target=\"_blank\" rel=\"noopener\"> <span style=\"font-size:12px\"><u>"
+"Ulteriori informazioni</u></span></a>"
+
+#. Author of the plugin
+msgid "Afterpay"
+msgstr "Afterpay"
+
+msgid "Allowed countries"
+msgstr "Territori autorizzati"
+
+msgid "API Environment"
+msgstr "Ambiente API"
+
+msgid "API Version"
+msgstr "Versione API"
+
+msgid "Apply online today!"
+msgstr "Applica online oggi"
+
+msgid ""
+"Clearpay available between <strong>[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]"
+"</strong>"
+msgstr ""
+"Clearpay disponibile tra <strong>[MIN_LIMIT]</strong> - <strong>[MAX_LIMIT]"
+"</strong>"
+
+msgid "Clearpay available for orders up to <strong>[MAX_LIMIT]</strong>"
+msgstr "Clearpay disponibile per ordini fino a <strong>[MAX_LIMIT]</strong>"
+
+#. Name of the plugin
+msgid "Clearpay Gateway for WooCommerce"
+msgstr "Piattaforma Clearpay per Woocommerce"
+
+msgid "Compatibility Mode"
+msgstr "Modo di compatibilitá"
+
+msgid "Core configuration"
+msgstr "Configurazione core"
+
+msgid "Customisation"
+msgstr "Customizzazione"
+
+msgid "Debug Mode"
+msgstr "Debug Mode"
+
+msgid "Don&rsquo;t have an Clearpay Merchant account yet?"
+msgstr "Non avete ancora un conto Clearpay?"
+
+msgid "Enable"
+msgstr "Abilitare"
+
+msgid "Enable to display Clearpay elements on category pages"
+msgstr "Abilitare per mostrare gli elementi Clearpay nelle pagine di categoria"
+
+msgid "Enable to display Clearpay elements on individual product pages"
+msgstr ""
+"Abilitare per mostrare gli elementi Clearpay nelle pagine di prodotti singoli"
+
+msgid "Enable to display Clearpay elements on the cart page"
+msgstr "Abilitare per mostrare gli elementi Clearpay nella pagina del carrello"
+
+msgid "Enable to display Clearpay elements upon product variant selection"
+msgstr "Abilitare per mostrare gli elementi Clearpay sui prodotti variabili"
+
+msgid "Enable to display Outside Payment Limits Text on the product page"
+msgstr ""
+"Abilitare per mostrare il testo sui limiti di pagamento nella pagina di "
+"prodotto"
+
+msgid "Enable verbose debug logging"
+msgstr "Abilitare verbose debug logging"
+
+msgid "Enable/Disable"
+msgstr "Abilitare/Disabilitare"
+
+msgid "Enter a priority number"
+msgstr "Esegui priority number"
+
+msgid "Enter hook name (e.g. woocommerce_after_shop_loop_item_title)"
+msgstr "Esegui hook name (e.g. woocommerce_after_shop_loop_item_title)"
+
+msgid "Enter hook name (e.g. woocommerce_single_product_summary)"
+msgstr "Esegui hook name (e.g. woocommerce_single_product_summary)"
+
+msgid ""
+"Error, duplicate 1: [clearpay_product_logo theme=\"colour\"] available for "
+"orders up to <strong>[MAX_LIMIT]</strong>"
+msgstr ""
+
+msgid "First Instalment"
+msgstr "Prima rata"
+
+msgid "Three"
+msgstr "Tre"
+
+msgid "Four"
+msgstr "Quattro"
+
+msgid "%s interest-free payments totalling"
+msgstr "%s rate senza interessi"
+
+msgid "from"
+msgstr "da"
+
+#. Author URI of the plugin
+msgid "https://www.clearpay.com/"
+msgstr "https://www.clearpay.com/"
+
+msgid "Maximum Payment Amount"
+msgstr "Importo massimo"
+
+msgid "Merchant ID (Production)"
+msgstr "Merchant ID (produzione/ambiente di produzione)"
+
+msgid "Merchant ID (Sandbox)"
+msgstr "Merchant ID (sandbox/ambiente di prova)"
+
+msgid "Minimum Payment Amount"
+msgstr "Importo minimo"
+
+msgid "Note: Sandbox and Production API credentials are not interchangeable."
+msgstr ""
+"Note: le credenziali di test e produzione per le Api non possono scambiarsi"
+
+msgid "of"
+msgstr "di"
+
+msgid ""
+"or 4 fortnightly payments [OF_OR_FROM] <strong>[AMOUNT]</strong> with <a "
+"href=\"#clearpay-what-is-modal\" target=\"_blank\" rel=\"noopener\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size: 12px\"><u>"
+"More info</u></span></a>"
+msgstr ""
+"o quattro rate ogni quattordici giorni [OF_OR_FROM] <strong>[AMOUNT]</strong>"
+" con <a href=\"#clearpay-what-is-modal\" target=\"_blank\" rel=\"noopener\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size: 12px\"><u>"
+"Ulteriori informazioni</u></span></a>"
+
+msgid ""
+"or 4 interest-free payments [OF_OR_FROM] <strong>[AMOUNT]</strong> with <a "
+"href=\"#clearpay-what-is-modal\" target=\"_blank\" rel=\"noopener\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size: 12px\"><u>"
+"More info</u></span></a>"
+msgstr ""
+"o 4 rate senza interessi [OF_OR_FROM] <strong>[AMOUNT]</strong> con <a "
+"href=\"#clearpay-what-is-modal\" target=\"_blank\" rel=\"noopener\">"
+"[clearpay_product_logo theme=\"colour\"] <span style=\"font-size: 12px\"><u>"
+"Ulteriori informazioni</u></span></a>"
+
+msgid "or 4 payments [OF_OR_FROM] <strong>[AMOUNT]</strong> with Clearpay"
+msgstr ""
+"o quattro rate [OF_OR_FROM] <strong>[AMOUNT]</strong> con "
+"[clearpay_product_logo theme=\"colour\"]"
+
+msgid "or 4 payments of <strong>[AMOUNT]</strong> with Clearpay"
+msgstr ""
+"o quattro rate di <strong>[AMOUNT]</strong> con [clearpay_product_logo "
+"theme=\"colour\"]"
+
+msgid "Outside Payment Limit Info on Product Page"
+msgstr "Informazioni relative ai limiti di pagamento nelle pagine di prodotto"
+
+msgid "Payment Info Display for Product Variant"
+msgstr ""
+"Display delle informazioni relative al pagamento per i prodotti variabili"
+
+msgid "Payment Info on Cart Page"
+msgstr "Informazioni relative al pagamento nella pagina del carrello"
+
+msgid "Payment Info on Category Pages"
+msgstr "Informazioni relative al pagamento nella pagina del categoria"
+
+msgid "Payment Info on Individual Product Pages"
+msgstr ""
+"Informazioni relative al pagamento nelle pagine di  prodotti individuali"
+
+msgid ""
+"Please feel free to customise the presentation of the Clearpay elements "
+"below to suit the individual needs of your web store.</p><p><em>Note: "
+"Advanced customisations may require the assistance of your web development "
+"team. <a id=\"reset-to-default-link\" style=\"cursor:pointer;text-decoration:"
+"underline;\">Restore Defaults</a></em>"
+msgstr ""
+"Non esitate a customizzare la presentazione degli elementi di Clearpay, "
+"clicca sotto per soddisfare le necessitá del vostro eshop</p><p><em>Note: "
+"Per ulteriori customizzazioni si richiede l'aiuto del vostro sviluppatore "
+"web <a id=\"reset-to-default-link\" style=\"cursor:pointer;text-decoration:"
+"underline;\">Ripristina i valori predefiniti</a></em>"
+
+msgid "Proceed to Clearpay"
+msgstr "Procedi su Clearpay"
+
+#. Description of the plugin
+msgid "Provide Clearpay as a payment option for WooCommerce orders."
+msgstr "Fornire Clearpay come metodo di pagamento per gli ordini Woocommerce"
+
+msgid "Secret Key (Production)"
+msgstr "Secret Key (ambiente di produzione)"
+
+msgid "Secret Key (Sandbox)"
+msgstr "Secret Key (ambiente di test)"
+
+msgid "Set the hook priority to be used for Payment Info on Category Pages."
+msgstr ""
+"Configurare il hook da usare per le informazioni di pagamento sulle pagine "
+"di categoria"
+
+msgid ""
+"Set the hook priority to be used for Payment Info on Individual Product "
+"Pages."
+msgstr ""
+"Configurare il hook da usare per le informazioni di pagamento sulle pagine "
+"di prodotti individuali"
+
+msgid "Set the hook to be used for Payment Info on Category Pages."
+msgstr ""
+"Configurare il hook da usare per le informazioni di pagamento sulle pagine "
+"di prodotto"
+
+msgid "The Clearpay log is in the "
+msgstr "Il log di Clearpay si trova nel"
+
+msgid ""
+"This controls the payment method title which the user sees during checkout."
+msgstr ""
+"Questo titolo controlla il metodo di pagamento che l'utente vede nel checkout"
+
+msgid "This information is supplied by Clearpay and cannot be edited."
+msgstr "Questa informazione é fornita da Clearpay e non puó essere editata"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Use [AMOUNT] to insert the calculated instalment amount."
+msgstr "Usare [AMOUNT] per inserire l'importo della rata"
+
+msgid ""
+"Use [AMOUNT] to insert the calculated instalment amount. In this case, the "
+"instalment amount will be calculated based on the grand total of the cart, "
+"including tax and shipping."
+msgstr ""
+"Usare [AMOUNT] per inserire l'importo della rata. In questo caso, l'importo "
+"della rata sará calcolato sul totale del carrello, tasse di spedizione "
+"incluse"
+
+msgid ""
+"Use [AMOUNT] to insert the calculated instalment amount. Use [OF_OR_FROM] to "
+"insert \"from\" if the product's price is variable, or \"of\" if it is "
+"static."
+msgstr ""
+"Usare [AMOUNT] per inserire l'importo della rata. Usare [OF_OR_FROM] per "
+"inserire \"from\" se il prezzo del prodotto é variabile, o \"of\" se é fisso"
+
+msgid ""
+"Use this mode only if experiencing challenges with the display of order data "
+"within the WooCommerce admin views for Clearpay orders."
+msgstr ""
+"Utilizzare questa modalitá solo se si sperimentano problemi con il display "
+"degli order data nelle admin views di Woocommerce per gli ordini Clearpay"
+
+msgid "v1 (Recommended)"
+msgstr "V1 (consigliata)"
+
+msgid "What is Clearpay?"
+msgstr "Chi siamo?"
+
+msgid "WooCommerce System Status"
+msgstr "stato del sistema WooCommerce"
+
+msgid "You will be redirected to the Clearpay website when you click"
+msgstr "Verrai reindirizzato alla piattaforma Clearpay cliccando qui"
+
+msgid ""
+"You will be redirected to the Clearpay website when you click \"Comprar con "
+"Clearpay\"."
+msgstr ""
+"Verrai reindirizzato alla piattaforma Clearpay cliccando \"Procedi su "
+"Clearpay\"."
+
+msgid ""
+"You will be redirected to the Clearpay website when you click \"Continuer "
+"vers Clearpay\"."
+msgstr ""
+"Verrai reindirizzato alla piattaforma Clearpay cliccando \"Procedi su "
+"Clearpay\"."
+
+msgid ""
+"You will be redirected to the Clearpay website when you click \"Place "
+"order\"."
+msgstr ""
+"Verrai reindirizzato alla piattaforma Clearpay cliccando \"Procedi su "
+"Clearpay\"."
+
+#| msgid ""
+#| "You will be redirected to the Clearpay website when you click \"Proceed to "
+#| "Clearpay\"."
+msgid ""
+"You will be redirected to the Clearpay website when you click \"Procedi su "
+"Clearpay\"."
+msgstr ""
+"Verrai reindirizzato alla piattaforma Clearpay cliccando \"Procedi su "
+"Clearpay\"."
+
+msgid "Your order has been cancelled."
+msgstr "Il tuo ordine è stato annullato."
