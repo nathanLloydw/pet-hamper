@@ -134,7 +134,7 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 			$page = $this->validate_page( $page );
 			$slug = $page['menu_slug'];
 
-			// bail ealry if already exists
+			// bail early if already exists
 			if ( isset( $this->pages[ $slug ] ) ) {
 				return false;
 			}
@@ -490,7 +490,8 @@ if ( ! function_exists( 'acf_get_options_pages' ) ) :
 
 			// finally update parent menu_slug
 			if ( $child ) {
-				$page['menu_slug'] = $child;
+				$page['_menu_slug'] = $page['menu_slug'];
+				$page['menu_slug']  = $child;
 			}
 		}
 

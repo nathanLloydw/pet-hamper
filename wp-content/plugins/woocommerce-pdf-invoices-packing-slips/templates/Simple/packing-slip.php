@@ -7,6 +7,7 @@ $shipments = $this->order->get_meta( '_wcms_packages' );
 
 $packing_slips = [];
 
+
 if(!empty($shipments))
 {
     foreach ($shipments as $x => $shipment)
@@ -40,7 +41,6 @@ else
 
 foreach($packing_slips as $packing_slip)
 {
-
 
     ?>
 
