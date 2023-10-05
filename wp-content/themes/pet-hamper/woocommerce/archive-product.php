@@ -53,9 +53,7 @@ do_action( 'woocommerce_before_main_content' );
             ?>
 
             <?php if ($image) : ?>
-                <a href="/create-your-own-hamper">
-                    <img style="margin-bottom:43px;" src="<?php echo $image; ?>">
-                </a>
+                <img style="margin-bottom:43px;" src="<?php echo $image; ?>">
             <?php endif; ?>
 
         <?php endif; ?>
