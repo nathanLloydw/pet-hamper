@@ -151,25 +151,19 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 			return $json;
 		}
 
-		/*
-		*  get_plugin_info
-		*
-		*  Returns update information for the given plugin id.
-		*
-		*  @date    9/4/17
-		*  @since   5.5.10
-		*
-		*  @param   string $id The plugin id such as 'pro'.
-		*  @param   boolean $force_check Bypasses cached result. Defaults to false.
-		*  @return  array|WP_Error
-		*/
-
-		function get_plugin_info( $id = '', $force_check = false ) {
-
-			// var
+		/**
+		 *  Returns update information for the given plugin id.
+		 *
+		 *  @since   5.5.10
+		 *
+		 *  @param   string  $id The plugin id such as 'pro'.
+		 *  @param   boolean $force_check Bypasses cached result. Defaults to false.
+		 *  @return  array|WP_Error
+		 */
+		public function get_plugin_info( $id = '', $force_check = false ) {
 			$transient_name = 'acf_plugin_info_' . $id;
 
-			// check cache but allow for $force_check override
+			// check cache but allow for $force_check override.
 			if ( ! $force_check ) {
 				$transient = get_transient( $transient_name );
 				if ( $transient !== false ) {
@@ -177,46 +171,61 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 				}
 			}
 
-			// connect
 			$response = $this->request( 'v2/plugins/get-info?p=' . $id );
 
-			// convert string (misc error) to WP_Error object
+			// convert string (misc error) to WP_Error object.
 			if ( is_string( $response ) ) {
 				$response = new WP_Error( 'server_error', esc_html( $response ) );
 			}
 
-			// allow json to include expiration but force minimum and max for safety
+			// allow json to include expiration but force minimum and max for safety.
 			$expiration = $this->get_expiration( $response, DAY_IN_SECONDS, MONTH_IN_SECONDS );
 
-			// update transient
+			// update transient.
 			set_transient( $transient_name, $response, $expiration );
 
-			// return
 			return $response;
 		}
 
 		/**
-		 *  get_plugin_update
+		 * Returns specific data from the 'update-check' response.
 		 *
-		 *  Returns specific data from the 'update-check' response.
+		 * @since   5.7.2
 		 *
-		 *  @date    3/8/18
-		 *  @since   5.7.2
-		 *
-		 *  @param   string  $basename The plugin basename.
-		 *  @param   boolean $force_check Bypasses cached result. Defaults to false
-		 *  @return  array
+		 * @param string  $basename The plugin basename.
+		 * @param boolean $force_check Bypasses cached result. Defaults to false.
+		 * @return array|false
 		 */
-
-		function get_plugin_update( $basename = '', $force_check = false ) {
-
-			// get updates
+		public function get_plugin_update( $basename = '', $force_check = false ) {
+			// get updates.
 			$updates = $this->get_plugin_updates( $force_check );
 
-			// check for and return update
+			// check for and return update.
 			if ( is_array( $updates ) && isset( $updates['plugins'][ $basename ] ) ) {
 				return $updates['plugins'][ $basename ];
 			}
+
+			return false;
+		}
+
+		/**
+		 * Checks if an update is available, but can't be updated to.
+		 *
+		 * @since   6.2.1
+		 *
+		 * @param string  $basename The plugin basename.
+		 * @param boolean $force_check Bypasses cached result. Defaults to false.
+		 * @return array|false
+		 */
+		public function get_no_update( $basename = '', $force_check = false ) {
+			// get updates.
+			$updates = $this->get_plugin_updates( $force_check );
+
+			// check for and return update.
+			if ( is_array( $updates ) && isset( $updates['no_update'][ $basename ] ) ) {
+				return $updates['no_update'][ $basename ];
+			}
+
 			return false;
 		}
 
@@ -268,18 +277,19 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 				'plugins' => wp_json_encode( $this->plugins ),
 				'wp'      => wp_json_encode(
 					array(
-						'wp_name'     => get_bloginfo( 'name' ),
-						'wp_url'      => home_url(),
-						'wp_version'  => get_bloginfo( 'version' ),
-						'wp_language' => get_bloginfo( 'language' ),
-						'wp_timezone' => get_option( 'timezone_string' ),
-						'php_version' => PHP_VERSION,
+						'wp_name'      => get_bloginfo( 'name' ),
+						'wp_url'       => acf_get_home_url(),
+						'wp_version'   => get_bloginfo( 'version' ),
+						'wp_language'  => get_bloginfo( 'language' ),
+						'wp_timezone'  => get_option( 'timezone_string' ),
+						'wp_multisite' => (int) is_multisite(),
+						'php_version'  => PHP_VERSION,
 					)
 				),
 				'acf'     => wp_json_encode(
 					array(
 						'acf_version' => get_option( 'acf_version' ),
-						'acf_pro'     => ( defined( 'ACF_PRO' ) && ACF_PRO ),
+						'acf_pro'     => acf_is_pro(),
 						'block_count' => acf_pro_get_registered_block_count(),
 					)
 				),
@@ -304,11 +314,8 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 		}
 
 		/**
-		 *  get_expiration
-		 *
 		 *  This function safely gets the expiration value from a response.
 		 *
-		 *  @date    8/7/18
 		 *  @since   5.6.9
 		 *
 		 *  @param   mixed $response The response from the server. Default false.
@@ -316,28 +323,29 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 		 *  @param   int   $max The maximum expiration limit. Default 0.
 		 *  @return  int
 		 */
-
-		function get_expiration( $response = false, $min = 0, $max = 0 ) {
-
-			// vars
+		public function get_expiration( $response = false, $min = 0, $max = 0 ) {
 			$expiration = 0;
 
-			// check
+			// check possible error conditions.
+			if ( is_wp_error( $response ) || is_string( $response ) ) {
+				return 5 * MINUTE_IN_SECONDS;
+			}
+
+			// use the server requested expiration if present.
 			if ( is_array( $response ) && isset( $response['expiration'] ) ) {
 				$expiration = (int) $response['expiration'];
 			}
 
-			// min
+			// use the minimum if neither check matches, or ensure the server expiration isn't lower than our minimum.
 			if ( $expiration < $min ) {
 				return $min;
 			}
 
-			// max
+			// ensure the server expiration isn't higher than our max.
 			if ( $expiration > $max ) {
 				return $max;
 			}
 
-			// return
 			return $expiration;
 		}
 
@@ -358,42 +366,48 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 			delete_transient( 'acf_plugin_updates' );
 		}
 
-		/*
-		*  modify_plugins_transient
-		*
-		*  Called when WP updates the 'update_plugins' site transient. Used to inject ACF plugin update info.
-		*
-		*  @date    16/01/2014
-		*  @since   5.0.0
-		*
-		*  @param   object $transient
-		*  @return  $transient
-		*/
+		/**
+		 *  Called when WP updates the 'update_plugins' site transient. Used to inject ACF plugin update info.
+		 *
+		 *  @since   5.0.0
+		 *
+		 *  @param object $transient The current transient value.
+		 *  @return object $transient The modified transient value.
+		 */
+		public function modify_plugins_transient( $transient ) {
 
-		function modify_plugins_transient( $transient ) {
-
-			// bail early if no response (error)
+			// bail early if no response (error).
 			if ( ! isset( $transient->response ) ) {
 				return $transient;
 			}
 
-			// force-check (only once)
-			$force_check = ( $this->checked == 0 ) ? ! empty( $_GET['force-check'] ) : false;
+			// ensure no_update is set for back compat.
+			if ( ! isset( $transient->no_update ) ) {
+				$transient->no_update = array();
+			}
 
-			// fetch updates (this filter is called multiple times during a single page load)
+			// force-check (only once).
+			$force_check = ( $this->checked == 0 ) ? ! empty( $_GET['force-check'] ) : false; // phpcs:ignore -- False positive, value not used.
+
+			// fetch updates (this filter is called multiple times during a single page load).
 			$updates = $this->get_plugin_updates( $force_check );
 
-			// append
+			// append ACF pro plugins.
 			if ( is_array( $updates ) ) {
-				foreach ( $updates['plugins'] as $basename => $update ) {
-					$transient->response[ $basename ] = (object) $update;
+				if ( ! empty( $updates['plugins'] ) ) {
+					foreach ( $updates['plugins'] as $basename => $update ) {
+						$transient->response[ $basename ] = (object) $update;
+					}
+				}
+				if ( ! empty( $updates['no_update'] ) ) {
+					foreach ( $updates['no_update'] as $basename => $update ) {
+						$transient->no_update[ $basename ] = (object) $update;
+					}
 				}
 			}
 
-			// increase
 			$this->checked++;
 
-			// return
 			return $transient;
 		}
 

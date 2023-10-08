@@ -1764,28 +1764,22 @@ ul.productgrid.four a {
   color: #404040 !important;
 }
 
-#primary-menu > li.menu-item-39731 > ul,
-#primary-menu > li.menu-item-39730 > ul,
-#primary-menu > li.menu-item-41506 > ul {
+#primary-menu > li.sans > ul {
   width: auto;
   left: auto;
   flex-direction: column;
 }
 
-#primary-menu > li.menu-item-41349 > ul {
+#primary-menu > li.menu-item-41506 > ul {
   right: 0;
 }
 
-#primary-menu > li.menu-item-39731 > ul > li,
-#primary-menu > li.menu-item-39730 > ul > li,
-#primary-menu > li.menu-item-41506 > ul > li {
+#primary-menu > li.sans > ul > li {
   padding: 0.5rem 1rem;
   line-height: 1;
 }
 
-#primary-menu > li.menu-item-39731 > ul > li > a,
-#primary-menu > li.menu-item-39730 > ul > li > a,
-#primary-menu > li.menu-item-41506 > ul > li > a {
+#primary-menu > li.sans > ul > li > a {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-size: 1rem;
@@ -2912,6 +2906,12 @@ a.added_to_cart.wc-forward {
     list-style: none;
   }
 
+    .page-template-default .catgrid.archive .griditem {
+    flex-basis: 100%;
+    list-style: none;
+  }
+
+
   .catgrid.archive {
     display: flex;
     flex-wrap: wrap;
@@ -3151,3 +3151,89 @@ a.added_to_cart.wc-forward {
 .cross-sells { display:none; }
 
 .coupon label { display:none; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Custom CSS NEW ACF Pages*/
+
+.featured-service .col.content .inner {
+  border: 1px solid #b2a598;
+  padding: 2rem;
+}
+
+.featured-service .col.content ul,
+.flex-30-70 ul {
+    padding: 0!important;
+    margin: 0 0 0 1rem!important;
+
+}
+
+.featured-service .col.image {
+  position: relative;
+}
+
+.featured-service h2 {
+    margin: 10px 0;
+}
+
+
+
+@media (min-width: 768px) {
+
+
+  .featured-service {
+      display: flex;
+      align-items: center;
+      margin: 5rem auto;
+    }
+
+    .featured-service .col.image {
+      flex-basis: 60%;
+    }
+
+    .featured-service .col.content {
+      flex-basis: 40%;
+    }
+
+    .featured-service .col.content .inner {
+      z-index: 1;
+        background: #fff;
+        position: relative;
+    }
+
+    .featured-service.right .col.content .inner {
+      width: 110%;
+    }
+
+    .featured-service.left .col.content .inner {
+      margin-left: -10%;
+        width: 110%;
+    }
+
+}
+
+
+@media (max-width: 767.98px) {
+.featured-service {
+    margin-bottom: 1rem;
+  }
+
+  .featured-service.right {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
