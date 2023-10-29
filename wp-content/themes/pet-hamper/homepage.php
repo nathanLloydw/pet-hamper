@@ -141,7 +141,9 @@ $total_rows = 0;
 
 
 			<?php if( have_rows('catgrid') ): ?>
+
 		    <div class="catgrid half">
+
 		    <?php while( have_rows('catgrid') ): the_row(); 
 
 		    	$link = get_sub_field('link');
@@ -185,6 +187,52 @@ $total_rows = 0;
 				
 			<?php endwhile; ?>
 			</div>
+
+            <div class="my-slider">
+                <?php while( have_rows('catgrid') ): the_row();
+
+                    $link = get_sub_field('link');
+
+                    ?>
+
+                    <div class="inner">
+
+                        <?php if( $link ):
+                            $link_url = $link['url'];
+                            $link_title = $link['title'];
+                            $link_target = $link['target'] ? $link['target'] : '_self';
+                            ?>
+
+                            <a href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
+                                <img <?php awesome_acf_responsive_image(get_sub_field( 'image' ),'full','1200px'); ?>  alt="" style="height:362px;width:362px;" />
+                                <div class="content">
+                                    <p class="title"><?php echo $link_title; ?></p>
+                                </div>
+                            </a>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                <?php endwhile; ?>
+            </div>
+
+            <script type="module">
+
+                var slider = tns({
+                    container: '.my-slider',
+                    items: 2,
+                    center:true,
+                    loop:true,
+                    mouseDrag:true,
+                    startIndex:2,
+                    controls:false,
+                    nav:false,
+                    autoplay: false
+                });
+
+            </script>
+
 			<?php endif; ?>
 
 
