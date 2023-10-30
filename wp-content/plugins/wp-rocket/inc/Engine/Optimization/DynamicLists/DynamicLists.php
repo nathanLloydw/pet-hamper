@@ -102,8 +102,9 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		$response = [];
-		$success  = false;
+		$response     = [];
+		$success      = false;
+		$should_purge = false;
 
 		foreach ( $this->providers as $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
@@ -141,6 +142,8 @@ class DynamicLists extends Abstract_Render {
 				'data'    => '',
 				'message' => __( 'Lists are successfully updated.', 'rocket' ),
 			];
+
+			$should_purge |= $provider->clear_cache ?? true;
 		}
 
 		if ( $success ) {
@@ -148,8 +151,10 @@ class DynamicLists extends Abstract_Render {
 			 * Fires after saving all dynamic lists files.
 			 *
 			 * @since 3.12.1
+			 *
+			 * @param bool $should_purge Should purge status based on the updated providers.
 			 */
-			do_action( 'rocket_after_save_dynamic_lists' );
+			do_action( 'rocket_after_save_dynamic_lists', $should_purge );
 		}
 
 		return $response;
@@ -252,5 +257,27 @@ class DynamicLists extends Abstract_Render {
 	 */
 	public function get_delayjs_list() {
 		return $this->providers['delayjslists']->data_manager->get_lists();
+	}
+
+	/**
+	 * Get the JS minify excluded files
+	 *
+	 * @return array
+	 */
+	public function get_js_exclude_files(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return isset( $lists->exclude_js_files ) ? $lists->exclude_js_files : [];
+	}
+
+	/**
+	 * Get the incompatible plugins list
+	 *
+	 * @return array
+	 */
+	public function get_incompatible_plugins() {
+		$lists = $this->providers['incompatible_plugins']->data_manager->get_plugins_list();
+
+		return isset( $lists ) ? $lists : [];
 	}
 }

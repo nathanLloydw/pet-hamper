@@ -30,6 +30,7 @@ class WC_PRL_CLI {
 	 */
 	private function includes() {
 		require_once  WC_PRL_ABSPATH . 'includes/cli/class-wc-prl-cli-update.php' ;
+		require_once  WC_PRL_ABSPATH . 'includes/cli/class-wc-prl-cli-process-generation-queue.php' ;
 	}
 
 	/**
@@ -37,6 +38,7 @@ class WC_PRL_CLI {
 	 */
 	private function hooks() {
 		WP_CLI::add_hook( 'after_wp_load', 'WC_PRL_CLI_Update::register_command' );
+		WP_CLI::add_hook( 'after_wp_load', 'WC_PRL_CLI_Process_Generation_Queue::register_command' );
 	}
 }
 

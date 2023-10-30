@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Hooks for Flatsome theme compatibility.
  *
  * @class    WC_PRL_Flatsome_Compatibility
- * @version  1.4.11
+ * @version  3.0.2
  */
 class WC_PRL_Flatsome_Compatibility {
 
@@ -31,9 +31,6 @@ class WC_PRL_Flatsome_Compatibility {
 	 */
 	public static function add_hooks() {
 		add_filter( 'woocommerce_cross_sells_columns', array( __CLASS__, 'reset_cart_product_columns' ) );
-
-		// Fix track param in product URLs.
-		add_filter( 'post_type_link', 'woocommerce_prl_add_link_track_param' );
 	}
 
 	/**

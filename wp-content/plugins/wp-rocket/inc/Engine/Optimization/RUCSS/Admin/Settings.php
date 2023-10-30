@@ -52,7 +52,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) : array {
+	public function add_options( $options ): array {
 		$options = (array) $options;
 
 		$options['remove_unused_css']          = 0;
@@ -68,7 +68,7 @@ class Settings {
 	 *
 	 * @return boolean
 	 */
-	public function is_enabled() : bool {
+	public function is_enabled(): bool {
 
 		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
@@ -83,7 +83,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( array $input, AdminSettings $settings ) : array {
+	public function sanitize_options( array $input, AdminSettings $settings ): array {
 		$input['remove_unused_css']          = $settings->sanitize_checkbox( $input, 'remove_unused_css' );
 		$input['remove_unused_css_safelist'] = ! empty( $input['remove_unused_css_safelist'] ) ? rocket_sanitize_textarea_field( 'remove_unused_css_safelist', $input['remove_unused_css_safelist'] ) : [];
 
@@ -192,6 +192,11 @@ class Settings {
 	 * @return void
 	 */
 	public function display_processing_notice() {
+
+		if ( $this->has_saas_error_notice() ) {
+			return;
+		}
+
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
@@ -238,11 +243,16 @@ class Settings {
 	 * @return void
 	 */
 	public function display_success_notice() {
+
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
 
 		if ( ! $this->used_css->exists() ) {
+			return;
+		}
+
+		if ( $this->has_saas_error_notice() ) {
 			return;
 		}
 
@@ -361,46 +371,6 @@ class Settings {
 	}
 
 	/**
-	 * Disable combine CSS option when RUCSS is enabled
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $value     The new, unserialized option value.
-	 * @param array $old_value The old option value.
-	 *
-	 * @return array
-	 */
-	public function maybe_disable_combine_css( $value, $old_value ): array {
-		if ( ! isset( $value['remove_unused_css'], $value['minify_concatenate_css'] ) ) {
-			return $value;
-		}
-
-		if (
-			0 === $value['minify_concatenate_css']
-			||
-			0 === $value['remove_unused_css']
-		) {
-			return $value;
-		}
-
-		if (
-			isset( $old_value['remove_unused_css'], $old_value['minify_concatenate_css'] )
-			&&
-			$value['remove_unused_css'] === $old_value['remove_unused_css']
-			&&
-			$value['minify_concatenate_css'] === $old_value['minify_concatenate_css']
-			&&
-			0 === $old_value['minify_concatenate_css']
-		) {
-			return $value;
-		}
-
-		$value['minify_concatenate_css'] = 0;
-
-		return $value;
-	}
-
-	/**
 	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
 	 *
 	 * @since 3.11
@@ -420,14 +390,6 @@ class Settings {
 			$options['optimize_css_delivery'] = 0;
 			$options['remove_unused_css']     = 0;
 			$options['async_css']             = 0;
-		}
-
-		if (
-			isset( $options['remove_unused_css'] )
-			&&
-			1 === (int) $options['remove_unused_css']
-		) {
-			$options['minify_concatenate_css'] = 0;
 		}
 
 		update_option( 'wp_rocket_settings', $options );
@@ -504,6 +466,68 @@ class Settings {
 	}
 
 	/**
+	 * Display an error notice when the connection to the server fails
+	 *
+	 * @return void
+	 */
+	public function display_saas_error_notice() {
+
+		if ( ! $this->has_saas_error_notice() ) {
+			$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+			if ( in_array( 'rucss_saas_error_notice', (array) $boxes, true ) ) {
+				unset( $boxes['rucss_saas_error_notice'] );
+				update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
+			}
+
+			return;
+		}
+
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'rucss_error_notice', (array) $boxes, true ) ) {
+			return;
+		}
+
+		$firewall_beacon = $this->beacon->get_suggest( 'rucss_firewall_ips' );
+
+		$main_message = sprintf(
+			// translators: %1$s = <a> open tag, %2$s = </a> closing tag.
+			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the Remove Unused CSS generator. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
+			'<a href="' . esc_url( $firewall_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $firewall_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
+
+		$security_message = __( '- In the security plugin, if you are using one', 'rocket' );
+		$firewall_message = __( "- In the server's firewall. Your host can help you with this", 'rocket' );
+
+		$message = "<strong>WP Rocket</strong>: $main_message<ul><li>$security_message</li><li>$firewall_message</li></ul>";
+
+		rocket_notice_html(
+			[
+				'status'               => 'error',
+				'message'              => $message,
+				'dismissible'          => '',
+				'id'                   => 'rocket-notice-rucss-error-http',
+				'dismiss_button'       => 'rucss_error_notice',
+				'dismiss_button_class' => 'button-primary',
+			]
+		);
+	}
+
+	/**
+	 * Is the error notice present.
+	 *
+	 * @return bool
+	 */
+	public function has_saas_error_notice() {
+		return (bool) get_transient( 'wp_rocket_rucss_errors_count' );
+	}
+
+	/**
 	 * Display a notice on table missing.
 	 *
 	 * @return void
@@ -517,15 +541,16 @@ class Settings {
 			return;
 		}
 
-		// translators: %2$s = table name, %3$s = support url.
-		$main_message = __( 'Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="%3$s">our support</a>.', 'rocket' );
+		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
+		$main_message = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to %3$sour support%4$s.', 'rocket' );
 
 		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = table name, %3$s = support url.
-			"%1\$s: $main_message",
+		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
+			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
-			$this->get_support_url()
+			'<a href="' . $this->get_support_url() . '" target="_blank" rel="noopener">',
+			'</a>'
 		);
 
 		rocket_notice_html(

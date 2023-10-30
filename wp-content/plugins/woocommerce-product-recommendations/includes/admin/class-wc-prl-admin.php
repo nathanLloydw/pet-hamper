@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Loads admin scripts, includes admin classes and adds admin hooks.
  *
  * @class    WC_PRL_Admin
- * @version  2.4.0
+ * @version  3.0.0
  */
 class WC_PRL_Admin {
 
@@ -26,7 +26,7 @@ class WC_PRL_Admin {
 	 *
 	 * @var string
 	 */
-	private static $bundled_selectsw_version = '1.2.1';
+	private static $bundled_selectsw_version = '1.2.2';
 
 	/**
 	 * Setup Admin class.
@@ -186,12 +186,18 @@ class WC_PRL_Admin {
 			$classes .= ' wc-prl-trash';
 		}
 
-		if ( strpos( $classes, 'sw-wp-version-gte-53' ) !== false ) {
+		if ( strpos( $classes, 'sw-wp-version-gte-53' ) !== false
+		     || strpos( $classes, 'sw-wp-version-gte-55' ) !== false
+		) {
 			return $classes;
 		}
 
 		if ( WC_PRL_Core_Compatibility::is_wp_version_gte( '5.3' ) ) {
 			$classes .= ' sw-wp-version-gte-53';
+		}
+
+		if ( WC_PRL_Core_Compatibility::is_wp_version_gte( '5.5' ) ) {
+			$classes .= ' sw-wp-version-gte-55';
 		}
 
 		return $classes;
@@ -286,8 +292,8 @@ class WC_PRL_Admin {
 			'toggle_deployment_nonce'             => wp_create_nonce( 'wc_prl_toggle_deployment' ),
 			'search_engine_nonce'                 => wp_create_nonce( 'wc_prl_search_engine' ),
 			'regenerate_engine_nonce'             => wp_create_nonce( 'wc_prl_regenerate_engine' ),
-			'i18n_engine_regeneration'            => __( 'Engine cache cleared. Recommendations will be regenerated shortly after the first time they are requested.', 'woocommerce-product-recommendations' ),
-			'i18n_deployment_regeneration'        => __( 'Cache cleared. Recommendations will be regenerated shortly after the first time they are requested.', 'woocommerce-product-recommendations' ),
+			'i18n_engine_regeneration'            => __( 'Engine recommendations cleared. New recommendations will be regenerated shortly after the first time they are requested.', 'woocommerce-product-recommendations' ),
+			'i18n_deployment_regeneration'        => __( 'Cache cleared. New recommendations will be regenerated shortly after the first time they are requested.', 'woocommerce-product-recommendations' ),
 			'i18n_toggle_session_expired'         => _x( 'Something went wrong. Please refresh your browser and try again.', 'active toggler', 'woocommerce-product-recommendations' ),
 			'i18n_change_type_conditions_warning' => __( 'The conditions you have added will be deleted. Are you sure?', 'woocommerce-product-recommendations' ),
 			'i18n_change_type_warning'            => __( 'The filters and amplifiers you have added will be deleted. Are you sure?', 'woocommerce-product-recommendations' ),
@@ -413,7 +419,7 @@ class WC_PRL_Admin {
 	public static function clear_prl_queue() {
 		global $wpdb;
 
-		$affected_rows = $wpdb->query( $wpdb->prepare("DELETE FROM `{$wpdb->prefix}options` where `option_name` LIKE %s", '%wc_prl_generator_batch%') );
+		$affected_rows = $wpdb->query( "DELETE FROM `{$wpdb->prefix}woocommerce_prl_generator_queue` where 1=1" );
 
 		if ( false !== $affected_rows ) {
 			return __( 'Product Recommendations queue cleared successfully.', 'woocommerce-product-recommendations' );

@@ -55,7 +55,8 @@ function wc_prl_get_contextual_engine_types() {
 	return (array) apply_filters(
 		'woocommerce_prl_contextual_engine_types', array(
 			'product',
-			'archive'
+			'archive',
+			'order'
 		)
 	);
 }

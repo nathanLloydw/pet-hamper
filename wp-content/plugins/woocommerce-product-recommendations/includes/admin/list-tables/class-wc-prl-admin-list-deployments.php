@@ -19,7 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Adds a custom deployments list table.
  *
  * @class    WC_PRL_Deployments_List_Table
- * @version  2.4.0
+ * @version  3.0.0
  */
 class WC_PRL_Deployments_List_Table extends WP_List_Table {
 
@@ -251,7 +251,7 @@ class WC_PRL_Deployments_List_Table extends WP_List_Table {
 				WC_PRL_Admin_Notices::add_notice( __( 'Deployments deleted.', 'woocommerce-product-recommendations' ), 'success', true );
 			}
 
-			wp_redirect( admin_url( self::PAGE_URL ) );
+			wp_safe_redirect( admin_url( self::PAGE_URL ) );
 			exit();
 		}
 	}

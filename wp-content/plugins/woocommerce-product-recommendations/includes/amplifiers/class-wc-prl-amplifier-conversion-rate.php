@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Amplifier_Conversion_Rate class for amplifying products based on their price.
  *
  * @class    WC_PRL_Amplifier_Conversion_Rate
- * @version  2.4.0
+ * @version  3.0.0
  */
 class WC_PRL_Amplifier_Conversion_Rate extends WC_PRL_Amplifier {
 
@@ -24,7 +24,7 @@ class WC_PRL_Amplifier_Conversion_Rate extends WC_PRL_Amplifier {
 	 */
 	public function __construct() {
 		$this->id                     = 'conversion_rate';
-		$this->title                  = __( 'Conversion Rate', 'woocommerce-product-recommendations' );
+		$this->title                  = __( 'Conversion', 'woocommerce-product-recommendations' );
 		$this->supported_modifiers    = array(
 			'DESC' => _x( 'high to low', 'prl_modifiers', 'woocommerce-product-recommendations' )
 		);
@@ -55,15 +55,41 @@ class WC_PRL_Amplifier_Conversion_Rate extends WC_PRL_Amplifier {
 	public function add_order_clauses( $args ) {
 		global $wpdb;
 
-		$args['join']   .= "
-			INNER JOIN (
-				SELECT product_id, count(*) AS conv_count FROM {$wpdb->prefix}woocommerce_prl_tracking_conversions WHERE 1=1 GROUP BY product_id
-			) as prl_conversions ON ($wpdb->posts.ID = prl_conversions.product_id)
-			LEFT JOIN (
-				SELECT product_id, count(*) AS clicks_count from {$wpdb->prefix}woocommerce_prl_tracking_clicks WHERE 1=1 GROUP BY product_id
-			) as prl_clicks ON ($wpdb->posts.ID = prl_clicks.product_id)
-		";
-		$args['orderby'] = "( prl_conversions.conv_count/prl_clicks.clicks_count ) DESC, $wpdb->posts.post_date DESC";
+		if ( wc_prl_lookup_tables_enabled( 'order' ) ) {
+
+			$args['join']   .= "
+				INNER JOIN (
+					SELECT product_id, count(*) AS conv_count FROM {$wpdb->prefix}woocommerce_prl_tracking_conversions WHERE 1=1 GROUP BY product_id
+				) as prl_conversions ON ($wpdb->posts.ID = prl_conversions.product_id)
+				LEFT JOIN (
+					SELECT product_id, count(*) as orders_count
+						FROM `{$wpdb->prefix}wc_order_product_lookup` as d
+						WHERE 1=1
+						GROUP BY d.product_id
+				) as prl_total_purchases ON ($wpdb->posts.ID = prl_total_purchases.product_id)
+			";
+
+		} else {
+
+			$args['join']   .= "
+				INNER JOIN (
+					SELECT product_id, count(*) AS conv_count FROM {$wpdb->prefix}woocommerce_prl_tracking_conversions WHERE 1=1 GROUP BY product_id
+				) as prl_conversions ON ($wpdb->posts.ID = prl_conversions.product_id)
+				LEFT JOIN (
+					SELECT product_id, count(*) as orders_count
+					FROM (
+						SELECT meta_value as product_id, post_date
+						INNER JOIN {$wpdb->prefix}woocommerce_order_items ON($wpdb->order_itemmeta.order_item_id = {$wpdb->prefix}woocommerce_order_items.order_item_id)
+						FROM $wpdb->order_itemmeta
+						WHERE $wpdb->order_itemmeta.meta_key = '_product_id'
+						AND {$wpdb->prefix}woocommerce_order_items.order_item_type = 'line_item'
+						AND $wpdb->posts.post_type = 'shop_order' ) as d
+					GROUP BY d.product_id
+				) as prl_total_purchases ON ($wpdb->posts.ID = prl_total_purchases.product_id)
+			";
+		}
+
+		$args['orderby'] = "( prl_conversions.conv_count/prl_total_purchases.orders_count ) DESC, $wpdb->posts.post_date DESC";
 		$args['groupby'] = "$wpdb->posts.ID";
 
 		return $args;

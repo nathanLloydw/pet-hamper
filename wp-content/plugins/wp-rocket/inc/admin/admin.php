@@ -96,7 +96,6 @@ function rocket_post_row_actions( $actions, $post ) {
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
-
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -265,67 +264,6 @@ function rocket_maybe_generate_config_files() {
 }
 
 /**
- * Filter plugin fetching API results to inject Imagify
- *
- * @since 2.10.7
- * @author Remy Perona
- *
- * @param object|WP_Error $result Response object or WP_Error.
- * @param string          $action The type of information being requested from the Plugin Install API.
- * @param object          $args   Plugin API arguments.
- *
- * @return array Updated array of results
- */
-function rocket_add_imagify_api_result( $result, $action, $args ) {
-	if ( empty( $args->browse ) ) {
-		return $result;
-	}
-
-	if ( 'featured' !== $args->browse && 'recommended' !== $args->browse && 'popular' !== $args->browse ) {
-		return $result;
-	}
-
-	if ( ! isset( $result->info['page'] ) || 1 < $result->info['page'] ) {
-		return $result;
-	}
-
-	if ( is_plugin_active( 'imagify/imagify.php' ) || is_plugin_active_for_network( 'imagify/imagify.php' ) ) {
-		return $result;
-	}
-
-	// grab all slugs from the api results.
-	$result_slugs = wp_list_pluck( $result->plugins, 'slug' );
-
-	if ( in_array( 'imagify', $result_slugs, true ) ) {
-		return $result;
-	}
-
-	$query_args   = [
-		'slug'   => 'imagify',
-		'fields' => [
-			'icons'             => true,
-			'active_installs'   => true,
-			'short_description' => true,
-			'group'             => true,
-		],
-	];
-	$imagify_data = plugins_api( 'plugin_information', $query_args );
-
-	if ( is_wp_error( $imagify_data ) ) {
-		return $result;
-	}
-
-	if ( 'featured' === $args->browse ) {
-		array_push( $result->plugins, $imagify_data );
-	} else {
-		array_unshift( $result->plugins, $imagify_data );
-	}
-
-	return $result;
-}
-add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
-
-/**
  * Gets all data to send to the analytics system
  *
  * @since 3.0 Send CDN zones, sitemaps paths, and count the number of CDN URLs used
@@ -385,6 +323,12 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
+	$customer_data        = get_transient( 'wp_rocket_customer_data' );
+	$data['license_type'] = '';
+	if ( false !== $customer_data ) {
+		$data['license_type'] = rocket_get_license_type( $customer_data );
+	}
+
 	return $data;
 }
 
@@ -401,7 +345,7 @@ function rocket_send_analytics_data() {
 		return false;
 	}
 
-	if ( ! current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return false;
 	}
 
@@ -424,7 +368,7 @@ function rocket_analytics_optin() {
 		wp_nonce_ays( '' );
 	}
 
-	if ( ! current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}

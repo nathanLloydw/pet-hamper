@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Deploy Class.
  *
  * @class    WC_PRL_Admin_Deploy
- * @version  2.2.3
+ * @version  3.0.0
  */
 class WC_PRL_Admin_Deploy {
 
@@ -39,21 +39,21 @@ class WC_PRL_Admin_Deploy {
 		$post_prl_deploy = isset( $_POST[ 'prl_deploy' ] ) ? $_POST[ 'prl_deploy' ] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty ( $post_prl_deploy[ 'hook' ] ) ) {
 			WC_PRL_Admin_Notices::add_notice( __( 'Please choose a Location.', 'woocommerce-product-recommendations' ), 'error', true );
-			wp_redirect( add_query_arg( 'engine', absint( $post_prl_deploy[ 'engine_id' ] ), admin_url( self::PAGE_URL ) ) );
+			wp_safe_redirect( add_query_arg( 'engine', absint( $post_prl_deploy[ 'engine_id' ] ), admin_url( self::PAGE_URL ) ) );
 			exit();
 		}
 
 		$location = WC_PRL()->locations->get_location_by_hook( $post_prl_deploy[ 'hook' ] );
 		if ( ! $location ) {
 			WC_PRL_Admin_Notices::add_notice( __( 'Ops! Something went wrong while trying to save a Location for this Engine.', 'woocommerce-product-recommendations' ), 'error', true );
-			wp_redirect( add_query_arg( 'engine', absint( $post_prl_deploy[ 'engine_id' ] ), admin_url( self::PAGE_URL ) ) );
+			wp_safe_redirect( add_query_arg( 'engine', absint( $post_prl_deploy[ 'engine_id' ] ), admin_url( self::PAGE_URL ) ) );
 			exit();
 		}
 
 		$engine = ! empty( $post_prl_deploy[ 'engine_id' ] ) ? new WC_PRL_Engine( absint( $post_prl_deploy[ 'engine_id' ] ) ) : false;
 		if ( ! $engine ) {
 			WC_PRL_Admin_Notices::add_notice( __( 'Engine not found.', 'woocommerce-product-recommendations' ), 'error', true );
-			wp_redirect( admin_url( 'admin.php?page=prl_locations' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=prl_locations' ) );
 			exit();
 		}
 
@@ -95,7 +95,7 @@ class WC_PRL_Admin_Deploy {
 				WC_PRL_Admin_Notices::add_notice( __( 'Deployment edited successfully.', 'woocommerce-product-recommendations' ), 'success', true );
 			} else {
 				WC_PRL()->db->deployment->add( $args );
-				WC_PRL_Admin_Notices::add_notice( sprintf( __( 'Engine deployed successfully. Your recommendations will be generated shortly after the first time they are requested, and will be refreshed every %s.', 'woocommerce-product-recommendations' ), human_time_diff( current_time( 'timestamp' ) + $engine->refresh_interval_in_seconds ) ), 'success', true );
+				WC_PRL_Admin_Notices::add_notice( sprintf( __( 'Engine deployed successfully. New recommendations will be regenerated shortly after the first time they are requested, and will be refreshed every %s.', 'woocommerce-product-recommendations' ), human_time_diff( current_time( 'timestamp' ) + $engine->refresh_interval_in_seconds ) ), 'success', true );
 			}
 
 			if ( $location->is_cacheable() && false === wc_prl_render_using_ajax( 'edit' ) && 'cached' === WC_PRL_Notices::get_page_cache_test_result() ) {
@@ -120,7 +120,7 @@ class WC_PRL_Admin_Deploy {
 		}
 
 		$redirect = $deployment ? add_query_arg( 'deployment', absint( $post_prl_deploy[ 'id' ] ), self::PAGE_URL ) : 'admin.php?page=prl_locations';
-		wp_redirect( admin_url( $redirect ) );
+		wp_safe_redirect( admin_url( $redirect ) );
 		exit;
 	}
 
@@ -147,7 +147,7 @@ class WC_PRL_Admin_Deploy {
 		$engine = new WC_PRL_Engine( $engine_id );
 		if ( ! $engine->get_id() ) {
 			WC_PRL_Admin_Notices::add_notice( __( 'Engine not found.', 'woocommerce-product-recommendations' ), 'error', true );
-			wp_redirect( admin_url( 'admin.php?page=prl_locations' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=prl_locations' ) );
 			exit;
 		}
 		$locations = WC_PRL()->locations->get_hooks_for_deployment( $engine->get_type() );

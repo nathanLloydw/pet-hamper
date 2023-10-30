@@ -1,5 +1,28 @@
 *** WooCommerce Points and Rewards Changelog ***
 
+2023-10-19 - version 1.7.44
+* Dev - Add phpcs on changed files only.
+
+2023-10-10 - version 1.7.43
+* Tweak - WC 8.2 compatibility.
+
+2023-09-27 - version 1.7.42
+* Fix - Specify PHP version in composer.json.
+
+2023-09-05 - version 1.7.41
+* Tweak - WC 8.1 compatibility.
+
+2023-08-18 - version 1.7.40
+* Fix - Clean user cache on increasing and decreasing points.
+
+2023-08-09 - version 1.7.39
+* Fix - Remove backlog automation.
+* Tweak - WC 8.0 compatibility.
+* Tweak - WP 6.3 compatibility.
+
+2023-07-12 - version 1.7.38
+* Fix - Updates description of Change Renewal Points tooltip.
+
 2023-07-05 - version 1.7.37
 * Add - Filter to override the result of `can_reward_review` method.
 * Fix - Points not awarded for bulk approved reviews.

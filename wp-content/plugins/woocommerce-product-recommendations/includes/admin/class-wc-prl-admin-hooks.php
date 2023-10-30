@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_PRL_Admin_Hooks Class.
  *
  * @class    WC_PRL_Admin_Hooks
- * @version  2.4.0
+ * @version  3.0.0
  */
 class WC_PRL_Admin_Hooks {
 
@@ -43,7 +43,7 @@ class WC_PRL_Admin_Hooks {
 		$location = WC_PRL()->locations->get_location_by_hook( $hook );
 
 		if ( ! $location ) {
-			wp_redirect( admin_url( self::PAGE_URL ) );
+			wp_safe_redirect( admin_url( self::PAGE_URL ) );
 			exit();
 		}
 
@@ -95,7 +95,7 @@ class WC_PRL_Admin_Hooks {
 
 		WC_PRL_Admin_Notices::add_notice( __( 'Deployments saved.', 'woocommerce-product-recommendations' ), 'success', true );
 
-		wp_redirect( admin_url( $url ) );
+		wp_safe_redirect( admin_url( $url ) );
 		exit();
 	}
 
@@ -111,7 +111,7 @@ class WC_PRL_Admin_Hooks {
 		$location = isset( $_GET[ 'location' ] ) ? wc_clean( $_GET[ 'location' ] ) : false;
 
 		if ( ! $location ) {
-			wp_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
+			wp_safe_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
 			exit();
 		}
 
@@ -119,7 +119,7 @@ class WC_PRL_Admin_Hooks {
 		$location  = WC_PRL()->locations->get_location( $location );
 		// Check location object.
 		if ( ! $location ) {
-			wp_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
+			wp_safe_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
 			exit();
 		}
 
@@ -157,7 +157,7 @@ class WC_PRL_Admin_Hooks {
 
 		// Check GET.
 		if ( ! isset( $hooks[ $selected_hook ] ) ) {
-			wp_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
+			wp_safe_redirect( admin_url( remove_query_arg( 'section', self::PAGE_URL ) ) );
 			exit();
 		}
 

@@ -389,6 +389,16 @@ CREATE TABLE {$wpdb->prefix}woocommerce_prl_frequencies (
   UNIQUE KEY `hash` (`hash`)
 
 ) $collate;
+CREATE TABLE {$wpdb->prefix}woocommerce_prl_generator_queue (
+  `item_key` VARCHAR($max_index_length) NOT NULL,
+  `deployment_id` INT UNSIGNED NOT NULL,
+  `data` longtext NULL,
+  `added_time` INT UNSIGNED NOT NULL,
+  `iterations` INT UNSIGNED NOT NULL,
+  PRIMARY KEY  (`item_key`),
+  KEY `deployment_id` (`deployment_id`)
+
+) $collate;
 		";
 
 		return $tables;

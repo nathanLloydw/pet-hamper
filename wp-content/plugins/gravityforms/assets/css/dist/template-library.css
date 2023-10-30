@@ -91,8 +91,7 @@
 			}
 
 	.gform-admin .gform-template-library__flyout .gform-flyout__footer .gform-flyout__footer-inner .gform-flyout__footer-primary-button {
-					-webkit-margin-start: 0.75rem;
-					        margin-inline-start: 0.75rem;
+					margin-inline-start: 0.75rem;
 				}
 
 	.gform-admin .gform-template-library__flyout .gform-template-library__flyout-textarea {
@@ -106,6 +105,8 @@
 	.gform-admin .gform-template-library {
 		block-size: 100vh;
 		border-radius: 0.1875rem;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 		inline-size: 100vw;
 		max-inline-size: none;
 		min-inline-size: 22.5rem;

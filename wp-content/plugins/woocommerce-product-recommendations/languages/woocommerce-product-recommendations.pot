@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Product Recommendations 2.4.0\n"
+"Project-Id-Version: WooCommerce Product Recommendations 3.0.3\n"
 "Report-Msgid-Bugs-To: https://woocommerce.com/my-account/create-a-ticket/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-19T09:19:30+00:00\n"
+"POT-Creation-Date: 2023-10-19T09:51:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -36,10 +36,10 @@ msgid "https://somewherewarm.com/"
 msgstr ""
 
 #: includes/admin/analytics/class-wc-prl-admin-analytics.php:108
-#: includes/admin/class-wc-prl-admin-menus.php:98
-#: includes/admin/class-wc-prl-admin-menus.php:278
-#: includes/admin/class-wc-prl-admin-menus.php:281
-#: includes/admin/class-wc-prl-admin-menus.php:424
+#: includes/admin/class-wc-prl-admin-menus.php:109
+#: includes/admin/class-wc-prl-admin-menus.php:291
+#: includes/admin/class-wc-prl-admin-menus.php:294
+#: includes/admin/class-wc-prl-admin-menus.php:436
 #: includes/admin/settings/class-wc-prl-admin-settings.php:30
 msgid "Recommendations"
 msgstr ""
@@ -139,7 +139,7 @@ msgstr ""
 
 #: includes/admin/class-wc-prl-admin-ajax.php:270
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:98
-#: includes/class-wc-prl-deployments.php:266
+#: includes/class-wc-prl-deployments.php:267
 msgid "(no title)"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgid "Deployment edited successfully."
 msgstr ""
 
 #: includes/admin/class-wc-prl-admin-deploy.php:98
-msgid "Engine deployed successfully. Your recommendations will be generated shortly after the first time they are requested, and will be refreshed every %s."
+msgid "Engine deployed successfully. New recommendations will be regenerated shortly after the first time they are requested, and will be refreshed every %s."
 msgstr ""
 
 #: includes/admin/class-wc-prl-admin-deploy.php:109
@@ -170,6 +170,46 @@ msgstr ""
 
 #: includes/admin/class-wc-prl-admin-deploy.php:111
 msgid "The engine you just deployed generates dynamic/personalized recommendations that some visitors <a href=\"%1$s\" target=\"_blank\">may not be able to see correctly</a>, as the page that contains them appears to be served from a cache. As a workaround, you may enable <strong>Deployments rendering > Use AJAX</strong> under <strong>WooCommerce > Settings > Recommendations</strong> &ndash; but please be aware that doing so will have an impact on server utilization and user experience."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:52
+msgid "Product recommendations are currently generated and refreshed manually via WP CLI."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:55
+msgid "Running"
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:64
+msgid "In queue"
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:71
+msgid "Next run in %d seconds"
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:92
+msgid "Queue item could not be deleted."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:101
+msgid "Queue item deleted."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:111
+msgid "Queue item could not be resetted."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:118
+msgid "Queue item resetted."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:127
+msgid "The item could not be dispatched."
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-generator-queue.php:134
+msgid "The item has been dispatched."
 msgstr ""
 
 #: includes/admin/class-wc-prl-admin-hooks.php:96
@@ -184,46 +224,45 @@ msgstr ""
 msgid "Deployment deleted."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:113
-#: includes/admin/class-wc-prl-admin-menus.php:201
-#: includes/admin/class-wc-prl-admin-menus.php:281
-#: includes/admin/class-wc-prl-admin-menus.php:373
-#: includes/admin/class-wc-prl-admin-menus.php:464
+#: includes/admin/class-wc-prl-admin-menus.php:124
+#: includes/admin/class-wc-prl-admin-menus.php:212
+#: includes/admin/class-wc-prl-admin-menus.php:294
+#: includes/admin/class-wc-prl-admin-menus.php:476
 #: includes/admin/views/html-admin-hooks.php:16
 #: includes/admin/views/html-admin-locations.php:16
 msgid "Locations"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:132
+#: includes/admin/class-wc-prl-admin-menus.php:143
 msgid "View Location"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:144
-#: includes/admin/class-wc-prl-admin-menus.php:196
-#: includes/admin/class-wc-prl-admin-menus.php:452
+#: includes/admin/class-wc-prl-admin-menus.php:155
+#: includes/admin/class-wc-prl-admin-menus.php:207
+#: includes/admin/class-wc-prl-admin-menus.php:464
 #: includes/class-wc-prl-post-types.php:81
 #: includes/class-wc-prl-post-types.php:83
 msgid "Engines"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:155
+#: includes/admin/class-wc-prl-admin-menus.php:166
 msgid "Add New"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:165
+#: includes/admin/class-wc-prl-admin-menus.php:176
 msgid "Edit Engine"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:190
-#: includes/admin/class-wc-prl-admin-menus.php:278
-#: includes/admin/class-wc-prl-admin-menus.php:432
+#: includes/admin/class-wc-prl-admin-menus.php:201
+#: includes/admin/class-wc-prl-admin-menus.php:291
+#: includes/admin/class-wc-prl-admin-menus.php:444
 #: includes/admin/views/html-admin-performance.php:17
 msgid "Performance"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-menus.php:385
-#: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:224
-msgid "Deploy engine"
+#: includes/admin/class-wc-prl-admin-menus.php:319
+#: includes/admin/views/html-admin-generator-queue.php:16
+msgid "Recommendations Queue"
 msgstr ""
 
 #: includes/admin/class-wc-prl-admin-notices.php:346
@@ -315,61 +354,65 @@ msgstr ""
 msgid "0%"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:87
+#: includes/admin/class-wc-prl-admin-post-types.php:89
+msgid "Regenerate Recommendations"
+msgstr ""
+
+#: includes/admin/class-wc-prl-admin-post-types.php:147
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:115
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:89
+#: includes/admin/class-wc-prl-admin-post-types.php:149
 msgid "Create"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:107
+#: includes/admin/class-wc-prl-admin-post-types.php:167
 msgid "Engine title"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:128
-#: includes/admin/class-wc-prl-admin-post-types.php:129
+#: includes/admin/class-wc-prl-admin-post-types.php:188
+#: includes/admin/class-wc-prl-admin-post-types.php:189
 msgid "Engine updated."
 msgstr ""
 
 #. translators: %s: date and time of the revision
-#: includes/admin/class-wc-prl-admin-post-types.php:131
+#: includes/admin/class-wc-prl-admin-post-types.php:191
 msgid "Engine restored to revision from %s"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:132
+#: includes/admin/class-wc-prl-admin-post-types.php:192
 msgid "Engine created."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:133
+#: includes/admin/class-wc-prl-admin-post-types.php:193
 msgid "Engine saved."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:134
+#: includes/admin/class-wc-prl-admin-post-types.php:194
 msgid "Engine submitted."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin-post-types.php:135
+#: includes/admin/class-wc-prl-admin-post-types.php:195
 msgid "Engine draft updated."
 msgstr ""
 
 #. translators: %s: engine count
-#: includes/admin/class-wc-prl-admin-post-types.php:152
+#: includes/admin/class-wc-prl-admin-post-types.php:212
 msgid "%s engine permanently deleted."
 msgid_plural "%s engines permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: engine count
-#: includes/admin/class-wc-prl-admin-post-types.php:154
+#: includes/admin/class-wc-prl-admin-post-types.php:214
 msgid "%s engine moved to Trash."
 msgid_plural "%s engines moved to Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: engine count
-#: includes/admin/class-wc-prl-admin-post-types.php:156
+#: includes/admin/class-wc-prl-admin-post-types.php:216
 msgid "%s engine restored from Trash."
 msgid_plural "%s engines restored from Trash."
 msgstr[0] ""
@@ -379,126 +422,128 @@ msgstr[1] ""
 msgid "The installed version of <strong>Product Recommendations</strong> is not compatible with the <code>selectSW</code> library found on your system. Please update Product Recommendations to the latest version."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:239
+#: includes/admin/class-wc-prl-admin.php:245
 msgid "WooCommerce Product Recommendations uses cookies to track the following visitor activity:"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:242
+#: includes/admin/class-wc-prl-admin.php:248
 msgid "Viewed products."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:243
+#: includes/admin/class-wc-prl-admin.php:249
 msgid "Viewed recommendations."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:244
+#: includes/admin/class-wc-prl-admin.php:250
 msgid "Clicked products in recommendations."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:247
+#: includes/admin/class-wc-prl-admin.php:253
 msgid "The extension also stores aggregate information based on the recommendations that visitors view and click while browsing your site. This information cannot be used to personally identify any visitor."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:249
+#: includes/admin/class-wc-prl-admin.php:255
 msgid "Please make sure that your cookie and analytics policies are updated to reflect this information."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:250
+#: includes/admin/class-wc-prl-admin.php:256
 msgid "Cookies"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:251
+#: includes/admin/class-wc-prl-admin.php:257
 msgid "<strong>Suggested text:</strong> While browsing our site, we will set temporary cookies to track:"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:253
+#: includes/admin/class-wc-prl-admin.php:259
 msgid "Recommendations you have viewed."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:254
+#: includes/admin/class-wc-prl-admin.php:260
 msgid "Product recommendations you have clicked."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:256
+#: includes/admin/class-wc-prl-admin.php:262
 msgid "These cookies contain no personal data and expire after 1 day."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:257
+#: includes/admin/class-wc-prl-admin.php:263
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:258
+#: includes/admin/class-wc-prl-admin.php:264
 msgid "<strong>Suggested text:</strong> We store aggregate information based on the recommendations you view and click while browsing our site. This information cannot be used to personally identify you."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:282
+#: includes/admin/class-wc-prl-admin.php:288
 msgctxt "attributes_form"
 msgid "Something went wrong. Please refresh your browser and try again."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:289
-msgid "Engine cache cleared. Recommendations will be regenerated shortly after the first time they are requested."
+#: includes/admin/class-wc-prl-admin.php:295
+msgid "Engine recommendations cleared. New recommendations will be regenerated shortly after the first time they are requested."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:290
-msgid "Cache cleared. Recommendations will be regenerated shortly after the first time they are requested."
+#: includes/admin/class-wc-prl-admin.php:296
+msgid "Cache cleared. New recommendations will be regenerated shortly after the first time they are requested."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:291
+#: includes/admin/class-wc-prl-admin.php:297
 msgctxt "active toggler"
 msgid "Something went wrong. Please refresh your browser and try again."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:292
+#: includes/admin/class-wc-prl-admin.php:298
 msgid "The conditions you have added will be deleted. Are you sure?"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:293
+#: includes/admin/class-wc-prl-admin.php:299
 msgid "The filters and amplifiers you have added will be deleted. Are you sure?"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:294
+#: includes/admin/class-wc-prl-admin.php:300
 msgid "This deployment will be permanently deleted from your system. Are you sure?"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:353
+#: includes/admin/class-wc-prl-admin.php:359
 msgid "Reschedule page cache test"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:354
+#: includes/admin/class-wc-prl-admin.php:360
 msgid "Reschedule"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:355
+#: includes/admin/class-wc-prl-admin.php:361
 msgid "This will reschedule the page cache test routine in Product Recommendations and update notices as needed. Useful if you have just made changes to your server and don't want to wait for the next scheduled test run."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:376
+#: includes/admin/class-wc-prl-admin.php:382
 msgid "Could not reschedule page cache test: %s"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:382
+#: includes/admin/class-wc-prl-admin.php:388
 msgid "Page cache test rescheduled successfully."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:396
+#: includes/admin/class-wc-prl-admin.php:402
 msgid "Clear Product Recommendations queue"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:397
+#: includes/admin/class-wc-prl-admin.php:403
 msgid "Clear queue"
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:398
+#: includes/admin/class-wc-prl-admin.php:404
 msgid "This will clear the regeneration queue of Product Recommendations. Useful if the queue appears to be stuck due to server errors or conflicts."
 msgstr ""
 
-#: includes/admin/class-wc-prl-admin.php:419
+#: includes/admin/class-wc-prl-admin.php:425
 msgid "Product Recommendations queue cleared successfully."
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:88
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:93
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:144
 #: includes/admin/views/html-admin-deploy.php:52
 #: includes/class-wc-prl-post-types.php:87
 msgid "Edit"
@@ -510,7 +555,10 @@ msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:90
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:195
-#: includes/class-wc-prl-deployments.php:227
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:94
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:147
+#: includes/admin/list-tables/class-wc-prl-admin-list-stale-queue.php:75
+#: includes/class-wc-prl-deployments.php:228
 msgid "Delete"
 msgstr ""
 
@@ -523,6 +571,7 @@ msgid "&#8220;%s&#8221; (Edit)"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:121
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:111
 msgid "Select %s"
 msgstr ""
 
@@ -544,6 +593,8 @@ msgid "(untitled)"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:192
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:144
+#: includes/admin/list-tables/class-wc-prl-admin-list-stale-queue.php:74
 #: includes/admin/views/html-admin-deploy.php:23
 msgid "Edit deployment"
 msgstr ""
@@ -578,11 +629,13 @@ msgid "Engine"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:212
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:172
 msgctxt "column_name"
 msgid "Actions"
 msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:230
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:188
 msgid "Delete Permanently"
 msgstr ""
 
@@ -600,7 +653,7 @@ msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-deployments.php:310
 #: includes/admin/views/html-admin-locations.php:29
-#: includes/class-wc-prl-deployments.php:262
+#: includes/class-wc-prl-deployments.php:263
 msgid "Search for an Engine&hellip;"
 msgstr ""
 
@@ -624,7 +677,7 @@ msgstr ""
 
 #: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:111
 #: includes/admin/views/html-admin-deploy.php:75
-#: includes/class-wc-prl-deployments.php:241
+#: includes/class-wc-prl-deployments.php:242
 msgid "Title"
 msgstr ""
 
@@ -650,6 +703,52 @@ msgstr ""
 #: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:74
 #: includes/admin/views/html-admin-deploy.php:158
 msgid "Deploy"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-engines.php:224
+msgid "Deploy engine"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:92
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:142
+#: includes/admin/list-tables/class-wc-prl-admin-list-stale-queue.php:72
+msgid "Run"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:147
+msgid "Remove from queue"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:147
+#: includes/class-wc-prl-amplifiers.php:171
+#: includes/class-wc-prl-amplifiers.php:264
+#: includes/class-wc-prl-conditions.php:183
+#: includes/class-wc-prl-conditions.php:277
+#: includes/class-wc-prl-filters.php:172
+#: includes/class-wc-prl-filters.php:265
+msgid "Remove"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:170
+msgctxt "column_name"
+msgid "Deployment"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:171
+msgctxt "column_name"
+msgid "Date"
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:209
+msgid "Tasks deleted successfully."
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-queue.php:290
+msgid "No tasks in queue."
+msgstr ""
+
+#: includes/admin/list-tables/class-wc-prl-admin-list-stale-queue.php:73
+msgid "Reset"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-wc-prl-meta-box-engine-configuration.php:73
@@ -826,7 +925,7 @@ msgid "All deployments"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:45
-#: includes/class-wc-prl-deployments.php:259
+#: includes/class-wc-prl-deployments.php:260
 #: includes/class-wc-prl-post-types.php:82
 #: includes/data-stores/class-wc-prl-engine-data-store-cpt.php:61
 msgid "Engine"
@@ -845,22 +944,22 @@ msgid "Active"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:78
-#: includes/class-wc-prl-deployments.php:244
+#: includes/class-wc-prl-deployments.php:245
 msgid "e.g. &quot;You may also like&hellip;&quot;"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:84
-#: includes/class-wc-prl-deployments.php:250
+#: includes/class-wc-prl-deployments.php:251
 msgid "Description"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:93
-#: includes/class-wc-prl-deployments.php:283
+#: includes/class-wc-prl-deployments.php:284
 msgid "Product columns"
 msgstr ""
 
 #: includes/admin/views/html-admin-deploy.php:102
-#: includes/class-wc-prl-deployments.php:292
+#: includes/class-wc-prl-deployments.php:293
 msgid "Product rows"
 msgstr ""
 
@@ -895,6 +994,20 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
+#. Translators: 1: Regenaration FAQ item 2: Queue/CLI FAQ item
+#: includes/admin/views/html-admin-generator-queue.php:19
+msgid "To minimize server load and ensure a snappy customer experience, the Product Recommendations extension generates and refreshes recommendations <a href=\"%1$s\" target=\"_blank\">only when needed</a>. By default, re-generation tasks are queued and processed approximately every minute. However, it is also possible to process queued tasks manually using <a href=\"%2$s\" target=\"_blank\">WP-CLI</a>. Use the information provided on this page to diagnose problems with task processing."
+msgstr ""
+
+#: includes/admin/views/html-admin-generator-queue.php:26
+msgid "Failed Tasks (%d)"
+msgstr ""
+
+#. Translators: %s Number of total items in queue table.
+#: includes/admin/views/html-admin-generator-queue.php:41
+msgid "Pending Tasks (%d)"
+msgstr ""
+
 #: includes/admin/views/html-admin-hooks.php:49
 msgid "%s engine deployed"
 msgid_plural "%s engines deployed"
@@ -923,7 +1036,7 @@ msgid "To display product recommendations, deploy an Engine to a Location or cre
 msgstr ""
 
 #: includes/admin/views/html-admin-locations.php:34
-msgid "Engines deployed"
+msgid "Deployed Engines"
 msgstr ""
 
 #: includes/admin/views/html-admin-performance.php:19
@@ -984,7 +1097,7 @@ msgid "Overview"
 msgstr ""
 
 #: includes/amplifiers/class-wc-prl-amplifier-conversion-rate.php:27
-msgid "Conversion Rate"
+msgid "Conversion"
 msgstr ""
 
 #: includes/amplifiers/class-wc-prl-amplifier-conversion-rate.php:29
@@ -1081,15 +1194,6 @@ msgstr ""
 msgid "No amplifiers found. Add one now?"
 msgstr ""
 
-#: includes/class-wc-prl-amplifiers.php:171
-#: includes/class-wc-prl-amplifiers.php:264
-#: includes/class-wc-prl-conditions.php:183
-#: includes/class-wc-prl-conditions.php:277
-#: includes/class-wc-prl-filters.php:172
-#: includes/class-wc-prl-filters.php:265
-msgid "Remove"
-msgstr ""
-
 #: includes/class-wc-prl-amplifiers.php:183
 #: includes/class-wc-prl-amplifiers.php:272
 msgid "Add amplifier"
@@ -1143,7 +1247,7 @@ msgctxt "debugging"
 msgid "GND Threshold"
 msgstr ""
 
-#: includes/class-wc-prl-background-generator.php:110
+#: includes/class-wc-prl-background-generator.php:114
 msgid "Every %d Minutes"
 msgstr ""
 
@@ -1171,17 +1275,13 @@ msgstr ""
 msgid "Add new condition"
 msgstr ""
 
-#: includes/class-wc-prl-deployments.php:226
+#: includes/class-wc-prl-deployments.php:227
 msgid "Drag and drop to set order"
 msgstr ""
 
 #. translators: %s engine type name
-#: includes/class-wc-prl-deployments.php:274
+#: includes/class-wc-prl-deployments.php:275
 msgid "Supported Engine Types: %s"
-msgstr ""
-
-#: includes/class-wc-prl-deployments.php:399
-msgid "The regeneration queue of WooCommerce Product Recommendations is full. This will prevent engines from regenerating recommendations. Please contact support for assistance."
 msgstr ""
 
 #: includes/class-wc-prl-filters.php:136
@@ -1201,11 +1301,11 @@ msgstr ""
 msgid "Add filter"
 msgstr ""
 
-#: includes/class-wc-prl-install.php:583
+#: includes/class-wc-prl-install.php:593
 msgid "Documentation"
 msgstr ""
 
-#: includes/class-wc-prl-install.php:584
+#: includes/class-wc-prl-install.php:594
 msgid "Support"
 msgstr ""
 
@@ -1307,24 +1407,24 @@ msgstr ""
 msgid "Now generating %s recommendations in the background. <strong>Note:</strong> This message is visible to store managers only."
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:172
+#: includes/compatibility/class-wc-prl-compatibility.php:189
 msgid "Product Bundles"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:173
+#: includes/compatibility/class-wc-prl-compatibility.php:190
 msgid "WooCommerce Product Bundles"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:175
-#: includes/compatibility/class-wc-prl-compatibility.php:189
+#: includes/compatibility/class-wc-prl-compatibility.php:192
+#: includes/compatibility/class-wc-prl-compatibility.php:206
 msgid "The installed version of <strong>%1$s</strong> is not supported by <strong>Product Recommendations</strong>. Please update <a href=\"%2$s\" target=\"_blank\">%3$s</a> to version <strong>%4$s</strong> or higher."
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:186
+#: includes/compatibility/class-wc-prl-compatibility.php:203
 msgid "Composite Products"
 msgstr ""
 
-#: includes/compatibility/class-wc-prl-compatibility.php:187
+#: includes/compatibility/class-wc-prl-compatibility.php:204
 msgid "WooCommerce Composite Products"
 msgstr ""
 
@@ -1884,13 +1984,13 @@ msgid "Order"
 msgstr ""
 
 #. translators: 1: before term separator 2: after term separator
-#: includes/wc-prl-functions.php:390
+#: includes/wc-prl-functions.php:391
 msgctxt "term separator"
 msgid "%1$s&nbsp;&gt;&nbsp;%2$s"
 msgstr ""
 
 #. translators: 1: before term separator 2: after term separator
-#: includes/wc-prl-functions.php:413
+#: includes/wc-prl-functions.php:414
 msgctxt "many terms separator"
 msgid "%1$s&nbsp;&gt;&nbsp;&hellip;&nbsp;&gt;&nbsp;%2$s"
 msgstr ""

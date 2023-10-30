@@ -17,7 +17,7 @@ use Automattic\WooCommerce\Admin\Features\Navigation\Screen;
  * Setup PRL menus in WP admin.
  *
  * @class    WC_PRL_Admin_Menus
- * @version  2.4.0
+ * @version  3.0.0
  */
 class WC_PRL_Admin_Menus {
 
@@ -47,13 +47,11 @@ class WC_PRL_Admin_Menus {
 		add_action( 'admin_menu', array( __CLASS__, 'prl_menu' ), 10 );
 		add_filter( 'parent_file', array( __CLASS__, 'prl_fix_menu_highlight' ) );
 
-		// Tweak title.
-		add_filter( 'admin_title', array( __CLASS__, 'tweak_page_title' ), 10, 2 );
-
 		// Integrate WooCommerce breadcrumb bar.
 		add_action( 'admin_menu', array( __CLASS__, 'wc_admin_connect_prl_pages' ) );
 		add_filter( 'woocommerce_navigation_pages_with_tabs', array( __CLASS__, 'wc_admin_navigation_pages_with_tabs' ) );
 		add_filter( 'woocommerce_navigation_page_tab_sections', array( __CLASS__, 'wc_admin_navigation_page_tab_sections' ) );
+		add_filter( 'woocommerce_navigation_screen_ids', array( __CLASS__, 'wc_admin_navigation_screen_ids' ) );
 
 		// Integrate WooCommerce side navigation.
 		add_action( 'admin_menu', array( __CLASS__, 'register_navigation_pages' ) );
@@ -83,13 +81,26 @@ class WC_PRL_Admin_Menus {
 	}
 
 	/**
+	 * Add screen id to WooCommerce.
+	 *
+	 * @since 3.0.0
+	 * @param  array  $screen_ids  List of screen IDs.
+	 * @return array
+	 */
+	public static function wc_admin_navigation_screen_ids( $screen_ids ) {
+		$screen_ids = array_merge( $screen_ids, WC_PRL()->get_screen_ids() );
+
+		return $screen_ids;
+	}
+
+	/**
 	 * Connect pages with navigation bar.
 	 *
 	 * @return void
 	 */
 	public static function wc_admin_connect_prl_pages() {
 
-		if ( WC_PRL_Core_Compatibility::is_wc_admin_enabled() ) {
+		if ( function_exists( 'wc_admin_connect_page' ) ) {
 
 			wc_admin_connect_page(
 				array(
@@ -274,16 +285,39 @@ class WC_PRL_Admin_Menus {
 			return false;
 		}
 
-		if ( wc_prl_tracking_enabled() ) {
+		$tracking_enabled = wc_prl_tracking_enabled();
+
+		if ( $tracking_enabled ) {
 			add_submenu_page( 'woocommerce', __( 'Performance', 'woocommerce-product-recommendations' ), __( 'Recommendations', 'woocommerce-product-recommendations' ), 'manage_woocommerce', 'prl_performance', array( __CLASS__, 'performance_page' ) );
 		}
 
 		$locations_page = add_submenu_page( 'woocommerce', __( 'Locations', 'woocommerce-product-recommendations' ), wc_prl_tracking_enabled() ? null : __( 'Recommendations', 'woocommerce-product-recommendations' ), 'manage_woocommerce', 'prl_locations', array( __CLASS__, 'locations_page' ) );
 
-		// Hide pages.
-		self::hide_submenu_page( 'woocommerce', 'prl_locations' );
+		// If tracking is disabled, then the entrypoint would be the locations page, so we do not want to hide it.
+		if ( $tracking_enabled ) {
+			self::hide_submenu_page( 'woocommerce', 'prl_locations' );
+		}
 
 		add_action( 'load-' . $locations_page, array( __CLASS__, 'locations_page_init' ) );
+
+		add_filter( 'woocommerce_admin_status_tabs', array( __CLASS__, 'add_generator_queue_page_tab' ) );
+		add_action( 'woocommerce_admin_status_content_recommendations_queue', array( __CLASS__, 'generator_queue_page' ) );
+	}
+
+	/**
+	 * Add Recommendations Queue tab in WooCommerce status page.
+	 * 
+	 * @since 3.0.0
+	 * @param  array  $tabs
+	 * @return array
+	 */
+	public static function add_generator_queue_page_tab( $tabs ) {
+		if ( ! is_array( $tabs ) ) {
+			return $tabs;
+		}
+
+		$tabs[ 'recommendations_queue' ] = __('Recommendations Queue','woocommerce-product-recommendations');
+		return $tabs;
 	}
 
 	/**
@@ -347,6 +381,13 @@ class WC_PRL_Admin_Menus {
 	}
 
 	/**
+	 * Render "Generator Queue" page.
+	 */
+	public static function generator_queue_page() {
+		WC_PRL_Admin_Generator_Queue::output();
+	}
+
+	/**
 	 * Render "Deploy" page.
 	 */
 	public static function deploy_page() {
@@ -361,36 +402,6 @@ class WC_PRL_Admin_Menus {
 	}
 
 	/**
-	 * Changes the admin title based on the section.
-	 */
-	public static function tweak_page_title( $admin_title, $title ) {
-
-		$screen = get_current_screen();
-
-		if ( $screen && wc_prl_get_formatted_screen_id( 'woocommerce_page_prl_locations' ) === $screen->id ) {
-
-			// Fix the main title issue caused by the remove_submenu_page.
-			$title = __( 'Locations', 'woocommerce-product-recommendations' );
-			if ( wc_prl_tracking_enabled() ) {
-				$admin_title = $title . $admin_title;
-			}
-
-			if ( ! isset( $_GET[ 'section' ] ) ) {
-				return $admin_title;
-			}
-
-			$section = wc_clean( $_GET[ 'section' ] );
-			switch ( $section ) {
-				case 'deploy':
-					$admin_title = str_replace( $title, __( 'Deploy engine', 'woocommerce-product-recommendations' ), $admin_title );
-					break;
-			}
-		}
-
-		return $admin_title;
-	}
-
-	/**
 	 * Exclude menu items from WooCommerce menu migration.
 	 *
 	 * @since  1.4.11
@@ -401,6 +412,7 @@ class WC_PRL_Admin_Menus {
 	public static function exclude_navigation_items( $excluded_items ) {
 		$excluded_items[] = 'prl_performance';
 		$excluded_items[] = 'prl_locations';
+		$excluded_items[] = 'prl_generator_queue';
 
 		return $excluded_items;
 	}
