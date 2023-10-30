@@ -107,7 +107,7 @@ class WC_PRL_Engine extends WC_Data {
 	 *
 	 * @param int|WC_PRL_Engine|object $engine Engine to init.
 	 */
-	public function __construct( $engine = 0 ) {
+	public function __construct( $engine = null ) {
 
 		parent::__construct( $engine );
 
@@ -115,6 +115,8 @@ class WC_PRL_Engine extends WC_Data {
 			$this->set_id( $engine );
 		} elseif ( $engine instanceof self ) {
 			$this->set_id( absint( $engine->get_id() ) );
+		} elseif ( is_array( $engine ) ) {
+			$this->set_all( $engine );
 		} elseif ( ! empty( $engine->ID ) ) {
 			$this->set_id( absint( $engine->ID ) );
 		} else {
@@ -381,6 +383,21 @@ class WC_PRL_Engine extends WC_Data {
 	| database itself and should only change what is stored in the class
 	| object.
 	*/
+
+	/**
+	 * Set all data based on input array.
+	 *
+	 * @param  array  $data
+	 */
+	public function set_all( $data ) {
+		foreach ( $data as $key => $value ) {
+			if ( is_callable( array( $this, "set_$key" ) ) ) {
+				$this->{"set_$key"}( $value );
+			} else {
+				$this->data[ $key ] = $value;
+			}
+		}
+	}
 
 	/**
 	 * Set engine name.

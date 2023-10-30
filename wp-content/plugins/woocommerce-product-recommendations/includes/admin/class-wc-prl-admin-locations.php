@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * WC_Admin_Locations Class.
  *
  * @class    WC_PRL_Admin_Locations
- * @version  2.2.3
+ * @version  3.0.0
  */
 class WC_PRL_Admin_Locations {
 
@@ -60,7 +60,7 @@ class WC_PRL_Admin_Locations {
 
 			if ( ! wp_verify_nonce( $admin_nonce, 'wc_prl_delete_location_action' ) ) {
 				WC_PRL_Admin_Notices::add_notice( __( 'Deployment could not be deleted.', 'woocommerce-product-recommendations' ), 'error', true );
-				wp_redirect( admin_url( self::PAGE_URL ) );
+				wp_safe_redirect( admin_url( self::PAGE_URL ) );
 				exit();
 			}
 
@@ -70,7 +70,7 @@ class WC_PRL_Admin_Locations {
 
 			WC_PRL_Admin_Notices::add_notice( __( 'Deployment deleted.', 'woocommerce-product-recommendations' ), 'success', true );
 
-			wp_redirect( admin_url( self::PAGE_URL ) );
+			wp_safe_redirect( admin_url( self::PAGE_URL ) );
 			exit();
 		}
 	}

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Tracking class.
  *
  * @class    WC_PRL_Tracking
- * @version  2.0.0
+ * @version  3.0.1
  */
 class WC_PRL_Tracking {
 
@@ -24,7 +24,7 @@ class WC_PRL_Tracking {
 	 */
 	public static function init() {
 		add_filter( 'woocommerce_add_cart_item', array( __CLASS__, 'add_long_term_conversion' ) );
-		add_filter( 'post_class', array( __CLASS__, 'add_taxonomy_classes' ) );
+		add_action( 'wp_footer', array( __CLASS__, 'add_dom_helper' ) );
 	}
 
 	/**
@@ -71,25 +71,26 @@ class WC_PRL_Tracking {
 	}
 
 	/**
-	 * Add taxonomy specific classes on the product dom container.
+	 * Add tracking data DOM helper.
 	 *
-	 * @since  1.2.0
+	 * @since  3.0.0
 	 *
 	 * @param  array  $classes
 	 * @return void
 	 */
-	public static function add_taxonomy_classes( $classes ) {
+	public static function add_dom_helper() {
 
 		if ( is_admin() ) {
-			return $classes;
+			return;
 		}
 
 		global $product;
 
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
-			return $classes;
+			return;
 		}
 
+		$classes = array();
 		$categories = $product->get_category_ids();
 		if ( ! empty( $categories ) ) {
 			$classes[] = 'wc-prl-cat-' . implode( '-', $categories );
@@ -100,7 +101,7 @@ class WC_PRL_Tracking {
 			$classes[] = 'wc-prl-tag-' . implode( '-', $tags );
 		}
 
-		return $classes;
+		echo wp_kses_post( sprintf( '<div id="wc-prl-recommendations-tracking-data" data-product-id="%d" class="%s"></div>', absint( $product->get_id() ), esc_attr( implode( ' ', (array)$classes ) ) ) );
 	}
 
 	/*
@@ -108,6 +109,10 @@ class WC_PRL_Tracking {
 	| Deprecated methods.
 	|--------------------------------------------------------------------------
 	*/
+
+	public static function add_taxonomy_classes( $classes ) {
+		_deprecated_function( __METHOD__ . '()', '3.0.0' );
+	}
 
 	public static function track_clicks() {
 		_deprecated_function( __METHOD__ . '()', '2.0.0' );

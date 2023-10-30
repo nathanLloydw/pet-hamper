@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Product Recommendations
 * Plugin URI: https://woocommerce.com/products/product-recommendations/
 * Description: Create smarter up-sells and cross-sells, place them anywhere, and measure their impact with in-depth analytics.
-* Version: 2.4.0
+* Version: 3.0.3
 * Author: WooCommerce
 * Author URI: https://somewherewarm.com/
 *
@@ -18,7 +18,7 @@
 * Tested up to: 6.0
 *
 * WC requires at least: 3.9
-* WC tested up to: 6.8
+* WC tested up to: 8.0
 *
 * License: GNU General Public License v3.0
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main plugin class.
  *
  * @class    WC_Product_Recommendations
- * @version  2.4.0
+ * @version  3.0.3
  */
 class WC_Product_Recommendations {
 
@@ -42,7 +42,7 @@ class WC_Product_Recommendations {
 	 *
 	 * @var string
 	 */
-	private $version = '2.4.0';
+	private $version = '3.0.3';
 
 	/**
 	 * Min required WC version.
@@ -309,6 +309,8 @@ class WC_Product_Recommendations {
 		require_once( WC_PRL_ABSPATH . 'includes/class-wc-prl-deployments.php' );
 		// - Background generator for deployments.
 		require_once( WC_PRL_ABSPATH . 'includes/class-wc-prl-background-generator.php' );
+		require_once( WC_PRL_ABSPATH . 'includes/class-wc-prl-generator.php' );
+		require_once( WC_PRL_ABSPATH . 'includes/class-wc-prl-generator-queue.php' );
 
 		// Conditions.
 		require_once( WC_PRL_ABSPATH . 'includes/class-wc-prl-conditions.php' );
@@ -411,6 +413,8 @@ class WC_Product_Recommendations {
 		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-post-types.php' );
 		require_once( WC_PRL_ABSPATH . 'includes/admin/list-tables/class-wc-prl-admin-list-engines.php' );
 		require_once( WC_PRL_ABSPATH . 'includes/admin/list-tables/class-wc-prl-admin-list-deployments.php' );
+		require_once( WC_PRL_ABSPATH . 'includes/admin/list-tables/class-wc-prl-admin-list-queue.php' );
+		require_once( WC_PRL_ABSPATH . 'includes/admin/list-tables/class-wc-prl-admin-list-stale-queue.php' );
 
 		// Admin functions and hooks.
 		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin.php' );
@@ -419,6 +423,7 @@ class WC_Product_Recommendations {
 		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-deploy.php' );
 		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-hooks.php' );
 		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-performance.php' );
+		require_once( WC_PRL_ABSPATH . 'includes/admin/class-wc-prl-admin-generator-queue.php' );
 	}
 
 	/**
@@ -448,6 +453,10 @@ class WC_Product_Recommendations {
 			$resource = 'https://woocommerce.com/document/product-recommendations/';
 		} elseif ( 'page-caching' === $handle ) {
 			$resource = 'https://woocommerce.com/document/product-recommendations/frequently-asked-questions/#faq_missing_recommendations';
+		} elseif ( 'regeneration' === $handle ) {
+			$resource = 'https://woocommerce.com/document/product-recommendations/frequently-asked-questions/#faq_regeneration';
+		} elseif ( 'cli' === $handle ) {
+			$resource = 'https://woocommerce.com/document/product-recommendations/frequently-asked-questions/#faq_cli';
 		} elseif ( 'updating' === $handle ) {
 			$resource = 'https://woocommerce.com/document/how-to-update-woocommerce/';
 		} elseif ( 'ticket-form' === $handle ) {

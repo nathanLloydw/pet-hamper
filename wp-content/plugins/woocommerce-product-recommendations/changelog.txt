@@ -1,5 +1,31 @@
 *** WooCommerce Product Recommendations ***
 
+2023-10-19 - version 3.0.3
+* Tweak - Fixed incompatibility declaration with HPOS.
+
+2023-10-17 - version 3.0.2
+* Fix - Removed the deprecation warning for the 'woocommerce_prl_add_link_track_param' method when using Flatsome theme.
+* Tweak - Declared incompatibility with the cart/checkout Blocks.
+
+2023-09-27 - version 3.0.1
+* Fix - Resolved a fatal error that was triggered when viewing products without category nor tag.
+
+2023-09-26 - version 3.0.0
+* Feature - Introduced a new queue management tool under WooCommerce > Status > Recommendations Queue.
+* Feature - Introduced support for generating recommendations via WP CLI.
+* Feature - Introduced engine-level cache invalidation.
+* Tweak - Introduced a custom DOM element for handling the shopper's session tracking.
+* Tweak - Used admin theme colors in settings.
+* Fix - Removed click metrics from the conversion rate's amplifier calculations.
+* Fix - Fixed an issue that showed titles twice in settings.
+* Fix - Important: Security improvements.
+
+2023-08-01 - version 2.4.2
+* Fix - Resolved an issue that made an extra, empty menu item show up after WooCommerce > Recommendations.
+
+2023-07-31 - version 2.4.1
+* Fix - Resolved an issue that hid the 'Recommendations' menu item when tracking was disabled.
+
 2023-06-19 - version 2.4.0
 * Fix - Important: Security improvements.
 * Fix - Fixed an issue that prevented the Locations tab from being highlighted when selected in stores with translated WooCommerce.

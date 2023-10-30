@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers custom post types admin settings.
  *
  * @class    WC_PRL_Admin_Post_Types
- * @version  1.0.0
+ * @version  3.0.0
  */
 class WC_PRL_Admin_Post_Types {
 
@@ -35,6 +35,8 @@ class WC_PRL_Admin_Post_Types {
 		add_action( 'current_screen', array( __CLASS__, 'setup_screen' ) );
 		add_action( 'check_ajax_referer', array( __CLASS__, 'setup_screen' ) );
 		add_action( 'post_submitbox_misc_actions', array( __CLASS__, 'engine_extra_publish_options' ) );
+		add_action( 'post_submitbox_start', array( __CLASS__, 'post_submitbox_start' ) );
+		add_action( 'post_action_prl_engine_clear_caches', array( __CLASS__, 'handle_clear_caches_action' ) );
 
 		add_filter( 'post_updated_messages', array( __CLASS__, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( __CLASS__, 'bulk_post_updated_messages' ), 10, 2 );
@@ -57,6 +59,64 @@ class WC_PRL_Admin_Post_Types {
 		}
 
 		remove_action( 'current_screen', array( __CLASS__, 'setup_screen' ) );
+	}
+
+	/**
+	 * Print submit box extra links.
+	 * 
+	 * @since 3.0.0
+	 */
+	public static function post_submitbox_start() {
+		global $post;
+
+		if ( 'publish' !== $post->post_status ) {
+			return;
+		}
+
+		if ( 'prl_engine' !== $post->post_type ) {
+			return;
+		}
+
+		$deployments = WC_PRL()->db->deployment->query( array(
+			'return'    => 'count',
+			'engine_id' => $post->ID
+		) );
+
+		if ( empty( $deployments ) ) {
+			return;
+		}
+
+		$label = __( 'Regenerate Recommendations', 'woocommerce-product-recommendations' );
+		$url   = add_query_arg( array( 'post' => absint( $post->ID ), 'action' => 'prl_engine_clear_caches' ), admin_url( 'post.php' ) );
+		$links = sprintf( '<div><a href="%s">%s</a></div>', esc_url( $url ), esc_html( $label ) );
+		echo wp_kses_post( $links );
+	}
+
+	/**
+	 * Handle clear caches for every deployment using the same engine.
+	 * 
+	 * @param int $engine_id
+	 * @since 3.0.0
+	 */
+	public static function handle_clear_caches_action( $engine_id ) {
+
+		$engine = new WC_PRL_Engine( $engine_id );
+		if ( ! $engine || ! $engine->get_id() ) {
+			return;
+		}
+
+		$deployments = WC_PRL()->db->deployment->query( array( 'return' => 'ids', 'engine_id' => $engine->get_id() ) );
+
+			if ( ! empty( $deployments ) ) {
+				$deployments = array_map( 'absint', $deployments );
+				// Delete caches.
+				WC_PRL()->db->deployment->clear_caches( $deployments );
+
+				WC_PRL_Admin_Notices::add_notice( 'Cache cleared.  New recommendations will be regenerated shortly after the first time they are requested.', 'success', true );
+				WC_PRL_Admin_Notices::save_notices();
+				wp_redirect( esc_url_raw( add_query_arg( array( 'post' => absint( $engine->get_id() ), 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
+				exit();
+			}
 	}
 
 	/**

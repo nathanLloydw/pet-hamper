@@ -286,6 +286,48 @@ class WC_PRL_Deployment {
 	}
 
 	/**
+	 * Get source as string.
+	 * 
+	 * To obtain a distinct interpretation of the source data, convert it into a string format.
+	 * The purpose of this is to assign a distinct identification to each item in the generation queue. @see WC_PRL_Generator_Queue::generate_key()
+	 *
+	 * @return string
+	 */
+	public function get_source_data_string() {
+		$engine_type = $this->get_engine_type();
+
+		if ( ! in_array( $engine_type, wc_prl_get_contextual_engine_types() ) ) {
+			return '';
+		}
+
+		if ( ! $this->has_contextual_engine() ) {
+			return '';
+		}
+
+		switch ( $engine_type ) {
+
+			// Only product and archive are part of the wc_prl_get_contextual_engine_types.
+			case 'product':
+				$source     = $this->get_source_data();
+				$product_id = end( $source );
+				return 'P' . absint( $product_id );
+			case 'archive':
+				$source = $this->get_source_data();
+				if ( ! empty( $source['cat'] ) ) {
+					return 'PC' . absint( $source['cat'] );
+				} elseif ( ! empty( $source['tag'] ) ) {
+					return 'PT' . absint( $source['cat'] );
+				}
+			case 'order':
+				$source     = $this->get_source_data();
+				$product_id = end( $source );
+				return 'O' . absint( $product_id );
+		}
+
+		return '';
+	}
+
+	/**
 	 * Get tracking source hash.
 	 *
 	 * @param  string  $context

@@ -2,6 +2,8 @@
 /**
  * WC_PRL_Background_Generator class
  *
+ * @deprecated
+ *
  * @package  WooCommerce Product Recommendations
  * @since    1.0.0
  */
@@ -22,6 +24,8 @@ if ( ! class_exists( 'WP_Background_Process', false ) ) {
 /**
  * Background Generator.
  *
+ * @deprecated
+ * 
  * @class    WC_PRL_Background_Generator
  * @version  1.4.16
  */

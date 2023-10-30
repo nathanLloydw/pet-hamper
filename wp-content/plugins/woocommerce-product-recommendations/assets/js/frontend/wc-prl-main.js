@@ -473,69 +473,58 @@
 			var product_id = 0;
 
 			// Try to fetch product ID from cart form.
-			var $cart_form = $( 'form.cart' ).first();
-			if ( $cart_form.length ) {
-				var $cart_btn = $cart_form.find( '[name="add-to-cart"]' );
+			var $tracking_data_helper = $( '#wc-prl-recommendations-tracking-data' ).first();
+			if ( ! $tracking_data_helper.length ) {
+				window.console.warn(
+					'Could not parse the product id. Tracking bypassed...'
+				);
+				return;
+			}
 
-				product_id = parseInt( $cart_btn.val(), 10 );
-				if ( ! product_id ) {
-					window.console.warn(
-						'Could not parse the product id using cart form. Tracking bypassed...'
-					);
-					return;
-				}
-			} else {
-				// Try to fetch from container.
-				var container_class = $product_container.attr( 'class' );
-				var product_id_regex = /postid-([0-9-]+)\s?/g;
-				var product_id_match = container_class.match( product_id_regex );
-				if ( product_id_match && product_id_match instanceof Array ) {
-					product_id = parseInt(
-						product_id_match.pop().replace( 'postid-', '' ).trim(),
-						10
-					);
-				}
+			product_id = $tracking_data_helper.data('product-id');
+			if ( ! product_id ) {
+				window.console.warn(
+					'Could not parse the product id. Tracking bypassed...'
+				);
+				return;
 			}
 
 			// Parse classes for recent terms.
-			var $product_wrap = $( '.product.type-product' );
-			if ( $product_wrap.length ) {
-				rv_cookie.init();
+			rv_cookie.init();
 
-				// Get container class.
-				var product_class = $product_wrap.attr( 'class' );
+			// Get container class.
+			var tracking_class = $tracking_data_helper.attr( 'class' );
 
-				// Log categories.
-				var cat_regex = /wc-prl-cat-([0-9-]+)\s?/g;
-				var cat_ids_match = product_class.match( cat_regex );
-				if ( cat_ids_match && cat_ids_match instanceof Array ) {
-					var cat_ids = cat_ids_match
-						.pop()
-						.replace( 'wc-prl-cat-', '' )
-						.trim()
-						.split( '-' );
-					for ( i in cat_ids ) {
-						rv_cookie.add_category_id( cat_ids[ i ] );
-					}
+			// Log categories.
+			var cat_regex = /wc-prl-cat-([0-9-]+)\s?/g;
+			var cat_ids_match = tracking_class.match( cat_regex );
+			if ( cat_ids_match && cat_ids_match instanceof Array ) {
+				var cat_ids = cat_ids_match
+					.pop()
+					.replace( 'wc-prl-cat-', '' )
+					.trim()
+					.split( '-' );
+				for ( i in cat_ids ) {
+					rv_cookie.add_category_id( cat_ids[ i ] );
 				}
-
-				// Log tags.
-				var tag_regex = /wc-prl-tag-([0-9-]+)\s?/g;
-				var tag_ids_match = product_class.match( tag_regex );
-				if ( tag_ids_match && tag_ids_match instanceof Array ) {
-					var tag_ids = tag_ids_match
-						.pop()
-						.replace( 'wc-prl-tag-', '' )
-						.trim()
-						.split( '-' );
-					for ( i in tag_ids ) {
-						rv_cookie.add_tag_id( tag_ids[ i ] );
-					}
-				}
-
-				rv_cookie.add_product_id( product_id );
-				rv_cookie.save();
 			}
+
+			// Log tags.
+			var tag_regex = /wc-prl-tag-([0-9-]+)\s?/g;
+			var tag_ids_match = tracking_class.match( tag_regex );
+			if ( tag_ids_match && tag_ids_match instanceof Array ) {
+				var tag_ids = tag_ids_match
+					.pop()
+					.replace( 'wc-prl-tag-', '' )
+					.trim()
+					.split( '-' );
+				for ( i in tag_ids ) {
+					rv_cookie.add_tag_id( tag_ids[ i ] );
+				}
+			}
+
+			rv_cookie.add_product_id( product_id );
+			rv_cookie.save();
 		}
 
 		// WC_PRL.tracking.add_deployment_events()

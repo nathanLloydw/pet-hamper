@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 
-		<h2><?php esc_html_e( 'Engines deployed', 'woocommerce-product-recommendations' ); ?></h2>
+		<h2><?php esc_html_e( 'Deployed Engines', 'woocommerce-product-recommendations' ); ?></h2>
 
 	<?php } ?>
 

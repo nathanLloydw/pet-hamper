@@ -385,12 +385,12 @@ class WC_PRL_Deployment_DB {
 	 */
 	public function clear_caches( $ids ) {
 
-		if ( empty( $ids ) ) {
+		if ( empty( $ids ) || ! is_array( $ids ) ) {
 			return;
 		}
 
 		global $wpdb;
-		$ids = implode( ',', $ids );
+		$ids = implode( ',', array_map( 'absint', $ids ) );
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->query( "DELETE FROM {$wpdb->prefix}woocommerce_prl_deploymentmeta WHERE `prl_deployment_id` IN ($ids) AND `meta_key` LIKE 'products%'");

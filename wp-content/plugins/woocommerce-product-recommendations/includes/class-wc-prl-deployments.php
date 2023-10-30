@@ -27,11 +27,11 @@ class WC_PRL_Deployments {
 	private $deployments;
 
 	/**
-	 * Background generator.
+	 * Background generator queue.
 	 *
-	 * @var WC_PRL_Background_Generator
+	 * @var WC_PRL_Generator_Queue
 	 */
-	private $background_generator;
+	public $queue;
 
 	/**
 	 * Array of deployment ID's to be processed by the background generator.
@@ -58,10 +58,9 @@ class WC_PRL_Deployments {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'init_background_generator' ), 5 );
-		add_action( 'current_screen', array( $this, 'check_background_generator_status' ), 10 );
+		add_action( 'shutdown', array( $this, 'add_deployments_to_queue' ), 99 );
 
-		add_action( 'shutdown', array( $this, 'generate_background_results' ), 99 );
+		$this->queue = new WC_PRL_Generator_Queue();
 
 		// DB Cascade.
 		add_action( 'woocommerce_prl_engine_object_updated_props', array( $this, 'bulk_clear_product_caches' ), 10, 2 );
@@ -172,6 +171,8 @@ class WC_PRL_Deployments {
 				$deployments = array_map( 'absint', $deployments );
 				// Delete caches.
 				WC_PRL()->db->deployment->clear_caches( $deployments );
+				// Clear queue items.
+				$this->queue->delete_by_deployment_id( $deployments );
 			}
 		}
 	}
@@ -314,49 +315,32 @@ class WC_PRL_Deployments {
 	}
 
 	/**
-	 * Used to generate results on demand.
-	 *
-	 * @see 'WC_PRL_Background_Generator::task'
+	 * Adds all deployments of a requests in the generation queue.
 	 *
 	 * @return void
 	 */
-	public function generate_background_results() {
+	public function add_deployments_to_queue() {
 
-		if ( ! empty( $this->deployments_for_background_generation ) ) {
-
-			if ( ! is_object( $this->background_generator ) ) {
-				$this->init_background_generator();
+		if ( ! empty( $this->deployments_for_background_generation ) && ! $this->queue->is_queue_full() ) {		
+			foreach ( $this->deployments_for_background_generation as $data ) {
+				$this->queue->add( $data );
 			}
 
-			if ( ! $this->background_generator->is_running() ) {
-
-				// Throttle the bg generator dispatch.
-				if ( false === get_site_transient( 'wc_prl_bg_generator_manual_lock' ) ) {
-
-					$data                     = array();
-					$data[ 'deployment_ids' ] = $this->deployments_for_background_generation;
-
-					$this->background_generator->push_to_queue( $data );
-					$this->background_generator->save();
-
-					// Remote post to self.
-					$this->background_generator->dispatch();
-
-					// Dispatch every 10 seconds...
-					set_site_transient( 'wc_prl_bg_generator_manual_lock', microtime(), apply_filters( 'woocommerce_prl_throttle_background_generator_interval', 10 ) );
-				}
-			}
+			$this->queue->save();
 		}
 	}
 
 	/**
-	 * Adds a deployment ID for the background generator.
+	 * Adds a deployment ID into the background generator queue.
+	 * 
+	 * @see WC_PRL_Deployment::get_products()
 	 *
 	 * @param  WC_PRL_Deployment $deployment
 	 * @return void
 	 */
 	public function schedule_deployment_generation( $deployment, $force = false ) {
 
+		// Check if it's already in the queue. The queue is the deployments_for_background_generation
 		foreach ( $this->deployments_for_background_generation as $task_info ) {
 			if ( $task_info[ 'id' ] === $deployment->get_id() ) {
 				return;
@@ -364,39 +348,10 @@ class WC_PRL_Deployments {
 		}
 
 		$this->deployments_for_background_generation[] = array(
-			'id'            => $deployment->get_id(),
-			'source_data'   => $deployment->get_source_data(),
-			'is_contextual' => $deployment->has_contextual_engine(),
-			'force'         => $force
+			'id'              => $deployment->get_id(),
+			'source'          => $deployment->get_source_data(),
+			'source_data_key' => $deployment->get_source_data_string(),
+			'force'           => $force
 		);
-	}
-
-	/**
-	 * Instantiates the background generator class.
-	 *
-	 * @return void
-	 */
-	public function init_background_generator() {
-		$this->background_generator = new WC_PRL_Background_Generator();
-	}
-
-	/**
-	 * Check background generator status.
-	 *
-	 * @return void
-	 */
-	public function check_background_generator_status() {
-
-		if ( ! isset( $this->background_generator ) ) {
-			return;
-		}
-
-		if ( ! WC_PRL()->is_current_screen() ) {
-			return;
-		}
-
-		if ( is_admin() && $this->background_generator->is_queue_full() ) {
-			WC_PRL_Admin_Notices::add_notice( __( 'The regeneration queue of WooCommerce Product Recommendations is full. This will prevent engines from regenerating recommendations. Please contact support for assistance.', 'woocommerce-product-recommendations' ), 'error' );
-		}
 	}
 }
