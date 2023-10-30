@@ -150,7 +150,7 @@ $total_rows = 0;
 
 		    	?>
 
-				<div class="griditem fw">
+				<div class="griditem fw category-grid-desktop">
 
 					<div class="inner">
 
@@ -188,14 +188,14 @@ $total_rows = 0;
 			<?php endwhile; ?>
 			</div>
 
-            <div class="my-slider">
+            <div class="category-grid-mobile">
                 <?php while( have_rows('catgrid') ): the_row();
 
                     $link = get_sub_field('link');
 
                     ?>
 
-                    <div class="inner">
+                    <div>
 
                         <?php if( $link ):
                             $link_url = $link['url'];
@@ -203,10 +203,10 @@ $total_rows = 0;
                             $link_target = $link['target'] ? $link['target'] : '_self';
                             ?>
 
-                            <a href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
-                                <img <?php awesome_acf_responsive_image(get_sub_field( 'image' ),'full','1200px'); ?>  alt="" style="height:362px;width:362px;" />
-                                <div class="content">
-                                    <p class="title"><?php echo $link_title; ?></p>
+                            <a style="position:relative;display:block;height:100%;width:100%;" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
+                                <img <?php awesome_acf_responsive_image(get_sub_field( 'mobile_image' ),'thumb-640','768px'); ?>  style="width:100%; object-fit:cover;display:flex;" alt="" />
+                                <div style="position:absolute;top:0;left:0;display:flex;justify-content:center;align-items:center;width:100%;height:100%;max-height:767px;background-color:#00000040;">
+                                    <p style="color:white;text-transform:uppercase;"><?php echo $link_title; ?></p>
                                 </div>
                             </a>
 
@@ -217,10 +217,26 @@ $total_rows = 0;
                 <?php endwhile; ?>
             </div>
 
+            <style>
+                #tns1-mw { margin: 0 -20px; }
+
+                .category-grid-mobile { overflow:visible; }
+
+                .category-grid-desktop { display:block; }
+                .category-grid-mobile { display: none; }
+
+                @media (max-width: 767px)
+                {
+                    .category-grid-mobile { display: block; }
+                    .category-grid-desktop { display:none; }
+                }
+
+            </style>
+
             <script type="module">
 
                 var slider = tns({
-                    container: '.my-slider',
+                    container: '.category-grid-mobile',
                     items: 2,
                     center:true,
                     loop:true,
@@ -228,7 +244,8 @@ $total_rows = 0;
                     startIndex:2,
                     controls:false,
                     nav:false,
-                    autoplay: false
+                    autoplay: false,
+                    preventScrollOnTouch:"auto"
                 });
 
             </script>
