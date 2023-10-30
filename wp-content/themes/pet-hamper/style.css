@@ -206,7 +206,7 @@ ul.collections-grid .image img {
 
 .line-clamp {
   cursor: pointer;
-  height: 5.3em;
+  height: 7.3em;
   overflow: hidden;
   position: relative;
 }
@@ -239,20 +239,12 @@ ul.collections-grid .image img {
   text-align: center;
 }
 .bundle_border p {
-  font-family: "Silver Script", cursive;
+  font-family: "Lemonade", cursive;
   color: #b2a497;
-  width: max-content;
   margin: 0;
-  padding-left: 25px;
-  padding-right: 25px;
-  flex-shrink: 0;
-  font-size: 50px;
+  font-size: 2rem;
 }
-.bundle_border hr {
-  color: #b2a497;
-  width: 100%;
-  padding-bottom: 1px;
-}
+
 
 .woocommerce-product-gallery__image {
   overflow: hidden;
@@ -299,7 +291,6 @@ ul.collections-grid .image img {
 .bundle_form {
   width: 1200px;
   min-width: 1200px;
-  padding-left: 40px;
 }
 .product-quantity {
   text-align: center;
@@ -473,10 +464,12 @@ html {
 }
 
 @font-face {
-  font-family: "Silver Script";
-  src: url("/wp-content/themes/pet-hamper/fonts/silverscript.woff2")
+  font-family: "Lemonade";
+  src: url("/wp-content/themes/pet-hamper/fonts/lemonade.woff2")
       format("woff2"),
-    url("/wp-content/themes/pet-hamper/fonts/silverscript.woff") format("woff");
+    url("/wp-content/themes/pet-hamper/fonts/lemonade.woff") format("woff"),
+    url("/wp-content/themes/pet-hamper/fonts/lemonade.ttf")
+      format("truetype");
   font-display: swap;
 }
 
@@ -887,23 +880,16 @@ h6 {
 .linetitle,
 .related > h2,
 .wp-block-post-title {
-  display: grid;
-  align-items: center;
   text-align: center;
-  grid-gap: 20px;
-  width: 100%;
   text-transform: uppercase;
   margin-bottom: 1rem;
 }
 
-.linetitle:before,
-.related > h2:before,
-.linetitle:after,
-.related > h2:after,
-.wp-block-post-title:before,
-.wp-block-post-title:after {
-  content: "";
-  border-top: 1px solid;
+.page-template-homepage .linetitle {
+    font-family: "Lemonade", cursive;
+    text-transform: none;
+    color: #b2a598;
+    font-size: 2.5rem;
 }
 
 .cart-header {
@@ -932,12 +918,18 @@ p.title,
 .entry-title,
 .woocommerce-products-header__title,
 .welcometext h2 {
-  font-family: "Silver Script", cursive;
+  font-family: "Lemonade", cursive;
   text-transform: none;
+
+}
+
+
+.welcometext h2 {
+    color: #b2a598;
 }
 
 span.title {
-  font-family: "Silver Script", cursive;
+  font-family: "Lemonade", cursive;
   text-transform: none;
   font-size: 2em;
 }
@@ -1358,8 +1350,9 @@ textarea {
 }
 
 #primary-menu > li > ul > li > a {
-  font-family: "Silver Script", cursive;
-  font-size: 2.4rem;
+  font-family: "Lemonade", cursive;
+  font-size: 2rem;
+  color: #b2a598;
 }
 
 #primary-menu > li:hover > ul,
@@ -1399,6 +1392,13 @@ textarea {
   background: #d5ccbe;
   color:white;
   padding: 6px;
+  text-align:center;
+}
+
+.highlight {
+  background: #d5ccbe;
+  color:white;
+  padding: 1rem;
   text-align:center;
 }
 
@@ -1541,7 +1541,7 @@ ul.productgrid.four a {
 }
 
 .welcometext h2 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin: 0;
   line-height: 1;
 }
@@ -1753,16 +1753,9 @@ ul.productgrid.four a {
 }
 
 .bespoke-hampers {
-  position: relative;
+   text-align: center;
 }
 
-.bespoke-hampers .button {
-  position: absolute;
-  bottom: 25px;
-  right: 0;
-  background: rgba(255, 255, 255, 0.8);
-  color: #404040 !important;
-}
 
 #primary-menu > li.sans > ul {
   width: auto;
@@ -1885,9 +1878,7 @@ ul.collections-grid li .inner {
     flex-wrap: wrap;
   }
 
-  .bespoke-hampers .button {
-    font-size: 1.8em;
-  }
+
 
   .blog .site-main .dflex {
     display: flex;
@@ -1906,7 +1897,6 @@ ul.collections-grid li .inner {
   .linetitle,
   .related > h2,
   .wp-block-post-title {
-    grid-template-columns: minmax(20px, 1fr) auto minmax(20px, 1fr);
     font-size: 2em;
   }
 
@@ -1944,7 +1934,7 @@ ul.collections-grid li .inner {
   .blog .entry-title,
   .archive .entry-title,
   .single-post .entry-title {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .woocommerce ul.products li.product .button {
@@ -2619,14 +2609,14 @@ a.added_to_cart.wc-forward {
 .woocommerce nav.woocommerce-pagination ul li span {
   background: #fff;
   border: none;
-  font-family: "Silver Script", cursive;
+  font-family: "Lemonade", cursive;
   font-weight: normal;
   color: #56422b;
-  width: 50px;
+  width: 30px;
   line-height: 0.8;
   border-radius: 100%;
-  height: 50px;
-  font-size: 2rem;
+  height: 30px;
+  font-size: 1rem;
 }
 
 .woocommerce nav.woocommerce-pagination ul li a:focus,
@@ -2661,11 +2651,10 @@ a.added_to_cart.wc-forward {
 
 .single-product div.product form.cart .qty {
   border: none;
-  font-family: "Silver Script", cursive;
-  color: #56422b;
-  font-size: 2rem;
+  font-family: "Lemonade", cursive;
+  color: #b2a598;
+  font-size: 1.5rem;
   width: 70px;
-  padding: 0;
 }
 
 .single-product .quantity {
@@ -2679,9 +2668,9 @@ a.added_to_cart.wc-forward {
 }
 
 .single-product div.product form.cart .label {
-  font-family: "Silver Script", cursive;
-  color: #56422b;
-  font-size: 2rem;
+  font-family: "Lemonade", cursive;
+  color: #b2a598;
+  font-size: 1.5rem;
   margin-right: auto;
 }
 
@@ -2746,7 +2735,7 @@ a.added_to_cart.wc-forward {
   padding: 9px 12px;
   font-size: 2em;
   line-height: 1.5em;
-  font-family: "Silver Script", cursive;
+  font-family: "Lemonade", cursive;
 }
 
 #body .woocommerce .cart .button,
@@ -2853,6 +2842,10 @@ a.added_to_cart.wc-forward {
     font-size: 2rem;
   }
 
+  .page-template-default.page li.product {
+    width: 100%!important;
+  }
+
   #masthead {
     position: sticky;
     top: 0;
@@ -2863,9 +2856,24 @@ a.added_to_cart.wc-forward {
     height: 75px;
   }
 
-  .dgwt-wcas-enable-mobile-form {
-    border-top: 1px solid #bdaf8b;
+  .search.mobile-show {
+    width: 20px;
   }
+
+  .naigationwrapper.mobile-show {
+    display: flex;
+    align-items: center;
+  }
+
+  .hc-nav-trigger {
+    margin-right: 5px;
+  }
+
+  .dgwt-wcas-ico-magnifier-handler {
+    width: auto;
+    margin: auto!important;
+  }
+
 
   .links {
     display: flex;

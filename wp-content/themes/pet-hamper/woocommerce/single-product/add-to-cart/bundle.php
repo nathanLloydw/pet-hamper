@@ -49,9 +49,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
     <div class="bundle_form <?php echo esc_attr( $classes ); ?>">
 
         <div class="bundle_border">
-            <hr>
             <p>What's in the hamper?</p>
-            <hr>
         </div>
 
         <?php
