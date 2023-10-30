@@ -141,14 +141,16 @@ $total_rows = 0;
 
 
 			<?php if( have_rows('catgrid') ): ?>
+
 		    <div class="catgrid half">
+
 		    <?php while( have_rows('catgrid') ): the_row(); 
 
 		    	$link = get_sub_field('link');
 
 		    	?>
 
-				<div class="griditem fw">
+				<div class="griditem fw category-grid-desktop">
 
 					<div class="inner">
 
@@ -185,6 +187,69 @@ $total_rows = 0;
 				
 			<?php endwhile; ?>
 			</div>
+
+            <div class="category-grid-mobile">
+                <?php while( have_rows('catgrid') ): the_row();
+
+                    $link = get_sub_field('link');
+
+                    ?>
+
+                    <div>
+
+                        <?php if( $link ):
+                            $link_url = $link['url'];
+                            $link_title = $link['title'];
+                            $link_target = $link['target'] ? $link['target'] : '_self';
+                            ?>
+
+                            <a style="position:relative;display:block;height:100%;width:100%;" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
+                                <img <?php awesome_acf_responsive_image(get_sub_field( 'mobile_image' ),'thumb-640','768px'); ?>  style="width:100%; object-fit:cover;display:flex;" alt="" />
+                                <div style="position:absolute;top:0;left:0;display:flex;justify-content:center;align-items:center;width:100%;height:100%;max-height:767px;background-color:#00000040;">
+                                    <p style="color:white;text-transform:uppercase;"><?php echo $link_title; ?></p>
+                                </div>
+                            </a>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                <?php endwhile; ?>
+            </div>
+
+            <style>
+                #tns1-mw { margin: 0 -20px; }
+
+                .category-grid-mobile { overflow:visible; }
+
+                .category-grid-desktop { display:block; }
+                .category-grid-mobile { display: none; }
+
+                @media (max-width: 767px)
+                {
+                    .category-grid-mobile { display: block; }
+                    .category-grid-desktop { display:none; }
+                }
+
+            </style>
+
+            <script type="module">
+
+                var slider = tns({
+                    container: '.category-grid-mobile',
+                    items: 2,
+                    center:true,
+                    loop:true,
+                    mouseDrag:true,
+                    startIndex:2,
+                    controls:false,
+                    nav:false,
+                    autoplay: false,
+                    preventScrollOnTouch:"auto"
+                });
+
+            </script>
+
 			<?php endif; ?>
 
 
