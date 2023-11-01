@@ -3237,3 +3237,9 @@ a.added_to_cart.wc-forward {
     flex-direction: column-reverse;
   }
 }
+
+.menu-item-46530 a,
+.menu-item-46542 a,
+.menu-item-46543 a,
+.menu-item-46550 a
+{ color: #C30F16; }
