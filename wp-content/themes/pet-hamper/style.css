@@ -237,6 +237,7 @@ ul.collections-grid .image img {
   padding-bottom: 40px;
   align-items: center;
   text-align: center;
+  justify-content:center;
 }
 .bundle_border p {
   font-family: "Silver Script", cursive;
