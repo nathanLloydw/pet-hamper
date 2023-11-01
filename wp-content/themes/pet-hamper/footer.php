@@ -96,7 +96,7 @@
 					}
 					?>
 				</div>
-				<div class="col col4 mobile-hide">
+				<div class="col col4">
 					<?php
 					if(is_active_sidebar('footercol3')){
 					dynamic_sidebar('footercol3');

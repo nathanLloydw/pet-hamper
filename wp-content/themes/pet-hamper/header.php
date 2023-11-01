@@ -16,13 +16,18 @@
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+
+    <link rel="preload" href="/wp-content/themes/pet-hamper/fonts/lemonade.woff2" as="font" type="font/woff2" crossorigin>
+
     <link rel="preload" href="/wp-content/themes/pet-hamper/fonts/silverscript.woff2" as="font" type="font/woff2" crossorigin>
 
- <!--    <link rel="stylesheet" href="/wp-content/themes/pet-hamper/css/splide-core.min.css">
-    <script src="/wp-content/themes/pet-hamper/js/splide.min.js"></script> -->
+    <!--    <link rel="stylesheet" href="/wp-content/themes/pet-hamper/css/splide-core.min.css">
+       <script src="/wp-content/themes/pet-hamper/js/splide.min.js"></script> -->
+
 
     <script src="https://kit.fontawesome.com/6fbd7ca2dd.js" ></script>
     <script src="https://kit.fontawesome.com/713e0a7437.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
 
     <link rel="stylesheet" href="/wp-content/themes/pet-hamper/css/hc-offcanvas-nav.css">
     <script defer src="/wp-content/themes/pet-hamper/js/hc-offcanvas-nav.min.js"></script>
@@ -56,6 +61,11 @@
             <div class="naigationwrapper mobile-show">
 
                 <div class="hamburger mobile-show"><i style="font-size:30px" class="fas fa-bars"></i></div> <!--  .hamburger -->
+
+
+                <div class="search mobile-show">
+                    <span><?php echo do_shortcode('[fibosearch]'); ?></span>
+                </div>
 
                 <nav id="site-navigation" class="main-navigation mobile-show" style="display: none !important;">
                 <?php
@@ -114,11 +124,6 @@
 
     </header><!-- #masthead -->
 
-    <div class="search mobile-show">
-        <span><?php echo do_shortcode('[fibosearch]'); ?></span>
-    </div>
-
-
     <?php if( get_field('announcement_bar_text', 'option') ): ?>
 
     <div id="offerbar">
@@ -133,3 +138,4 @@
 
     <?php endif; ?>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>

@@ -137,18 +137,19 @@ $total_rows = 0;
 			<?php endif; ?>
 
 
-			<h1 class="linetitle"><?php the_title(); ?></h1>
-
-
 			<?php if( have_rows('catgrid') ): ?>
+
+			<h1 class="linetitle"><?php the_field('cat_grid_title');?></h1>
+
 		    <div class="catgrid half">
+
 		    <?php while( have_rows('catgrid') ): the_row(); 
 
 		    	$link = get_sub_field('link');
 
 		    	?>
 
-				<div class="griditem fw">
+				<div class="griditem fw category-grid-desktop">
 
 					<div class="inner">
 
@@ -185,15 +186,70 @@ $total_rows = 0;
 				
 			<?php endwhile; ?>
 			</div>
+
+            <div class="category-grid-mobile">
+                <?php while( have_rows('catgrid') ): the_row();
+
+                    $link = get_sub_field('link');
+
+                    ?>
+
+                    <div>
+
+                        <?php if( $link ):
+                            $link_url = $link['url'];
+                            $link_title = $link['title'];
+                            $link_target = $link['target'] ? $link['target'] : '_self';
+                            ?>
+
+                            <a style="position:relative;display:block;height:100%;width:100%;" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>">
+                                <img <?php awesome_acf_responsive_image(get_sub_field( 'mobile_image' ),'thumb-640','768px'); ?>  style="width:100%; object-fit:cover;display:flex;" alt="" />
+                                <div style="position:absolute;top:0;left:0;display:flex;justify-content:center;align-items:center;width:100%;height:100%;max-height:767px;background-color:#00000040;">
+                                    <p style="color:white;text-transform:uppercase;"><?php echo $link_title; ?></p>
+                                </div>
+                            </a>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                <?php endwhile; ?>
+            </div>
+
+            <style>
+                #tns1-mw { margin: 0 -20px; }
+
+                .category-grid-mobile { overflow:visible; }
+
+                .category-grid-desktop { display:block; }
+                .category-grid-mobile { display: none; }
+
+                @media (max-width: 767px)
+                {
+                    .category-grid-mobile { display: block; }
+                    .category-grid-desktop { display:none; }
+                }
+
+            </style>
+
+            <script type="module">
+
+                var slider = tns({
+                    container: '.category-grid-mobile',
+                    items: 2,
+                    center:true,
+                    loop:true,
+                    mouseDrag:true,
+                    startIndex:2,
+                    controls:false,
+                    nav:false,
+                    autoplay: false,
+                    preventScrollOnTouch:"auto"
+                });
+
+            </script>
+
 			<?php endif; ?>
-
-
-			<div class="welcometext center">
-				<?php the_field('welcome_text'); ?>
-			</div>
-
-
-			
 
 
 			<?php if( have_rows('collections_grid') ): ?>
@@ -231,7 +287,10 @@ $total_rows = 0;
 
 
 			<div class="bespoke-hampers">
-				<div class="image"><img class="bannerimg" <?php awesome_acf_responsive_image(get_field( 'bespoke_hamper_image' ),'thumb-640','1200px'); ?>  alt="create your own hamper" /></div>
+				<div class="image">
+					<img <?php awesome_acf_responsive_image(get_field( 'bespoke_hamper_image' ),'thumb-640','1200px'); ?>  alt="create your own hamper" />
+				</div>
+				<?php the_field('bespoke_hampers_text'); ?>
 				<a href="<?php bloginfo('url') ?>/create-your-own-hamper/" class="button ib">Create your hamper now</a>
 			</div>
 
@@ -276,74 +335,15 @@ $total_rows = 0;
 		
 		</div> -->
 
-		<?php 
-		$corplogos = get_field('corporate_logo_gallery');
-		$size = 'full'; // (thumbnail, medium, large, full or custom size)
-		if( $corplogos ): ?>
-			<p class="linetitle"><?php the_field('corporate_title'); ?></p>
-		    <ul class="corporate-logos">
-		        <?php foreach( $corplogos as $corplogo_id ): ?>
-		            <li>
-		                <?php echo wp_get_attachment_image( $corplogo_id, $size ); ?>
-		            </li>
-		        <?php endforeach; ?>
-		    </ul>
-		    <div class="more center">
-		    	<p><?php the_field('corporate_text'); ?></p> 
-
-		    	<?php 
-					$link = get_field('link');
-					if( $link ): 
-					    $link_url = $link['url'];
-					    $link_title = $link['title'];
-					    $link_target = $link['target'] ? $link['target'] : '_self';
-					    ?>
-					    <a class="button ib" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo $link_title ?></a>
-					    
-					<?php endif; ?>
-		    </div>
-
-		<?php endif; ?>
-
 
 		
-			<div class="about-section">
-
-				<p class="linetitle"><?php the_field('about_title'); ?></p>
-
-				<div class="row">
-
-					<div class="col1">
-
-						<div class="image"><img <?php awesome_acf_responsive_image(get_field( 'about_image' ),'thumb-640','768px'); ?>  alt="our product tester" /></div>
-							
-					</div>
-
-					<div class="col2">
-
-						<div class="content">
-							<span class="quote"><?php the_field('quote'); ?></span>
-			            	<p class="cta"><?php the_field('cta_text'); ?></p>
-			            	<?php 
-							$link = get_field('cta_link');
-							if( $link ): 
-							    $link_url = $link['url'];
-							    $link_title = $link['title'];
-							    $link_target = $link['target'] ? $link['target'] : '_self';
-							    ?>
-							    <a class="button ib" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo $link_title; ?></a>
-							<?php endif; ?>
-			        	</div>
-						
-					</div>	
-
-				</div>	
-				  		
-			</div><!-- about section -->
 
 
+			<div class="welcometext center">
+				<?php the_field('welcome_text'); ?>
+			</div>
 
-		</div><!-- content -->
+</div><!-- content -->
 
 		
 		<p class="linetitle">On Instagram</p>
